@@ -7,7 +7,10 @@ import { getCollection } from 'astro:content';
 import { SECTOR_NAMEN } from '../lib/sectoren';
 
 export const GET: APIRoute = async ({ site }) => {
-  const basis = site?.href.replace(/\/$/, '') ?? 'https://bureauweerbaarenveilig.nl';
+  const oorsprong = site?.href.replace(/\/$/, '') ?? 'https://bureauweerbaarenveilig.nl';
+  // Draait de site in een submap, dan hoort die submap in elke link
+  const submap = import.meta.env.BASE_URL.replace(/\/$/, '');
+  const basis = `${oorsprong}${submap}`;
 
   const sectoren = (await getCollection('sectoren')).sort((a, b) =>
     a.data.naam.localeCompare(b.data.naam)

@@ -37,6 +37,11 @@ jobs:
         run: npm run build
         env:
           PUBLIC_WEB3FORMS_KEY: ${{ secrets.PUBLIC_WEB3FORMS_KEY }}
+          # Deze twee regels zorgen dat de voorbeeldsite in de submap van GitHub
+          # werkt. Zodra bureauweerbaarenveilig.nl is gekoppeld: beide regels
+          # weghalen, dan staat de site weer op de hoofdmap.
+          PUBLIC_SITE_URL: https://youriwoesthuis.github.io
+          PUBLIC_BASE_PATH: /bureau-weerbaar-en-veilig
 
       - name: Resultaat klaarzetten
         uses: actions/upload-pages-artifact@v3

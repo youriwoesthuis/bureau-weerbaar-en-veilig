@@ -1,4 +1,5 @@
 ---
+import { link } from '../../lib/link';
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
@@ -103,7 +104,7 @@ const artikelSchema = JSON.stringify({
               <ul class="mt-3 space-y-2 text-sm">
                 {gerelateerd.map((t) => (
                   <li>
-                    <a href={`/trainingen/${t.data.slug}/`} class="font-medium text-blauw hover:underline">
+                    <a href={link(`/trainingen/${t.data.slug}/`)} class="font-medium text-blauw hover:underline">
                       {t.data.titel}
                     </a>
                   </li>

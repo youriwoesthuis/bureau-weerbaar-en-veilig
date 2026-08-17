@@ -29,9 +29,14 @@ function verzamel(map, gevonden = []) {
 
 const paginas = verzamel(DIST);
 
+/* Draait de site in een submap, dan staat die submap wel in de links maar niet
+   in de mappenstructuur van dist. Die halen we er hier eerst af. */
+const SUBMAP = (process.env.PUBLIC_BASE_PATH || '').replace(/\/$/, '');
+
 /** Bestaat er een gebouwde pagina op dit URL-pad? */
 function bestaat(pad) {
-  const schoon = pad.split('#')[0].split('?')[0];
+  let schoon = pad.split('#')[0].split('?')[0];
+  if (SUBMAP && schoon.startsWith(SUBMAP)) schoon = schoon.slice(SUBMAP.length) || '/';
   if (schoon === '/' || schoon === '') return true;
   const zonderSlash = schoon.replace(/^\/|\/$/g, '');
   return (

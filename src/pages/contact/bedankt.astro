@@ -1,4 +1,5 @@
 ---
+import { link } from '../../lib/link';
 import Base from '../../layouts/Base.astro';
 ---
 
@@ -19,7 +20,7 @@ import Base from '../../layouts/Base.astro';
         <a href="tel:+31857600435" class="font-semibold text-blauw hover:underline">085 760 0435</a>.
       </p>
       <a
-        href="/"
+        href={link('/')}
         class="mt-6 inline-block rounded-md bg-oranje px-6 py-3 font-bold text-white hover:bg-oranje-donker"
       >
         Terug naar de homepage

@@ -1,4 +1,5 @@
 ---
+import { link } from '../lib/link';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import NiveauBadge from '../components/NiveauBadge.astro';
@@ -36,13 +37,13 @@ const niveaus = ['basis', 'gevorderd', 'expert'] as const;
       </p>
       <div class="mt-8 flex flex-col gap-3 sm:flex-row">
         <a
-          href="/sectoren/"
+          href={link('/sectoren/')}
           class="rounded-md bg-oranje px-6 py-3 text-center font-bold text-white hover:bg-oranje-donker"
         >
           Vind de training voor jouw sector
         </a>
         <a
-          href="/agressietraining/"
+          href={link('/agressietraining/')}
           class="rounded-md border border-marine px-6 py-3 text-center font-bold text-marine hover:bg-marine hover:text-white"
         >
           Hoe onze aanpak werkt
@@ -64,7 +65,7 @@ const niveaus = ['basis', 'gevorderd', 'expert'] as const;
       {sectoren.map((s) => (
         <li class="group relative rounded-xl border border-lijn p-5 transition-shadow hover:shadow-md">
           <h3 class="font-bold text-marine group-hover:text-blauw">
-            <a href={`/sectoren/${s.data.slug}/`} class="after:absolute after:inset-0 after:rounded-xl">
+            <a href={link(`/sectoren/${s.data.slug}/`)} class="after:absolute after:inset-0 after:rounded-xl">
               {s.data.naam} →
             </a>
           </h3>
@@ -93,7 +94,7 @@ const niveaus = ['basis', 'gevorderd', 'expert'] as const;
             <NiveauBadge niveau={n} />
             <h3 class="mt-3 text-lg font-bold text-marine">{NIVEAU_LABELS[n]}</h3>
             <p class="mt-2 flex-1 text-sm leading-relaxed text-grijs">{NIVEAU_BESCHRIJVING[n]}</p>
-            <a href={`/niveaus/${n}/`} class="mt-4 text-sm font-semibold text-blauw hover:underline">
+            <a href={link(`/niveaus/${n}/`)} class="mt-4 text-sm font-semibold text-blauw hover:underline">
               Alle {NIVEAU_LABELS[n].toLowerCase()}trainingen →
             </a>
           </article>

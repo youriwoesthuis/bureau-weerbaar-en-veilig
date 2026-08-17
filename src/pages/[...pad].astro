@@ -8,6 +8,7 @@
  * De pagina staat op noindex zodat de oude URL zelf niet in de index blijft.
  */
 import { REDIRECTS } from '../lib/redirects';
+import { link } from '../lib/link';
 
 export function getStaticPaths() {
   return Object.entries(REDIRECTS).map(([oud, nieuw]) => ({
@@ -17,7 +18,7 @@ export function getStaticPaths() {
 }
 
 const { nieuw } = Astro.props;
-const doel = new URL(nieuw, Astro.site).href;
+const doel = new URL(link(nieuw), Astro.site).href;
 ---
 
 <!doctype html>

@@ -1,4 +1,5 @@
 ---
+import { link } from '../../lib/link';
 import Base from '../../layouts/Base.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import NiveauBadge from '../../components/NiveauBadge.astro';
@@ -43,7 +44,7 @@ const niveaus = ['basis', 'gevorderd', 'expert'] as const;
             past bij jouw team.
           </p>
           <a
-            href="/sectoren/"
+            href={link('/sectoren/')}
             class="mt-4 inline-block rounded-md bg-oranje px-5 py-2.5 text-sm font-bold text-white hover:bg-oranje-donker"
           >
             Bekijk alle sectoren
@@ -91,7 +92,7 @@ const niveaus = ['basis', 'gevorderd', 'expert'] as const;
                 <NiveauBadge niveau={n} />
                 <h3 class="mt-2 font-bold">{NIVEAU_LABELS[n]}</h3>
                 <p class="mt-1 text-sm leading-relaxed text-grijs">{NIVEAU_BESCHRIJVING[n]}</p>
-                <a href={`/niveaus/${n}/`} class="mt-2 inline-block text-sm font-semibold text-blauw hover:underline">
+                <a href={link(`/niveaus/${n}/`)} class="mt-2 inline-block text-sm font-semibold text-blauw hover:underline">
                   Alle trainingen op dit niveau →
                 </a>
               </div>

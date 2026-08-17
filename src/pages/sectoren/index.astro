@@ -1,4 +1,5 @@
 ---
+import { link } from '../../lib/link';
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
@@ -37,7 +38,7 @@ const nogTeVullen = Object.entries(SECTOR_NAMEN).filter(([slug]) => !gevuldeSlug
         <li class="group relative rounded-xl border border-lijn p-6 transition-shadow hover:shadow-md">
           <h2 class="text-xl font-bold text-marine">
             {/* De pseudo-laag maakt de hele kaart klikbaar, dus ook de regel eronder */}
-            <a href={`/sectoren/${s.data.slug}/`} class="after:absolute after:inset-0 after:rounded-xl">
+            <a href={link(`/sectoren/${s.data.slug}/`)} class="after:absolute after:inset-0 after:rounded-xl">
               {s.data.naam}
             </a>
           </h2>
