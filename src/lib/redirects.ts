@@ -256,6 +256,45 @@ export const REDIRECTS: Record<string, string> = {
     '/kennisbank/lsd-in-de-spreekkamer/',
   '/kennisbank/waarom-een-meld-en-aangiftebeleid-bij-agressie-onmisbaar-is/':
     '/kennisbank/waarom-een-meld-en-aangiftebeleid-onmisbaar-is/',
+  '/kennisbank/wanneer-emoties-het-gesprek-overnemen-wat-helpt-jou-om-professioneel-te-blijven/':
+    '/kennisbank/wanneer-emoties-het-gesprek-overnemen/',
+  '/kennisbank/wat-je-ziet-als-je-aanbelt-signalen-herkennen-bij-onrust/':
+    '/kennisbank/wat-je-ziet-als-je-aanbelt/',
+  '/kennisbank/de-rekensom-van-onveiligheid-wat-een-incidentje-jouw-organisatie-echt-kost/':
+    '/kennisbank/de-rekensom-van-onveiligheid/',
+  '/kennisbank/de-stille-bewaker-hoe-je-werkplek-agressie-kan-uitlokken-of-juist-voorkomen/':
+    '/kennisbank/de-stille-bewaker-je-werkplek-als-factor/',
+  '/kennisbank/de-emotionele-ehbo-koffer-van-je-team-wat-spreek-je-af-voordat-een-gesprek-ontspoort/':
+    '/kennisbank/de-emotionele-ehbo-koffer-van-je-team/',
+  '/kennisbank/de-digitale-klap-hoe-je-professioneel-blijft-als-de-agressie-via-e-mail-komt/':
+    '/kennisbank/de-digitale-klap/',
+  '/kennisbank/de-sluipmoordenaar-van-het-team-waarom-roddelen-en-buitensluiten-gevaarlijker-zijn-dan-een-schreeuwende-klant/':
+    '/kennisbank/de-sluipmoordenaar-van-het-team/',
+  '/kennisbank/de-ramptoerist-met-een-camera-wat-doe-je-als-je-werk-tijdens-een-crisis-wordt-gefilmd/':
+    '/kennisbank/gefilmd-worden-tijdens-een-crisis/',
+  '/kennisbank/de-stille-sabotage-herkennen-van-en-omgaan-met-de-passief-agressieve-leidinggevende/':
+    '/kennisbank/de-stille-sabotage/',
+  '/kennisbank/je-hoofd-resetten-hoe-de-matrixmethode-emotionele-lading-neutraliseert/':
+    '/kennisbank/de-matrixmethode/',
+  '/kennisbank/leren-als-organisatie-ontwikkeling-stopt-niet-na-de-training/':
+    '/kennisbank/leren-stopt-niet-na-de-training/',
+  '/kennisbank/ethische-keuzes-zonder-protocol-wat-je-doet-als-regels-niet-toereikend-zijn/':
+    '/kennisbank/ethische-keuzes-zonder-protocol/',
+  '/kennisbank/verantwoord-online-gedrag-hoe-teams-samen-normen-bepalen-voor-communicatie/':
+    '/kennisbank/verantwoord-online-gedrag/',
+
+  /* Samengevoegd om te voorkomen dat twee artikelen op dezelfde zoekterm
+     concurreren (zie hoofdstuk 3.4 van de projectbrief). */
+  '/kennisbank/professioneel-blijven-als-het-gesprek-uit-de-hand-loopt/':
+    '/kennisbank/professioneel-blijven-aan-de-lijn/',
+  '/kennisbank/wat-sterke-teams-doen-als-het-spannend-wordt/':
+    '/kennisbank/hoe-teams-elkaar-sterker-maken-in-lastige-situaties/',
+  '/kennisbank/wanneer-beleid-echt-gedragen-wordt-van-document-naar-dagelijks-gedrag/':
+    '/kennisbank/waarom-beleid-pas-werkt-als-gedrag-volgt/',
+
+  /* Buiten het domein van Bureau Weerbaar en Veilig: gaat over verzuimpreventie,
+     niet over agressie. Hoort bij het brede aanbod van actinmove.nl. */
+  '/kennisbank/van-controle-naar-contact/': '/kennisbank/',
 
   /* ---------- Kennisbank intern: boom vervalt ---------- */
   '/kennisbank_intern/weerbaarheid-op-de-werkvloer/':
