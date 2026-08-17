@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { SECTOR_NAMEN } from '../../lib/sectoren';
+
+const sectoren = await getCollection('sectoren');
+const trainingen = await getCollection('trainingen');
+
+const perSector = (slug: string) => trainingen.filter((t) => t.data.sector === slug).length;
+
+/* Sectoren met een eigen contentbestand eerst, daarna de nog te vullen sectoren als lijst */
+const gevuld = sectoren.sort((a, b) => a.data.naam.localeCompare(b.data.naam));
+const gevuldeSlugs = new Set(gevuld.map((s) => s.data.slug));
+const nogTeVullen = Object.entries(SECTOR_NAMEN).filter(([slug]) => !gevuldeSlugs.has(slug));
+---
+
+<Base
+  titel="Agressietraining per sector"
+  beschrijving="Bureau Weerbaar en Veilig biedt agressietraining in 19 sectoren, van zorg en onderwijs tot retail en openbaar vervoer: per beroepsgroep en in drie niveaus."
+>
+  <div class="border-b border-lijn bg-vlak">
+    <div class="mx-auto max-w-6xl px-4 py-8">
+      <Breadcrumb pad={[{ naam: 'Home', pad: '/' }, { naam: 'Sectoren' }]} />
+      <h1 class="mt-6 text-3xl font-bold text-marine md:text-4xl">Agressietraining per sector</h1>
+      <p class="mt-4 max-w-3xl text-lg leading-relaxed">
+        Bureau Weerbaar en Veilig traint teams in 19 sectoren. Elke sector kent zijn
+        eigen agressieproblematiek: daarom is elke training per beroepsgroep
+        uitgewerkt, in drie niveaus: basis, gevorderd en expert.
+      </p>
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {gevuld.map((s) => (
+        <li class="group relative rounded-xl border border-lijn p-6 transition-shadow hover:shadow-md">
+          <h2 class="text-xl font-bold text-marine">
+            {/* De pseudo-laag maakt de hele kaart klikbaar, dus ook de regel eronder */}
+            <a href={`/sectoren/${s.data.slug}/`} class="after:absolute after:inset-0 after:rounded-xl">
+              {s.data.naam}
+            </a>
+          </h2>
+          <p class="mt-2 text-sm leading-relaxed text-grijs">{s.data.samenvatting}</p>
+          <p class="mt-3 text-sm font-semibold text-blauw group-hover:underline">
+            {perSector(s.data.slug)} trainingen →
+          </p>
+        </li>
+      ))}
+      {nogTeVullen.map(([slug, naam]) => (
+        <li class="rounded-xl border border-dashed border-lijn p-6 text-grijs">
+          <h2 class="text-xl font-bold">{naam}</h2>
+          <p class="mt-2 text-sm">Trainingen voor deze sector volgen binnenkort op deze pagina.</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Base>

@@ -1,0 +1,108 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import NiveauBadge from '../../components/NiveauBadge.astro';
+import Terugbelverzoek from '../../components/Terugbelverzoek.astro';
+import { NIVEAU_BESCHRIJVING, NIVEAU_LABELS } from '../../lib/sectoren';
+
+const niveaus = ['basis', 'gevorderd', 'expert'] as const;
+---
+
+<Base
+  titel="Agressietraining: aanpak en opbouw"
+  beschrijving="Agressietraining leert medewerkers agressie herkennen, de-escaleren en begrenzen. Bureau Weerbaar en Veilig traint per beroepsgroep, in drie niveaus, met realistische praktijksituaties."
+>
+  <div class="border-b border-lijn bg-vlak">
+    <div class="mx-auto max-w-6xl px-4 py-8">
+      <Breadcrumb pad={[{ naam: 'Home', pad: '/' }, { naam: 'Agressietraining' }]} />
+      <h1 class="mt-6 text-3xl font-bold text-marine md:text-4xl">
+        Agressietraining: wat het is en hoe het werkt
+      </h1>
+      <!-- GEO-openingsantwoord -->
+      <p class="mt-4 max-w-3xl text-lg leading-relaxed">
+        Agressietraining leert medewerkers agressie, intimidatie en
+        grensoverschrijdend gedrag herkennen, de-escaleren en begrenzen. Bureau
+        Weerbaar en Veilig traint uitsluitend op dit onderwerp: per
+        beroepsgroep uitgewerkt, in drie niveaus, met realistische situaties
+        uit de eigen werkpraktijk.
+      </p>
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    <div class="grid gap-12 lg:grid-cols-[1fr_20rem]">
+      <div class="min-w-0 space-y-12">
+        <section aria-labelledby="voor-wie">
+          <h2 id="voor-wie" class="text-2xl font-bold text-marine">Voor wie is agressietraining?</h2>
+          <p class="mt-3 max-w-3xl leading-relaxed">
+            Voor iedereen die in het werk met agressie te maken kan krijgen: aan
+            de balie of kassa, in de klas, op straat, bij mensen thuis of aan de
+            telefoon. Bureau Weerbaar en Veilig vertaalt de training naar de
+            eigen beroepsgroep: een buschauffeur oefent andere situaties dan
+            een huisartsassistent. Kies via de sectorpagina's de training die
+            past bij jouw team.
+          </p>
+          <a
+            href="/sectoren/"
+            class="mt-4 inline-block rounded-md bg-oranje px-5 py-2.5 text-sm font-bold text-white hover:bg-oranje-donker"
+          >
+            Bekijk alle sectoren
+          </a>
+        </section>
+
+        <section aria-labelledby="aanpak">
+          <h2 id="aanpak" class="text-2xl font-bold text-marine">De aanpak</h2>
+          <ul class="mt-4 grid gap-4 sm:grid-cols-2">
+            <li class="rounded-xl border border-lijn p-5">
+              <h3 class="font-bold">Realistische praktijksituaties</h3>
+              <p class="mt-1 text-sm leading-relaxed text-grijs">
+                Geoefend wordt met situaties uit het eigen werk: praktijkgericht,
+                zonder naïeve rollenspellen.
+              </p>
+            </li>
+            <li class="rounded-xl border border-lijn p-5">
+              <h3 class="font-bold">Kleine groepen</h3>
+              <p class="mt-1 text-sm leading-relaxed text-grijs">
+                Maximaal 10 deelnemers (expertniveau: maximaal 8), zodat iedereen
+                actief oefent.
+              </p>
+            </li>
+            <li class="rounded-xl border border-lijn p-5">
+              <h3 class="font-bold">Incompany of in Neede</h3>
+              <p class="mt-1 text-sm leading-relaxed text-grijs">
+                Op de eigen locatie, of bij Bureau Weerbaar en Veilig in Neede
+                (Gelderland).
+              </p>
+            </li>
+            <li class="rounded-xl border border-lijn p-5">
+              <h3 class="font-bold">Certificaat</h3>
+              <p class="mt-1 text-sm leading-relaxed text-grijs">
+                Elke deelnemer ontvangt na afloop een deelnamecertificaat.
+              </p>
+            </li>
+          </ul>
+        </section>
+
+        <section aria-labelledby="niveaus">
+          <h2 id="niveaus" class="text-2xl font-bold text-marine">Drie niveaus</h2>
+          <div class="mt-4 space-y-4">
+            {niveaus.map((n) => (
+              <div class="rounded-xl border border-lijn p-5">
+                <NiveauBadge niveau={n} />
+                <h3 class="mt-2 font-bold">{NIVEAU_LABELS[n]}</h3>
+                <p class="mt-1 text-sm leading-relaxed text-grijs">{NIVEAU_BESCHRIJVING[n]}</p>
+                <a href={`/niveaus/${n}/`} class="mt-2 inline-block text-sm font-semibold text-blauw hover:underline">
+                  Alle trainingen op dit niveau →
+                </a>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <aside class="lg:sticky lg:top-6 lg:self-start">
+        <Terugbelverzoek onderwerp="agressietraining" />
+      </aside>
+    </div>
+  </div>
+</Base>

@@ -1,0 +1,55 @@
+name: Site bouwen en publiceren
+
+# Draait bij elke push naar main, en is handmatig te starten via het tabblad Actions.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Rechten die GitHub Pages nodig heeft om te mogen publiceren
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Eén publicatie tegelijk; een nieuwe push wacht netjes op de vorige
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  bouwen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code ophalen
+        uses: actions/checkout@v4
+
+      - name: Node.js installeren
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Pakketten installeren
+        run: npm ci
+
+      - name: Site bouwen
+        run: npm run build
+        env:
+          PUBLIC_WEB3FORMS_KEY: ${{ secrets.PUBLIC_WEB3FORMS_KEY }}
+
+      - name: Resultaat klaarzetten
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  publiceren:
+    needs: bouwen
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.publicatie.outputs.page_url }}
+    steps:
+      - name: Live zetten op GitHub Pages
+        id: publicatie
+        uses: actions/deploy-pages@v4

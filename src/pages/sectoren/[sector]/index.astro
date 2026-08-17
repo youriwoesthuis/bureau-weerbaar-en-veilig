@@ -1,0 +1,91 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import NiveauBadge from '../../../components/NiveauBadge.astro';
+import Terugbelverzoek from '../../../components/Terugbelverzoek.astro';
+
+export async function getStaticPaths() {
+  const sectoren = await getCollection('sectoren');
+  return sectoren.map((s) => ({ params: { sector: s.data.slug }, props: { sector: s } }));
+}
+
+const { sector } = Astro.props;
+const { Content } = await render(sector);
+
+const beroepsgroepen = (await getCollection('beroepsgroepen')).filter(
+  (b) => b.data.sector === sector.data.slug
+);
+const trainingen = (await getCollection('trainingen')).filter(
+  (t) => t.data.sector === sector.data.slug
+);
+
+const NIVEAU_VOLGORDE = { basis: 0, gevorderd: 1, expert: 2 };
+const trainingenVan = (beroepsgroep: string) =>
+  trainingen
+    .filter((t) => t.data.beroepsgroep === beroepsgroep)
+    .sort((a, b) => NIVEAU_VOLGORDE[a.data.niveau] - NIVEAU_VOLGORDE[b.data.niveau]);
+---
+
+<Base
+  titel={`Agressietraining ${sector.data.naam.toLowerCase()}`}
+  beschrijving={sector.data.samenvatting}
+>
+  <div class="border-b border-lijn bg-vlak">
+    <div class="mx-auto max-w-6xl px-4 py-8">
+      <Breadcrumb
+        pad={[
+          { naam: 'Home', pad: '/' },
+          { naam: 'Sectoren', pad: '/sectoren/' },
+          { naam: sector.data.naam },
+        ]}
+      />
+      <h1 class="mt-6 text-3xl font-bold text-marine md:text-4xl">
+        Agressietraining in de sector {sector.data.naam.toLowerCase()}
+      </h1>
+      <p class="mt-4 max-w-3xl text-lg leading-relaxed">{sector.data.samenvatting}</p>
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    <section class="max-w-3xl space-y-4 leading-relaxed [&_p]:mb-4">
+      <Content />
+    </section>
+
+    <section class="mt-12" aria-labelledby="beroepsgroepen-titel">
+      <h2 id="beroepsgroepen-titel" class="text-2xl font-bold text-marine">
+        Kies je beroepsgroep
+      </h2>
+      <div class="mt-6 space-y-8">
+        {beroepsgroepen.map((b) => (
+          <div class="rounded-xl border border-lijn p-6">
+            <h3 class="text-xl font-bold text-marine">
+              <a href={`/sectoren/${sector.data.slug}/${b.data.slug}/`} class="hover:underline">
+                {b.data.naam}
+              </a>
+            </h3>
+            <p class="mt-2 max-w-3xl text-sm leading-relaxed text-grijs">{b.data.samenvatting}</p>
+            <ul class="mt-4 grid gap-3 md:grid-cols-3">
+              {trainingenVan(b.data.slug).map((t) => (
+                <li class="rounded-lg bg-vlak p-4">
+                  <NiveauBadge niveau={t.data.niveau} />
+                  <a
+                    href={`/trainingen/${t.data.slug}/`}
+                    class="mt-2 block text-sm font-semibold text-blauw hover:underline"
+                  >
+                    {t.data.titel} →
+                  </a>
+                  <p class="mt-1 text-xs text-grijs">{t.data.duur}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <div class="mt-12 max-w-3xl">
+      <Terugbelverzoek onderwerp={`agressietraining in de ${sector.data.naam.toLowerCase()}`} />
+    </div>
+  </div>
+</Base>

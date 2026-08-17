@@ -1,0 +1,18 @@
+---
+interface Props {
+  niveau: 'basis' | 'gevorderd' | 'expert';
+}
+const { niveau } = Astro.props;
+
+const stijl = {
+  basis: 'bg-oranje/10 text-oranje-donker',
+  gevorderd: 'bg-blauw/10 text-blauw',
+  expert: 'bg-marine/10 text-marine',
+}[niveau];
+
+const label = { basis: 'Basis', gevorderd: 'Gevorderd', expert: 'Expert' }[niveau];
+---
+
+<span class={`inline-block rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${stijl}`}>
+  Niveau: {label}
+</span>

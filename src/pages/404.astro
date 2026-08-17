@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  titel="Pagina niet gevonden"
+  beschrijving="Deze pagina bestaat niet (meer). Bekijk het overzicht van sectoren of neem contact op met Bureau Weerbaar en Veilig."
+>
+  <div class="mx-auto max-w-3xl px-4 py-20">
+    <p class="text-sm font-bold uppercase tracking-widest text-oranje">Foutmelding 404</p>
+    <h1 class="mt-3 text-3xl font-bold text-marine md:text-4xl">Deze pagina bestaat niet</h1>
+    <p class="mt-4 text-lg leading-relaxed">
+      Mogelijk is de pagina verhuisd of klopt het adres niet. Hieronder staan de
+      snelste routes naar wat je waarschijnlijk zoekt.
+    </p>
+    <ul class="mt-6 space-y-2">
+      <li><a href="/sectoren/" class="font-semibold text-blauw hover:underline">Alle sectoren →</a></li>
+      <li><a href="/niveaus/" class="font-semibold text-blauw hover:underline">De drie trainingsniveaus →</a></li>
+      <li><a href="/kennisbank/" class="font-semibold text-blauw hover:underline">Kennisbank →</a></li>
+      <li><a href="/contact/" class="font-semibold text-blauw hover:underline">Contact →</a></li>
+    </ul>
+    <p class="mt-8 text-grijs">
+      Kom je er niet uit? Bel Bureau Weerbaar en Veilig op
+      <a href="tel:+31857600435" class="font-semibold text-blauw hover:underline">085 760 0435</a>.
+    </p>
+  </div>
+</Base>

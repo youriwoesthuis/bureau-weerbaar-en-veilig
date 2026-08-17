@@ -1,0 +1,75 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import NiveauBadge from '../../components/NiveauBadge.astro';
+import { SECTOR_NAMEN, NIVEAU_BESCHRIJVING, NIVEAU_LABELS } from '../../lib/sectoren';
+
+export function getStaticPaths() {
+  return (['basis', 'gevorderd', 'expert'] as const).map((niveau) => ({ params: { niveau } }));
+}
+
+const niveau = Astro.params.niveau as 'basis' | 'gevorderd' | 'expert';
+const label = NIVEAU_LABELS[niveau];
+
+const trainingen = (await getCollection('trainingen'))
+  .filter((t) => t.data.niveau === niveau)
+  .sort((a, b) => a.data.sector.localeCompare(b.data.sector));
+
+/* Groepeer per sector */
+const perSector = new Map<string, typeof trainingen>();
+for (const t of trainingen) {
+  const lijst = perSector.get(t.data.sector) ?? [];
+  lijst.push(t);
+  perSector.set(t.data.sector, lijst);
+}
+---
+
+<Base
+  titel={`Agressietraining niveau ${label.toLowerCase()}`}
+  beschrijving={`Overzicht van alle agressietrainingen op niveau ${label.toLowerCase()} van Bureau Weerbaar en Veilig, per sector en beroepsgroep. ${NIVEAU_BESCHRIJVING[niveau]}`}
+>
+  <div class="border-b border-lijn bg-vlak">
+    <div class="mx-auto max-w-6xl px-4 py-8">
+      <Breadcrumb
+        pad={[{ naam: 'Home', pad: '/' }, { naam: 'Niveaus', pad: '/niveaus/' }, { naam: label }]}
+      />
+      <div class="mt-6">
+        <NiveauBadge niveau={niveau} />
+        <h1 class="mt-3 text-3xl font-bold text-marine md:text-4xl">
+          Agressietraining: niveau {label.toLowerCase()}
+        </h1>
+        <p class="mt-4 max-w-3xl text-lg leading-relaxed">{NIVEAU_BESCHRIJVING[niveau]}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    {perSector.size === 0 ? (
+      <p class="text-grijs">De trainingen op dit niveau worden op dit moment toegevoegd.</p>
+    ) : (
+      [...perSector.entries()].map(([sector, lijst]) => (
+        <section class="mb-10" aria-label={SECTOR_NAMEN[sector] ?? sector}>
+          <h2 class="text-xl font-bold text-marine">
+            <a href={`/sectoren/${sector}/`} class="hover:underline">
+              {SECTOR_NAMEN[sector] ?? sector}
+            </a>
+          </h2>
+          <ul class="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {lijst.map((t) => (
+              <li class="rounded-xl border border-lijn p-5">
+                <a
+                  href={`/trainingen/${t.data.slug}/`}
+                  class="font-semibold leading-snug text-blauw hover:underline"
+                >
+                  {t.data.titel} →
+                </a>
+                <p class="mt-2 text-xs text-grijs">{t.data.duur} · {t.data.groepsgrootte}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    )}
+  </div>
+</Base>

@@ -1,0 +1,170 @@
+---
+import '../styles/global.css';
+import { paginaTitel as maakTitel, metaBeschrijving } from '../lib/seo';
+import Logo from '../components/Logo.astro';
+
+interface Props {
+  titel: string;
+  beschrijving: string;
+  /** Extra JSON-LD schema's, al gestringificeerd */
+  schema?: string[];
+}
+
+const { titel, beschrijving, schema = [] } = Astro.props;
+const paginaTitel = maakTitel(titel);
+const paginaBeschrijving = metaBeschrijving(beschrijving);
+
+const organisatieSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': ['Organization', 'LocalBusiness'],
+  name: 'Bureau Weerbaar en Veilig',
+  description:
+    'Specialist in agressietraining: omgaan met agressie, intimidatie en grensoverschrijdend gedrag op de werkvloer, per sector en beroepsgroep.',
+  url: 'https://bureauweerbaarenveilig.nl',
+  telephone: '+31857600435',
+  email: 'info@bureauweerbaarenveilig.nl',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Russchemorsweg 5-04',
+    postalCode: '7161 RT',
+    addressLocality: 'Neede',
+    addressRegion: 'Gelderland',
+    addressCountry: 'NL',
+  },
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    opens: '08:30',
+    closes: '17:00',
+  },
+  sameAs: ['https://actinmove.nl', 'https://agressievisie.nl'],
+});
+
+const hoofdmenu = [
+  { naam: 'Agressietraining', pad: '/agressietraining/' },
+  { naam: 'Sectoren', pad: '/sectoren/' },
+  { naam: 'Niveaus', pad: '/niveaus/' },
+  { naam: 'Kennisbank', pad: '/kennisbank/' },
+  { naam: 'Over ons', pad: '/over-ons/' },
+];
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{paginaTitel}</title>
+    <meta name="description" content={paginaBeschrijving} />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <script type="application/ld+json" set:html={organisatieSchema} />
+    {schema.map((s) => <script type="application/ld+json" set:html={s} />)}
+  </head>
+  <body>
+    <a href="#inhoud" class="skip-link">Direct naar inhoud</a>
+
+    <header class="border-b border-lijn bg-white">
+      <div class="relative mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-4">
+        <a href="/" aria-label="Bureau Weerbaar en Veilig, naar de homepage">
+          <Logo class="h-20 w-auto md:h-24" />
+        </a>
+
+        <nav aria-label="Hoofdmenu" class="hidden items-center gap-6 md:flex">
+          {hoofdmenu.map((item) => (
+            <a href={item.pad} class="text-sm font-semibold text-inkt hover:text-blauw">
+              {item.naam}
+            </a>
+          ))}
+          <a
+            href="/contact/"
+            class="rounded-md bg-oranje px-4 py-2 text-sm font-bold text-white hover:bg-oranje-donker"
+          >
+            Contact
+          </a>
+        </nav>
+
+        <!-- Mobiel menu: werkt zonder JavaScript via details/summary -->
+        <details class="menu-mobiel md:hidden">
+          <summary
+            class="flex cursor-pointer list-none items-center gap-2 rounded-md border border-lijn px-3 py-2 text-sm font-semibold"
+            aria-label="Menu openen en sluiten"
+          >
+            <svg viewBox="0 0 20 20" class="h-5 w-5" aria-hidden="true" fill="currentColor">
+              <rect x="2" y="4" width="16" height="2" rx="1" />
+              <rect x="2" y="9" width="16" height="2" rx="1" />
+              <rect x="2" y="14" width="16" height="2" rx="1" />
+            </svg>
+            Menu
+          </summary>
+          <nav
+            aria-label="Mobiel hoofdmenu"
+            class="absolute left-0 right-0 z-40 border-b border-lijn bg-white px-4 pb-6 pt-2 shadow-lg"
+          >
+            <ul class="space-y-1">
+              {hoofdmenu.map((item) => (
+                <li>
+                  <a href={item.pad} class="block rounded-md px-3 py-3 font-semibold hover:bg-vlak">
+                    {item.naam}
+                  </a>
+                </li>
+              ))}
+              <li class="pt-2">
+                <a
+                  href="/contact/"
+                  class="block rounded-md bg-oranje px-3 py-3 text-center font-bold text-white"
+                >
+                  Contact
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </details>
+      </div>
+    </header>
+
+    <main id="inhoud">
+      <slot />
+    </main>
+
+    <footer class="mt-20 bg-marine text-white">
+      <div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 md:grid-cols-3">
+        <div>
+          <Logo variant="wit" class="h-20 w-auto" />
+          <p class="mt-4 text-sm leading-relaxed text-white/80">
+            Dé specialist in agressietraining. Eén onderwerp, tot in de diepte,
+            vertaald naar jouw beroepsgroep.
+          </p>
+          <p class="mt-4 text-sm text-white/80">
+            Onderdeel van <a href="https://actinmove.nl" class="underline hover:text-white">Actinmove</a>
+          </p>
+        </div>
+        <div>
+          <p class="font-semibold">Contact</p>
+          <ul class="mt-2 space-y-1 text-sm text-white/80">
+            <li>Russchemorsweg 5-04, 7161 RT Neede</li>
+            <li><a href="tel:+31857600435" class="hover:text-white">085 760 0435</a></li>
+            <li>
+              <a href="mailto:info@bureauweerbaarenveilig.nl" class="hover:text-white">
+                info@bureauweerbaarenveilig.nl
+              </a>
+            </li>
+            <li>ma t/m vr 08:30–17:00</li>
+          </ul>
+        </div>
+        <div>
+          <p class="font-semibold">Snel naar</p>
+          <ul class="mt-2 space-y-1 text-sm text-white/80">
+            {hoofdmenu.map((item) => (
+              <li><a href={item.pad} class="hover:text-white">{item.naam}</a></li>
+            ))}
+            <li><a href="/contact/" class="hover:text-white">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-white/15 py-4 text-center text-xs text-white/60">
+        © {new Date().getFullYear()} Bureau Weerbaar en Veilig · Meer over agressie op
+        <a href="https://agressievisie.nl" class="underline hover:text-white">agressievisie.nl</a>
+      </div>
+    </footer>
+  </body>
+</html>

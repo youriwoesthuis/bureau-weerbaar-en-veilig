@@ -1,0 +1,37 @@
+---
+interface Kruimel {
+  naam: string;
+  pad?: string;
+}
+interface Props {
+  pad: Kruimel[];
+}
+const { pad } = Astro.props;
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: pad.map((k, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: k.naam,
+    ...(k.pad ? { item: new URL(k.pad, Astro.site).href } : {}),
+  })),
+});
+---
+
+<nav aria-label="Kruimelpad" class="text-sm text-grijs">
+  <ol class="flex flex-wrap items-center gap-1">
+    {pad.map((k, i) => (
+      <li class="flex items-center gap-1">
+        {i > 0 && <span aria-hidden="true">›</span>}
+        {k.pad ? (
+          <a href={k.pad} class="hover:text-blauw hover:underline">{k.naam}</a>
+        ) : (
+          <span aria-current="page" class="font-medium text-inkt">{k.naam}</span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>
+<script type="application/ld+json" set:html={schema} />

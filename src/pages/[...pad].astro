@@ -1,0 +1,38 @@
+---
+/**
+ * Genereert voor elke oude URL uit redirects.ts een doorverwijspagina.
+ *
+ * GitHub Pages kan geen echte 301-redirects sturen. De combinatie van
+ * meta-refresh (0 seconden) + rel="canonical" wordt door Google behandeld als een
+ * permanente verhuizing; de bezoeker gaat direct door naar de nieuwe pagina.
+ * De pagina staat op noindex zodat de oude URL zelf niet in de index blijft.
+ */
+import { REDIRECTS } from '../lib/redirects';
+
+export function getStaticPaths() {
+  return Object.entries(REDIRECTS).map(([oud, nieuw]) => ({
+    params: { pad: oud.replace(/^\/|\/$/g, '') },
+    props: { nieuw },
+  }));
+}
+
+const { nieuw } = Astro.props;
+const doel = new URL(nieuw, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <title>Deze pagina is verhuisd | Bureau Weerbaar en Veilig</title>
+    <meta http-equiv="refresh" content={`0; url=${doel}`} />
+    <link rel="canonical" href={doel} />
+    <meta name="robots" content="noindex, follow" />
+  </head>
+  <body>
+    <p>
+      Deze pagina is verhuisd. Je gaat automatisch door naar
+      <a href={doel}>{doel}</a>.
+    </p>
+  </body>
+</html>

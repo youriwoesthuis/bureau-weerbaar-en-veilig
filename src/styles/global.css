@@ -1,0 +1,59 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/montserrat';
+
+/*
+  Designtokens: Bureau Weerbaar en Veilig
+  Kleuren gemeten op de bestaande site (dev) en het logo.
+  Wordt later 1-op-1 vervangen door de definitieve brandkit.
+*/
+@theme {
+  /* Merk */
+  --color-oranje: #f18919;
+  --color-oranje-donker: #d4720a; /* hover/actief: voldoende contrast op wit */
+  --color-marine: #212e56;        /* primaire donkere merkkleur */
+  --color-marine-licht: #35447a;
+  --color-blauw: #203e91;         /* verloop-eindkleur uit het logo */
+
+  /* Neutralen */
+  --color-inkt: #33373d;          /* bodytekst */
+  --color-grijs: #5b6068;         /* secundaire tekst */
+  --color-vlak: #f4f4f4;          /* lichte vlakken */
+  --color-lijn: #e2e4e8;          /* randen */
+
+  /* Typografie */
+  --font-sans: 'Montserrat Variable', 'Montserrat', system-ui, sans-serif;
+
+  /* Merkverloop (uit het logo: oranje → koningsblauw) */
+  --gradient-merk: linear-gradient(163deg, #f18919 0%, #203e91 100%);
+}
+
+/* Basis */
+html {
+  scroll-behavior: smooth;
+}
+body {
+  @apply font-sans text-inkt bg-white antialiased;
+}
+
+/* Toegankelijke focus-stijl (WCAG 2.1 AA) */
+:focus-visible {
+  outline: 3px solid var(--color-blauw);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Mobiel menu: verberg de standaard driehoek van <summary> */
+.menu-mobiel summary::-webkit-details-marker {
+  display: none;
+}
+.menu-mobiel summary::marker {
+  content: '';
+}
+
+/* Skip-link voor toetsenbordnavigatie */
+.skip-link {
+  @apply absolute -top-96 left-4 z-50 rounded-md bg-marine px-4 py-2 text-white;
+}
+.skip-link:focus {
+  @apply top-4;
+}

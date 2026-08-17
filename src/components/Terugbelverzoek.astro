@@ -1,0 +1,35 @@
+---
+/**
+ * Terugbelverzoek-blok: de ene duidelijke actie per scherm.
+ * Formulier-endpoint (Formspree/Web3Forms) wordt in Fase 4 aangesloten;
+ * tot die tijd werken de telefoon- en maillinks al wel echt.
+ */
+interface Props {
+  onderwerp?: string;
+}
+const { onderwerp = 'deze training' } = Astro.props;
+---
+
+<aside class="rounded-xl bg-marine p-6 text-white" aria-labelledby="terugbel-titel">
+  <h2 id="terugbel-titel" class="text-xl font-bold">
+    Vragen over {onderwerp}?
+  </h2>
+  <p class="mt-2 text-sm leading-relaxed text-white/85">
+    Bureau Weerbaar en Veilig denkt graag mee over de juiste training voor jouw
+    team. Bel, mail of vraag een terugbelverzoek aan: reactie binnen één werkdag.
+  </p>
+  <div class="mt-4 flex flex-col gap-3 sm:flex-row">
+    <a
+      href="tel:+31857600435"
+      class="rounded-md bg-oranje px-5 py-3 text-center text-sm font-bold text-white hover:bg-oranje-donker"
+    >
+      Bel 085 760 0435
+    </a>
+    <a
+      href="/contact/"
+      class="rounded-md border border-white/40 px-5 py-3 text-center text-sm font-bold text-white hover:bg-white/10"
+    >
+      Vraag een terugbelverzoek aan
+    </a>
+  </div>
+</aside>

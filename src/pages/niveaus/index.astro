@@ -1,0 +1,45 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import NiveauBadge from '../../components/NiveauBadge.astro';
+import { NIVEAU_BESCHRIJVING, NIVEAU_LABELS } from '../../lib/sectoren';
+
+const niveaus = ['basis', 'gevorderd', 'expert'] as const;
+---
+
+<Base
+  titel="Trainingsniveaus: basis, gevorderd en expert"
+  beschrijving="Bureau Weerbaar en Veilig biedt elke agressietraining in drie niveaus: basis (herkennen en de-escaleren), gevorderd (complexe situaties) en expert (beleid en borging voor leidinggevenden)."
+>
+  <div class="border-b border-lijn bg-vlak">
+    <div class="mx-auto max-w-6xl px-4 py-8">
+      <Breadcrumb pad={[{ naam: 'Home', pad: '/' }, { naam: 'Niveaus' }]} />
+      <h1 class="mt-6 text-3xl font-bold text-marine md:text-4xl">
+        Drie niveaus agressietraining
+      </h1>
+      <p class="mt-4 max-w-3xl text-lg leading-relaxed">
+        Bureau Weerbaar en Veilig bouwt elke agressietraining op in drie niveaus,
+        zodat elke medewerker traint op het niveau dat past bij zijn of haar rol
+        en ervaring.
+      </p>
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    <div class="grid gap-6 md:grid-cols-3">
+      {niveaus.map((n) => (
+        <article class="flex flex-col rounded-xl border border-lijn p-6">
+          <NiveauBadge niveau={n} />
+          <h2 class="mt-3 text-xl font-bold text-marine">{NIVEAU_LABELS[n]}</h2>
+          <p class="mt-2 flex-1 text-sm leading-relaxed text-grijs">{NIVEAU_BESCHRIJVING[n]}</p>
+          <a
+            href={`/niveaus/${n}/`}
+            class="mt-5 rounded-md bg-oranje px-4 py-2.5 text-center text-sm font-bold text-white hover:bg-oranje-donker"
+          >
+            Alle {NIVEAU_LABELS[n].toLowerCase()}trainingen
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</Base>

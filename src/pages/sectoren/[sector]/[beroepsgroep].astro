@@ -1,0 +1,82 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import NiveauBadge from '../../../components/NiveauBadge.astro';
+import Terugbelverzoek from '../../../components/Terugbelverzoek.astro';
+import { SECTOR_NAMEN, NIVEAU_BESCHRIJVING } from '../../../lib/sectoren';
+
+export async function getStaticPaths() {
+  const beroepsgroepen = await getCollection('beroepsgroepen');
+  return beroepsgroepen.map((b) => ({
+    params: { sector: b.data.sector, beroepsgroep: b.data.slug },
+    props: { beroepsgroep: b },
+  }));
+}
+
+const { beroepsgroep } = Astro.props;
+const b = beroepsgroep.data;
+const { Content } = await render(beroepsgroep);
+
+const NIVEAU_VOLGORDE = { basis: 0, gevorderd: 1, expert: 2 };
+const trainingen = (await getCollection('trainingen'))
+  .filter((t) => t.data.beroepsgroep === b.slug)
+  .sort((a, z) => NIVEAU_VOLGORDE[a.data.niveau] - NIVEAU_VOLGORDE[z.data.niveau]);
+
+const sectorNaam = SECTOR_NAMEN[b.sector] ?? b.sector;
+---
+
+<Base titel={`Agressietraining ${b.naam.toLowerCase()}`} beschrijving={b.samenvatting}>
+  <div class="border-b border-lijn bg-vlak">
+    <div class="mx-auto max-w-6xl px-4 py-8">
+      <Breadcrumb
+        pad={[
+          { naam: 'Home', pad: '/' },
+          { naam: 'Sectoren', pad: '/sectoren/' },
+          { naam: sectorNaam, pad: `/sectoren/${b.sector}/` },
+          { naam: b.naam },
+        ]}
+      />
+      <h1 class="mt-6 text-3xl font-bold text-marine md:text-4xl">
+        Agressietraining voor {b.naam.toLowerCase()}
+      </h1>
+      <p class="mt-4 max-w-3xl text-lg leading-relaxed">{b.samenvatting}</p>
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    <section class="max-w-3xl space-y-4 leading-relaxed [&_p]:mb-4">
+      <Content />
+    </section>
+
+    <!-- De drie niveaus naast elkaar -->
+    <section class="mt-12" aria-labelledby="niveaus-titel">
+      <h2 id="niveaus-titel" class="text-2xl font-bold text-marine">Kies je niveau</h2>
+      <div class="mt-6 grid gap-6 md:grid-cols-3">
+        {trainingen.map((t) => (
+          <article class="flex flex-col rounded-xl border border-lijn p-6">
+            <NiveauBadge niveau={t.data.niveau} />
+            <h3 class="mt-3 text-lg font-bold leading-snug text-marine">{t.data.titel}</h3>
+            <p class="mt-2 flex-1 text-sm leading-relaxed text-grijs">
+              {NIVEAU_BESCHRIJVING[t.data.niveau]}
+            </p>
+            <dl class="mt-4 space-y-1 text-sm">
+              <div class="flex gap-2"><dt class="font-semibold">Duur:</dt><dd>{t.data.duur}</dd></div>
+              <div class="flex gap-2"><dt class="font-semibold">Groep:</dt><dd>{t.data.groepsgrootte}</dd></div>
+            </dl>
+            <a
+              href={`/trainingen/${t.data.slug}/`}
+              class="mt-5 rounded-md bg-oranje px-4 py-2.5 text-center text-sm font-bold text-white hover:bg-oranje-donker"
+            >
+              Bekijk deze training
+            </a>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <div class="mt-12 max-w-3xl">
+      <Terugbelverzoek onderwerp={`de agressietraining voor ${b.naam.toLowerCase()}`} />
+    </div>
+  </div>
+</Base>

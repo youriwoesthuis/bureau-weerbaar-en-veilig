@@ -1,0 +1,130 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import NiveauBadge from '../components/NiveauBadge.astro';
+import Terugbelverzoek from '../components/Terugbelverzoek.astro';
+import { SECTOR_NAMEN, NIVEAU_BESCHRIJVING, NIVEAU_LABELS } from '../lib/sectoren';
+
+const sectoren = (await getCollection('sectoren')).sort((a, b) =>
+  a.data.naam.localeCompare(b.data.naam)
+);
+const gevuldeSlugs = new Set(sectoren.map((s) => s.data.slug));
+const overigeSectoren = Object.entries(SECTOR_NAMEN).filter(([slug]) => !gevuldeSlugs.has(slug));
+const niveaus = ['basis', 'gevorderd', 'expert'] as const;
+---
+
+<Base
+  titel="Agressietraining per beroepsgroep | Bureau Weerbaar en Veilig"
+  beschrijving="Bureau Weerbaar en Veilig is dé specialist in agressietraining: de-escaleren, grenzen stellen en veilig werken, per sector en beroepsgroep, in drie niveaus."
+>
+  <!-- Hero -->
+  <section class="bg-vlak">
+    <div class="mx-auto max-w-6xl px-4 py-20">
+      <p class="text-sm font-bold uppercase tracking-widest text-oranje">
+        Specialist in agressietraining
+      </p>
+      <h1 class="mt-3 max-w-2xl text-4xl font-bold leading-tight text-marine md:text-5xl">
+        Agressietraining voor jouw beroepsgroep, op het juiste niveau
+      </h1>
+      <!-- GEO-openingsantwoord -->
+      <p class="mt-5 max-w-2xl text-lg leading-relaxed">
+        Bureau Weerbaar en Veilig traint teams in het omgaan met agressie,
+        intimidatie en grensoverschrijdend gedrag op de werkvloer: één
+        onderwerp, tot in de diepte, per beroepsgroep vertaald. In drie niveaus:
+        basis, gevorderd en expert. Incompany of in Neede, in groepen van
+        maximaal 10 deelnemers.
+      </p>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a
+          href="/sectoren/"
+          class="rounded-md bg-oranje px-6 py-3 text-center font-bold text-white hover:bg-oranje-donker"
+        >
+          Vind de training voor jouw sector
+        </a>
+        <a
+          href="/agressietraining/"
+          class="rounded-md border border-marine px-6 py-3 text-center font-bold text-marine hover:bg-marine hover:text-white"
+        >
+          Hoe onze aanpak werkt
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sectoren -->
+  <section class="mx-auto max-w-6xl px-4 py-16" aria-labelledby="sectoren-titel">
+    <h2 id="sectoren-titel" class="text-2xl font-bold text-marine md:text-3xl">
+      Trainingen per sector
+    </h2>
+    <p class="mt-2 max-w-2xl text-grijs">
+      Elke sector kent zijn eigen agressieproblematiek. Kies je sector en vind
+      binnen drie klikken de juiste training voor beroepsgroep én niveau.
+    </p>
+    <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {sectoren.map((s) => (
+        <li class="group relative rounded-xl border border-lijn p-5 transition-shadow hover:shadow-md">
+          <h3 class="font-bold text-marine group-hover:text-blauw">
+            <a href={`/sectoren/${s.data.slug}/`} class="after:absolute after:inset-0 after:rounded-xl">
+              {s.data.naam} →
+            </a>
+          </h3>
+          <p class="mt-1 text-sm leading-relaxed text-grijs">{s.data.samenvatting}</p>
+        </li>
+      ))}
+    </ul>
+    {overigeSectoren.length > 0 && (
+      <p class="mt-6 text-sm leading-relaxed text-grijs">
+        Ook voor: {overigeSectoren.map(([, naam]) => naam).join(' · ')}: deze
+        sectorpagina's volgen binnenkort. Bel gerust alvast via
+        <a href="tel:+31857600435" class="font-semibold text-blauw hover:underline">085 760 0435</a>.
+      </p>
+    )}
+  </section>
+
+  <!-- Niveaus -->
+  <section class="bg-vlak" aria-labelledby="niveaus-titel">
+    <div class="mx-auto max-w-6xl px-4 py-16">
+      <h2 id="niveaus-titel" class="text-2xl font-bold text-marine md:text-3xl">
+        Drie niveaus, één opbouw
+      </h2>
+      <div class="mt-6 grid gap-6 md:grid-cols-3">
+        {niveaus.map((n) => (
+          <article class="flex flex-col rounded-xl bg-white p-6 shadow-sm">
+            <NiveauBadge niveau={n} />
+            <h3 class="mt-3 text-lg font-bold text-marine">{NIVEAU_LABELS[n]}</h3>
+            <p class="mt-2 flex-1 text-sm leading-relaxed text-grijs">{NIVEAU_BESCHRIJVING[n]}</p>
+            <a href={`/niveaus/${n}/`} class="mt-4 text-sm font-semibold text-blauw hover:underline">
+              Alle {NIVEAU_LABELS[n].toLowerCase()}trainingen →
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Waarom BWV -->
+  <section class="mx-auto max-w-6xl px-4 py-16" aria-labelledby="waarom-titel">
+    <div class="grid gap-10 lg:grid-cols-[1fr_20rem]">
+      <div>
+        <h2 id="waarom-titel" class="text-2xl font-bold text-marine md:text-3xl">
+          Eén onderwerp, tot in de diepte
+        </h2>
+        <div class="mt-4 max-w-2xl space-y-4 leading-relaxed">
+          <p>
+            Bureau Weerbaar en Veilig doet één ding: agressietraining. Geen breed
+            aanbod waar agressie een onderdeel van is, maar volledige focus:
+            per beroepsgroep uitgewerkt, met situaties uit het echte werk.
+            Praktijkgericht, zonder naïeve rollenspellen.
+          </p>
+          <p>
+            De trainingen zijn incompany op de eigen locatie of bij Bureau
+            Weerbaar en Veilig in Neede (Gelderland), in groepen van maximaal 10
+            deelnemers (expertniveau: maximaal 8). Elke deelnemer ontvangt een
+            deelnamecertificaat.
+          </p>
+        </div>
+      </div>
+      <Terugbelverzoek onderwerp="een training voor jouw team" />
+    </div>
+  </section>
+</Base>

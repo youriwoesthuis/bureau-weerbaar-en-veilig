@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const artikelen = (await getCollection('kennisbank')).sort(
+  (a, b) => b.data.datum.getTime() - a.data.datum.getTime()
+);
+---
+
+<Base
+  titel="Kennisbank over agressie op de werkvloer"
+  beschrijving="Praktijkgerichte artikelen van Bureau Weerbaar en Veilig over omgaan met agressie: de-escaleren, grenzen stellen, nazorg, meldbeleid en veilig werken."
+>
+  <div class="border-b border-lijn bg-vlak">
+    <div class="mx-auto max-w-6xl px-4 py-8">
+      <Breadcrumb pad={[{ naam: 'Home', pad: '/' }, { naam: 'Kennisbank' }]} />
+      <h1 class="mt-6 text-3xl font-bold text-marine md:text-4xl">Kennisbank</h1>
+      <p class="mt-4 max-w-3xl text-lg leading-relaxed">
+        Praktijkgerichte artikelen van Bureau Weerbaar en Veilig over omgaan met
+        agressie op de werkvloer: de-escaleren, grenzen stellen, nazorg en
+        beleid. Voor achtergrond en cijfers over agressie verwijzen we naar
+        <a href="https://agressievisie.nl" class="font-semibold text-blauw hover:underline">agressievisie.nl</a>.
+      </p>
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    {artikelen.length === 0 ? (
+      <p class="text-grijs">De artikelen worden op dit moment overgezet en verschijnen hier binnenkort.</p>
+    ) : (
+      <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {artikelen.map((a) => (
+          <li class="group relative flex flex-col rounded-xl border border-lijn p-6 transition-shadow hover:shadow-md">
+            <p class="text-xs font-bold uppercase tracking-wide text-oranje">{a.data.onderwerp}</p>
+            <h2 class="mt-2 text-lg font-bold leading-snug text-marine group-hover:text-blauw">
+              <a href={`/kennisbank/${a.data.slug}/`} class="after:absolute after:inset-0 after:rounded-xl">
+                {a.data.titel}
+              </a>
+            </h2>
+            <p class="mt-2 flex-1 text-sm leading-relaxed text-grijs">{a.data.samenvatting}</p>
+            <p class="mt-3 text-sm font-semibold text-blauw group-hover:underline">Lees het artikel →</p>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</Base>
