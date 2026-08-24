@@ -74,8 +74,26 @@
 /* ---------------------------------------------------------------
    Basis
    --------------------------------------------------------------- */
+
+/*
+  De hoogte van de plakkende kop. Alles wat daaronder zelf ook moet plakken —
+  de filterbalk, een inhoudsopgave — rekent hiermee, zodat het niet onder de
+  kop verdwijnt. Ook scroll-margin-top van ankers gebruikt deze waarde: zonder
+  dat schuift een aangeklikte kop precies achter de balk.
+*/
+:root {
+  --kophoogte: 5.5rem;
+}
+@media (min-width: 768px) {
+  :root {
+    --kophoogte: 6.125rem;
+  }
+}
+
 html {
   scroll-behavior: smooth;
+  /* Ankers landen onder de plakkende kop in plaats van erachter */
+  scroll-padding-top: calc(var(--kophoogte) + 1rem);
 }
 body {
   @apply font-sans text-inkt bg-white antialiased;

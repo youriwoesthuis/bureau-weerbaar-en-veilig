@@ -3,229 +3,219 @@ import { link } from '../../lib/link';
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import NiveauBadge from '../../components/NiveauBadge.astro';
-import { SECTOR_NAMEN, NIVEAU_LABELS } from '../../lib/sectoren';
+import { SECTOR_NAMEN, NIVEAU_LABELS, telwoord } from '../../lib/sectoren';
 
 /*
-  Het overzicht van alle trainingen, met een filter op sector en niveau.
+  Het volledige aanbod, gegroepeerd per beroepsgroep.
 
-  Het filter werkt volledig met CSS: radioknoppen plus :has(). Er komt geen
-  JavaScript aan te pas. Dat is bewust — de projectbrief eist dat de volledige
-  inhoud zonder JavaScript zichtbaar is, omdat AI-crawlers vaak geen scripts
-  uitvoeren. Alle 132 trainingen staan dus altijd in de HTML; het filter zet er
-  alleen tijdelijk een deel van op display:none. In de begintoestand staat alles
-  aan, dus een crawler ziet nooit een halve lijst.
+  Eerder stonden hier 132 losse kaarten. Dat leverde drie problemen op: de naam
+  van de beroepsgroep stond er drie keer (één keer per niveau), de kaarten
+  droegen nauwelijks informatie, en 132 vrijwel identieke blokjes onder elkaar
+  zijn niet te overzien.
+
+  Nu is elke beroepsgroep één rij met de drie niveaus naast elkaar. Dat is ook
+  precies de vraag van een inkoper — welk niveau heeft mijn team nodig — en die
+  vraag beantwoordt een rij die je van links naar rechts leest.
+
+  Het filter werkt volledig met CSS, zonder JavaScript: de projectbrief eist dat
+  de volledige inhoud ook zonder scripts zichtbaar is. Filteren op sector
+  verbergt hele rijen, filteren op niveau verbergt tegels binnen elke rij.
 */
+const alleTrainingen = await getCollection('trainingen');
 const beroepsgroepen = await getCollection('beroepsgroepen');
-const groepNaam = new Map(beroepsgroepen.map((b) => [b.data.slug, b.data.naam]));
 
 const niveaus = ['basis', 'gevorderd', 'expert'] as const;
+const niveauIndex = (n: string) => niveaus.indexOf(n as (typeof niveaus)[number]);
 
-/*
-  Sorteren op de beroepsgroep, want dat is wat er op de kaart staat. Eerder werd
-  er op de volledige titel gesorteerd, en die begint bij gevorderd en expert met
-  een ander woord — dan staat de zichtbare lijst dus niet op alfabet. Binnen een
-  beroepsgroep staan de drie niveaus op volgorde van opbouw, niet op alfabet.
-*/
-const trainingen = (await getCollection('trainingen')).sort((a, b) => {
-  const groepA = groepNaam.get(a.data.beroepsgroep) ?? a.data.beroepsgroep;
-  const groepB = groepNaam.get(b.data.beroepsgroep) ?? b.data.beroepsgroep;
-  return (
-    groepA.localeCompare(groepB) ||
-    niveaus.indexOf(a.data.niveau) - niveaus.indexOf(b.data.niveau)
-  );
-});
+/* Eén rij per beroepsgroep, met de niveaus in volgorde van opbouw */
+const groepen = beroepsgroepen
+  .map((b) => ({
+    slug: b.data.slug,
+    naam: b.data.naam,
+    sector: b.data.sector,
+    trainingen: alleTrainingen
+      .filter((t) => t.data.beroepsgroep === b.data.slug)
+      .sort((a, c) => niveauIndex(a.data.niveau) - niveauIndex(c.data.niveau)),
+  }))
+  .filter((g) => g.trainingen.length > 0)
+  .sort((a, b) => a.naam.localeCompare(b.naam));
 
-/* Alleen sectoren waar daadwerkelijk een training in zit, alfabetisch */
-const sectorSlugs = [...new Set(trainingen.map((t) => t.data.sector))].sort((a, b) =>
+const sectorSlugs = [...new Set(groepen.map((g) => g.sector))].sort((a, b) =>
   (SECTOR_NAMEN[a] ?? a).localeCompare(SECTOR_NAMEN[b] ?? b)
 );
 
-const aantalPerNiveau = (n: string) => trainingen.filter((t) => t.data.niveau === n).length;
-const aantalPerSector = (s: string) => trainingen.filter((t) => t.data.sector === s).length;
+const perNiveau = (n: string) => alleTrainingen.filter((t) => t.data.niveau === n).length;
+const groepenPerSector = (s: string) => groepen.filter((g) => g.sector === s).length;
 
-/*
-  De filterregels worden hier opgebouwd in plaats van met de hand geschreven:
-  drie niveaus plus negentien sectoren zijn tweeëntwintig regels, en die moeten
-  meegroeien zodra er een sector bij komt.
-*/
 const filterCss = [
   ...niveaus.map(
     (n) =>
-      `.filterblok:has(#niveau-${n}:checked) .trainingenlijst > li:not([data-niveau="${n}"]) { display: none; }`
+      `.filterblok:has(#niveau-${n}:checked) .tegel:not([data-niveau="${n}"]) { display: none; }`
   ),
   ...sectorSlugs.map(
-    (s) =>
-      `.filterblok:has(#sector-${s}:checked) .trainingenlijst > li:not([data-sector="${s}"]) { display: none; }`
+    (s) => `.filterblok:has(#sector-${s}:checked) .groep:not([data-sector="${s}"]) { display: none; }`
   ),
-].join('\n');
-
-/*
-  Niet elke beroepsgroep heeft alle drie de niveaus, dus sommige combinaties van
-  sector en niveau leveren niets op. Met CSS valt niet te zien of er nog een
-  zichtbare kaart over is, maar we weten hier bij het bouwen precies welke
-  combinaties leeg zijn. Voor die combinaties zetten we de melding aan.
-*/
-const legeCombinaties = sectorSlugs.flatMap((s) =>
-  niveaus
-    .filter((n) => !trainingen.some((t) => t.data.sector === s && t.data.niveau === n))
-    .map(
-      (n) =>
-        `.filterblok:has(#sector-${s}:checked):has(#niveau-${n}:checked) .geen-treffers { display: block; }`
-    )
-);
+].join('\n  ');
 ---
 
 <Base
   titel="Alle agressietrainingen"
-  beschrijving="Alle agressietrainingen van Bureau Weerbaar en Veilig op één pagina: 132 trainingen over 19 sectoren en 44 beroepsgroepen, te filteren op sector en niveau."
+  beschrijving="Alle agressietrainingen van Bureau Weerbaar en Veilig: 132 trainingen voor 44 beroepsgroepen in 19 sectoren, elk in drie niveaus. Filter op sector en niveau."
 >
   <div class="vlak-donker op-donker relative overflow-hidden text-white">
     <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
     <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
       <Breadcrumb pad={[{ naam: 'Home', pad: '/' }, { naam: 'Trainingen' }]} />
       <p class="kicker mt-7">Het volledige aanbod</p>
-      <h1 class="mt-4 text-3xl font-bold leading-[1.15] md:text-5xl">
-        Alle agressietrainingen
-      </h1>
+      <h1 class="mt-4 text-3xl font-bold leading-[1.15] md:text-5xl">Alle agressietrainingen</h1>
       <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
-        Alle {trainingen.length} agressietrainingen van Bureau Weerbaar en Veilig op één
-        pagina, verdeeld over {sectorSlugs.length} sectoren en {beroepsgroepen.length} beroepsgroepen.
-        Filter op sector en niveau om de training te vinden die bij jouw team past.
+        {alleTrainingen.length} trainingen voor {groepen.length} beroepsgroepen in
+        {sectorSlugs.length} sectoren, elk in drie niveaus. Per beroepsgroep zie je de
+        drie niveaus naast elkaar, zodat je in één oogopslag kunt vergelijken wat
+        ze van elkaar onderscheidt.
       </p>
     </div>
   </div>
   <div class="lijn-merk" aria-hidden="true"></div>
 
-  <div class="filterblok mx-auto max-w-6xl px-4 py-12">
+  <div class="filterblok">
     <!--
-      Een fieldset per filter, met radioknoppen. De knoppen zelf staan visueel
-      verborgen maar blijven bereikbaar met het toetsenbord; het label eromheen
-      is de zichtbare pil, en die krijgt via :has() de actieve opmaak.
+      De filterbalk blijft in beeld tijdens het scrollen: met 44 rijen ben je
+      anders je keuzemogelijkheid kwijt zodra je begint te lezen.
     -->
-    <form class="space-y-6" aria-label="Trainingen filteren">
-      <fieldset>
-        <legend class="text-sm font-bold uppercase tracking-wide text-grijs">Niveau</legend>
-        <div class="mt-3 flex flex-wrap gap-2">
-          <label class="pil">
-            <input type="radio" name="niveau" id="niveau-alle" checked />
-            <span>Alle niveaus <span class="pil-aantal">{trainingen.length}</span></span>
-          </label>
-          {niveaus.map((n) => (
-            <label class={`pil niveau-${n}`}>
-              <input type="radio" name="niveau" id={`niveau-${n}`} />
-              <span>{NIVEAU_LABELS[n]} <span class="pil-aantal">{aantalPerNiveau(n)}</span></span>
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend class="text-sm font-bold uppercase tracking-wide text-grijs">Sector</legend>
-        <div class="mt-3 flex flex-wrap gap-2">
-          <label class="pil">
-            <input type="radio" name="sector" id="sector-alle" checked />
-            <span>Alle sectoren</span>
-          </label>
-          {sectorSlugs.map((s) => (
-            <label class="pil">
-              <input type="radio" name="sector" id={`sector-${s}`} />
-              <span>{SECTOR_NAMEN[s] ?? s} <span class="pil-aantal">{aantalPerSector(s)}</span></span>
-            </label>
-          ))}
-        </div>
-      </fieldset>
-    </form>
-
-    {/*
-      Bewust géén kaartraster hier. Dat wisselt de accentkleur af op positie, en
-      dan krijgt een basistraining soms een paarse balk boven een oranje badge.
-      Op deze pagina moet de kleur het niveau volgen, en dat doet de klasse
-      niveau-* op elke kaart al.
-    */}
-    <ul class="trainingenlijst mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {trainingen.map((t) => (
-        <li
-          class={`niveau-${t.data.niveau} kaart flex flex-col p-6`}
-          data-niveau={t.data.niveau}
-          data-sector={t.data.sector}
-        >
-          {/*
-            De volledige trainingstitel staat hier niet, want die begint bij elke
-            kaart met "Agressietraining voor…" of "Gevorderde agressietraining
-            voor…". Met honderdtweeëndertig kaarten stond het onderscheidende
-            woord dus telkens pas op positie drie of vier, en herhaalde de regel
-            eronder diezelfde beroepsgroep nóg een keer.
-
-            De beroepsgroep is wat verschilt, dus die staat groot. Het niveau
-            staat al in de badge en de kleur, de sector en duur eronder. De
-            volledige titel blijft wel het toegankelijke label van de link, zodat
-            een schermlezer en een zoekmachine hem gewoon horen en lezen.
-          */}
-          {/*
-            De kop krijgt geen flex-1 meer. Die rekte mee met de hoogste kaart in
-            de rij, waardoor er een gat ontstond tussen de titel en de regel
-            eronder — en bij een titel van één regel naast een titel van twee
-            regels zat die scheidingslijn per kaart op een andere hoogte.
-            Nu duwt mt-auto alleen de onderste regel naar beneden, zodat die
-            over alle kaarten in een rij gelijk ligt.
-          */}
-          <NiveauBadge niveau={t.data.niveau} kort />
-          <h2 class="mt-3 text-lg font-bold leading-snug text-marine">
-            <a
-              href={link(`/trainingen/${t.data.slug}/`)}
-              aria-label={t.data.titel}
-              class="after:absolute after:inset-0"
-            >
-              {groepNaam.get(t.data.beroepsgroep) ?? t.data.beroepsgroep}
-            </a>
-          </h2>
-          <p class="mt-auto border-t border-lijn pt-3 text-xs font-semibold text-grijs">
-            {SECTOR_NAMEN[t.data.sector] ?? t.data.sector} · {t.data.duur}
+    <div class="filterbalk">
+      <div class="mx-auto max-w-6xl px-4 py-4">
+        <form aria-label="Trainingen filteren">
+          <p class="sr-only">
+            Kies een niveau of sector om de lijst te beperken. De volledige lijst
+            blijft beschikbaar via de knop Alle niveaus of Alle sectoren.
           </p>
-        </li>
-      ))}
-    </ul>
 
-    {/*
-      Op dit moment heeft elke sector alle drie de niveaus, dus er bestaat geen
-      combinatie die niets oplevert. De melding wordt daarom niet gerenderd: een
-      blok dat toch nooit zichtbaar wordt, hoeft niet in de HTML te staan. Komt er
-      een sector bij zonder alle niveaus, dan verschijnt hij vanzelf weer.
-    */}
-    {legeCombinaties.length > 0 && (
-      <p class="geen-treffers mt-8 rounded-lg bg-vlak-warm p-5 text-sm leading-relaxed text-grijs">
-        Geen training gevonden voor deze combinatie van sector en niveau. Niet elke
-        beroepsgroep heeft alle drie de niveaus. Kies een ander niveau, of bel
-        <a href="tel:+31857600435" class="font-semibold text-blauw hover:underline">085 760 0435</a>:
-        Bureau Weerbaar en Veilig denkt graag mee.
-      </p>
-    )}
+          <fieldset>
+            <legend class="filterlabel">Niveau</legend>
+            <div class="pillen">
+              <label class="pil">
+                <input type="radio" name="niveau" id="niveau-alle" checked />
+                <span>Alle niveaus <span class="pil-aantal">{alleTrainingen.length}</span></span>
+              </label>
+              {niveaus.map((n) => (
+                <label class={`pil niveau-${n}`}>
+                  <input type="radio" name="niveau" id={`niveau-${n}`} />
+                  <span>{NIVEAU_LABELS[n]} <span class="pil-aantal">{perNiveau(n)}</span></span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset class="mt-3">
+            <legend class="filterlabel">Sector</legend>
+            <div class="pillen">
+              <label class="pil">
+                <input type="radio" name="sector" id="sector-alle" checked />
+                {/* Het getal telt beroepsgroepen, net als bij de sectoren zelf */}
+                <span>Alle sectoren <span class="pil-aantal">{groepen.length}</span></span>
+              </label>
+              {sectorSlugs.map((s) => (
+                <label class="pil">
+                  <input type="radio" name="sector" id={`sector-${s}`} />
+                  <span>
+                    {SECTOR_NAMEN[s] ?? s} <span class="pil-aantal">{groepenPerSector(s)}</span>
+                  </span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+
+    <div class="mx-auto max-w-6xl px-4 py-10">
+      <ul class="space-y-4">
+        {groepen.map((g) => (
+          <li class="groep" data-sector={g.sector}>
+            <div class="groep-kop">
+              <h2 class="text-lg font-bold leading-snug text-marine">
+                <a
+                  href={link(`/sectoren/${g.sector}/${g.slug}/`)}
+                  class="hover:text-blauw hover:underline"
+                >
+                  {g.naam}
+                </a>
+              </h2>
+              <p class="mt-1 text-sm text-grijs">
+                {SECTOR_NAMEN[g.sector] ?? g.sector} ·
+                {' '}{telwoord(g.trainingen.length, 'niveau', 'niveaus')}
+              </p>
+            </div>
+
+            <ul class="tegels">
+              {g.trainingen.map((t) => (
+                <li class={`tegel niveau-${t.data.niveau}`} data-niveau={t.data.niveau}>
+                  <p class="tegel-niveau">{NIVEAU_LABELS[t.data.niveau]}</p>
+                  <p class="tegel-belofte">{t.data.resultaat[0]}</p>
+                  {/*
+                    De zichtbare tekst staat vóórop en de volledige titel volgt
+                    als verborgen aanvulling. Eerder stond hier een aria-label
+                    met alleen de titel, en dan bevat de toegankelijke naam de
+                    zichtbare woorden niet meer — dat is een schending van WCAG
+                    2.5.3 (Label in Name). Wie met spraakbediening werkt zegt
+                    "klik Bekijk training", en dat moet die link dan ook heten.
+                  */}
+                  <a href={link(`/trainingen/${t.data.slug}/`)} class="tegel-link">
+                    Bekijk training
+                    <span class="sr-only">: {t.data.titel}</span>
+                    <span class="pijl" aria-hidden="true">→</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
 </Base>
 
 <style is:inline set:html={`
-  /* De radioknop blijft bedienbaar met het toetsenbord, maar is niet zichtbaar */
-  .pil input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-    pointer-events: none;
-  }
+  /* ---------- Filterbalk ---------- */
   /*
-    Drieëntwintig keuzes tegelijk is veel. Ze mogen er dus niet alle drieëntwintig
-    om aandacht schreeuwen: rustige pillen zonder rand, met alleen een lichte
-    vulling. Pas de gekozen pil krijgt kleur. Zo is er altijd precies één ding dat
-    opvalt, en dat is waar de bezoeker staat.
+    Egale achtergrond, geen backdrop-filter. Met een blur hier én op de
+    plakkende kop erboven ontstonden er twee compositielagen over elkaar, en
+    liet Chrome het vlak ertussen ongetekend: een grote witte vlek tijdens het
+    scrollen. Een dekkende balk leest bovendien rustiger dan een doorschijnende.
   */
+  .filterbalk {
+    position: sticky;
+    top: var(--kophoogte, 5rem);
+    z-index: 30;
+    background: #fff;
+    border-bottom: 1px solid var(--color-lijn);
+    box-shadow: 0 1px 0 rgb(33 46 86 / .04), 0 6px 16px -12px rgb(33 46 86 / .25);
+  }
+  .filterlabel {
+    font-size: .6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--color-grijs);
+  }
+  .pillen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin-top: .5rem;
+  }
+
+  /* De radioknop blijft bedienbaar met het toetsenbord, maar is niet zichtbaar */
+  .pil input { position: absolute; width: 1px; height: 1px; opacity: 0; }
   .pil > span {
     display: inline-flex;
     align-items: baseline;
-    gap: .45rem;
-    padding: .4rem .85rem;
+    gap: .4rem;
+    /* Minimaal 24px hoog en breed, conform WCAG 2.5.8 voor bedieningselementen */
+    min-height: 2rem;
+    padding: .4rem .8rem;
     border-radius: 9999px;
-    border: 1px solid transparent;
     background: var(--color-vlak);
     font-size: .8125rem;
     font-weight: 600;
@@ -233,28 +223,91 @@ const legeCombinaties = sectorSlugs.flatMap((s) =>
     cursor: pointer;
     transition: background-color 140ms ease, color 140ms ease;
   }
-  .pil:hover > span {
-    background: #e7e9ee;
-  }
-  /* De gekozen pil krijgt de merkkleur; bij een niveau die van het niveau zelf */
+  .pil:hover > span { background: #e5e8ee; }
   .pil:has(input:checked) > span {
     background: var(--accent-sterk, var(--color-marine));
-    border-color: transparent;
     color: #fff;
   }
   .pil input:focus-visible + span {
     outline: 3px solid var(--color-blauw);
     outline-offset: 2px;
   }
-  .pil-aantal {
-    font-variant-numeric: tabular-nums;
-    opacity: .65;
+  .pil-aantal { font-variant-numeric: tabular-nums; opacity: .7; font-weight: 700; }
+
+  /* ---------- Eén rij per beroepsgroep ---------- */
+  .groep {
+    display: grid;
+    gap: 1rem;
+    align-items: start;
+    padding: 1.25rem;
+    border: 1px solid var(--color-lijn);
+    border-radius: .875rem;
+    background: #fff;
+    box-shadow: var(--shadow-kaart);
+  }
+  @media (min-width: 900px) {
+    .groep { grid-template-columns: 15rem 1fr; gap: 1.5rem; align-items: center; }
+    .groep-kop { padding-right: 1.5rem; border-right: 1px solid var(--color-lijn); }
+  }
+
+  .tegels {
+    display: grid;
+    gap: .75rem;
+  }
+  @media (min-width: 640px) { .tegels { grid-template-columns: repeat(3, 1fr); } }
+
+  .tegel {
+    display: flex;
+    flex-direction: column;
+    padding: .9rem 1rem;
+    border-radius: .625rem;
+    background: var(--accent-vlak);
+    border: 1px solid transparent;
+    border-top: 3px solid var(--accent);
+    transition: border-color 160ms ease, transform 160ms ease;
+  }
+  .tegel:hover, .tegel:focus-within {
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    border-top-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .tegel-niveau {
+    font-size: .6875rem;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--accent-tekst);
+  }
+  .tegel-belofte {
+    margin-top: .35rem;
+    flex: 1;
+    font-size: .875rem;
+    line-height: 1.45;
+    color: var(--color-inkt);
+  }
+  /*
+    Verticale ruimte zodat het klikvlak minstens 24px hoog is: WCAG 2.5.8 vraagt
+    dat voor bedieningselementen. Zonder die padding was de link 20px, en dan
+    moet je het van de uitzondering voor tussenruimte hebben. Beter gewoon een
+    doel dat groot genoeg is — dat scheelt ook misklikken op een telefoon.
+  */
+  .tegel-link {
+    margin-top: .6rem;
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    min-height: 1.5rem;
+    padding-block: .25rem;
+    font-size: .8125rem;
+    font-weight: 700;
+    color: var(--accent-tekst);
+  }
+  .tegel-link:hover { text-decoration: underline; }
+
+  /* Wie minder beweging wil, krijgt geen verschuiving */
+  @media (prefers-reduced-motion: reduce) {
+    .tegel:hover, .tegel:focus-within { transform: none; }
   }
 
   ${filterCss}
-
-  /* Alleen zichtbaar bij een combinatie die niets oplevert */
-  .geen-treffers { display: none; }
-  ${legeCombinaties.join('\n  ')}
 `} />
