@@ -1,5 +1,60 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/montserrat';
+
+/*
+  Twee letters, elk met een eigen taak.
+
+  De hele site draaide op Montserrat, voor koppen én lopende tekst. Montserrat
+  is een prima letter, maar het is ook dé letter van elke template en elk
+  startup-landingspaginaatje van het afgelopen decennium — te veel ronding en
+  te veel opgewektheid voor een onderwerp als agressie op de werkvloer. En één
+  geometrische sans voor alles is precies wat een sjabloon doet. Dat was de
+  grootste enkele oorzaak van "het ziet er goedkoop uit".
+
+  Space Grotesk voor de koppen: schreefloos met een technische ondertoon die
+  je terugziet in de cijfers en de a. Dat straalt beheerste precisie uit —
+  protocol, gezag — zonder stoffig te worden.
+
+  IBM Plex Sans voor de lopende tekst: gemaakt voor technische documentatie,
+  met een hoge x-hoogte die lange alinea's rustig houdt. Hij legt het naast
+  Space Grotesk bewust af in karakter, en dat hoort ook: de kop is het beeld,
+  de tekst is er om gelezen te worden.
+
+  Alleen de latijnse subsets. De vorige opzet laadde ook Cyrillisch, Grieks en
+  Vietnamees mee — honderdveertig kilobyte aan letters die op een Nederlandse
+  site nooit een teken zetten.
+*/
+/*
+  De @font-face-regels staan hier met de hand in plaats van via een import van
+  het pakket. Die imports halen álle subsets binnen — Cyrillisch, Grieks,
+  Vietnamees — en de variabele pakketten hebben geen los latin.css om dat mee
+  te omzeilen. Zo laden we exact twee bestanden.
+
+  font-display: swap zorgt dat de tekst meteen leesbaar is in de systeemletter
+  en daarna omwisselt, in plaats van dat de pagina een halve seconde leeg staat.
+*/
+@font-face {
+  font-family: 'Space Grotesk Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300 700;
+  src: url('@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2')
+    format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 700;
+  src: url('@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2')
+    format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
 /*
   Designtokens: Bureau Weerbaar en Veilig
@@ -46,8 +101,13 @@
   --color-vlak-warm: #faf7f3;     /* iets warmer vlak, voor afwisseling */
   --color-lijn: #e2e4e8;          /* randen */
 
-  /* Typografie */
-  --font-sans: 'Montserrat Variable', 'Montserrat', system-ui, sans-serif;
+  /*
+    Typografie. --font-sans is de leesletter, want dat is wat Tailwind standaard
+    op de body zet; de kopletter wordt expliciet toegewezen aan h1 t/m h3 en aan
+    de elementen die als kop functioneren.
+  */
+  --font-sans: 'IBM Plex Sans Variable', system-ui, sans-serif;
+  --font-kop: 'Space Grotesk Variable', 'IBM Plex Sans Variable', system-ui, sans-serif;
 
   /* Het merkverloop, nu met alle vier de stops uit het logobestand */
   --gradient-merk: linear-gradient(
@@ -105,6 +165,36 @@ h1,
 h2,
 h3 {
   text-wrap: balance;
+
+  /*
+    De kopletter, en meteen de instellingen die hem laten werken op grote maat.
+
+    Space Grotesk staat standaard vrij ruim; op koppen van veertig pixels en
+    groter valt dat uit elkaar. Een negatieve letterafstand trekt het samen tot
+    één blok, en dat is precies het effect dat een kop tot beeld maakt in een
+    ontwerp zonder fotografie.
+
+    De regelafstand gaat mee omlaag: standaard staat er te veel lucht tussen
+    twee regels van een grote kop, waardoor hij leest als twee losse zinnen in
+    plaats van als één uitspraak.
+  */
+  font-family: var(--font-kop);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+}
+
+/*
+  Onder de dertig pixels heeft die strakke afstelling het tegenovergestelde
+  effect: dan plakken de letters aan elkaar. Kleine koppen krijgen hun lucht
+  terug.
+*/
+h3,
+h4,
+h5,
+h6 {
+  letter-spacing: -0.01em;
+  line-height: 1.25;
 }
 
 /* Losse alinea's buiten de leestekst hebben dezelfde bescherming tegen weeskinderen */
