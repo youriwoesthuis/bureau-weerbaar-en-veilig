@@ -117,7 +117,7 @@ const uitgelicht = [0, 1, 2, 3].map((i) => kandidaten[(i * stap) % kandidaten.le
   beschrijving="Bureau Weerbaar en Veilig is dé specialist in agressietraining: de-escaleren, grenzen stellen en veilig werken, per sector en beroepsgroep, in drie niveaus."
 >
   {/* ═══ Kop ═══ */}
-  <section class="hero op-donker">
+  <section class="hero merkverloop">
     <div class="omvat hero-raster">
       <div>
         <p class="label">Specialist in agressietraining</p>
@@ -138,7 +138,7 @@ const uitgelicht = [0, 1, 2, 3].map((i) => kandidaten[(i * stap) % kandidaten.le
         </p>
 
         <div class="hero-acties">
-          <a href={link('/sectoren/')} class="knop knop-accent niveau-basis">
+          <a href={link('/sectoren/')} class="knop knop-vol">
             Vind jouw beroepsgroep
             <span class="pijl" aria-hidden="true">→</span>
           </a>
@@ -152,36 +152,42 @@ const uitgelicht = [0, 1, 2, 3].map((i) => kandidaten[(i * stap) % kandidaten.le
         van herkennen, via zwaardere situaties, naar beleid.
       */}
       <div class="hero-beeld" aria-hidden="true">
+        {/*
+          De staven waren oranje en paars op een donker vlak. Nu het vlak zelf
+          oranje en paars is, zouden ze daarin verdwijnen — dus zijn ze
+          omgekeerd: donkere staven op fel. Dat leest bovendien scherper, want
+          de tekening is een diagram en geen sfeerbeeld.
+        */}
         <svg viewBox="0 0 420 320" role="presentation">
           <defs>
             <linearGradient id="staafExpert" x1="0" y1="1" x2="1" y2="0">
-              <stop offset="0%" stop-color="#35409b" />
-              <stop offset="100%" stop-color="#735578" />
+              <stop offset="0%" stop-color="#17203d" />
+              <stop offset="100%" stop-color="#4a3455" />
             </linearGradient>
           </defs>
 
           {/* De grondlijn */}
-          <line x1="20" y1="292" x2="400" y2="292" stroke="#ffffff" stroke-opacity="0.16" stroke-width="2" />
+          <line x1="20" y1="292" x2="400" y2="292" stroke="#23262b" stroke-opacity="0.3" stroke-width="2" />
 
           {/* Basis */}
-          <rect x="52" y="196" width="72" height="96" rx="10" fill="#f18919" />
-          <text x="88" y="180" text-anchor="middle" fill="#f18919" font-size="15" font-weight="700"
+          <rect x="52" y="196" width="72" height="96" rx="10" fill="#a35405" />
+          <text x="88" y="180" text-anchor="middle" fill="#23262b" font-size="15" font-weight="700"
                 font-family="Space Grotesk Variable, sans-serif">Basis</text>
 
           {/* Gevorderd */}
-          <rect x="174" y="132" width="72" height="160" rx="10" fill="#9a7a9f" />
-          <text x="210" y="116" text-anchor="middle" fill="#c9a9d0" font-size="15" font-weight="700"
+          <rect x="174" y="132" width="72" height="160" rx="10" fill="#735578" />
+          <text x="210" y="116" text-anchor="middle" fill="#23262b" font-size="15" font-weight="700"
                 font-family="Space Grotesk Variable, sans-serif">Gevorderd</text>
 
           {/* Expert */}
           <rect x="296" y="52" width="72" height="240" rx="10" fill="url(#staafExpert)" />
-          <text x="332" y="36" text-anchor="middle" fill="#a9b2e8" font-size="15" font-weight="700"
+          <text x="332" y="36" text-anchor="middle" fill="#23262b" font-size="15" font-weight="700"
                 font-family="Space Grotesk Variable, sans-serif">Expert</text>
 
           {/* De chevron uit het beeldmerk, bovenop de hoogste staaf */}
-          <path d="M316 74 l16 14 l16 -14" fill="none" stroke="#ffffff" stroke-opacity="0.65"
+          <path d="M316 74 l16 14 l16 -14" fill="none" stroke="#f7a52b" stroke-opacity="0.9"
                 stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M316 92 l16 14 l16 -14" fill="none" stroke="#ffffff" stroke-opacity="0.35"
+          <path d="M316 92 l16 14 l16 -14" fill="none" stroke="#f7a52b" stroke-opacity="0.5"
                 stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </div>

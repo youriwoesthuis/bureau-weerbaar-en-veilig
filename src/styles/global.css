@@ -1228,16 +1228,77 @@ a {
    etalage waar je kiest — die mag aanzetten.
    ═══════════════════════════════════════════════════════════════════ */
 
+/* ───────────────────────────────────────────────────────────────────
+   Het merkverloop, op volle sterkte
+   ───────────────────────────────────────────────────────────────────
+   Hier zat de vorige versie fout. Oranje en paars stonden overal als dun
+   accentje op een donkerblauw vlak, en dat werd somber — precies wat een
+   merk met déze kleuren niet hoort te zijn.
+
+   De oorzaak was een rekenfout in de aanpak: ik zette steeds witte tekst op
+   een vlak, en wit kán niet op fel oranje (2,52:1). Dus werd elk gekleurd
+   vlak donker gemaakt tot het wit kon dragen, en daarmee dof.
+
+   Andersom werkt het wel. Donkere tekst op fel oranje haalt 6,02:1, op het
+   lichte paars 7,28:1. Doorgerekend over dit hele verloop is het slechtste
+   punt 6,02 met de bodykleur en 5,24 met marine — allebei ruim boven de eis.
+
+   Dus: de kleuren mogen op volle sterkte, zolang de tekst erop donker is.
+*/
+.merkverloop {
+  background-color: #ee9430;
+  background-image: linear-gradient(
+    112deg,
+    #f7a52b 0%,
+    #f18919 32%,
+    #d99a86 62%,
+    #c9a9d0 100%
+  );
+  color: var(--color-inkt);
+}
+.merkverloop h1,
+.merkverloop h2,
+.merkverloop h3 {
+  color: var(--color-marine);
+}
+
+/*
+  Het label staat standaard in de gedempte oranje tint. Op een oranje vlak is
+  dat oranje op oranje: 2,33:1, en dus onleesbaar.
+
+  Hier een extra diep paars. Het gewone paars-diep (#4a3455) haalde over de
+  hele verloopas 4,35:1 — net onder de eis van 4,5 voor tekst van twaalf
+  pixels. Deze tint haalt 5,79 en houdt de paarse merkkant vast in plaats van
+  naar neutraal grijs te vallen.
+*/
+.merkverloop .label {
+  color: #332338;
+}
+
 /* ── De hero: tekst links, beeld rechts ── */
 .hero {
-  background: var(--color-marine-diep);
-  color: #ffffff;
   padding-block: var(--ruimte-16) var(--ruimte-24);
-  /* Twee zachte lichtvlekken in de merkkleuren: geeft diepte aan een vlak
-     dat anders een effen donkerblauw rechthoek is. */
+  position: relative;
+  overflow: hidden;
+}
+
+/*
+  Het chevron-motief uit het beeldmerk, groot en zacht over het verloop. Geeft
+  het vlak textuur zonder dat er een tweede kleur bij komt.
+*/
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
   background-image:
-    radial-gradient(48rem 34rem at 8% -10%, rgb(241 137 25 / 0.22), transparent 62%),
-    radial-gradient(42rem 32rem at 96% 12%, rgb(115 85 120 / 0.5), transparent 64%);
+    linear-gradient(135deg, rgb(255 255 255 / 0.16) 25%, transparent 25%),
+    linear-gradient(225deg, rgb(255 255 255 / 0.16) 25%, transparent 25%);
+  background-size: 34px 34px;
+}
+.hero > * {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-raster {
@@ -1255,16 +1316,16 @@ a {
 .hero-titel {
   margin-top: var(--ruimte-6);
   font-size: var(--text-display);
-  color: #ffffff;
   max-width: 15ch;
 }
-/* Het tweede deel van de kop in de merkkleur: dat maakt van een zin een beeld. */
+/*
+  Het tweede deel van de kop in het diepe paars. Op dit felle verloop is dat
+  het sterkste accent dat er is — 8,4:1 op het oranje — en het trekt het oog
+  naar precies het woord waar het om gaat.
+*/
 .hero-titel em {
   font-style: normal;
-  background: linear-gradient(100deg, var(--color-oranje) 0%, var(--color-paars-helder) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--color-paars-diep);
 }
 
 .hero-lead {
@@ -1272,7 +1333,7 @@ a {
   max-width: 48ch;
   font-size: var(--text-lead);
   line-height: 1.65;
-  color: rgb(255 255 255 / 0.82);
+  color: var(--color-inkt);
 }
 
 .hero-acties {
@@ -1306,16 +1367,20 @@ a {
   }
 }
 
+/*
+  Gevuld met de accenttint in plaats van wit met een streepje. Vier kaarten met
+  een eigen kleurvlak maken de rij een blikvanger; wit met een randje maakte er
+  een tabel van. De tinten zijn licht genoeg om donkere tekst te dragen: 11 tot
+  13:1, dus ruim leesbaar.
+*/
 .cijferkaart {
   display: block;
   padding: var(--ruimte-6);
-  background: #ffffff;
-  border: 1px solid var(--color-lijn);
+  background: var(--accent-vlak, var(--color-oranje-licht));
+  border: 1px solid transparent;
   border-radius: var(--radius);
   box-shadow: var(--schaduw);
-  /* De accentkleur als streep bovenaan; elke kaart een andere, zodat de rij
-     kleur krijgt zonder bont te worden. */
-  border-top: 3px solid var(--accent, var(--color-oranje));
+  border-top: 4px solid var(--accent, var(--color-oranje));
 }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .cijferkaart {
