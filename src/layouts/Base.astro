@@ -159,49 +159,36 @@ const hoofdmenu = [
   <body>
     <a href="#inhoud" class="skip-link">Direct naar inhoud</a>
 
-    {/*
-      Dekkende achtergrond, geen doorschijnendheid. Een plakkende kop met
-      backdrop-filter liet in Chrome een ongetekende strook achter zodra er een
-      tweede plakkend element onder stond.
-    */}
-    <header class="kop niet-printen">
-      <div class="omvat kop-binnen">
-        <a href={link('/')} class="kop-merk" aria-label="Bureau Weerbaar en Veilig, naar de homepage">
-          <Logo class="kop-logo" />
+    <header class="site niet-printen">
+      <div class="nav">
+        <a href={link('/')} class="brand" aria-label="Bureau Weerbaar en Veilig, naar de homepage">
+          <Logo />
         </a>
 
-        <nav class="kop-menu" aria-label="Hoofdmenu">
+        <nav class="nav-links" id="hoofdmenu" aria-label="Hoofdmenu">
           {hoofdmenu.map((item) => (
             <a
               href={link(item.pad)}
+              class={isActief(item.pad) ? 'current' : undefined}
               aria-current={isActief(item.pad) ? 'page' : undefined}
-              class="kop-link"
             >
               {item.naam}
             </a>
           ))}
-          <a href={link('/contact/')} class="knop knop-vol kop-actie">Contact</a>
         </nav>
 
-        {/* Mobiel menu zonder JavaScript, via details/summary */}
-        <details class="kop-mobiel">
-          <summary class="kop-mobiel-knop" aria-label="Menu openen en sluiten">
-            <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" fill="currentColor">
-              <rect x="2" y="4" width="16" height="2" rx="1" />
-              <rect x="2" y="9" width="16" height="2" rx="1" />
-              <rect x="2" y="14" width="16" height="2" rx="1" />
-            </svg>
-            Menu
-          </summary>
-          <nav class="kop-mobiel-menu" aria-label="Mobiel hoofdmenu">
-            {hoofdmenu.map((item) => (
-              <a href={link(item.pad)} aria-current={isActief(item.pad) ? 'page' : undefined}>
-                {item.naam}
-              </a>
-            ))}
-            <a href={link('/contact/')}>Contact</a>
-          </nav>
-        </details>
+        <div class="nav-cta">
+          <a href={link('/contact/')} class="btn btn-primary">Contact</a>
+          {/*
+            Het mobiele menu werkt met een klein stukje script. Valt dat weg,
+            dan blijft de navigatie bereikbaar: de voettekst bevat dezelfde
+            links, en elke pagina heeft een kruimelpad.
+          */}
+          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="hoofdmenu">
+            <span></span><span></span><span></span>
+            <span class="sr-only">Menu openen en sluiten</span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -209,61 +196,67 @@ const hoofdmenu = [
       <slot />
     </main>
 
-    <footer class="voet op-donker niet-printen">
-      <div class="omvat voet-binnen">
-        <div class="voet-merk">
-          <Logo variant="wit" class="voet-logo" />
-          <p class="voet-zin">
-            Dé specialist in agressietraining. Eén onderwerp, tot in de diepte,
-            vertaald naar jouw beroepsgroep.
-          </p>
-          <p class="voet-groep">
-            Onderdeel van <a href="https://actinmove.nl">Actinmove</a>
-          </p>
+    <footer class="site">
+      <div class="footer-accent" aria-hidden="true"></div>
+      <div class="wrap">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <Logo variant="wit" />
+            <p>
+              Dé specialist in agressietraining. Eén onderwerp, tot in de diepte,
+              vertaald naar jouw beroepsgroep.
+            </p>
+          </div>
+
+          <div>
+            <span class="voet-kop">Contact</span>
+            <ul>
+              <li>Russchemorsweg 5-04</li>
+              <li>7161 RT Neede</li>
+              <li><a href="tel:+31857600435">085 760 0435</a></li>
+              <li><a href="mailto:info@bureauweerbaarenveilig.nl">info@bureauweerbaarenveilig.nl</a></li>
+              <li>ma t/m vr 08:30–17:00</li>
+            </ul>
+          </div>
+
+          <div>
+            <span class="voet-kop">Trainingen</span>
+            <ul>
+              {hoofdmenu.map((item) => (
+                <li><a href={link(item.pad)}>{item.naam}</a></li>
+              ))}
+              <li><a href={link('/contact/')}>Contact</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <span class="voet-kop">Voordat je boekt</span>
+            <ul>
+              {TRAININGSGIDS.map((p) => (
+                <li><a href={link(`/trainingsgids/${p.slug}/`)}>{p.kortelabel}</a></li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        <div>
-          <p class="voet-kop">Contact</p>
-          <ul class="voet-lijst">
-            <li>Russchemorsweg 5-04, 7161 RT Neede</li>
-            <li><a href="tel:+31857600435">085 760 0435</a></li>
-            <li><a href="mailto:info@bureauweerbaarenveilig.nl">info@bureauweerbaarenveilig.nl</a></li>
-            <li>ma t/m vr 08:30–17:00</li>
-          </ul>
-        </div>
-
-        <div>
-          <p class="voet-kop">Snel naar</p>
-          <ul class="voet-lijst">
-            {hoofdmenu.map((item) => (
-              <li><a href={link(item.pad)}>{item.naam}</a></li>
-            ))}
-            <li><a href={link('/contact/')}>Contact</a></li>
-          </ul>
-        </div>
-
-        {/*
-          De trainingsgids stond alleen als hub in het menu, waardoor de vijf
-          pagina's zelf twee tot vier links kregen op een site van
-          tweehonderdvierentwintig — te weinig om gevonden te worden, terwijl het
-          precies de vragen zijn waarmee een opdrachtgever rondloopt.
-        */}
-        <div>
-          <p class="voet-kop">Voordat je boekt</p>
-          <ul class="voet-lijst">
-            {TRAININGSGIDS.map((p) => (
-              <li><a href={link(`/trainingsgids/${p.slug}/`)}>{p.titel}</a></li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      <div class="voet-onder">
-        <div class="omvat">
-          © {new Date().getFullYear()} Bureau Weerbaar en Veilig · Meer over agressie op
-          <a href="https://agressievisie.nl">agressievisie.nl</a>
+        <div class="footer-bottom">
+          <span>© {new Date().getFullYear()} Bureau Weerbaar en Veilig · onderdeel van <a href="https://actinmove.nl">Actinmove</a></span>
+          <span>Meer over agressie op <a href="https://agressievisie.nl">agressievisie.nl</a></span>
         </div>
       </div>
     </footer>
+
+    <script is:inline>
+      /*
+        Het mobiele menu. Bewust een paar regels en geen framework: de
+        navigatie staat volledig in de HTML, dit zet alleen een klasse om.
+      */
+      document.querySelector('.nav-toggle')?.addEventListener('click', (e) => {
+        const knop = e.currentTarget;
+        const menu = document.getElementById('hoofdmenu');
+        const open = menu.classList.toggle('open');
+        knop.setAttribute('aria-expanded', String(open));
+      });
+    </script>
   </body>
 </html>

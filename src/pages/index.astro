@@ -117,90 +117,64 @@ const uitgelicht = [0, 1, 2, 3].map((i) => kandidaten[(i * stap) % kandidaten.le
   beschrijving="Bureau Weerbaar en Veilig is dé specialist in agressietraining: de-escaleren, grenzen stellen en veilig werken, per sector en beroepsgroep, in drie niveaus."
 >
   {/* ═══ Kop ═══ */}
-  <section class="hero">
-    <div class="omvat hero-raster">
-      <div>
-        <p class="label">Specialist in agressietraining</p>
+  <section class="hero op-donker">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Specialist in agressietraining</p>
+          {/*
+            De entiteitsdefinitie staat in de eerste vijftig woorden: wie we
+            zijn, wat we doen, voor wie. Dat is wat een AI-antwoordsysteem
+            overneemt bij de vraag wat Bureau Weerbaar en Veilig is.
+          */}
+          <h1>Agressietraining voor jouw beroepsgroep.</h1>
+          <p class="lede">
+            Bureau Weerbaar en Veilig traint teams in het omgaan met agressie,
+            intimidatie en grensoverschrijdend gedrag op de werkvloer. Eén
+            onderwerp, tot in de diepte, per beroepsgroep uitgewerkt — in drie
+            niveaus. Incompany of in Neede, in groepen van maximaal tien.
+          </p>
+          <div class="hero-actions">
+            <a href={link('/sectoren/')} class="btn btn-primary">Vind jouw beroepsgroep →</a>
+            <a href="#niveaus" class="btn btn-outline">Welk niveau heb ik nodig?</a>
+          </div>
+        </div>
 
         {/*
-          De entiteitsdefinitie staat in de eerste vijftig woorden: wie we
-          zijn, wat we doen, voor wie. Dat is het stuk dat een AI-systeem
-          overneemt als iemand vraagt wat Bureau Weerbaar en Veilig is.
+          De drie niveaus als oplopende staven, in de kleuren die ze op de hele
+          site dragen. Geen sfeerbeeld: de tekening zegt wat de opbouw is — van
+          herkennen, via zwaardere situaties, naar beleid.
         */}
-        <h1 class="hero-titel">Agressietraining voor<br />jouw beroepsgroep.</h1>
-        <p class="hero-lead">
-          Bureau Weerbaar en Veilig traint teams in het omgaan met agressie,
-          intimidatie en grensoverschrijdend gedrag op de werkvloer. Eén
-          onderwerp, tot in de diepte, per beroepsgroep uitgewerkt — in drie
-          niveaus. Incompany of in Neede, in groepen van maximaal tien.
-        </p>
-
-        <div class="hero-acties">
-          <a href={link('/sectoren/')} class="knop knop-vol">
-            Vind jouw beroepsgroep
-            <span class="pijl" aria-hidden="true">↗</span>
-          </a>
-          <a href="#niveaus" class="knop knop-blauw">Welk niveau heb ik nodig?<span class="pijl" aria-hidden="true">↗</span></a>
+        <div class="hero-graphic" aria-hidden="true">
+          <svg viewBox="0 0 420 330" role="presentation">
+            <defs>
+              <linearGradient id="staafExpert" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0%" stop-color="#203e91" />
+                <stop offset="100%" stop-color="#f18919" />
+              </linearGradient>
+            </defs>
+            <line x1="16" y1="300" x2="404" y2="300" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2" />
+            <rect x="48" y="204" width="76" height="96" rx="12" fill="#f18919" />
+            <text x="86" y="188" text-anchor="middle" fill="#f18919" font-size="15" font-weight="800">Basis</text>
+            <rect x="172" y="140" width="76" height="160" rx="12" fill="#a97fb5" />
+            <text x="210" y="124" text-anchor="middle" fill="#c9a9d0" font-size="15" font-weight="800">Gevorderd</text>
+            <rect x="296" y="58" width="76" height="242" rx="12" fill="url(#staafExpert)" />
+            <text x="334" y="42" text-anchor="middle" fill="#8fa4e8" font-size="15" font-weight="800">Expert</text>
+            <path d="M318 82 l16 14 l16 -14" fill="none" stroke="#ffffff" stroke-opacity="0.7"
+                  stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M318 102 l16 14 l16 -14" fill="none" stroke="#ffffff" stroke-opacity="0.4"
+                  stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
         </div>
-      </div>
-
-      {/*
-        De drie niveaus als oplopende staven. Geen sfeerplaatje: de tekening
-        zegt wat de opbouw is, van herkennen via zwaardere situaties naar
-        beleid. De staven staan op een wit vlak, dus ze dragen de volle
-        merkkleuren zonder dat de tekst eronder lijdt.
-      */}
-      <div class="hero-beeld" aria-hidden="true">
-        <svg viewBox="0 0 420 320" role="presentation">
-          <defs>
-            <linearGradient id="staafExpert" x1="0" y1="1" x2="1" y2="0">
-              <stop offset="0%" stop-color="#17203d" />
-              <stop offset="100%" stop-color="#4a3455" />
-            </linearGradient>
-          </defs>
-
-          {/* De grondlijn */}
-          <line x1="20" y1="292" x2="400" y2="292" stroke="#23262b" stroke-opacity="0.3" stroke-width="2" />
-
-          {/* Basis */}
-          <rect x="52" y="196" width="72" height="96" rx="10" fill="#a35405" />
-          <text x="88" y="180" text-anchor="middle" fill="#23262b" font-size="15" font-weight="700"
-                font-family="Space Grotesk Variable, sans-serif">Basis</text>
-
-          {/* Gevorderd */}
-          <rect x="174" y="132" width="72" height="160" rx="10" fill="#735578" />
-          <text x="210" y="116" text-anchor="middle" fill="#23262b" font-size="15" font-weight="700"
-                font-family="Space Grotesk Variable, sans-serif">Gevorderd</text>
-
-          {/* Expert */}
-          <rect x="296" y="52" width="72" height="240" rx="10" fill="url(#staafExpert)" />
-          <text x="332" y="36" text-anchor="middle" fill="#23262b" font-size="15" font-weight="700"
-                font-family="Space Grotesk Variable, sans-serif">Expert</text>
-
-          {/* De chevron uit het beeldmerk, bovenop de hoogste staaf */}
-          <path d="M316 74 l16 14 l16 -14" fill="none" stroke="#f7a52b" stroke-opacity="0.9"
-                stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M316 92 l16 14 l16 -14" fill="none" stroke="#f7a52b" stroke-opacity="0.5"
-                stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
       </div>
     </div>
   </section>
 
-  {/* ═══ De cijfers ═══ */}
-  <div class="omvat">
-    <div class="cijferstrip">
-      {/*
-        De eerste kaart krijgt het volle merk-oranje als vlak. Dat trekt het oog
-        naar het belangrijkste getal — het aantal trainingen — en laat de
-        merkkleur op volle sterkte zien, zonder dat vier felle vlakken om
-        aandacht gaan vechten.
-      */}
-      {cijfers.map((c, i) => (
-        <a
-          href={link(c.pad)}
-          class={`cijferkaart niveau-${c.niveau}${i === 0 ? ' cijferkaart-vol' : ''}`}
-        >
+  {/* ═══ De cijfers, geteld uit de content ═══ */}
+  <div class="wrap">
+    <div class="stat-strip">
+      {cijfers.map((c) => (
+        <a href={link(c.pad)} class={`stat-strip-card niveau-${c.niveau}`}>
           <b>{c.getal}</b>
           <span>{c.wat}</span>
         </a>
@@ -209,81 +183,80 @@ const uitgelicht = [0, 1, 2, 3].map((i) => kandidaten[(i * stap) % kandidaten.le
   </div>
 
   {/* ═══ Sectoren ═══ */}
-  <section class="vlak">
-    <div class="omvat">
-      <p class="label">Kies je vertrekpunt</p>
-      <h2 class="sectie-titel">Trainingen per sector</h2>
-      <p class="sectie-lead">
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow">Kies je vertrekpunt</p>
+      <h2>Trainingen per sector</h2>
+      <p class="lede">
         Elke sector kent zijn eigen situaties. De balie van een gemeente is de
         spreekkamer van een huisarts niet, en dat verschil bepaalt de training.
       </p>
 
-      <ul class="sectorraster">
+      <div class="grid grid-4 sectorraster">
         {sectoren.map((s, i) => (
-          <li class={`sectorkaart niveau-${NIVEAUS[i % 3]} komt-op`}>
-            <span class="sectoricoon" aria-hidden="true">
+          <article class={`card niveau-${NIVEAUS[i % 3]} komt-op`}>
+            <span class="card-icon" aria-hidden="true">
               <SectorIcoon sector={s.data.slug} />
             </span>
-            <span>
-              <span class="sectorkaart-naam">
-                <a href={link(`/sectoren/${s.data.slug}/`)} class="vlakdek">{s.data.naam}</a>
-              </span>
-              <span class="sectorkaart-bij">
-                {telwoord(aantalTrainingen(s.data.slug), 'training', 'trainingen')} ·
-                {' '}{telwoord(aantalGroepen(s.data.slug), 'beroepsgroep', 'beroepsgroepen')}
-              </span>
-            </span>
-            <span class="pijl sectorkaart-pijl" aria-hidden="true">→</span>
-          </li>
+            <h3>
+              <a href={link(`/sectoren/${s.data.slug}/`)} class="vlakdek">{s.data.naam}</a>
+            </h3>
+            <p>
+              {telwoord(aantalTrainingen(s.data.slug), 'training', 'trainingen')}
+              {' · '}
+              {telwoord(aantalGroepen(s.data.slug), 'beroepsgroep', 'beroepsgroepen')}
+            </p>
+          </article>
         ))}
-      </ul>
+      </div>
     </div>
   </section>
 
-  {/* ═══ Wat er in het vak gebeurt ═══ */}
-  <section class="vlak-papier vlak">
-    <div class="omvat">
-      <p class="label">Waar het over gaat</p>
-      <h2 class="sectie-titel">Dit staat er in de trainingen, letterlijk</h2>
-      <p class="sectie-lead">
+  {/* ═══ Waar het over gaat — het volle merk-oranje als vlak ═══ */}
+  <section class="section section--oranje">
+    <div class="wrap">
+      <p class="eyebrow">Waar het over gaat</p>
+      <h2>Dit staat er in de trainingen, letterlijk</h2>
+      <p class="lede">
         Geen bedachte voorbeelden. Deze situaties staan woordelijk in de
         trainingen, per beroepsgroep uitgewerkt.
       </p>
 
-      <div class="dossierrij" style="margin-top: var(--ruimte-8)">
+      <div class="grid grid-2 situatieraster">
         {uitgelicht.map((s, i) => (
-          <article class={`dossier niveau-${NIVEAUS[i % 3]} komt-op`}>
-            <p class="dossier-kenmerk">
+          <article class={`situatie niveau-${NIVEAUS[i % 3]} komt-op`}>
+            <p class="situatie-bron">
               <span>Casus {String(i + 1).padStart(2, '0')}</span>
               <span>{s.beroepsgroep}</span>
             </p>
-            <p class="dossier-tekst">{s.tekst}</p>
+            <p class="situatie-tekst">{s.tekst}</p>
           </article>
         ))}
       </div>
 
-      <p class="dossier-bij">
+      <p class="situatie-slot">
         Er staan er {situaties.length} op deze site, verdeeld over
         {' '}{beroepsgroepen.length} beroepsgroepen.
+        <a href={link('/trainingen/')} class="btn-ghost">Bekijk alle trainingen</a>
       </p>
     </div>
   </section>
 
-  {/* ═══ De niveaus, als ladder ═══ */}
-  <section id="niveaus" class="vlak">
-    <div class="omvat">
-      <p class="label">Van herkennen tot borgen</p>
-      <h2 class="sectie-titel">Drie niveaus, één opbouw</h2>
-      <p class="sectie-lead">
+  {/* ═══ De drie niveaus ═══ */}
+  <section class="section section--soft" id="niveaus">
+    <div class="wrap">
+      <p class="eyebrow">Van herkennen tot borgen</p>
+      <h2>Drie niveaus, één opbouw</h2>
+      <p class="lede">
         Klap een niveau open om te zien wat er geleerd wordt. Wat daar staat is
         geteld uit alle trainingen van dat niveau.
       </p>
 
-      <div class="ladder">
+      <div class="ladder ladderblok">
         {ladder.map((n) => (
-          <details class={`ladder-trede niveau-${n.niveau}`}>
+          <details class={`ladder-item niveau-${n.niveau}`}>
             <summary class="ladder-kop">
-              <span class="ladder-nummer">{n.nummer}</span>
+              <span class="ladder-nr">{n.nummer}</span>
               <span>
                 <span class="ladder-titel">{n.titel} — {n.kern}</span>
                 <span class="ladder-bij">{n.voorWie} · {n.aantal} trainingen</span>
@@ -294,9 +267,8 @@ const uitgelicht = [0, 1, 2, 3].map((i) => kandidaten[(i * stap) % kandidaten.le
               <ul class="ladder-lijst">
                 {n.leert.map((l) => <li>{l}</li>)}
               </ul>
-              <a href={link(`/niveaus/${n.niveau}/`)} class="knop knop-rand" style="margin-top: var(--ruimte-6)">
+              <a href={link(`/niveaus/${n.niveau}/`)} class="btn-ghost ladder-link">
                 Alle {n.aantal} trainingen op dit niveau
-                <span class="pijl" aria-hidden="true">→</span>
               </a>
             </div>
           </details>
@@ -305,52 +277,53 @@ const uitgelicht = [0, 1, 2, 3].map((i) => kandidaten[(i * stap) % kandidaten.le
     </div>
   </section>
 
-  {/* ═══ De mensen ═══ */}
-  <section class="vlak-donker op-donker vlak">
-    <div class="omvat mensen">
-      <div>
-        <p class="label">Wie er voor de groep staat</p>
-        <h2 class="sectie-titel mensen-titel">Eén vast team, met {acteurs} trainingsacteurs</h2>
-        <p class="mensen-tekst">
-          Iedereen hier geeft alle trainingen, want Bureau Weerbaar en Veilig
-          doet maar één ding. Dankzij de acteurs oefen je met de situatie die
-          jij inbrengt, in plaats van met een bedacht rollenspel.
-        </p>
-        <a href={link('/over-ons/')} class="knop knop-rand mensen-knop">
-          Maak kennis met het team
-          <span class="pijl" aria-hidden="true">→</span>
-        </a>
-      </div>
+  {/* ═══ Het team — het volle blauw als vlak ═══ */}
+  <section class="section section--blauw op-donker">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Wie er voor de groep staat</p>
+          <h2>Eén vast team, met {acteurs} trainingsacteurs</h2>
+          <p class="lede">
+            Iedereen hier geeft alle trainingen, want Bureau Weerbaar en Veilig
+            doet maar één ding. Dankzij de acteurs oefen je met de situatie die
+            jij inbrengt, in plaats van met een bedacht rollenspel.
+          </p>
+          <div class="hero-actions teamknop">
+            <a href={link('/over-ons/')} class="btn btn-outline">Maak kennis met het team</a>
+          </div>
+        </div>
 
-      <ul class="gezichtenrij">
-        {team.map((lid) => {
-          const foto = fotoVan(lid.id);
-          return foto ? (
-            <li>
-              <a href={link(`/team/${lid.id}/`)}>
-                <Image
-                  src={foto}
-                  alt={`${lid.data.naam}, ${inZin(lid.data.rol)}`}
-                  width={112}
-                  height={112}
-                  format="webp"
-                  quality={86}
-                  loading="lazy"
-                  decoding="async"
-                  class="gezicht"
-                />
-              </a>
-            </li>
-          ) : null;
-        })}
-      </ul>
+        <ul class="gezichten">
+          {team.map((lid) => {
+            const foto = fotoVan(lid.id);
+            return foto ? (
+              <li>
+                <a href={link(`/team/${lid.id}/`)}>
+                  <Image
+                    src={foto}
+                    alt={`${lid.data.naam}, ${inZin(lid.data.rol)}`}
+                    width={144}
+                    height={144}
+                    format="webp"
+                    quality={86}
+                    loading="lazy"
+                    decoding="async"
+                    class="gezicht"
+                  />
+                </a>
+              </li>
+            ) : null;
+          })}
+        </ul>
+      </div>
     </div>
   </section>
 
   {/* ═══ Afsluiting ═══ */}
-  <section class="vlak-krap">
-    <div class="omvat">
-      <div class="actieband">
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="cta-band">
         <div>
           <h2>Niet zeker welk niveau je team nodig heeft?</h2>
           <p>
@@ -358,9 +331,9 @@ const uitgelicht = [0, 1, 2, 3].map((i) => kandidaten[(i * stap) % kandidaten.le
             training, en je krijgt binnen één werkdag antwoord.
           </p>
         </div>
-        <div class="hero-acties" style="margin-top: 0">
-          <a href="tel:+31857600435" class="knop knop-vol">Bel 085 760 0435</a>
-          <a href={link('/contact/')} class="knop knop-rand">Vraag een terugbelverzoek</a>
+        <div class="hero-actions">
+          <a href="tel:+31857600435" class="btn btn-outline">Bel 085 760 0435</a>
+          <a href={link('/contact/')} class="btn btn-outline">Vraag een terugbelverzoek</a>
         </div>
       </div>
     </div>
