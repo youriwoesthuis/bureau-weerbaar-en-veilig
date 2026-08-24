@@ -46,12 +46,19 @@ const chevronOnder = 'M257 306 L304 341 L398 271 L398 325 L304 395 L257 360 Z';
 
 {
   origineel ? (
+    /*
+      Het officiële logo, opgehaald van de conceptsite
+      (Logo_Volledig_Kleur.png). Liggende verhouding: beeldmerk links, woordmerk
+      rechts, 1044 bij 205. De ingebouwde SVG hieronder is alleen nog de
+      terugval voor als dit bestand ontbreekt.
+    */
     <img
       src={`/images/logo/${origineel}`}
       alt="Bureau Weerbaar en Veilig"
       class={extraKlasse}
-      width="608"
-      height="400"
+      width="1044"
+      height="205"
+      decoding="async"
     />
   ) : (
     <svg

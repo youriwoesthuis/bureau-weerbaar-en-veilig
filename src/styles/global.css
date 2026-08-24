@@ -73,6 +73,21 @@
    rand van bedieningselementen. Die getallen zijn met de rekenmachine
    vastgesteld, niet op het oog — verander ze niet zonder opnieuw te meten.
 */
+/*
+  ── De officiële merkkleuren ──
+
+  Afgeleid uit twee bronnen, niet geschat:
+
+  1. Het logobestand Logo_Volledig_Kleur.png van de conceptsite. Pixel voor
+     pixel geteld: 52,3% is #203058 (het woordmerk), 16,2% is #f08818 (het
+     beeldmerk), en daartussen loopt het beeldmerk via #886078 en #785880 —
+     dus paars is de tússenstap van het verloop, niet het eindpunt.
+  2. De conceptsite zelf, waar het verloop steeds van #f18919 naar #203e91
+     loopt, onder 130 tot 165 graden.
+
+  Dat corrigeert een aanname die hier eerder in stond: het verloop eindigt in
+  blauw, niet in paars.
+*/
 @theme {
   /* Oranje — het niveau basis */
   --color-oranje: #f18919;            /* 6,36:1 op marine-diep */
@@ -523,19 +538,58 @@ a {
 /* ───────────────────────────────────────────────────────────────────
    Knoppen
    ─────────────────────────────────────────────────────────────────── */
+/*
+  De pilknop met de pijl in een cirkel.
+
+  Dit is het handtekening-element van de conceptsite en het sterkste
+  herkenningspunt dat het merk heeft. Uitgelezen van
+  bureauwenv.wizzinc-dev2.nl: border-radius 50px, en padding 6px 6px 6px 20px —
+  asymmetrisch, omdat de cirkel rechts de ruimte zelf meebrengt.
+
+  Die asymmetrie is precies waarom hij werkt: de knop leest als een label met
+  een knop erin, niet als een rechthoek met tekst.
+*/
 .knop {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: var(--ruimte-2);
-  padding: 0.8rem 1.4rem;
-  border-radius: var(--radius-klein);
+  gap: var(--ruimte-3);
+  padding: 0.375rem 0.375rem 0.375rem 1.25rem;
+  border-radius: 999px;
   border: 1px solid transparent;
   font-family: var(--font-kop);
   font-size: var(--text-klein);
   font-weight: 700;
   letter-spacing: 0.01em;
   cursor: pointer;
+  text-align: left;
+}
+
+/* De cirkel met de pijl. */
+.knop .pijl {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.22);
+  font-size: 0.9rem;
+  line-height: 1;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .knop .pijl {
+    transition: background-color 150ms ease, transform 150ms ease;
+  }
+  .knop:hover .pijl {
+    background: rgb(255 255 255 / 0.34);
+    transform: none;
+  }
+}
+
+/* Knoppen zonder pijl krijgen aan beide kanten dezelfde ruimte. */
+.knop-vlak {
+  padding: 0.7rem 1.35rem;
+  justify-content: center;
   text-align: center;
 }
 @media (prefers-reduced-motion: no-preference) {
@@ -544,12 +598,26 @@ a {
   }
 }
 
+/*
+  De oranje knop is de hoofdknop, zoals op de conceptsite. Daar staat hij op
+  #f18919 met witte tekst, en dat haalt 2,52:1. Deze versie gebruikt de diepere
+  oranje tint: op het oog hetzelfde oranje, maar witte tekst haalt er 4,95:1.
+*/
 .knop-vol {
-  background: var(--color-marine);
+  background: var(--color-oranje-knop);
   color: #ffffff;
 }
 .knop-vol:hover {
-  background: var(--color-marine-diep);
+  background: var(--color-oranje-diep);
+}
+
+/* De blauwe tegenhanger, ook van de conceptsite (rgb(31,63,143)). */
+.knop-blauw {
+  background: var(--color-blauw);
+  color: #ffffff;
+}
+.knop-blauw:hover {
+  background: #1a3479;
 }
 
 .knop-accent {
@@ -567,6 +635,12 @@ a {
 }
 .knop-rand:hover {
   border-color: var(--color-marine);
+}
+.knop-rand .pijl {
+  background: var(--color-vlak);
+}
+.knop-rand:hover .pijl {
+  background: var(--color-oranje-licht);
 }
 
 .op-donker .knop-rand {
@@ -1245,15 +1319,41 @@ a {
 
    Dus: de kleuren mogen op volle sterkte, zolang de tekst erop donker is.
 */
+/*
+  Het verloopvlak van de conceptsite: oranje naar blauw, onder 130 graden, met
+  witte tekst erop. Dat is het beeld dat daar de pagina draagt.
+
+  Met één correctie. Op de conceptsite begint het verloop op #f18919, en witte
+  tekst haalt daar 2,52:1 — ruim onder de eis van 4,5. Doorgerekend over de
+  hele as wordt het pas voorbij 65% leesbaar, dus tweederde van dat vlak draagt
+  onleesbare tekst.
+
+  Deze versie begint op #ad5a06: hetzelfde oranje, een slag dieper. Het
+  slechtste punt is nu 4,95:1, en op het oog is het verschil nauwelijks te
+  zien — het blijft het oranje-naar-blauwe vlak dat het merk kenmerkt.
+*/
 .merkverloop {
-  background-color: #ee9430;
-  background-image: linear-gradient(
-    112deg,
-    #f7a52b 0%,
-    #f18919 32%,
-    #d99a86 62%,
-    #c9a9d0 100%
-  );
+  background-color: #7a4a4a;
+  background-image: linear-gradient(130deg, #ad5a06 0%, #ad5a06 34%, #203e91 100%);
+  color: #ffffff;
+}
+.merkverloop h1,
+.merkverloop h2,
+.merkverloop h3 {
+  color: #ffffff;
+}
+.merkverloop .label {
+  color: #ffd9b0;
+}
+
+/*
+  Het lichte verloop, voor grote vlakken met donkere tekst. Van het volle
+  merk-oranje naar de lichte paarstint uit het beeldmerk; slechtste punt 5,01:1
+  met de bodykleur.
+*/
+.merkverloop-licht {
+  background-color: #dfa07a;
+  background-image: linear-gradient(130deg, #f18919 0%, #c9a9d0 100%);
   color: var(--color-inkt);
 }
 .merkverloop h1,
@@ -1275,11 +1375,37 @@ a {
   color: #332338;
 }
 
-/* ── De hero: tekst links, beeld rechts ── */
+/* ───────────────────────────────────────────────────────────────────
+   De kop van een instappagina
+   ───────────────────────────────────────────────────────────────────
+   Wit vlak, kop in oranje. Dat is de kern van de conceptsite en de reden dat
+   die overzicht geeft: elke sectie begint met een oranje kop op wit, en dat
+   ritme vertelt je zonder één woord waar een nieuw onderwerp start.
+
+   De vorige versie had hier een vol verloopvlak. Dat sprong er wel uit, maar
+   het maakte de kop tot een blikvanger in plaats van tot een wegwijzer — en
+   het liet geen ruimte over om verderop nog ergens de aandacht te trekken.
+*/
 .hero {
-  padding-block: var(--ruimte-16) var(--ruimte-24);
+  padding-block: var(--ruimte-16) var(--ruimte-16);
   position: relative;
-  overflow: hidden;
+}
+
+/*
+  De sectiekop in oranje: het ritme-anker van de hele site.
+
+  Alleen op lichte vlakken. Op een donker vlak haalt deze oranje tint 2,92:1 —
+  daar blijft de kop wit. De :not() is nodig omdat deze regel anders het wit
+  overschrijft dat een donkere sectie zelf al zet.
+*/
+:not(.op-donker) > * > .sectie-titel,
+:not(.op-donker) .hero-titel,
+.vlak-papier .sectie-titel {
+  color: var(--color-oranje-tekst);
+}
+.op-donker .sectie-titel,
+.op-donker h2 {
+  color: #ffffff;
 }
 
 /*
@@ -1418,6 +1544,17 @@ a {
 }
 
 .sectorkaart {
+  /*
+    Relatief, en dat is geen detail. De link in de kop draagt .vlakdek, en die
+    legt met een pseudo-element een klikvlak over de hele kaart. Zo'n
+    absoluut gepositioneerd element hangt aan de dichtstbijzijnde ouder die
+    zélf gepositioneerd is — stond die op static, dan sprong het klikvlak naar
+    een voorouder verderop en dekte het de verkeerde ruimte.
+
+    Gevolg was dat van deze negentien kaarten alleen de tekst zelf klikbaar
+    was, eenentwintig pixels hoog, terwijl de kaart vijfentachtig pixels is.
+  */
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--ruimte-4);

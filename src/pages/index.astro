@@ -117,7 +117,7 @@ const uitgelicht = [0, 1, 2, 3].map((i) => kandidaten[(i * stap) % kandidaten.le
   beschrijving="Bureau Weerbaar en Veilig is dé specialist in agressietraining: de-escaleren, grenzen stellen en veilig werken, per sector en beroepsgroep, in drie niveaus."
 >
   {/* ═══ Kop ═══ */}
-  <section class="hero merkverloop">
+  <section class="hero">
     <div class="omvat hero-raster">
       <div>
         <p class="label">Specialist in agressietraining</p>
@@ -127,9 +127,7 @@ const uitgelicht = [0, 1, 2, 3].map((i) => kandidaten[(i * stap) % kandidaten.le
           zijn, wat we doen, voor wie. Dat is het stuk dat een AI-systeem
           overneemt als iemand vraagt wat Bureau Weerbaar en Veilig is.
         */}
-        <h1 class="hero-titel">
-          Agressietraining voor <em>jouw beroepsgroep</em>
-        </h1>
+        <h1 class="hero-titel">Agressietraining voor<br />jouw beroepsgroep.</h1>
         <p class="hero-lead">
           Bureau Weerbaar en Veilig traint teams in het omgaan met agressie,
           intimidatie en grensoverschrijdend gedrag op de werkvloer. Eén
@@ -140,9 +138,9 @@ const uitgelicht = [0, 1, 2, 3].map((i) => kandidaten[(i * stap) % kandidaten.le
         <div class="hero-acties">
           <a href={link('/sectoren/')} class="knop knop-vol">
             Vind jouw beroepsgroep
-            <span class="pijl" aria-hidden="true">→</span>
+            <span class="pijl" aria-hidden="true">↗</span>
           </a>
-          <a href="#niveaus" class="knop knop-rand">Welk niveau heb ik nodig?</a>
+          <a href="#niveaus" class="knop knop-blauw">Welk niveau heb ik nodig?<span class="pijl" aria-hidden="true">↗</span></a>
         </div>
       </div>
 
