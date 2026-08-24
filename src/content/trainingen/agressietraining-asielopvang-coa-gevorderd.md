@@ -40,7 +40,7 @@ werkvormen:
   - directe feedback op reacties
   - aandacht voor de balans tussen empathie en professionele grenzen
 veelgestelde_vragen:
-  - vraag: "Hoe lang duurt de gevorderde agressietraining voor medewerkers van asielzoekerscentra en coa-locaties?"
+  - vraag: "Hoe lang duurt de gevorderde agressietraining voor medewerkers van asielzoekerscentra en COA-locaties?"
     antwoord: De training duurt 1 dag. De groep telt maximaal 10 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Medewerkers op asielzoekerscentra met basistraining die werken met complexe bewonerspopulaties en een hoge agressiebelasting. Voorwaarde voor deelname: afgeronde basistraining of aantoonbare ervaring."
@@ -57,7 +57,7 @@ gerelateerd:
   - "agressietraining-justitiele-jeugdinrichtingen-gevorderd"
 afbeelding:
   src: /images/trainingen/asielopvang.jpg
-  alt: "Deelnemers oefenen een praktijksituatie tijdens de agressietraining voor medewerkers asielzoekerscentra & coa-locaties"
+  alt: "Deelnemers oefenen een praktijksituatie tijdens de agressietraining voor medewerkers asielzoekerscentra & COA-locaties"
 ---
 
 ## Waarom deze training

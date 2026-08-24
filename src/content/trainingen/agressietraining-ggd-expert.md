@@ -42,7 +42,7 @@ werkvormen:
 veelgestelde_vragen:
   - vraag: "Wat doet de organisatie als een medewerker persoonlijk wordt bedreigd?"
     antwoord: "Het ontwikkelen van beleid voor online bedreigingen en intimidatiecampagnes richting individuele medewerkers is een kernonderdeel van deze training, inclusief de samenwerking met politie en justitie."
-  - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden bij de ggd en publieke gezondheidszorg?"
+  - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden bij de GGD en publieke gezondheidszorg?"
     antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders, afdelingshoofden en managers bij de GGD en aanverwante organisaties die medewerkers aansturen in agressieve burgersituaties. Voorwaarde voor deelname: leidinggevende verantwoordelijkheid voor een team GGD-medewerkers of publieke gezondheidsprofessionals."

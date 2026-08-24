@@ -1,4 +1,5 @@
 ---
+import { inZin } from '../../lib/naam';
 /**
  * De drie niveaus naast elkaar, als echte tabel.
  *
@@ -67,7 +68,7 @@ const { beroepsgroep, rijen } = Astro.props;
 >
   <table class="niveaumatrix">
     <caption id="niveaumatrix-titel" class="niveaumatrix-caption">
-      De {rijen.length} niveaus agressietraining voor {beroepsgroep.toLowerCase()}
+      De {rijen.length} niveaus agressietraining voor {inZin(beroepsgroep)}
       vergeleken op doelgroep, voorkennis, leeruitkomsten en groepsgrootte.
     </caption>
     <thead>

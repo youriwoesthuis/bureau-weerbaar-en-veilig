@@ -1,3 +1,5 @@
+import { inZin } from './naam';
+
 /**
  * Hulpfuncties voor title en meta description.
  *
@@ -109,7 +111,7 @@ export function trainingTitel(
   beroepsgroepNaam: string,
   niveau: 'basis' | 'gevorderd' | 'expert'
 ): string {
-  const groep = beroepsgroepNaam.toLowerCase();
+  const groep = inZin(beroepsgroepNaam);
   return {
     basis: `Basistraining agressie voor ${groep}`,
     gevorderd: `Gevorderde agressietraining voor ${groep}`,

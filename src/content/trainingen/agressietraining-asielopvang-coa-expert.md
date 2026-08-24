@@ -39,7 +39,7 @@ werkvormen:
   - beleidsverdieping met crisisprotocollen voor de opvangpraktijk
   - intervisie na 6 weken
 veelgestelde_vragen:
-  - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden bij asielzoekerscentra en coa-locaties?"
+  - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden bij asielzoekerscentra en COA-locaties?"
     antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Locatiemanagers, coördinatoren en operationeel leidinggevenden bij asielzoekerscentra. Voorwaarde voor deelname: leidinggevende of coördinerende verantwoordelijkheid op een opvanglocatie."
@@ -56,7 +56,7 @@ gerelateerd:
   - "agressietraining-justitiele-jeugdinrichtingen-expert"
 afbeelding:
   src: /images/trainingen/asielopvang.jpg
-  alt: "Deelnemers oefenen een praktijksituatie tijdens de agressietraining voor medewerkers asielzoekerscentra & coa-locaties"
+  alt: "Deelnemers oefenen een praktijksituatie tijdens de agressietraining voor medewerkers asielzoekerscentra & COA-locaties"
 ---
 
 ## Waarom deze training

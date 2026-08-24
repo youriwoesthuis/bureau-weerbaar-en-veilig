@@ -3,6 +3,7 @@ import { link } from '../../../lib/link';
 import { getCollection, render } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
+import { inZin } from '../../../lib/naam';
 import { situatieSelectie } from '../../../lib/situaties';
 import NiveauBadge from '../../../components/NiveauBadge.astro';
 import Terugbelverzoek from '../../../components/Terugbelverzoek.astro';
@@ -41,7 +42,7 @@ const lijstSchema = beroepsgroepen.length
   ? JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'ItemList',
-      name: `Agressietraining in de sector ${sector.data.naam.toLowerCase()}`,
+      name: `Agressietraining in de sector ${inZin(sector.data.naam)}`,
       numberOfItems: beroepsgroepen.length,
       itemListElement: beroepsgroepen.map((b, i) => ({
         '@type': 'ListItem',
@@ -54,7 +55,7 @@ const lijstSchema = beroepsgroepen.length
 ---
 
 <Base
-  titel={`Agressietraining ${sector.data.naam.toLowerCase()}`}
+  titel={`Agressietraining ${inZin(sector.data.naam)}`}
   beschrijving={sector.data.samenvatting}
   schema={lijstSchema ? [lijstSchema] : []}
 >
@@ -70,7 +71,7 @@ const lijstSchema = beroepsgroepen.length
       />
       <p class="kicker mt-7">Sector</p>
       <h1 class="mt-4 max-w-3xl text-3xl font-bold leading-[1.15] md:text-5xl">
-        Agressietraining in de sector {sector.data.naam.toLowerCase()}
+        Agressietraining in de sector {inZin(sector.data.naam)}
       </h1>
       <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
         {sector.data.samenvatting}
@@ -129,7 +130,7 @@ const lijstSchema = beroepsgroepen.length
           lidwoord in de data hoeft.
         */}
         <h2 id="situaties-titel" class="mt-5 max-w-3xl text-3xl font-bold leading-tight md:text-4xl">
-          Situaties uit de sector {sector.data.naam.toLowerCase()}, zoals ze in de
+          Situaties uit de sector {inZin(sector.data.naam)}, zoals ze in de
           trainingen staan
         </h2>
 
@@ -195,7 +196,7 @@ const lijstSchema = beroepsgroepen.length
 
   <div class="mx-auto max-w-6xl px-4 py-14">
     <div class="max-w-3xl">
-      <Terugbelverzoek onderwerp={`agressietraining in de ${sector.data.naam.toLowerCase()}`} />
+      <Terugbelverzoek onderwerp={`agressietraining in de ${inZin(sector.data.naam)}`} />
     </div>
   </div>
 </Base>

@@ -3,6 +3,7 @@ import { link } from '../../../lib/link';
 import { getCollection, render } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
+import { inZin } from '../../../lib/naam';
 import NiveauBadge from '../../../components/NiveauBadge.astro';
 import Terugbelverzoek from '../../../components/Terugbelverzoek.astro';
 import { SECTOR_NAMEN } from '../../../lib/sectoren';
@@ -10,6 +11,7 @@ import { ORGANISATIE } from '../../../lib/organisatie';
 import { alleSituaties } from '../../../lib/situaties';
 import AISummaryBox from '../../../components/geo/AISummaryBox.astro';
 import NiveauMatrix from '../../../components/geo/NiveauMatrix.astro';
+import RelatedContextLinks from '../../../components/nav/RelatedContextLinks.astro';
 
 export async function getStaticPaths() {
   const beroepsgroepen = await getCollection('beroepsgroepen');
@@ -29,6 +31,13 @@ const trainingen = (await getCollection('trainingen'))
   .sort((a, z) => NIVEAU_VOLGORDE[a.data.niveau] - NIVEAU_VOLGORDE[z.data.niveau]);
 
 const sectorNaam = SECTOR_NAMEN[b.sector] ?? b.sector;
+
+/* Alle beroepsgroepen, voor de verwante verwijzingen onderaan. */
+const alleGroepen = (await getCollection('beroepsgroepen')).map((g) => ({
+  slug: g.data.slug,
+  naam: g.data.naam,
+  sector: g.data.sector,
+}));
 
 /*
   Dit is de landingsplek voor "agressietraining {beroepsgroep}" — de
@@ -76,7 +85,7 @@ function alsZin(tekst: string): string {
   beroepsgroep, zodat het buiten de pagina nog steeds klopt.
 */
 const basis = trainingen.find((t) => t.data.niveau === 'basis') ?? trainingen[0];
-const groepKort = b.naam.toLowerCase();
+const groepKort = inZin(b.naam);
 
 /*
   Rechtstreeks alle situaties van déze beroepsgroep, niet via de gespreide
@@ -178,7 +187,7 @@ const lijstSchema = trainingen.length
   ? JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'ItemList',
-      name: `Agressietraining voor ${b.naam.toLowerCase()}`,
+      name: `Agressietraining voor ${inZin(b.naam)}`,
       numberOfItems: trainingen.length,
       itemListOrder: 'https://schema.org/ItemListOrderAscending',
       itemListElement: trainingen.map((t, i) => ({
@@ -199,7 +208,7 @@ const lijstSchema = trainingen.length
 ---
 
 <Base
-  titel={`Agressietraining ${b.naam.toLowerCase()}`}
+  titel={`Agressietraining ${inZin(b.naam)}`}
   beschrijving={b.samenvatting}
   schema={lijstSchema ? [lijstSchema] : []}
 >
@@ -216,7 +225,7 @@ const lijstSchema = trainingen.length
       />
       <p class="kicker mt-7">Beroepsgroep</p>
       <h1 class="mt-4 max-w-3xl text-3xl font-bold leading-[1.15] md:text-5xl">
-        Agressietraining voor {b.naam.toLowerCase()}
+        Agressietraining voor {inZin(b.naam)}
       </h1>
       <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">{b.samenvatting}</p>
 
@@ -386,7 +395,15 @@ const lijstSchema = trainingen.length
 
   <div class="mx-auto max-w-6xl px-4 py-14">
     <div class="max-w-3xl">
-      <Terugbelverzoek onderwerp={`de agressietraining voor ${b.naam.toLowerCase()}`} />
+      <Terugbelverzoek onderwerp={`de agressietraining voor ${inZin(b.naam)}`} />
+    </div>
+
+    <div class="mt-14">
+      <RelatedContextLinks
+        huidigeSlug={b.slug}
+        huidigeSector={b.sector}
+        alle={alleGroepen}
+      />
     </div>
   </div>
 </Base>

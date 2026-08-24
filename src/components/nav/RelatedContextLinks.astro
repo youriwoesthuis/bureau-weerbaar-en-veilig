@@ -1,0 +1,116 @@
+---
+/**
+ * Aanpalende beroepsgroepen, onderaan een beroepsgroeppagina.
+ *
+ * Iemand die op "agressietraining bibliotheekmedewerkers" landt, werkt vaak bij
+ * een organisatie waar ook baliemedewerkers en beveiligers rondlopen. Deze
+ * verwijzingen maken die stap zichtbaar in plaats van hem aan de navigatie
+ * over te laten.
+ *
+ * ── Waarom de ankertekst per link verschilt ──
+ *
+ * De makkelijke oplossing is drie keer dezelfde zin met alleen een andere naam
+ * erin: "Bekijk ook de agressietraining voor X". Dat leest als een machine, en
+ * het is ook precies het patroon waar een zoekmachine een aangelegd linkblok
+ * in herkent. De formuleringen wisselen daarom, en welke variant een link
+ * krijgt hangt af van de naam zelf — dus bij elke build hetzelfde, maar
+ * onderling verschillend.
+ *
+ * ── Welke drie ──
+ *
+ * Eerst beroepsgroepen uit dezelfde sector: die delen de context waarin de
+ * agressie ontstaat. Zijn dat er te weinig, dan wordt aangevuld vanuit de rest
+ * van de site, zodat er altijd drie staan in plaats van een half blok.
+ */
+import { link } from '../../lib/link';
+import { SECTOR_NAMEN } from '../../lib/sectoren';
+import { inZin } from '../../lib/naam';
+
+export interface VerwanteGroep {
+  slug: string;
+  naam: string;
+  sector: string;
+}
+
+interface Props {
+  /** De beroepsgroep waar we nu zijn; die valt zelf af. */
+  huidigeSlug: string;
+  huidigeSector: string;
+  alle: VerwanteGroep[];
+  aantal?: number;
+}
+
+const { huidigeSlug, huidigeSector, alle, aantal = 3 } = Astro.props;
+
+const opNaam = (a: VerwanteGroep, b: VerwanteGroep) => a.naam.localeCompare(b.naam);
+
+const zelfdeSector = alle
+  .filter((g) => g.sector === huidigeSector && g.slug !== huidigeSlug)
+  .sort(opNaam);
+
+/*
+  Acht sectoren tellen maar één beroepsgroep. Daar is er geen buurman binnen de
+  sector, en werd het rijtje aangevuld met de alfabetisch eerste drie van de
+  hele site — waardoor bibliotheken, horeca en dierenzorg alle drie naar
+  ambulancemedewerkers, apotheekmedewerkers en bankmedewerkers wezen. Dat is
+  geen verwantschap maar een alfabet, en het propt bovendien alle linkwaarde in
+  dezelfde drie pagina's.
+
+  De aanvulling begint daarom op een plek die van de huidige beroepsgroep
+  afhangt, en loopt vandaar rond. Nog steeds deterministisch — dezelfde pagina
+  geeft bij elke build hetzelfde resultaat — maar verspreid over de site in
+  plaats van geconcentreerd.
+*/
+const rest = alle.filter((g) => g.sector !== huidigeSector).sort(opNaam);
+
+let start = 0;
+for (const teken of huidigeSlug) start = (start + teken.charCodeAt(0)) % 9973;
+const gedraaid = rest.length
+  ? rest.slice(start % rest.length).concat(rest.slice(0, start % rest.length))
+  : [];
+
+const gekozen = [...zelfdeSector, ...gedraaid].slice(0, aantal);
+
+/*
+  De varianten. Elke zin noemt de beroepsgroep en zegt iets anders over de
+  relatie, zodat drie links onder elkaar niet als een rijtje lezen.
+*/
+const VARIANTEN = [
+  (naam: string) => `Agressietraining voor ${inZin(naam)}`,
+  (naam: string) => `Wat ${inZin(naam)} tegenkomen`,
+  (naam: string) => `De trainingen voor ${inZin(naam)}`,
+  (naam: string) => `Ook voor ${inZin(naam)}`,
+];
+
+/*
+  Welke variant een link krijgt, wordt afgeleid uit de naam: gelijke naam is
+  gelijke variant, ongeacht op welke pagina de link staat. Een teller zou
+  betekenen dat dezelfde beroepsgroep op de ene pagina anders heet dan op de
+  andere, en dat leest als slordigheid zodra iemand twee pagina's naast elkaar
+  legt.
+*/
+const variantVoor = (naam: string) => {
+  let som = 0;
+  for (const teken of naam) som = (som + teken.charCodeAt(0)) % 997;
+  return VARIANTEN[som % VARIANTEN.length](naam);
+};
+---
+
+{
+  gekozen.length > 0 && (
+    <nav class="verwant" aria-labelledby="verwant-titel">
+      <h2 id="verwant-titel" class="verwant-titel">Ook relevant voor jouw organisatie</h2>
+      <ul class="verwant-lijst">
+        {gekozen.map((g) => (
+          <li>
+            <a class="verwant-link" href={link(`/sectoren/${g.sector}/${g.slug}/`)}>
+              <span class="verwant-tekst">{variantVoor(g.naam)}</span>
+              <span class="verwant-sector">{SECTOR_NAMEN[g.sector] ?? g.sector}</span>
+              <span class="pijl verwant-pijl" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

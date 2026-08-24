@@ -44,7 +44,7 @@ veelgestelde_vragen:
     antwoord: "Ja. Een deel van de agressie richting GGD-medewerkers verloopt schriftelijk of telefonisch; die situaties komen expliciet aan bod."
   - vraag: "Is er aandacht voor huisbezoeken en buitenlocaties?"
     antwoord: "Ja. Veilig handelen bij huisbezoeken, inspecties en solo-werkzaamheden op risicovolle locaties is een vast onderdeel."
-  - vraag: "Hoe lang duurt de agressietraining voor medewerkers van de ggd en publieke gezondheidszorg?"
+  - vraag: "Hoe lang duurt de agressietraining voor medewerkers van de GGD en publieke gezondheidszorg?"
     antwoord: De training duurt 1 dag. De groep telt maximaal 10 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Alle GGD-medewerkers en professionals in de publieke gezondheidszorg met direct burgercontact. Er is geen voorkennis nodig; dit is het instapniveau."
