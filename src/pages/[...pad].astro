@@ -28,7 +28,18 @@ const doel = new URL(link(nieuw), Astro.site).href;
     <title>Deze pagina is verhuisd | Bureau Weerbaar en Veilig</title>
     <meta http-equiv="refresh" content={`0; url=${doel}`} />
     <link rel="canonical" href={doel} />
-    <meta name="robots" content="noindex, follow" />
+    {/*
+      Bewust géén noindex. Die stond hier eerder wél, samen met de canonical
+      hierboven, en dat zijn tegenstrijdige signalen: de canonical zegt
+      "reken deze pagina toe aan de nieuwe URL", noindex zegt "negeer deze
+      pagina helemaal" — en dan kan de eerste instructie niet meer worden
+      opgevolgd. Op agressievisie.nl is precies deze combinatie eerder
+      teruggedraaid; die les staat in de netlify.toml van dat project.
+
+      Meta-refresh plus canonical is het sterkste signaal dat op GitHub Pages
+      mogelijk is. Zodra de site op een host draait die echte 301's kan sturen,
+      vervalt dit hele bestand.
+    */}
   </head>
   <body>
     <p>

@@ -91,22 +91,6 @@ const beroepsgroepen = defineCollection({
   }),
 });
 
-const kennisbank = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/kennisbank' }),
-  schema: z.object({
-    titel: z.string(),
-    slug: z.string(),
-    datum: z.coerce.date(),
-    onderwerp: z.string(),
-    samenvatting: z.string(),
-    gerelateerde_trainingen: z.array(z.string()).min(1),
-    verdieping_extern: z.string().url().optional(),
-    afbeelding: afbeelding.optional(),
-    seo_titel: z.string().max(60).optional(),
-    seo_beschrijving: z.string().max(155).optional(),
-  }),
-});
-
 const team = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/team' }),
   schema: z.object({
@@ -117,4 +101,4 @@ const team = defineCollection({
   }),
 });
 
-export const collections = { trainingen, sectoren, beroepsgroepen, kennisbank, team };
+export const collections = { trainingen, sectoren, beroepsgroepen, team };

@@ -1,0 +1,127 @@
+---
+import { link } from '../../lib/link';
+import Base from '../../layouts/Base.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import Terugbelverzoek from '../../components/Terugbelverzoek.astro';
+import GidsNavigatie from '../../components/GidsNavigatie.astro';
+import { gidsPagina } from '../../lib/trainingsgids';
+
+const pagina = gidsPagina('team-voorbereiden')!;
+
+const checklist = [
+  {
+    kop: 'Kondig aan waaróm, niet alleen wanneer',
+    tekst:
+      'Een agendaverzoek zonder uitleg leest als een correctie: blijkbaar doen we iets fout. Zeg dat het gaat om situaties die hoe dan ook voorkomen, en dat de training bedoeld is om die makkelijker te maken.',
+  },
+  {
+    kop: 'Vraag vooraf om situaties',
+    tekst:
+      'De training draait op eigen casuïstiek. Vraag iedereen een of twee situaties mee te nemen, en laat weten dat een situatie die níét goed ging het meest oplevert.',
+  },
+  {
+    kop: 'Zorg dat de dag echt vrij is',
+    tekst:
+      'Deelnemers die tussendoor de telefoon opnemen halen er een fractie uit. Regel de vervanging zoals je die voor een cursusdag buiten de deur zou regelen.',
+  },
+  {
+    kop: 'Wees duidelijk over wat er met de inhoud gebeurt',
+    tekst:
+      'Wat in de zaal besproken wordt, blijft daar. Geen terugkoppeling per deelnemer aan de leidinggevende. Zonder die zekerheid brengt niemand iets echts in.',
+  },
+  {
+    kop: 'Laat de leidinggevende meedoen of juist niet',
+    tekst:
+      'Beide kan, maar kies bewust. Meedoen laat zien dat het serieus is; wegblijven maakt de ruimte veiliger. Bespreek vooraf met de trainer wat in jouw team beter werkt.',
+  },
+  {
+    kop: 'Plan de nazorg nu al',
+    tekst:
+      'Zet meteen een teamoverleg in de agenda voor een paar weken later. Dat is het verschil tussen een leuke dag en een verandering.',
+  },
+];
+---
+
+<Base
+  titel="Een agressietraining voorbereiden met je team"
+  beschrijving="Wat je vooraf regelt en aankondigt bij een agressietraining: casuïstiek verzamelen, verwachtingen managen, weerstand voor zijn en de nazorg alvast plannen."
+>
+  <div class="vlak-donker op-donker relative overflow-hidden text-white">
+    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
+      <Breadcrumb
+        pad={[
+          { naam: 'Home', pad: '/' },
+          { naam: 'Trainingsgids', pad: '/trainingsgids/' },
+          { naam: pagina.kortelabel },
+        ]}
+      />
+      <p class="kicker mt-7">Vooraf</p>
+      <h1 class="mt-4 max-w-3xl text-3xl font-bold leading-[1.15] md:text-5xl">{pagina.titel}</h1>
+      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
+        Een agressietraining valt of staat bij wat deelnemers meebrengen. Vraag
+        vooraf om echte situaties, leg uit waarom de training er is, en zorg dat
+        de dag vrij is van werk. Bureau Weerbaar en Veilig stemt de inhoud af op
+        wat er binnenkomt.
+      </p>
+    </div>
+  </div>
+  <div class="lijn-merk" aria-hidden="true"></div>
+
+  <div class="mx-auto max-w-6xl px-4 py-16">
+    <div class="grid gap-12 lg:grid-cols-[1fr_22rem]">
+      <div class="min-w-0">
+        <div class="leestekst">
+          <h2>De weerstand die je kunt verwachten</h2>
+          <p>
+            Bij vrijwel elk team komt dezelfde reactie: <em>"moeten wij op
+            cursus omdat wíj iets fout doen?"</em> Dat is geen onwil, het is een
+            logische lezing van een aankondiging zonder uitleg. Agressie komt van
+            buiten, en een training kan daardoor voelen als een verwijt aan wie
+            hem opvangt.
+          </p>
+          <p>
+            De meest effectieve manier om dat voor te zijn is de reden omdraaien.
+            Niet <strong>jullie moeten beter omgaan met agressie</strong>, maar
+            <strong>wij vinden dat jullie hier niet alleen voor moeten staan</strong>.
+            Dat is ook inhoudelijk juister: een groot deel van wat er op zo'n dag
+            boven tafel komt gaat over roosters, bezetting en afspraken — dingen
+            waar het team zelf niet over gaat.
+          </p>
+        </div>
+
+        <section class="mt-12" aria-labelledby="checklist-titel">
+          <p class="kicker">Zes dingen die je regelt</p>
+          <h2 id="checklist-titel" class="kop-onderstreept mt-4 text-2xl font-bold text-marine">
+            Checklist vooraf
+          </h2>
+          <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+            {checklist.map((c) => (
+              <li class="niveau-basis kaart p-5">
+                <h3 class="font-bold text-marine">{c.kop}</h3>
+                <p class="mt-2 text-sm leading-relaxed text-grijs">{c.tekst}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <div class="leestekst mt-14">
+          <h2>Een gemengd team</h2>
+          <p>
+            Zit de helft van je team op basisniveau en de andere helft verder?
+            Dan is één training voor iedereen zelden de beste oplossing: de een
+            verveelt zich, de ander haakt af. Splitsen kan, en soms is een
+            basistraining voor iedereen gevolgd door een verdieping voor een deel
+            de rustigste route. De
+            <a href={link('/trainingsgids/welk-niveau/')}>keuzehulp</a> geeft een
+            eerste richting.
+          </p>
+        </div>
+
+        <GidsNavigatie huidig="team-voorbereiden" />
+      </div>
+
+      <Terugbelverzoek onderwerp="de voorbereiding van je team" />
+    </div>
+  </div>
+</Base>

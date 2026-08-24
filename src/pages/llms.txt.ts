@@ -5,6 +5,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { SECTOR_NAMEN } from '../lib/sectoren';
+import { TRAININGSGIDS } from '../lib/trainingsgids';
 
 export const GET: APIRoute = async ({ site }) => {
   const oorsprong = site?.href.replace(/\/$/, '') ?? 'https://bureauweerbaarenveilig.nl';
@@ -16,9 +17,6 @@ export const GET: APIRoute = async ({ site }) => {
     a.data.naam.localeCompare(b.data.naam)
   );
   const trainingen = await getCollection('trainingen');
-  const kennisbank = (await getCollection('kennisbank')).sort(
-    (a, b) => b.data.datum.getTime() - a.data.datum.getTime()
-  );
 
   const perNiveau = (n: string) => trainingen.filter((t) => t.data.niveau === n).length;
 
@@ -72,7 +70,8 @@ export const GET: APIRoute = async ({ site }) => {
     `- [Wat is agressietraining](${basis}/agressietraining/): aanpak, doelgroep en opbouw`,
     `- [Alle sectoren](${basis}/sectoren/): ingang per sector`,
     `- [Trainingsniveaus](${basis}/niveaus/): basis, gevorderd en expert naast elkaar`,
-    `- [Kennisbank](${basis}/kennisbank/): praktijkgerichte artikelen`,
+    `- [Alle trainingen](${basis}/trainingen/): het volledige aanbod, te filteren op sector en niveau`,
+    `- [Trainingsgids](${basis}/trainingsgids/): hulp bij het kiezen, voorbereiden en borgen van een training`,
     `- [Over ons](${basis}/over-ons/): organisatie en team`,
     `- [Contact](${basis}/contact/): telefoon, e-mail en terugbelverzoek`,
     '',
@@ -97,9 +96,13 @@ export const GET: APIRoute = async ({ site }) => {
           }, niveau ${t.data.niveau}, ${t.data.duur}`
       ),
     '',
-    '## Kennisbank',
+    '## Trainingsgids',
     '',
-    ...kennisbank.map((a) => `- [${a.data.titel}](${basis}/kennisbank/${a.data.slug}/)`),
+    'Hulp bij het regelen van een training, voor wie het binnen een organisatie',
+    'moet kiezen en verantwoorden. Geen achtergrondinformatie over agressie zelf:',
+    'daarvoor verwijst Bureau Weerbaar en Veilig naar agressievisie.nl.',
+    '',
+    ...TRAININGSGIDS.map((p) => `- [${p.titel}](${basis}/trainingsgids/${p.slug}/): ${p.kort}`),
     '',
   ];
 

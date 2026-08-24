@@ -1,0 +1,80 @@
+---
+import { link } from '../../lib/link';
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import Terugbelverzoek from '../../components/Terugbelverzoek.astro';
+import { TRAININGSGIDS } from '../../lib/trainingsgids';
+
+const trainingen = await getCollection('trainingen');
+const beroepsgroepen = await getCollection('beroepsgroepen');
+---
+
+<Base
+  titel="Trainingsgids: een agressietraining regelen"
+  beschrijving="Hulp bij het regelen van een agressietraining: welk niveau je team nodig heeft, hoe een trainingsdag verloopt, hoe je voorbereidt, borgt en intern akkoord krijgt."
+>
+  <div class="vlak-donker op-donker relative overflow-hidden text-white">
+    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
+      <Breadcrumb pad={[{ naam: 'Home', pad: '/' }, { naam: 'Trainingsgids' }]} />
+      <p class="kicker mt-7">Voor wie het regelt</p>
+      <h1 class="mt-4 max-w-3xl text-3xl font-bold leading-[1.15] md:text-5xl">
+        Een agressietraining regelen
+      </h1>
+      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
+        Vijf vragen die iedereen stelt die binnen een organisatie een
+        agressietraining moet regelen. Bureau Weerbaar en Veilig beantwoordt ze
+        hier, zodat je weet wat je kiest, wat je kunt verwachten en hoe je het
+        intern rondkrijgt.
+      </p>
+    </div>
+  </div>
+  <div class="lijn-merk" aria-hidden="true"></div>
+
+  <div class="mx-auto max-w-6xl px-4 py-16">
+    <ol class="grid gap-4 md:grid-cols-2">
+      {TRAININGSGIDS.map((p, i) => (
+        <li class="kaart flex items-start gap-5 p-6">
+          <span
+            class="mt-0.5 text-2xl font-bold tabular-nums leading-none text-oranje-tekst"
+            aria-hidden="true">{i + 1}</span>
+          <div>
+            <h2 class="text-lg font-bold text-marine">
+              <a href={link(`/trainingsgids/${p.slug}/`)} class="after:absolute after:inset-0">
+                {p.titel}
+              </a>
+            </h2>
+            <p class="mt-1.5 text-sm leading-relaxed text-grijs">{p.kort}</p>
+          </div>
+          <span class="pijl ml-auto text-xl text-marine" aria-hidden="true">→</span>
+        </li>
+      ))}
+    </ol>
+
+    <!--
+      Bewust een verwijzing naar het zustermerk in plaats van eigen
+      achtergrondartikelen: de scheiding uit MERKGROEP.md hoofdstuk 2 zegt dat
+      kennis over agressie bij agressievisie.nl hoort en niet hier.
+    -->
+    <div class="mt-14 grid gap-10 lg:grid-cols-[1fr_22rem]">
+      <div class="leestekst">
+        <h2>Zoek je achtergrond over agressie zelf?</h2>
+        <p>
+          Deze gids gaat over het regelen van een training: kiezen, voorbereiden,
+          borgen en verantwoorden. Zoek je cijfers, wetgeving, onderzoek of
+          uitleg van methodieken, dan is <a href="https://agressievisie.nl"
+          >agressievisie.nl</a> de plek daarvoor. Dat is het kennisplatform van
+          dezelfde organisatie waar Bureau Weerbaar en Veilig onder valt, en het
+          verkoopt niets.
+        </p>
+        <p>
+          Wil je liever meteen weten wat er is: er staan
+          {trainingen.length} trainingen klaar voor {beroepsgroepen.length} beroepsgroepen,
+          te filteren op <a href={link('/trainingen/')}>de overzichtspagina</a>.
+        </p>
+      </div>
+      <Terugbelverzoek onderwerp="het regelen van een training" />
+    </div>
+  </div>
+</Base>

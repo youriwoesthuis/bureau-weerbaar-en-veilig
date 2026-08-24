@@ -243,95 +243,95 @@ export const REDIRECTS: Record<string, string> = {
 
   /* ---------- Kennisbank: opgeschoonde slugs ---------- */
   '/kennisbank/grensoverschrijdend-gedrag-herkennen-en-aanpakken-2/':
-    '/kennisbank/grensoverschrijdend-gedrag-herkennen-en-aanpakken/',
+    '/trainingsgids/',
   '/kennisbank/omgaan-met-onbegrepen-gedrag-bij-dementie-blog/':
-    '/kennisbank/omgaan-met-onbegrepen-gedrag-bij-dementie/',
+    '/trainingsgids/',
   '/kennisbank/herken-de-fase-begrijp-het-type-de-agressieladder-en-het-verschil-tussen-frustratie-en-manipulatie/':
-    '/kennisbank/de-agressieladder-frustratie-of-manipulatie/',
+    '/trainingsgids/',
   '/kennisbank/waarom-niet-de-gebeurtenis-maar-je-gedachte-de-stress-bepaalt-het-g-model/':
-    '/kennisbank/het-g-model-je-gedachte-bepaalt-de-stress/',
+    '/trainingsgids/',
   '/kennisbank/de-stoplichtmethode-voor-huisbezoeken-wanneer-is-het-rood-oranje-of-groen/':
-    '/kennisbank/de-stoplichtmethode-voor-huisbezoeken/',
+    '/trainingsgids/',
   '/kennisbank/lsd-in-de-spreekkamer-hoe-je-regie-houdt-als-de-deur-dicht-is/':
-    '/kennisbank/lsd-in-de-spreekkamer/',
+    '/trainingsgids/',
   '/kennisbank/waarom-een-meld-en-aangiftebeleid-bij-agressie-onmisbaar-is/':
-    '/kennisbank/waarom-een-meld-en-aangiftebeleid-onmisbaar-is/',
+    '/trainingsgids/',
   '/kennisbank/wanneer-emoties-het-gesprek-overnemen-wat-helpt-jou-om-professioneel-te-blijven/':
-    '/kennisbank/wanneer-emoties-het-gesprek-overnemen/',
+    '/trainingsgids/',
   '/kennisbank/wat-je-ziet-als-je-aanbelt-signalen-herkennen-bij-onrust/':
-    '/kennisbank/wat-je-ziet-als-je-aanbelt/',
+    '/trainingsgids/',
   '/kennisbank/de-rekensom-van-onveiligheid-wat-een-incidentje-jouw-organisatie-echt-kost/':
-    '/kennisbank/de-rekensom-van-onveiligheid/',
+    '/trainingsgids/',
   '/kennisbank/de-stille-bewaker-hoe-je-werkplek-agressie-kan-uitlokken-of-juist-voorkomen/':
-    '/kennisbank/de-stille-bewaker-je-werkplek-als-factor/',
+    '/trainingsgids/',
   '/kennisbank/de-emotionele-ehbo-koffer-van-je-team-wat-spreek-je-af-voordat-een-gesprek-ontspoort/':
-    '/kennisbank/de-emotionele-ehbo-koffer-van-je-team/',
+    '/trainingsgids/',
   '/kennisbank/de-digitale-klap-hoe-je-professioneel-blijft-als-de-agressie-via-e-mail-komt/':
-    '/kennisbank/de-digitale-klap/',
+    '/trainingsgids/',
   '/kennisbank/de-sluipmoordenaar-van-het-team-waarom-roddelen-en-buitensluiten-gevaarlijker-zijn-dan-een-schreeuwende-klant/':
-    '/kennisbank/de-sluipmoordenaar-van-het-team/',
+    '/trainingsgids/',
   '/kennisbank/de-ramptoerist-met-een-camera-wat-doe-je-als-je-werk-tijdens-een-crisis-wordt-gefilmd/':
-    '/kennisbank/gefilmd-worden-tijdens-een-crisis/',
+    '/trainingsgids/',
   '/kennisbank/de-stille-sabotage-herkennen-van-en-omgaan-met-de-passief-agressieve-leidinggevende/':
-    '/kennisbank/de-stille-sabotage/',
+    '/trainingsgids/',
   '/kennisbank/je-hoofd-resetten-hoe-de-matrixmethode-emotionele-lading-neutraliseert/':
-    '/kennisbank/de-matrixmethode/',
+    '/trainingsgids/',
   '/kennisbank/leren-als-organisatie-ontwikkeling-stopt-niet-na-de-training/':
-    '/kennisbank/leren-stopt-niet-na-de-training/',
+    '/trainingsgids/',
   '/kennisbank/ethische-keuzes-zonder-protocol-wat-je-doet-als-regels-niet-toereikend-zijn/':
-    '/kennisbank/ethische-keuzes-zonder-protocol/',
+    '/trainingsgids/',
   '/kennisbank/verantwoord-online-gedrag-hoe-teams-samen-normen-bepalen-voor-communicatie/':
-    '/kennisbank/verantwoord-online-gedrag/',
+    '/trainingsgids/',
 
   /* Samengevoegd om te voorkomen dat twee artikelen op dezelfde zoekterm
      concurreren (zie hoofdstuk 3.4 van de projectbrief). */
   '/kennisbank/professioneel-blijven-als-het-gesprek-uit-de-hand-loopt/':
-    '/kennisbank/professioneel-blijven-aan-de-lijn/',
+    '/trainingsgids/',
   '/kennisbank/wat-sterke-teams-doen-als-het-spannend-wordt/':
-    '/kennisbank/hoe-teams-elkaar-sterker-maken-in-lastige-situaties/',
+    '/trainingsgids/',
   '/kennisbank/wanneer-beleid-echt-gedragen-wordt-van-document-naar-dagelijks-gedrag/':
-    '/kennisbank/waarom-beleid-pas-werkt-als-gedrag-volgt/',
+    '/trainingsgids/',
 
   /* Buiten het domein van Bureau Weerbaar en Veilig: gaat over verzuimpreventie,
      niet over agressie. Hoort bij het brede aanbod van actinmove.nl. */
-  '/kennisbank/van-controle-naar-contact/': '/kennisbank/',
+  '/kennisbank/van-controle-naar-contact/': '/trainingsgids/',
 
   /* ---------- Kennisbank intern: boom vervalt ---------- */
   '/kennisbank_intern/weerbaarheid-op-de-werkvloer/':
-    '/kennisbank/weerbaarheid-op-de-werkvloer-een-vaardigheid-die-je-samen-ontwikkelt/',
+    '/trainingsgids/',
   '/kennisbank_intern/grensoverschrijdend-gedrag-herkennen/':
-    '/kennisbank/grensoverschrijdend-gedrag-herkennen-en-aanpakken/',
+    '/trainingsgids/',
   '/kennisbank_intern/opvang-en-nazorg-bieden-2/':
-    '/kennisbank/waarom-goede-opvang-en-nazorg-na-een-incident-het-verschil-maakt/',
-  '/kennisbank_intern/omgaan-met-telefonische-agressie-2/': '/kennisbank/professioneel-blijven-aan-de-lijn/',
+    '/trainingsgids/',
+  '/kennisbank_intern/omgaan-met-telefonische-agressie-2/': '/trainingsgids/',
   '/kennisbank_intern/omgaan-met-telefonische-agressie-professioneel-rustig-en-met-regie-reageren/':
-    '/kennisbank/professioneel-blijven-aan-de-lijn/',
-  '/kennisbank_intern/telefonische-agressie-training/': '/kennisbank/professioneel-blijven-aan-de-lijn/',
+    '/trainingsgids/',
+  '/kennisbank_intern/telefonische-agressie-training/': '/trainingsgids/',
   '/kennisbank_intern/omgaan-met-verward-gedrag-bij-middelengebruik-2/':
-    '/kennisbank/werken-met-mensen-onder-invloed/',
+    '/trainingsgids/',
   '/kennisbank_intern/omgaan-met-onbegrepen-gedrag-bij-dementie-2/':
-    '/kennisbank/omgaan-met-onbegrepen-gedrag-bij-dementie/',
-  '/kennisbank_intern/veilig-huisbezoek-2/': '/kennisbank/de-stoplichtmethode-voor-huisbezoeken/',
+    '/trainingsgids/',
+  '/kennisbank_intern/veilig-huisbezoek-2/': '/trainingsgids/',
   '/kennisbank_intern/ait-basistraining-stevig-samenwerken/':
-    '/kennisbank/het-belang-van-een-agressie-interventie-team/',
-  '/kennisbank_intern/sociale-veiligheid-op-de-werkvloer-2/': '/kennisbank/',
-  '/kennisbank_intern/omgaan-met-fysieke-agressie-2/': '/kennisbank/',
-  '/kennisbank_intern/generatieverschillen-op-de-werkvloer/': '/kennisbank/',
-  '/kennisbank_intern/hospitality-training-2/': '/kennisbank/',
-  '/kennisbank_intern/mediationvaardigheden-conflicten-oplossen/': '/kennisbank/',
-  '/kennisbank_intern/grip-op-gedoe-2/': '/kennisbank/',
-  '/kennisbank_intern/verzuimpreventie-en-inzetbaarheidsgesprekken/': '/kennisbank/',
-  '/kennisbank_intern/overtuigend-presenteren-met-rust/': '/kennisbank/',
-  '/kennisbank_intern/praktisch-leiderschap-sturen-met-rust-richting-en-resultaat/': '/kennisbank/',
-  '/kennisbank_intern/lastige-gesprekken-voeren-2/': '/kennisbank/',
-  '/kennisbank_intern/grip-op-stress-en-werkdruk-2/': '/kennisbank/',
-  '/kennisbank_intern/feedback-training-2/': '/kennisbank/',
-  '/kennisbank_intern/effectief-communiceren-2/': '/kennisbank/',
-  '/kennisbank_intern/assertiviteitstraining-met-rust-en-duidelijkheid/': '/kennisbank/',
-  '/kennisbank_intern/supermarkt-safari-gezonder-kiezen/': '/kennisbank/',
-  '/kennisbank_intern/ontspannen-in-10-minuten/': '/kennisbank/',
-  '/kennisbank_intern/ademhaling-en-rust/': '/kennisbank/',
-  '/kennisbank_intern/mindfulness-op-het-werk/': '/kennisbank/',
+    '/trainingsgids/',
+  '/kennisbank_intern/sociale-veiligheid-op-de-werkvloer-2/': '/trainingsgids/',
+  '/kennisbank_intern/omgaan-met-fysieke-agressie-2/': '/trainingsgids/',
+  '/kennisbank_intern/generatieverschillen-op-de-werkvloer/': '/trainingsgids/',
+  '/kennisbank_intern/hospitality-training-2/': '/trainingsgids/',
+  '/kennisbank_intern/mediationvaardigheden-conflicten-oplossen/': '/trainingsgids/',
+  '/kennisbank_intern/grip-op-gedoe-2/': '/trainingsgids/',
+  '/kennisbank_intern/verzuimpreventie-en-inzetbaarheidsgesprekken/': '/trainingsgids/',
+  '/kennisbank_intern/overtuigend-presenteren-met-rust/': '/trainingsgids/',
+  '/kennisbank_intern/praktisch-leiderschap-sturen-met-rust-richting-en-resultaat/': '/trainingsgids/',
+  '/kennisbank_intern/lastige-gesprekken-voeren-2/': '/trainingsgids/',
+  '/kennisbank_intern/grip-op-stress-en-werkdruk-2/': '/trainingsgids/',
+  '/kennisbank_intern/feedback-training-2/': '/trainingsgids/',
+  '/kennisbank_intern/effectief-communiceren-2/': '/trainingsgids/',
+  '/kennisbank_intern/assertiviteitstraining-met-rust-en-duidelijkheid/': '/trainingsgids/',
+  '/kennisbank_intern/supermarkt-safari-gezonder-kiezen/': '/trainingsgids/',
+  '/kennisbank_intern/ontspannen-in-10-minuten/': '/trainingsgids/',
+  '/kennisbank_intern/ademhaling-en-rust/': '/trainingsgids/',
+  '/kennisbank_intern/mindfulness-op-het-werk/': '/trainingsgids/',
 
   /* ---------- Teampagina's worden een sectie op /over-ons/ ---------- */
   '/team/jeroen-woesthuis/': '/over-ons/#team',

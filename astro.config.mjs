@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
+import { REDIRECTS } from './src/lib/redirects.ts';
 import { remarkLeestijd } from './src/lib/remark-leestijd.mjs';
 
 /*
@@ -21,7 +22,21 @@ export default defineConfig({
   site: siteUrl,
   base: basePad,
   trailingSlash: 'always',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      /*
+        De doorverwijspagina's uit src/pages/[...pad].astro horen niet in de
+        sitemap. Ze stonden er wel in: alle oude URL's van de vorige site, ruim
+        honderdvijftig stuks. Een sitemap is een lijst met pagina's die je
+        geïndexeerd wilt hebben, en een pagina die alleen doorverwijst is dat
+        per definitie niet.
+      */
+      filter: (pagina) => {
+        const pad = new URL(pagina).pathname.replace(basePad ?? '', '') || '/';
+        return !(pad in REDIRECTS);
+      },
+    }),
+  ],
   markdown: {
     // Berekent tijdens het bouwen de leestijd per artikel
     remarkPlugins: [remarkLeestijd],

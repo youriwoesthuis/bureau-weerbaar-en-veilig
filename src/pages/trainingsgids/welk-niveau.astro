@@ -1,0 +1,287 @@
+---
+import { link } from '../../lib/link';
+import Base from '../../layouts/Base.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import Terugbelverzoek from '../../components/Terugbelverzoek.astro';
+import GidsNavigatie from '../../components/GidsNavigatie.astro';
+import { NIVEAU_BESCHRIJVING, NIVEAU_LABELS } from '../../lib/sectoren';
+import { gidsPagina } from '../../lib/trainingsgids';
+
+const pagina = gidsPagina('welk-niveau')!;
+
+/*
+  De keuzehulp is een beslisboom, geen puntentelling. Dat is bewust: met CSS
+  valt niet op te tellen, en het hoeft ook niet. De drie niveaudefinities uit
+  CLAUDE.md geven zelf de vertakking aan.
+
+    leidinggevende of coördinator                        → expert
+    uitvoerend, nog geen training gehad                  → basis
+    uitvoerend, wel training gehad, agressie incidenteel → basis (opfrissen)
+    uitvoerend, wel training gehad, agressie structureel → gevorderd
+
+  Vier regels, en elke uitkomst is te herleiden tot een definitie in plaats van
+  tot een score die niemand kan controleren.
+*/
+const uitkomsten = [
+  {
+    id: 'expert',
+    niveau: 'expert' as const,
+    voorwaarde: '.keuzehulp:has(#rol-leiding:checked)',
+    waarom:
+      'Je bent verantwoordelijk voor een team of voor het beleid. Dan gaat het niet alleen om je eigen reactie, maar om de norm in het team, de nazorgstructuur en de borging daarvan.',
+  },
+  {
+    id: 'basis-nieuw',
+    niveau: 'basis' as const,
+    voorwaarde: '.keuzehulp:has(#rol-uitvoerend:checked):has(#ervaring-nee:checked)',
+    waarom:
+      'Het team heeft nog geen agressietraining gehad. Dan begin je bij het fundament: signalen herkennen, je eigen reactie reguleren en het gesprek terugbrengen.',
+  },
+  {
+    id: 'basis-opfris',
+    niveau: 'basis' as const,
+    voorwaarde:
+      '.keuzehulp:has(#rol-uitvoerend:checked):has(#ervaring-ja:checked):has(#frequentie-soms:checked)',
+    waarom:
+      'Er is eerder getraind, maar agressie komt niet dagelijks voor. Dan is opfrissen op basisniveau zinvoller dan verdiepen: vaardigheden die je zelden gebruikt, zakken weg.',
+  },
+  {
+    id: 'gevorderd',
+    niveau: 'gevorderd' as const,
+    voorwaarde:
+      '.keuzehulp:has(#rol-uitvoerend:checked):has(#ervaring-ja:checked):has(#frequentie-vaak:checked)',
+    waarom:
+      'De basis zit er en het team komt er structureel mee in aanraking. Dan is er ruimte voor complexere casuïstiek: grenzen stellen onder druk, instrumentele agressie, nazorg en melden.',
+  },
+];
+
+/* Elke uitkomst zichtbaar maken zodra zijn eigen voorwaarde klopt */
+const uitkomstCss = uitkomsten
+  .map((u) => `${u.voorwaarde} #uitkomst-${u.id} { display: block; }`)
+  .join('\n  ');
+---
+
+<Base
+  titel="Welk niveau agressietraining heeft mijn team nodig?"
+  beschrijving="Keuzehulp van Bureau Weerbaar en Veilig: beantwoord drie vragen over je team en zie of basis, gevorderd of expert past. Werkt zonder account of e-mailadres."
+>
+  <div class="vlak-donker op-donker relative overflow-hidden text-white">
+    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
+      <Breadcrumb
+        pad={[
+          { naam: 'Home', pad: '/' },
+          { naam: 'Trainingsgids', pad: '/trainingsgids/' },
+          { naam: pagina.kortelabel },
+        ]}
+      />
+      <p class="kicker mt-7">Keuzehulp</p>
+      <h1 class="mt-4 max-w-3xl text-3xl font-bold leading-[1.15] md:text-5xl">
+        {pagina.titel}
+      </h1>
+      <!-- GEO-openingsantwoord: los citeerbaar -->
+      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
+        Bureau Weerbaar en Veilig biedt elke agressietraining in drie niveaus.
+        Basis is voor wie nog niet eerder trainde, gevorderd voor teams die de
+        basis beheersen en er structureel mee te maken hebben, expert voor
+        leidinggevenden en coördinatoren. Beantwoord hieronder drie vragen en je
+        ziet welk niveau past.
+      </p>
+    </div>
+  </div>
+  <div class="lijn-merk" aria-hidden="true"></div>
+
+  <div class="mx-auto max-w-6xl px-4 py-16">
+    <div class="grid gap-12 lg:grid-cols-[1fr_22rem]">
+      <div class="min-w-0">
+        <form class="keuzehulp" aria-label="Keuzehulp niveau">
+          <fieldset class="vraag">
+            <legend><span class="vraagnummer" aria-hidden="true">1</span> Voor wie is de training?</legend>
+            <div class="antwoorden">
+              <label class="antwoord">
+                <input type="radio" name="rol" id="rol-uitvoerend" />
+                <span>
+                  <strong>Uitvoerende medewerkers</strong>
+                  Mensen die zelf met cliënten, klanten of bezoekers werken.
+                </span>
+              </label>
+              <label class="antwoord">
+                <input type="radio" name="rol" id="rol-leiding" />
+                <span>
+                  <strong>Leidinggevenden of coördinatoren</strong>
+                  Wie verantwoordelijk is voor een team, het beleid of de nazorg.
+                </span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="vraag vervolg">
+            <legend><span class="vraagnummer" aria-hidden="true">2</span> Heeft het team eerder een agressietraining gehad?</legend>
+            <div class="antwoorden">
+              <label class="antwoord">
+                <input type="radio" name="ervaring" id="ervaring-nee" />
+                <span><strong>Nee, of lang geleden</strong> Er is geen gedeelde basis om op voort te bouwen.</span>
+              </label>
+              <label class="antwoord">
+                <input type="radio" name="ervaring" id="ervaring-ja" />
+                <span><strong>Ja, recent</strong> De basisvaardigheden zijn bekend en geoefend.</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="vraag vervolg2">
+            <legend><span class="vraagnummer" aria-hidden="true">3</span> Hoe vaak krijgt het team met agressie te maken?</legend>
+            <div class="antwoorden">
+              <label class="antwoord">
+                <input type="radio" name="frequentie" id="frequentie-soms" />
+                <span><strong>Af en toe</strong> Een enkele keer per maand of minder.</span>
+              </label>
+              <label class="antwoord">
+                <input type="radio" name="frequentie" id="frequentie-vaak" />
+                <span><strong>Structureel</strong> Wekelijks of vaker, en soms zwaar.</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="uitkomsten" aria-live="polite">
+            {uitkomsten.map((u) => (
+              <div
+                id={`uitkomst-${u.id}`}
+                class={`uitkomst niveau-${u.niveau}`}
+              >
+                <p class="text-sm font-bold uppercase tracking-wide" style="color: var(--accent-tekst)">
+                  Passend niveau
+                </p>
+                <h2 class="mt-2 text-2xl font-bold text-marine">{NIVEAU_LABELS[u.niveau]}</h2>
+                <p class="mt-3 leading-relaxed text-grijs">{u.waarom}</p>
+                <p class="mt-4 rounded-lg bg-white/70 p-4 text-sm leading-relaxed text-inkt">
+                  {NIVEAU_BESCHRIJVING[u.niveau]}
+                </p>
+                <div class="mt-5 flex flex-col gap-3 sm:flex-row">
+                  <a href={link(`/niveaus/${u.niveau}/`)} class="knop knop-primair text-sm">
+                    Bekijk alle {NIVEAU_LABELS[u.niveau].toLowerCase()}trainingen
+                    <span aria-hidden="true">→</span>
+                  </a>
+                  <a href={link('/sectoren/')} class="knop knop-secundair text-sm">
+                    Zoek op beroepsgroep
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </form>
+
+        <div class="leestekst mt-12">
+          <h2>Twijfel je nog?</h2>
+          <p>
+            Deze keuzehulp is een richting, geen diagnose. In de praktijk zit een
+            team er soms tussenin: de helft trainde vorig jaar, de andere helft
+            is nieuw. Bureau Weerbaar en Veilig denkt daar graag in mee, en
+            splitst een groep als dat beter uitpakt.
+          </p>
+          <p>
+            Niet elke beroepsgroep vraagt hetzelfde. Een baliemedewerker bij een
+            gemeenteloket heeft een ander gesprek dan een ambulancemedewerker op
+            straat, ook op hetzelfde niveau. Daarom is elke training per
+            beroepsgroep uitgewerkt: kijk bij
+            <a href={link('/sectoren/')}>jouw sector</a> welke er zijn.
+          </p>
+        </div>
+
+        <GidsNavigatie huidig="welk-niveau" />
+      </div>
+
+      <Terugbelverzoek onderwerp="het juiste niveau voor jouw team" />
+    </div>
+  </div>
+</Base>
+
+<style is:inline set:html={`
+  .keuzehulp { max-width: 44rem; }
+
+  .vraag {
+    border-top: 1px solid var(--color-lijn);
+    padding-top: 1.75rem;
+    margin-top: 1.75rem;
+  }
+  .vraag:first-child { border-top: 0; padding-top: 0; margin-top: 0; }
+  .vraag legend {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-marine);
+    line-height: 1.3;
+  }
+  .vraagnummer {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 9999px;
+    background: var(--color-marine);
+    color: #fff;
+    font-size: .8125rem;
+  }
+
+  .antwoorden {
+    display: grid;
+    gap: .75rem;
+    margin-top: 1.25rem;
+  }
+  @media (min-width: 640px) { .antwoorden { grid-template-columns: 1fr 1fr; } }
+
+  /* De radioknop blijft bedienbaar met het toetsenbord, maar is niet zichtbaar */
+  .antwoord input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  .antwoord > span {
+    display: block;
+    padding: 1rem 1.15rem;
+    border: 1px solid var(--color-lijn);
+    border-radius: .75rem;
+    background: #fff;
+    font-size: .9375rem;
+    line-height: 1.5;
+    color: var(--color-grijs);
+    cursor: pointer;
+    transition: border-color 140ms ease, background-color 140ms ease;
+  }
+  .antwoord > span strong {
+    display: block;
+    margin-bottom: .2rem;
+    color: var(--color-marine);
+  }
+  .antwoord:hover > span { border-color: var(--color-marine); }
+  .antwoord:has(input:checked) > span {
+    border-color: var(--color-marine);
+    background: var(--color-vlak-warm);
+    box-shadow: inset 0 0 0 1px var(--color-marine);
+  }
+  .antwoord input:focus-visible + span {
+    outline: 3px solid var(--color-blauw);
+    outline-offset: 2px;
+  }
+
+  /*
+    Vraag 2 verschijnt pas als vraag 1 beantwoord is, vraag 3 pas als vraag 2
+    beantwoord is — en vraag 2 en 3 vervallen zodra iemand "leidinggevende"
+    kiest, want dan is de uitkomst al bepaald. Zo staan er nooit meer keuzes op
+    het scherm dan nodig.
+  */
+  .vervolg, .vervolg2, .uitkomst { display: none; }
+  .keuzehulp:has(#rol-uitvoerend:checked) .vervolg { display: block; }
+  .keuzehulp:has(#rol-uitvoerend:checked):has(#ervaring-ja:checked) .vervolg2 { display: block; }
+
+  .uitkomst {
+    margin-top: 2.5rem;
+    border: 1px solid var(--color-lijn);
+    border-top: 4px solid var(--accent);
+    border-radius: .75rem;
+    background: var(--accent-vlak);
+    padding: 1.75rem;
+  }
+
+  ${uitkomstCss}
+`} />

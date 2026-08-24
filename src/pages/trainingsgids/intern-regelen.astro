@@ -1,0 +1,143 @@
+---
+import { link } from '../../lib/link';
+import Base from '../../layouts/Base.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import Terugbelverzoek from '../../components/Terugbelverzoek.astro';
+import GidsNavigatie from '../../components/GidsNavigatie.astro';
+import { gidsPagina } from '../../lib/trainingsgids';
+
+const pagina = gidsPagina('intern-regelen')!;
+
+const aanvraag = [
+  {
+    kop: 'Om welk team gaat het',
+    tekst:
+      'Functie, aantal mensen en waar ze werken. Een aanvraag voor "de zorg" is lastiger te beoordelen dan een aanvraag voor acht medewerkers van een verpleegafdeling.',
+  },
+  {
+    kop: 'Wat er speelt',
+    tekst:
+      'Concrete voorvallen uit de eigen registratie, zonder namen. Wat er in het meldsysteem staat overtuigt meer dan een algemene zorg.',
+  },
+  {
+    kop: 'Welk niveau en waarom',
+    tekst:
+      'Basis, gevorderd of expert, met de reden erbij. Dat laat zien dat er een keuze is gemaakt in plaats van een cursus aangevraagd.',
+  },
+  {
+    kop: 'Wat het oplevert',
+    tekst:
+      'De concrete leeruitkomsten staan op elke trainingspagina onder "Wat je leert". Die kun je vrijwel letterlijk overnemen.',
+  },
+  {
+    kop: 'Wat het kost aan tijd',
+    tekst:
+      'Eén dag, of twee op expertniveau, plus de vervanging die je moet regelen. Wees daar eerlijk over: een aanvraag die de roosterdruk verzwijgt, sneuvelt later alsnog.',
+  },
+  {
+    kop: 'Wat er daarna gebeurt',
+    tekst:
+      'Een terugkommoment en de punten die bij de organisatie liggen. Dat maakt van een losse dag een plan, en plannen komen makkelijker door een begroting.',
+  },
+];
+---
+
+<Base
+  titel="Een agressietraining intern geregeld krijgen"
+  beschrijving="De onderbouwing waarmee je binnen je organisatie akkoord krijgt voor een agressietraining: wie beslist, welke argumenten landen en wat er in je aanvraag hoort."
+>
+  <div class="vlak-donker op-donker relative overflow-hidden text-white">
+    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
+      <Breadcrumb
+        pad={[
+          { naam: 'Home', pad: '/' },
+          { naam: 'Trainingsgids', pad: '/trainingsgids/' },
+          { naam: pagina.kortelabel },
+        ]}
+      />
+      <p class="kicker mt-7">De aanvraag</p>
+      <h1 class="mt-4 max-w-3xl text-3xl font-bold leading-[1.15] md:text-5xl">{pagina.titel}</h1>
+      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
+        Wie een agressietraining wil regelen, moet meestal eerst iemand anders
+        overtuigen. Beschrijf om welk team het gaat, wat er feitelijk is
+        voorgevallen, welk niveau je kiest en wat het oplevert. Bureau Weerbaar
+        en Veilig levert de gegevens die je daarvoor nodig hebt.
+      </p>
+    </div>
+  </div>
+  <div class="lijn-merk" aria-hidden="true"></div>
+
+  <div class="mx-auto max-w-6xl px-4 py-16">
+    <div class="grid gap-12 lg:grid-cols-[1fr_22rem]">
+      <div class="min-w-0">
+        <div class="leestekst">
+          <h2>Wie hier meestal over gaat</h2>
+          <p>
+            Zelden één persoon. In de praktijk lopen aanvragen langs een
+            leidinggevende die het budget beheert, HR of een opleidingsadviseur,
+            en vaak een preventiemedewerker of arbocoördinator. Bij grotere
+            organisaties heeft de ondernemingsraad instemmingsrecht op het beleid
+            rond psychosociale arbeidsbelasting, waar agressie onder valt.
+          </p>
+          <p>
+            Dat is geen hindernis maar een kans: de preventiemedewerker en de OR
+            zijn meestal je bondgenoten. Zij vragen hier vaak al langer om.
+          </p>
+
+          <h2>Het argument dat het vaakst werkt</h2>
+          <p>
+            Niet "onze mensen vinden het moeilijk", maar <strong>wij hebben een
+            zorgplicht en die vullen we nu niet aantoonbaar in</strong>. Een
+            werkgever moet medewerkers beschermen tegen agressie op het werk. Als
+            er incidenten in de registratie staan en er is geen training, geen
+            protocol of geen nazorg, dan is dat een gat dat losstaat van hoe
+            weerbaar iemand persoonlijk is.
+          </p>
+          <p>
+            Voor de wettelijke kant — Arbowet, Arbobesluit, wat er precies van een
+            werkgever gevraagd wordt — verwijzen we naar
+            <a href="https://agressievisie.nl/beleid-en-wetgeving.html">het overzicht
+            op agressievisie.nl</a>. Dat is het kennisplatform van dezelfde
+            organisatie, en het verkoopt niets: je kunt het zonder bezwaar als
+            bron in een interne notitie zetten.
+          </p>
+        </div>
+
+        <section class="mt-12" aria-labelledby="aanvraag-titel">
+          <p class="kicker">Zes onderdelen</p>
+          <h2 id="aanvraag-titel" class="kop-onderstreept mt-4 text-2xl font-bold text-marine">
+            Wat je in je aanvraag zet
+          </h2>
+          <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+            {aanvraag.map((a) => (
+              <li class="niveau-expert kaart p-5">
+                <h3 class="font-bold text-marine">{a.kop}</h3>
+                <p class="mt-2 text-sm leading-relaxed text-grijs">{a.tekst}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <div class="leestekst mt-14">
+          <h2>Wat je bij ons kunt opvragen</h2>
+          <p>
+            Bel of vraag een terugbelverzoek aan, dan krijg je op maat wat je
+            nodig hebt voor je aanvraag: het programma van de training die bij
+            jouw team past, de duur en groepsgrootte, en een prijsopgave.
+            Reactie binnen één werkdag.
+          </p>
+          <p>
+            Weet je nog niet welke training het moet worden? Begin bij
+            <a href={link('/trainingsgids/welk-niveau/')}>de keuzehulp</a>, of zoek
+            direct op <a href={link('/sectoren/')}>jouw beroepsgroep</a>.
+          </p>
+        </div>
+
+        <GidsNavigatie huidig="intern-regelen" />
+      </div>
+
+      <Terugbelverzoek onderwerp="een voorstel voor jouw organisatie" />
+    </div>
+  </div>
+</Base>
