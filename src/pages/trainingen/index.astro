@@ -91,12 +91,17 @@ const filterCss = [
             blijft beschikbaar via de knop Alle niveaus of Alle sectoren.
           </p>
 
-          <fieldset>
-            <legend class="filterlabel">Niveau</legend>
+          {/*
+            Het label staat op dezelfde regel als de knoppen. Stond het erboven,
+            dan las het blok als twee losse stapels grijze blokjes; zo leest het
+            als één zin: "Niveau: alle, basis, gevorderd, expert".
+          */}
+          <div class="filterrij" role="group" aria-labelledby="label-niveau">
+              <span class="filterlabel" id="label-niveau">Niveau</span>
             <div class="pillen">
               <label class="pil">
                 <input type="radio" name="niveau" id="niveau-alle" checked />
-                <span>Alle niveaus <span class="pil-aantal">{alleTrainingen.length}</span></span>
+                <span>Alle <span class="pil-aantal">{alleTrainingen.length}</span></span>
               </label>
               {niveaus.map((n) => (
                 <label class={`pil niveau-${n}`}>
@@ -105,15 +110,15 @@ const filterCss = [
                 </label>
               ))}
             </div>
-          </fieldset>
+          </div>
 
-          <fieldset class="mt-3">
-            <legend class="filterlabel">Sector</legend>
+          <div class="filterrij" role="group" aria-labelledby="label-sector">
+              <span class="filterlabel" id="label-sector">Sector</span>
             <div class="pillen">
               <label class="pil">
                 <input type="radio" name="sector" id="sector-alle" checked />
                 {/* Het getal telt beroepsgroepen, net als bij de sectoren zelf */}
-                <span>Alle sectoren <span class="pil-aantal">{groepen.length}</span></span>
+                <span>Alle <span class="pil-aantal">{groepen.length}</span></span>
               </label>
               {sectorSlugs.map((s) => (
                 <label class="pil">
@@ -124,7 +129,7 @@ const filterCss = [
                 </label>
               ))}
             </div>
-          </fieldset>
+          </div>
         </form>
       </div>
     </div>
@@ -192,38 +197,55 @@ const filterCss = [
     border-bottom: 1px solid var(--color-lijn);
     box-shadow: 0 1px 0 rgb(33 46 86 / .04), 0 6px 16px -12px rgb(33 46 86 / .25);
   }
+  /* Label en knoppen op één regel, met het label op een vaste breedte zodat
+     "Niveau" en "Sector" onder elkaar uitlijnen. */
+  .filterrij {
+    display: flex;
+    align-items: baseline;
+    gap: .85rem;
+    padding: .3rem 0;
+  }
+  .filterrij + .filterrij { border-top: 1px solid var(--color-lijn); margin-top: .3rem; padding-top: .6rem; }
   .filterlabel {
-    font-size: .6875rem;
+    flex: none;
+    width: 4rem;
+    font-size: .75rem;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .08em;
     color: var(--color-grijs);
+  }
+  @media (max-width: 600px) {
+    .filterrij { flex-direction: column; align-items: stretch; gap: .4rem; }
+    .filterlabel { width: auto; }
   }
   .pillen {
     display: flex;
     flex-wrap: wrap;
-    gap: .4rem;
-    margin-top: .5rem;
+    gap: .15rem .35rem;
   }
 
-  /* De radioknop blijft bedienbaar met het toetsenbord, maar is niet zichtbaar */
+  /*
+    Rustige knoppen: in rust alleen tekst, geen vlak. Met drieëntwintig
+    gevulde blokjes naast elkaar vroeg alles tegelijk om aandacht en viel er
+    niets meer op. Nu krijgt alleen de gekozen knop een vlak, dus er is altijd
+    precies één ding dat opvalt — en dat is waar je staat.
+  */
   .pil input { position: absolute; width: 1px; height: 1px; opacity: 0; }
   .pil > span {
     display: inline-flex;
     align-items: baseline;
-    gap: .4rem;
-    /* Minimaal 24px hoog en breed, conform WCAG 2.5.8 voor bedieningselementen */
-    min-height: 2rem;
-    padding: .4rem .8rem;
+    gap: .35rem;
+    /* Minimaal 24px hoog, conform WCAG 2.5.8 voor bedieningselementen */
+    min-height: 1.75rem;
+    padding: .3rem .6rem;
     border-radius: 9999px;
-    background: var(--color-vlak);
     font-size: .8125rem;
     font-weight: 600;
-    color: var(--color-inkt);
+    color: var(--color-grijs);
     cursor: pointer;
+    white-space: nowrap;
     transition: background-color 140ms ease, color 140ms ease;
   }
-  .pil:hover > span { background: #e5e8ee; }
+  .pil:hover > span { background: var(--color-vlak); color: var(--color-marine); }
   .pil:has(input:checked) > span {
     background: var(--accent-sterk, var(--color-marine));
     color: #fff;
@@ -232,7 +254,8 @@ const filterCss = [
     outline: 3px solid var(--color-blauw);
     outline-offset: 2px;
   }
-  .pil-aantal { font-variant-numeric: tabular-nums; opacity: .7; font-weight: 700; }
+  .pil-aantal { font-variant-numeric: tabular-nums; opacity: .65; font-weight: 700; }
+  .pil:has(input:checked) .pil-aantal { opacity: .8; }
 
   /* ---------- Eén rij per beroepsgroep ---------- */
   .groep {

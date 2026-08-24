@@ -95,6 +95,22 @@ html {
   /* Ankers landen onder de plakkende kop in plaats van erachter */
   scroll-padding-top: calc(var(--kophoogte) + 1rem);
 }
+
+/*
+  Koppen sitebreed evenwichtig afbreken. Zonder dit blijft er geregeld één woord
+  op de laatste regel van een kop staan, en dat leest als een fout in plaats van
+  als een keuze. Browsers die het niet kennen negeren de regel gewoon.
+*/
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+/* Losse alinea's buiten de leestekst hebben dezelfde bescherming tegen weeskinderen */
+p {
+  text-wrap: pretty;
+}
 body {
   @apply font-sans text-inkt bg-white antialiased;
 }
@@ -496,9 +512,45 @@ body {
   max-width: 41rem;
   font-size: 1.0625rem;
   line-height: 1.75;
+
+  /*
+    text-wrap: pretty voorkomt dat er één los woord op de laatste regel van een
+    alinea achterblijft. Zo'n weeskind laat een alinea onaf ogen en trekt de
+    aandacht naar de verkeerde plek. De browser herverdeelt de laatste regels.
+  */
+  text-wrap: pretty;
+
+}
+
+/*
+  Nederlands zit vol lange samenstellingen — grensoverschrijdend,
+  agressieproblematiek, verantwoordelijkheid. Op een telefoon past zo'n woord
+  soms niet op een regel en springt de woordafstand alle kanten op. Daar helpt
+  afbreken; de browser weet via lang="nl" waar dat mag.
+
+  Op een breed scherm juist niet: in een kolom van zeventig tekens leverde het
+  drie afbreekstreepjes in vijf regels op, en dat leidt meer af dan de rafelrand
+  die het oplost.
+*/
+@media (max-width: 640px) {
+  .leestekst {
+    hyphens: auto;
+  }
 }
 .leestekst > * + * {
   margin-top: 1.35em;
+}
+
+/*
+  De eerste alinea als aanloop: iets groter en donkerder. Dat geeft de lezer een
+  zachte start en maakt in één oogopslag duidelijk waar de tekst begint. Alleen
+  wanneer een pagina écht met een alinea opent — begint hij met een tussenkop,
+  dan is er niets om aan te lopen.
+*/
+.leestekst > p:first-child {
+  font-size: 1.1875rem;
+  line-height: 1.7;
+  color: var(--color-marine);
 }
 
 /* Koppen krijgen ruim lucht bóven zich en weinig eronder, zodat ze bij hun
@@ -509,6 +561,9 @@ body {
   margin-bottom: 0;
   line-height: 1.25;
   scroll-margin-top: 6rem;
+  /* Verdeelt een kop over de regels in plaats van één woord te laten hangen */
+  text-wrap: balance;
+  hyphens: manual;
 }
 .leestekst h2 + * {
   margin-top: 0.6em;
