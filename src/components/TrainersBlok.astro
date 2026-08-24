@@ -1,22 +1,16 @@
 ---
 import { link } from '../lib/link';
-import { getCollection } from 'astro:content';
+import { voorDeGroep as teamVoorDeGroep } from '../lib/team';
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
 /**
  * "Wie deze training geeft" — de gezichten van het team op een trainingspagina.
  *
- * Iedereen geeft alle trainingen, want het bureau doet maar één onderwerp. Er is
- * dus geen koppeling tussen een training en een trainer, en die zou hier ook
- * niets toevoegen: je krijgt dit team, wie er die dag ook staat.
- *
- * Alleen de mensen die daadwerkelijk voor een groep staan. Wie de organisatie
- * draaiend houdt hoort thuis op de teampagina, niet bij de vraag wie er straks
- * in de zaal staat.
+ * Wie hier staat wordt bepaald in src/lib/team.ts, zodat dit blok en de
+ * gestructureerde data op dezelfde pagina niet uit elkaar kunnen lopen.
  */
-const team = (await getCollection('team')).sort((a, b) => a.data.volgorde - b.data.volgorde);
-const voorDeGroep = team.filter((lid) => /trainer|coach|acteur/i.test(lid.data.rol));
+const voorDeGroep = await teamVoorDeGroep();
 const acteurs = voorDeGroep.filter((lid) => /acteur/i.test(lid.data.rol));
 
 const fotos = import.meta.glob<{ default: ImageMetadata }>('../images/team/*.jpg', { eager: true });

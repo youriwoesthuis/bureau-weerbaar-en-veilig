@@ -46,6 +46,13 @@ const isActeur = /acteur/i.test(d.rol);
 const persoonSchema = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'Person',
+  /*
+    De trainingspagina's noemen deze persoon als instructor en verwijzen daarbij
+    naar deze URL. Zonder een @id dat daarmee overeenkomt blijven dat twee losse
+    vermeldingen van dezelfde naam; mét dit @id is het één persoon die op
+    honderdtweeëndertig trainingen staat en hier zijn eigen verhaal heeft.
+  */
+  '@id': new URL(link(`/team/${lid.id}/`), Astro.site).href,
   name: d.naam,
   jobTitle: d.rol,
   worksFor: {

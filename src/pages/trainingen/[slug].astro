@@ -8,6 +8,7 @@ import Terugbelverzoek from '../../components/Terugbelverzoek.astro';
 import TrainersBlok from '../../components/TrainersBlok.astro';
 import { SECTOR_NAMEN } from '../../lib/sectoren';
 import { trainingTitel } from '../../lib/seo';
+import { voorDeGroep as teamVoorDeGroep } from '../../lib/team';
 
 export async function getStaticPaths() {
   const trainingen = await getCollection('trainingen');
@@ -39,6 +40,26 @@ const aanbieder = {
   url: 'https://bureauweerbaarenveilig.nl',
 };
 
+/*
+  Wie de training geeft, ook in de gestructureerde data.
+
+  Een gloednieuw merk heeft geen geschiedenis waar een zoekmachine of
+  AI-systeem op kan afgaan. Mensen wel: die hebben een naam, een rol en een
+  eigen pagina. Door de trainers hier te noemen wordt de training gekoppeld aan
+  personen die elders op de site als Person staan beschreven, in plaats van
+  alleen aan een organisatienaam die nergens anders voorkomt.
+
+  Dit voegt niets toe wat de pagina niet al zegt: hetzelfde rijtje staat er
+  zichtbaar in het trainersblok. Het is een verwijzing naar de teampagina's, en
+  niet de volledige Person-opmaak — die staat daar al, en twee keer opvoeren
+  maakt het niet geloofwaardiger.
+*/
+const trainers = (await teamVoorDeGroep()).map((lid) => ({
+  '@type': 'Person',
+  '@id': new URL(link(`/team/${lid.id}/`), Astro.site).href,
+  name: lid.data.naam,
+}));
+
 const courseSchema = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'Course',
@@ -55,6 +76,8 @@ const courseSchema = JSON.stringify({
     '@type': 'CourseInstance',
     courseMode: 'onsite',
     courseWorkload: d.duur,
+    /* instructor hoort volgens schema.org bij de CourseInstance, niet bij de Course. */
+    ...(trainers.length ? { instructor: trainers } : {}),
     location: {
       '@type': 'Place',
       name: d.locatie_detail ?? 'Incompany of bij Bureau Weerbaar en Veilig',
