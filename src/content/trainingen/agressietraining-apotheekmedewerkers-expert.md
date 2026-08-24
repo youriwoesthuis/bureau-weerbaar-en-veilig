@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor apothekers en leidinggevenden van Bureau
   Weerbaar en Veilig leert leidinggevenden beleid opstellen over het
   beëindigen van de zorgrelatie bij grensoverschrijdend gedrag en de
-  meldcultuur versterken. De training duurt 2 dagen inclusief intervisie
-  na 6 weken en telt maximaal 8 deelnemers.
+  meldcultuur versterken. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Helder beleid opstellen over het beëindigen van de zorgrelatie bij grensoverschrijdend gedrag
   - "Medewerkers coachen na agressie-incidenten met structurele debriefing"
@@ -40,7 +39,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor apothekers en leidinggevenden van apotheken?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Apothekers, apotheekmanagers en leidinggevende apothekersassistenten die verantwoordelijk zijn voor de veiligheid in de apotheek. Voorwaarde voor deelname: leidinggevende of eigenaarverantwoordelijkheid voor een apotheek of apotheekteam."
   - vraag: "Waar vindt de training plaats?"

@@ -16,8 +16,7 @@ samenvatting: >-
   dienstverlening van Bureau Weerbaar en Veilig leert leidinggevenden
   agressiepatronen omzetten in beleid, beleid opstellen rond
   toegangsweigering en aangifte, en de balans vinden tussen
-  klantvriendelijkheid en medewerkersveiligheid. De training duurt 2 dagen
-  inclusief intervisie na 6 weken en telt maximaal 8 deelnemers.
+  klantvriendelijkheid en medewerkersveiligheid. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Agressiepatronen analyseren en vertalen naar beleidsmaatregelen
   - Het agressieprotocol toetsen en aanscherpen
@@ -42,7 +41,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden in de financiële dienstverlening?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Vestigingsmanagers, teamleiders en veiligheidscoördinatoren bij financiële instellingen. Voorwaarde voor deelname: aantoonbare werkervaring met agressie in klantcontact binnen de financiële sector, in een leidinggevende rol."
   - vraag: "Waar vindt de training plaats?"

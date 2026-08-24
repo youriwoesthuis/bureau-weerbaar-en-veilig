@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leidinggevenden bij asielzoekerscentra
   en COA-locaties van Bureau Weerbaar en Veilig leert leidinggevenden
   crisisprotocollen opstellen voor collectieve incidenten en medewerkers
-  steunen onder politieke en maatschappelijke druk. De training duurt 2
-  dagen inclusief intervisie na 6 weken en telt maximaal 8 deelnemers.
+  steunen onder politieke en maatschappelijke druk. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Crisisprotocollen opstellen voor collectieve incidenten
   - "Samenwerking organiseren met politie, beveiliging en ketenpartners"
@@ -41,7 +40,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden bij asielzoekerscentra en coa-locaties?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Locatiemanagers, coördinatoren en operationeel leidinggevenden bij asielzoekerscentra. Voorwaarde voor deelname: leidinggevende of coördinerende verantwoordelijkheid op een opvanglocatie."
   - vraag: "Waar vindt de training plaats?"

@@ -16,7 +16,7 @@ samenvatting: >-
   ouderenzorg van Bureau Weerbaar en Veilig leert leidinggevenden
   agressiepatronen op afdelingsniveau herkennen, eenduidig teambeleid
   opstellen en de balans tussen zorgkwaliteit en teamveiligheid borgen. De
-  training duurt 2 dagen en telt maximaal 8 deelnemers.
+  training duurt 1 dag en telt maximaal 8 deelnemers.
 resultaat:
   - Agressiepatronen op afdelingsniveau herkennen en bespreken
   - Eenduidig teambeleid opstellen bij terugkerende agressie
@@ -43,7 +43,7 @@ veelgestelde_vragen:
   - vraag: "Hoe voorkom je dat agressie genormaliseerd wordt?"
     antwoord: "Door meldgedrag zichtbaar te maken, patronen op afdelingsniveau te bespreken en incidenten consequent na te bespreken. Dat is een kernonderdeel van deze training."
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden in verpleeghuizen en ouderenzorg?"
-    antwoord: De training duurt 2 dagen. De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders, afdelingshoofden en locatiemanagers in verpleeghuizen en de ouderenzorg. Voorwaarde voor deelname: leidinggevende verantwoordelijkheid voor een team in een verpleeghuis of ouderenzorginstelling."
   - vraag: "Waar vindt de training plaats?"

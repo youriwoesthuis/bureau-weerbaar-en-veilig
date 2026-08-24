@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leidinggevenden in de handhaving van
   Bureau Weerbaar en Veilig leert leidinggevenden risicoanalyses per
   werkgebied maken, teams briefen op juridische kaders en debriefing na
-  incidenten leiden. De training duurt 2 dagen inclusief intervisie na 6
-  weken en telt maximaal 8 deelnemers.
+  incidenten leiden. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Risicoanalyses voor werkgebieden uitvoeren en vertalen naar gedragsprotocollen
   - Teams briefen op basis van de juridische kaders
@@ -41,7 +40,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden in de handhaving?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders, coördinatoren en senior handhavers die verantwoordelijk zijn voor boa-teams en aantoonbare ervaring hebben met agressie in de handhaving. Voorwaarde voor deelname: leidinggevende of coördinerende functie binnen een boa- of handhavingsteam."
   - vraag: "Waar vindt de training plaats?"

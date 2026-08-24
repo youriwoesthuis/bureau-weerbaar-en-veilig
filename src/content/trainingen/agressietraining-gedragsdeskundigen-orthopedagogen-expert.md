@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leidinggevenden over gedragsdeskundigen
   en orthopedagogen van Bureau Weerbaar en Veilig leert leidinggevenden
   beleid opstellen dat de inhoudelijke autonomie van professionals
-  beschermt tegen familiedruk en juridische dreiging. De training duurt 2
-  dagen inclusief intervisie na 6 weken en telt maximaal 8 deelnemers.
+  beschermt tegen familiedruk en juridische dreiging. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Beleid opstellen dat de inhoudelijke autonomie van gedragsdeskundigen beschermt
   - Protocollen ontwikkelen voor omgang met familiedruk en juridische dreiging
@@ -43,7 +42,7 @@ veelgestelde_vragen:
   - vraag: "Wat betekent het beschermen van inhoudelijke autonomie?"
     antwoord: "Dat een gedragsdeskundige een professioneel advies kan handhaven zonder dat familiedruk, juridische dreiging of interne druk de inhoud bepaalt. Beleid daarvoor opstellen is het uitgangspunt van deze training."
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden over gedragsdeskundigen en orthopedagogen?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Managers, coördinatoren en bestuurders in de gehandicaptenzorg die teams van gedragsdeskundigen en orthopedagogen leiden. Voorwaarde voor deelname: leidinggevende verantwoordelijkheid voor een team gedragsdeskundigen of orthopedagogen in de gehandicaptenzorg."
   - vraag: "Waar vindt de training plaats?"

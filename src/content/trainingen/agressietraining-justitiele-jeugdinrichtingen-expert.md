@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leidinggevenden in justitiële
   jeugdinrichtingen van Bureau Weerbaar en Veilig leert leidinggevenden
   eenduidig teambeleid implementeren bij risicojongeren en
-  leefgroepsdynamiek bijsturen. De training duurt 2 dagen inclusief
-  intervisie na 6 weken en telt maximaal 8 deelnemers.
+  leefgroepsdynamiek bijsturen. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Eenduidig teambeleid implementeren bij risicojongeren
   - Leefgroepsdynamieken analyseren en bijsturen
@@ -41,7 +40,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden in justitiële jeugdinrichtingen?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Groepsleiders met coördinerende verantwoordelijkheid, afdelingshoofden en managers in justitiële jeugdinrichtingen. Voorwaarde voor deelname: coördinerende of leidinggevende verantwoordelijkheid in een justitiële jeugdinrichting."
   - vraag: "Waar vindt de training plaats?"

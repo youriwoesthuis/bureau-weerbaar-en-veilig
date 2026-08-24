@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor hoofden beveiliging bij evenementen van
   Bureau Weerbaar en Veilig leert leidinggevenden risicoanalyses omzetten
   in maatregelen, teams briefen op incidentscenario’s en debriefing leiden
-  na ernstige incidenten. De training duurt 2 dagen inclusief intervisie
-  na 6 weken en telt maximaal 8 deelnemers.
+  na ernstige incidenten. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Risicoanalyses uitvoeren en vertalen naar veiligheidsmaatregelen
   - Teams briefen op basis van incidentscenario’s
@@ -41,7 +40,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor hoofden beveiliging bij evenementen?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Hoofden beveiliging, veiligheidsmanagers en senior beveiligers in een leidinggevende rol bij evenementen. Voorwaarde voor deelname: leidinggevende rol in de evenementenbeveiliging met aantoonbare werkervaring."
   - vraag: "Waar vindt de training plaats?"

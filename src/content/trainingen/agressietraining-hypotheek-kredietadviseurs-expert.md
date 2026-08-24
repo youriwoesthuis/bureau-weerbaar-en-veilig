@@ -15,7 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leidinggevenden in hypotheek- en
   kredietadvies van Bureau Weerbaar en Veilig leert leidinggevenden een
   protocol opstellen voor grensoverschrijdend klantgedrag en adviseurs
-  opvangen na zware gesprekken. De training duurt 2 dagen inclusief een
+  opvangen na zware gesprekken. De training duurt 1 dag inclusief een
   vervolgmoment na 6 weken en telt maximaal 8 deelnemers.
 resultaat:
   - Agressiepatronen herkennen en vertalen naar beleidsmaatregelen
@@ -40,7 +40,7 @@ werkvormen:
   - vervolgmoment na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden in hypotheek- en kredietadvies?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders en directeuren van hypotheek- en kredietadviseurskantoren met ervaring in klantconflicten. Voorwaarde voor deelname: leidinggevende verantwoordelijkheid voor een adviseursteam."
   - vraag: "Waar vindt de training plaats?"

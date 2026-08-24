@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leidinggevenden bij bezorgdiensten van
   Bureau Weerbaar en Veilig leert leidinggevenden veiligheidsprotocollen
   opstellen en de spanning tussen beoordelingssystemen en veiligheid
-  aanpakken. De training duurt 2 dagen inclusief intervisie na 6 weken en
-  telt maximaal 8 deelnemers.
+  aanpakken. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Veiligheidsprotocollen voor bezorgers opstellen
   - De spanning tussen beoordelingssystemen en veiligheid adresseren
@@ -43,7 +42,7 @@ veelgestelde_vragen:
   - vraag: "Waarom is het beoordelingssysteem onderwerp van de training?"
     antwoord: "Omdat het direct tegen veiligheid in kan werken. Een bezorger die weet dat afbreken of melden zijn beoordeling raakt, doet het niet, en dan blijft onveiligheid onzichtbaar voor de organisatie."
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden bij bezorgdiensten?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Leidinggevenden, planners en operationeel managers bij bezorgdiensten met ervaring met agressie-incidenten. Voorwaarde voor deelname: leidinggevende functie bij een bezorgdienst."
   - vraag: "Waar vindt de training plaats?"

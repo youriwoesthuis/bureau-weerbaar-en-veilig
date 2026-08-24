@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leidinggevenden bij energie- en
   nutsbedrijven van Bureau Weerbaar en Veilig leert leidinggevenden
   veiligheidsprotocollen opzetten met afbreekcriteria en risicoadressen
-  systematisch in kaart brengen. De training duurt 2 dagen inclusief
-  intervisie na 6 weken en telt maximaal 8 deelnemers.
+  systematisch in kaart brengen. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - "Veiligheidsprotocollen opzetten, inclusief afbreekcriteria"
   - Risicovolle situaties systematisch in kaart brengen
@@ -40,7 +39,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden bij energie- en nutsbedrijven?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders, planners en operationeel managers bij energie- en nutsbedrijven die verantwoordelijk zijn voor de veiligheid bij huisbezoeken. Voorwaarde voor deelname: leidinggevende of operationele verantwoordelijkheid voor een team medewerkers met huisbezoeken."
   - vraag: "Waar vindt de training plaats?"

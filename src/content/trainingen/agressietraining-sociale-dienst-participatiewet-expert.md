@@ -13,11 +13,10 @@ voorwaarde: leidinggevende verantwoordelijkheid voor een team bij een sociale di
 doelgroep: "Teamleiders, afdelingshoofden en managers van gemeentelijke sociale diensten en organisaties die de Participatiewet uitvoeren."
 samenvatting: >-
   De expert agressietraining voor leidinggevenden bij de sociale dienst en
-  Participatiewet van Bureau Weerbaar en Veilig leert leidinggevenden
+  Participatiewet van Bureau Weerbaar en Veilig leert
   beleid opstellen voor grensoverschrijdend cliëntgedrag, medewerkers
   ondersteunen bij ingrijpende beslissingen en de spanning tussen
-  hulpverlening en handhaving verankeren. De training duurt 2 dagen
-  inclusief intervisie na 6 weken en telt maximaal 8 deelnemers.
+  hulpverlening en handhaving verankeren. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Beleid opstellen voor grensoverschrijdend cliëntgedrag en escalatiemogelijkheden
   - Eenduidig teambeleid implementeren bij agressieve cliënten
@@ -42,7 +41,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden bij de sociale dienst en participatiewet?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders, afdelingshoofden en managers van gemeentelijke sociale diensten en organisaties die de Participatiewet uitvoeren. Voorwaarde voor deelname: leidinggevende verantwoordelijkheid voor een team bij een sociale dienst of in de uitvoering van de Participatiewet."
   - vraag: "Waar vindt de training plaats?"

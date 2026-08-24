@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leidinggevenden in de
   verzekeringsbranche van Bureau Weerbaar en Veilig leert leidinggevenden
   protocollen opstellen voor grensoverschrijdend klantgedrag en beleid
-  ontwikkelen voor het beëindigen van klantrelaties. De training duurt 2
-  dagen inclusief intervisie na 6 weken en telt maximaal 8 deelnemers.
+  ontwikkelen voor het beëindigen van klantrelaties. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Agressiepatronen op afdelingsniveau herkennen en vertalen naar beleidsmaatregelen
   - Protocollen opstellen voor grensoverschrijdend klantgedrag
@@ -40,7 +39,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden in de verzekeringsbranche?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders, managers en veiligheidscoördinatoren bij verzekeraars. Voorwaarde voor deelname: leidinggevende verantwoordelijkheid voor verzekeringsmedewerkers of schadebehandelaars."
   - vraag: "Waar vindt de training plaats?"

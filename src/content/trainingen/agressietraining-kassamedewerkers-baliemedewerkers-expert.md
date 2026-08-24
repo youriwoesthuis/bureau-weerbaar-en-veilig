@@ -15,7 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leidinggevenden in de retail van Bureau
   Weerbaar en Veilig leert leidinggevenden agressiepatronen op vestigingsniveau
   analyseren, het agressieprotocol aanscherpen en de meldcultuur versterken.
-  De training duurt 2 dagen inclusief intervisie na 6 weken, met maximaal 8
+  De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken, met maximaal 8
   deelnemers en een leidinggevende functie als voorwaarde.
 resultaat:
   - Agressiepatronen op vestigingsniveau analyseren en bespreken
@@ -45,7 +45,7 @@ veelgestelde_vragen:
   - vraag: Wat zijn de voorwaarden voor deelname?
     antwoord: Een leidinggevende functie met aantoonbare werkervaring met agressie in de retail.
   - vraag: Hoe lang duurt de training?
-    antwoord: 2 dagen, inclusief een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
+    antwoord: 1 dag, inclusief een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: Wat levert de training de organisatie op?
     antwoord: Een getoetst en aangescherpt agressieprotocol, een heldere escalatiestructuur, structurele nazorg en een sterkere meldcultuur, zodat het team consistent reageert en incidenten benut worden om te leren.
   - vraag: Waar vindt de training plaats?

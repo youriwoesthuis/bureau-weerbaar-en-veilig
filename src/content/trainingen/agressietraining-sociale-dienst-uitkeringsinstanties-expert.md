@@ -16,8 +16,7 @@ samenvatting: >-
   uitkeringsinstanties van Bureau Weerbaar en Veilig leert leidinggevenden
   agressiepatronen op teamniveau analyseren, beleid rond toegangsweigering
   en aangifte opzetten en de balans vinden tussen veiligheid en
-  zorgplicht. De training duurt 2 dagen inclusief intervisie na 6 weken en
-  telt maximaal 8 deelnemers.
+  zorgplicht. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Agressiepatronen op teamniveau analyseren en bespreken
   - Het agressieprotocol toetsen en aanscherpen
@@ -42,7 +41,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden bij de sociale dienst en uitkeringsinstanties?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders, afdelingshoofden en veiligheidscoördinatoren bij gemeentelijke sociale diensten en uitkeringsinstanties. Voorwaarde voor deelname: leidinggevende of coördinerende functie met aantoonbare werkervaring in de sociale dienstverlening."
   - vraag: "Waar vindt de training plaats?"

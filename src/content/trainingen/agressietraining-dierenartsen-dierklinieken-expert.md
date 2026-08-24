@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor praktijkhouders en leidinggevenden van
   dierklinieken van Bureau Weerbaar en Veilig leert leidinggevenden beleid
   opstellen voor het beëindigen van de zorgrelatie en het omgaan met
-  online beschuldigingen en reputatieschade. De training duurt 2 dagen
-  inclusief intervisie na 6 weken en telt maximaal 8 deelnemers.
+  online beschuldigingen en reputatieschade. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Helder beleid opstellen voor het beëindigen van de zorgrelatie
   - Eenduidig teambeleid implementeren bij probleemeigenaren
@@ -41,7 +40,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor praktijkhouders en leidinggevenden van dierklinieken?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Praktijkhouders, kliniekmanagers en leidinggevende dierenartsen van dierklinieken. Voorwaarde voor deelname: leidinggevende of eigenaarverantwoordelijkheid voor een dierkliniek of team."
   - vraag: "Waar vindt de training plaats?"

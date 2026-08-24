@@ -16,8 +16,7 @@ samenvatting: >-
   leerplichtambtenaren van Bureau Weerbaar en Veilig leert coördinatoren
   een veiligheidsprotocol voor solo-huisbezoeken ontwikkelen,
   ketensamenwerking organiseren en medewerkers coachen na incidenten. De
-  training duurt 2 dagen inclusief intervisie na 6 weken en telt maximaal
-  8 deelnemers.
+  training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - "Een veiligheidsprotocol voor solo-huisbezoeken ontwikkelen"
   - Ketensamenwerking met jeugdzorg en politie organiseren
@@ -42,7 +41,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden over leerplichtambtenaren?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Coördinatoren leerplicht, teamleiders en beleidsmedewerkers bij gemeenten die verantwoordelijk zijn voor de veiligheid van het leerplichtwerk. Voorwaarde voor deelname: coördinerende of leidinggevende verantwoordelijkheid voor een leerplichtteam."
   - vraag: "Waar vindt de training plaats?"

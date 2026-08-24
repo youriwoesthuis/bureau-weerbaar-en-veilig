@@ -24,6 +24,23 @@ for (const t of trainingen) {
   lijst.push(t);
   perSector.set(t.data.sector, lijst);
 }
+
+/*
+  Deze pagina beantwoordt een vraag die mensen letterlijk zo stellen: "wat is
+  een basis agressietraining". Er stond alleen de algemene niveauomschrijving,
+  en die noemt de organisatie niet en geeft geen aantallen — losgeknipt van de
+  pagina zegt zo'n alinea niets, en dat is precies wat een AI-antwoordsysteem
+  ermee doet.
+
+  De openingsalinea noemt nu de organisatie voluit, het aantal trainingen, de
+  duur en de groepsgrootte: allemaal uit de trainingen zelf, dus na te trekken
+  en niet te verouderen.
+*/
+const uniek = (veld: 'duur' | 'groepsgrootte') => {
+  const waarden = [...new Set(trainingen.map((t) => t.data[veld]))];
+  return waarden.length === 1 ? waarden[0] : waarden.join(' of ');
+};
+const sectorenTelling = perSector.size;
 ---
 
 <Base
@@ -41,7 +58,12 @@ for (const t of trainingen) {
         <h1 class="mt-4 text-3xl font-bold leading-[1.15] md:text-5xl">
           Agressietraining: niveau {label.toLowerCase()}
         </h1>
-        <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">{NIVEAU_BESCHRIJVING[niveau]}</p>
+        <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
+          Bureau Weerbaar en Veilig geeft {trainingen.length} agressietrainingen op
+          niveau {label.toLowerCase()}, verdeeld over {sectorenTelling} sectoren.
+          {' '}{NIVEAU_BESCHRIJVING[niveau]} Elke training duurt {uniek('duur')} en
+          telt {uniek('groepsgrootte')}.
+        </p>
       </div>
     </div>
   </div>

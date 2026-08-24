@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leraren in sleutelfuncties in het
   voortgezet onderwijs van Bureau Weerbaar en Veilig leert schoolleiders
   gedragspatronen op schoolniveau analyseren, het gedragsprotocol
-  aanscherpen en de meldcultuur versterken. De training duurt 2 dagen en
-  telt maximaal 8 deelnemers.
+  aanscherpen en de meldcultuur versterken. De training duurt 1 dag en telt maximaal 8 deelnemers.
 resultaat:
   - Gedragspatronen op schoolniveau analyseren en bespreekbaar maken
   - Het gedragsprotocol toetsen op bruikbaarheid en aanscherpen
@@ -39,7 +38,7 @@ werkvormen:
   - concrete beleidsverbetering op schoolniveau
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leraren in sleutelfuncties in het voortgezet onderwijs?"
-    antwoord: De training duurt 2 dagen. De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders, afdelingsleiders, zorgcoördinatoren en senior leraren die collega’s begeleiden bij gedragsincidenten. Voorwaarde voor deelname: leidinggevende of coördinerende functie met aantoonbare werkervaring met gedragsincidenten."
   - vraag: "Waar vindt de training plaats?"

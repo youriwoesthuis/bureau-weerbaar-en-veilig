@@ -15,7 +15,7 @@ samenvatting: >-
   De expert agressietraining voor ambulancemedewerkers in sleutelfuncties
   van Bureau Weerbaar en Veilig leert leidinggevenden agressiepatronen op
   organisatieniveau analyseren, het agressieprotocol toetsen en de
-  meldcultuur versterken. De training duurt 2 dagen, telt maximaal 8
+  meldcultuur versterken. De training duurt 1 dag, telt maximaal 8
   deelnemers en start met een intakegesprek.
 resultaat:
   - Agressiepatronen op organisatieniveau analyseren
@@ -41,7 +41,7 @@ veelgestelde_vragen:
   - vraag: "Hoe wordt de training op onze dienst afgestemd?"
     antwoord: "Een intakegesprek vooraf brengt de situatie in kaart. Bureau Weerbaar en Veilig analyseert incidentgegevens en het bestaande beleid, zodat de training aansluit op de eigen organisatie."
   - vraag: "Hoe lang duurt de expert agressietraining voor ambulancemedewerkers in sleutelfuncties?"
-    antwoord: De training duurt 2 dagen. De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Rayonmanagers, teamleiders, veiligheidscoördinatoren en senior medewerkers in leidinggevende rollen bij ambulancediensten. Voorwaarde voor deelname: leidinggevende of coördinerende functie met aantoonbare werkervaring met agressie."
   - vraag: "Waar vindt de training plaats?"

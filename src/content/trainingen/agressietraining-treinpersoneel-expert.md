@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leidinggevenden in het rail- en
   stadsvervoer van Bureau Weerbaar en Veilig leert leidinggevenden
   agressiepatronen per lijn analyseren, escalatie- en meldbeleid opzetten
-  en medewerkers coachen na incidenten. De training duurt 2 dagen
-  inclusief intervisie na 6 weken en telt maximaal 8 deelnemers.
+  en medewerkers coachen na incidenten. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Agressiepatronen per lijn analyseren en vertalen naar maatregelen
   - Het agressieprotocol toetsen op bruikbaarheid
@@ -41,7 +40,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden in het rail- en stadsvervoer?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Lijnmanagers, depotmanagers en veiligheidscoördinatoren in het openbaar vervoer. Voorwaarde voor deelname: leidinggevende functie met aantoonbare werkervaring met agressiesituaties."
   - vraag: "Waar vindt de training plaats?"

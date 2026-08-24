@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leidinggevenden over parkeerwachters en
   toezichthouders van Bureau Weerbaar en Veilig leert leidinggevenden een
   veiligheidsprotocol voor solo-werk ontwikkelen, risicogebieden in kaart
-  brengen en debriefing inrichten. De training duurt 2 dagen inclusief
-  intervisie na 6 weken en telt maximaal 8 deelnemers.
+  brengen en debriefing inrichten. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - "Een helder veiligheidsprotocol voor solo-werkzaamheden ontwikkelen"
   - Risicogebieden structureel in kaart brengen en vertalen naar veiligheidsafspraken
@@ -41,7 +40,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden over parkeerwachters en toezichthouders?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamcoördinatoren, gebiedsmanagers en leidinggevenden van parkeer- en toezichtteams bij gemeenten en handhavingsorganisaties. Voorwaarde voor deelname: coördinerende of leidinggevende verantwoordelijkheid voor een team parkeerwachters of toezichthouders."
   - vraag: "Waar vindt de training plaats?"

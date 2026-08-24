@@ -16,8 +16,7 @@ samenvatting: >-
   schuldhulpverlening van Bureau Weerbaar en Veilig leert leidinggevenden
   agressiepatronen omzetten in beleid, veiligheidsprotocollen voor
   huisbezoeken opzetten en medewerkers coachen na zware contacten. De
-  training duurt 2 dagen inclusief intervisie na 6 weken en telt maximaal
-  8 deelnemers.
+  training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Agressiepatronen herkennen en vertalen naar concrete beleidsmaatregelen
   - Veiligheidsprotocollen voor huisbezoeken opzetten
@@ -41,7 +40,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden in incasso en schuldhulpverlening?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders, afdelingsmanagers en veiligheidscoördinatoren bij incassobureaus en schuldhulpverleningsorganisaties. Voorwaarde voor deelname: leidinggevende verantwoordelijkheid voor een team incasso- of schuldbehandelaars."
   - vraag: "Waar vindt de training plaats?"

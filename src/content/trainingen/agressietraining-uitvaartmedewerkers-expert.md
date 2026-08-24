@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor uitvaartondernemers en leidinggevenden
   van Bureau Weerbaar en Veilig leert leidinggevenden beleid opstellen
   over het beëindigen van dienstverlening bij grensoverschrijdend gedrag
-  en teambeleid implementeren voor risicosituaties. De training duurt 2
-  dagen inclusief intervisie na 6 weken en telt maximaal 8 deelnemers.
+  en teambeleid implementeren voor risicosituaties. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Beleid opstellen over het beëindigen van dienstverlening bij grensoverschrijdend gedrag
   - Teambeleid implementeren voor probleemfamilies en risicosituaties
@@ -40,7 +39,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor uitvaartondernemers en leidinggevenden in de uitvaartbranche?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Uitvaartondernemers, praktijkmanagers en leidinggevenden die verantwoordelijk zijn voor de veiligheid van hun medewerkers. Voorwaarde voor deelname: leidinggevende of eigenaarverantwoordelijkheid voor een uitvaartonderneming of team."
   - vraag: "Waar vindt de training plaats?"

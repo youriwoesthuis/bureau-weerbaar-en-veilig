@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor hoofden beveiliging in de horeca van
   Bureau Weerbaar en Veilig leert leidinggevenden risicoanalyses omzetten
   in maatregelen, incidentregistratie inrichten als sturingsinstrument en
-  debriefing leiden. De training duurt 2 dagen inclusief intervisie na 6
-  weken en telt maximaal 8 deelnemers.
+  debriefing leiden. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Een risicoanalyse uitvoeren en vertalen naar maatregelen
   - Het portiersteam aansturen via gedragsprotocollen
@@ -40,7 +39,7 @@ werkvormen:
   - begeleiding bij protocolverandering
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor hoofden beveiliging in de horeca?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Hoofden beveiliging, horecaondernemers en leidinggevende portiers die het veiligheidsbeleid van hun locatie willen versterken. Voorwaarde voor deelname: leidinggevende verantwoordelijkheid voor een portiersteam of voor de veiligheid van een locatie."
   - vraag: "Waar vindt de training plaats?"

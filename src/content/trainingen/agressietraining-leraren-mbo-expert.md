@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leraren in sleutelfuncties in het mbo
   van Bureau Weerbaar en Veilig leert teamleiders gedragspatronen op
   instellingsniveau analyseren, het gedragsprotocol aanscherpen en de
-  meldcultuur versterken. De training duurt 2 dagen inclusief intervisie
-  na 6 weken en telt maximaal 8 deelnemers.
+  meldcultuur versterken. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Gedragspatronen op instellingsniveau analyseren
   - Het gedragsprotocol toetsen en aanscherpen
@@ -41,7 +40,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leraren in sleutelfuncties in het mbo?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders, zorgcoördinatoren en senior leraren in het mbo die het gedragsbeleid willen versterken en het team willen coachen. Voorwaarde voor deelname: leidinggevende of coördinerende functie met aantoonbare werkervaring met gedragsincidenten."
   - vraag: "Waar vindt de training plaats?"

@@ -16,8 +16,7 @@ samenvatting: >-
   van Bureau Weerbaar en Veilig leert leidinggevenden een
   veiligheidsprotocol voor huisbezoeken opzetten, eenduidig teambeleid
   implementeren bij probleemhuurders en de meldcultuur versterken. De
-  training duurt 2 dagen inclusief intervisie na 6 weken en telt maximaal
-  8 deelnemers.
+  training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Agressiepatronen herkennen en vertalen naar beleidsmaatregelen
   - Een veiligheidsprotocol voor huisbezoeken opzetten
@@ -42,7 +41,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden bij woningcorporaties?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders, afdelingsmanagers en veiligheidscoördinatoren bij woningcorporaties. Voorwaarde voor deelname: leidinggevende functie bij een woningcorporatie met aantoonbare ervaring met agressie in huurderscontact."
   - vraag: "Waar vindt de training plaats?"

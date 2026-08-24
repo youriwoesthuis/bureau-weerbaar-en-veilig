@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leidinggevenden bij de Belastingdienst
   van Bureau Weerbaar en Veilig leert leidinggevenden agressiepatronen op
   afdelingsniveau in beleid vertalen, veiligheidsbeleid voor controles
-  opzetten en de meldcultuur versterken. De training duurt 2 dagen
-  inclusief intervisie na 6 weken en telt maximaal 8 deelnemers.
+  opzetten en de meldcultuur versterken. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Agressiepatronen op afdelingsniveau analyseren en in beleid vertalen
   - Het agressieprotocol toetsen op praktische bruikbaarheid
@@ -41,7 +40,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden bij de belastingdienst?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders, afdelingshoofden en veiligheidscoördinatoren bij de Belastingdienst. Voorwaarde voor deelname: leidinggevende functie met aantoonbare werkervaring met agressie bij de Belastingdienst."
   - vraag: "Waar vindt de training plaats?"

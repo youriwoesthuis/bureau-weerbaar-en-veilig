@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor vestigingsmanagers en leidinggevenden in
   bibliotheken van Bureau Weerbaar en Veilig leert leidinggevenden beleid
   vaststellen voor acceptabel gedrag en een agressieprotocol implementeren
-  dat past bij het open karakter van de bibliotheek. De training duurt 2
-  dagen inclusief intervisie na 6 weken en telt maximaal 8 deelnemers.
+  dat past bij het open karakter van de bibliotheek. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Helder beleid vaststellen voor acceptabel gedrag
   - Een agressieprotocol implementeren dat aansluit op het openbare karakter
@@ -41,7 +40,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor vestigingsmanagers en leidinggevenden in bibliotheken?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Vestigingsmanagers en teamleiders in bibliotheken. Voorwaarde voor deelname: leidinggevende verantwoordelijkheid in een bibliotheek, met ervaring met agressie-incidenten."
   - vraag: "Waar vindt de training plaats?"

@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leidinggevenden bij taxibedrijven en
   personenvervoerders van Bureau Weerbaar en Veilig leert leidinggevenden
   een veiligheidsprotocol opstellen, risicoanalyses maken op rittypen en
-  gebieden, en een meldcultuur bouwen. De training duurt 2 dagen inclusief
-  intervisie na 6 weken en telt maximaal 8 deelnemers.
+  gebieden, en een meldcultuur bouwen. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Een helder veiligheidsprotocol voor chauffeurs opstellen
   - Risicoanalyses uitvoeren op rittypen en gebieden
@@ -41,7 +40,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden bij taxibedrijven en personenvervoerders?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Planners, operationeel leidinggevenden en managers bij taxibedrijven met ervaring met agressie-incidenten. Voorwaarde voor deelname: leidinggevende of operationele verantwoordelijkheid voor taxichauffeurs."
   - vraag: "Waar vindt de training plaats?"

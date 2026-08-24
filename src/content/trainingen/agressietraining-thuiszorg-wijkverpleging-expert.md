@@ -16,8 +16,7 @@ samenvatting: >-
   wijkverpleging van Bureau Weerbaar en Veilig leert teamleiders
   veiligheidsbeleid voor thuisbezoeken opstellen, risicovolle
   cliëntsituaties vertalen naar afspraken en medewerkers coachen na
-  incidenten. De training duurt 2 dagen inclusief intervisie na 6 weken en
-  telt maximaal 8 deelnemers.
+  incidenten. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Helder veiligheidsbeleid voor thuisbezoeken opstellen
   - Risicovolle cliëntsituaties signaleren en vertalen naar veiligheidsafspraken
@@ -42,9 +41,9 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe zit de intervisie in het programma?"
-    antwoord: "De training bestaat uit 2 dagen, waarvan de tweede na ongeveer 6 weken plaatsvindt. Deelnemers brengen dan hun eigen casussen en de voortgang van de implementatie in."
+    antwoord: "De training bestaat uit 1 dag, waarvan de tweede na ongeveer 6 weken plaatsvindt. Deelnemers brengen dan hun eigen casussen en de voortgang van de implementatie in."
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden in de thuiszorg en wijkverpleging?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders, zorgcoördinatoren en managers in de thuiszorg en wijkverpleging. Voorwaarde voor deelname: leidinggevende of coördinerende verantwoordelijkheid voor een thuiszorgteam."
   - vraag: "Waar vindt de training plaats?"

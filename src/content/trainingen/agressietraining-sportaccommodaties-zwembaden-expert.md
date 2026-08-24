@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leidinggevenden in sportaccommodaties en
   zwembaden van Bureau Weerbaar en Veilig leert managers gedragsnormen
   vaststellen, een toegangs- en ontzeggingsbeleid opstellen en de
-  meldcultuur versterken. De training duurt 2 dagen inclusief intervisie
-  na 6 weken en telt maximaal 8 deelnemers.
+  meldcultuur versterken. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Gedragsnormen voor bezoekers helder definiëren en uitdragen
   - Een werkbaar agressieprotocol implementeren
@@ -41,7 +40,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden in sportaccommodaties en zwembaden?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Accommodatiemanagers en locatieleiders in sportaccommodaties en zwembaden. Voorwaarde voor deelname: aantoonbare leidinggevende ervaring en kennis van de dynamiek op de locatie."
   - vraag: "Waar vindt de training plaats?"

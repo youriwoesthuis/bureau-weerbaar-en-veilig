@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leidinggevenden vergunningverlening en
   bezwaar en beroep van Bureau Weerbaar en Veilig leert leidinggevenden
   protocollen opstellen voor dossiers met hoog agressierisico en
-  medewerkers ondersteunen na intimidatiecampagnes. De training duurt 2
-  dagen inclusief intervisie na 6 weken en telt maximaal 8 deelnemers.
+  medewerkers ondersteunen na intimidatiecampagnes. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Een protocol opstellen voor dossiers met hoog agressierisico
   - Beleid ontwikkelen voor structureel grensoverschrijdend gedrag
@@ -41,7 +40,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden vergunningverlening en bezwaar en beroep?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders, afdelingshoofden en managers bij gemeentelijke en regionale uitvoeringsorganisaties die verantwoordelijk zijn voor veiligheid. Voorwaarde voor deelname: leidinggevende verantwoordelijkheid voor een team medewerkers vergunningverlening of bezwaar en beroep."
   - vraag: "Waar vindt de training plaats?"

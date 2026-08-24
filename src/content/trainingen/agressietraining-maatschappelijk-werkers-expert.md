@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leidinggevenden in het maatschappelijk
   werk van Bureau Weerbaar en Veilig leert leidinggevenden een
   agressieprotocol ontwikkelen dat aansluit op de hulpverleningsnorm en
-  medewerkers coachen zonder melden te ontmoedigen. De training duurt 2
-  dagen inclusief intervisie na 6 weken en telt maximaal 8 deelnemers.
+  medewerkers coachen zonder melden te ontmoedigen. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Agressiepatronen en veiligheidsrisico’s op teamniveau herkennen
   - Een agressieprotocol ontwikkelen dat aansluit op de hulpverleningsnorm
@@ -40,7 +39,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden in het maatschappelijk werk?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders, coördinatoren en afdelingshoofden in het maatschappelijk werk en welzijn. Voorwaarde voor deelname: leidinggevende ervaring met een hulpverleningsteam."
   - vraag: "Waar vindt de training plaats?"

@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leidinggevenden op organisatieniveau van
   Bureau Weerbaar en Veilig leert regiomanagers en beleidsverantwoordelijken
   agressiedata organisatiebreed analyseren en omzetten in uniform beleid,
-  nazorgstructuur en een sterke meldcultuur. De training duurt 2 dagen
-  inclusief intervisie na 6 weken, met maximaal 8 deelnemers en een
+  nazorgstructuur en een sterke meldcultuur. De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken, met maximaal 8 deelnemers en een
   intakegesprek vooraf.
 resultaat:
   - Agressiedata organisatiebreed analyseren en omzetten in beleid
@@ -46,7 +45,7 @@ veelgestelde_vragen:
   - vraag: Wat is de voorwaarde voor deelname?
     antwoord: Verantwoordelijkheid voor meerdere vestigingen of voor het organisatiebrede veiligheidsbeleid.
   - vraag: Hoe lang duurt de training?
-    antwoord: 2 dagen, inclusief een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
+    antwoord: 1 dag, inclusief een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: Hoe wordt de training op onze organisatie afgestemd?
     antwoord: Een intakegesprek vooraf brengt de situatie in kaart. Bureau Weerbaar en Veilig analyseert incidentdata, bestaand beleid en de organisatiestructuur, zodat de training direct op de eigen praktijk aansluit.
   - vraag: Wat is het verschil met de experttraining voor de winkelvloer?

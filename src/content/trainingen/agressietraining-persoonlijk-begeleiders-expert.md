@@ -16,8 +16,7 @@ samenvatting: >-
   begeleiders van Bureau Weerbaar en Veilig leert leidinggevenden
   grensvervaging in begeleidingsrelaties tijdig signaleren,
   veiligheidsafspraken maken voor één-op-één werk en medewerkers
-  structureel coachen. De training duurt 2 dagen inclusief intervisie na 6
-  weken en telt maximaal 8 deelnemers.
+  structureel coachen. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Grensvervaging in begeleidingsrelaties tijdig signaleren en bespreekbaar maken
   - "Veiligheidsafspraken maken voor één-op-één werk en activiteiten buitenshuis"
@@ -44,7 +43,7 @@ veelgestelde_vragen:
   - vraag: "Waarom is dit een apart expertniveau?"
     antwoord: "Omdat het aansturen van persoonlijk begeleiders andere vragen oproept dan het leiden van een woongroep. De risico’s zitten in de één-op-één relatie zelf: grensvervaging, isolatie en werk zonder toezicht."
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden over persoonlijk begeleiders in de gehandicaptenzorg?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders, locatiemanagers en gedragscoördinatoren die persoonlijk begeleiders aansturen in intensieve één-op-één begeleidingsrelaties. Voorwaarde voor deelname: leidinggevende verantwoordelijkheid voor een team persoonlijk begeleiders in de gehandicaptenzorg."
   - vraag: "Waar vindt de training plaats?"

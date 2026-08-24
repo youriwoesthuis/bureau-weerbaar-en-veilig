@@ -15,7 +15,7 @@ samenvatting: >-
   De expert agressietraining voor huisartsassistenten in sleutelfuncties van
   Bureau Weerbaar en Veilig leert praktijkmanagers agressiepatronen op
   organisatieniveau analyseren, het agressieprotocol aanscherpen en de
-  meldcultuur versterken. De training duurt 2 dagen, telt maximaal 8 deelnemers
+  meldcultuur versterken. De training duurt 1 dag, telt maximaal 8 deelnemers
   en vraagt een leidinggevende of coördinerende functie.
 resultaat:
   - Agressiepatronen op organisatieniveau analyseren
@@ -43,7 +43,7 @@ veelgestelde_vragen:
   - vraag: Wat is de voorwaarde voor deelname?
     antwoord: Een leidinggevende of coördinerende functie met aantoonbare werkervaring in de omgang met agressie.
   - vraag: Hoe lang duurt de training?
-    antwoord: 2 dagen, met maximaal 8 deelnemers per groep.
+    antwoord: 1 dag, met maximaal 8 deelnemers per groep.
   - vraag: Wat levert de training de praktijk op?
     antwoord: Een getoetst agressieprotocol, een geborgde escalatiestructuur, structurele nazorg en een sterkere meldcultuur.
   - vraag: Wordt de training afgestemd op onze praktijk?

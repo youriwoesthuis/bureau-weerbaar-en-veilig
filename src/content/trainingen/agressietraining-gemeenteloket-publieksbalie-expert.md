@@ -16,8 +16,7 @@ samenvatting: >-
   publieke dienstverlening van Bureau Weerbaar en Veilig leert
   leidinggevenden agressiepatronen op afdelingsniveau analyseren, beleid
   rond toegangsweigering opzetten en de meldcultuur versterken. De
-  training duurt 2 dagen inclusief intervisie na 6 weken en telt maximaal
-  8 deelnemers.
+  training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Agressiepatronen op afdelingsniveau analyseren en bespreken
   - Het agressieprotocol toetsen en aanscherpen
@@ -42,7 +41,7 @@ werkvormen:
   - intervisie na 6 weken
 veelgestelde_vragen:
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden bij gemeenten en publieke dienstverlening?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders, afdelingshoofden, veiligheidscoördinatoren en senior medewerkers bij gemeenten en publieke organisaties die het agressiebeleid willen versterken. Voorwaarde voor deelname: leidinggevende of coördinerende functie met aantoonbare werkervaring met agressie in de publieke dienstverlening."
   - vraag: "Waar vindt de training plaats?"

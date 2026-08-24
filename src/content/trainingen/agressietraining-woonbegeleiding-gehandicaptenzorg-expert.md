@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor leidinggevenden in de woonbegeleiding
   gehandicaptenzorg van Bureau Weerbaar en Veilig leert leidinggevenden
   gedragsplannen beoordelen vanuit medewerkersveiligheid, eenduidig
-  teambeleid implementeren en de meldcultuur versterken. De training duurt
-  2 dagen inclusief intervisie na 6 weken en telt maximaal 8 deelnemers.
+  teambeleid implementeren en de meldcultuur versterken. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Gedragsplannen beoordelen vanuit het perspectief van medewerkersveiligheid
   - Eenduidig teambeleid implementeren bij terugkerende agressiepatronen
@@ -43,7 +42,7 @@ veelgestelde_vragen:
   - vraag: "Hoe verhoudt medewerkersveiligheid zich tot het gedragsplan van een cliënt?"
     antwoord: "Beide zijn nodig. In deze training leren leidinggevenden gedragsplannen te beoordelen met medewerkersveiligheid als expliciet criterium, zonder de zorg voor de cliënt te ondermijnen."
   - vraag: "Hoe lang duurt de expert agressietraining voor leidinggevenden in de woonbegeleiding gehandicaptenzorg?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Teamleiders, locatiemanagers en gedragscoördinatoren in de woonbegeleiding gehandicaptenzorg. Voorwaarde voor deelname: leidinggevende verantwoordelijkheid voor een woongroep of locatie in de gehandicaptenzorg."
   - vraag: "Waar vindt de training plaats?"

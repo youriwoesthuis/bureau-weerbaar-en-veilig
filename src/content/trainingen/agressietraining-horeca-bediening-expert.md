@@ -15,8 +15,7 @@ samenvatting: >-
   De expert agressietraining voor horecamanagers en leidinggevenden van
   Bureau Weerbaar en Veilig leert managers heldere normen stellen over
   gastengedrag, seksuele intimidatie structureel aanpakken en een
-  meldcultuur creëren. De training duurt 2 dagen inclusief intervisie na 6
-  weken en telt maximaal 8 deelnemers.
+  meldcultuur creëren. De training duurt 1 dag en telt maximaal 8 deelnemers, met een intervisiebijeenkomst na 6 weken.
 resultaat:
   - Heldere normen stellen over acceptabel gastengedrag
   - Een werkbaar agressieprotocol ontwikkelen
@@ -43,7 +42,7 @@ veelgestelde_vragen:
   - vraag: "Waarom staat de rol van de leidinggevende zo centraal?"
     antwoord: Omdat teams hun norm afleiden van wat de leidinggevende doet. Inconsistent ingrijpen is de belangrijkste reden dat grensoverschrijdend gedrag blijft bestaan.
   - vraag: "Hoe lang duurt de expert agressietraining voor horecamanagers en leidinggevenden?"
-    antwoord: De training duurt 2 dagen (inclusief intervisie na 6 weken). De groep telt maximaal 8 deelnemers.
+    antwoord: De training duurt 1 dag, met een intervisiebijeenkomst na 6 weken. De groep telt maximaal 8 deelnemers.
   - vraag: "Voor wie is deze training bedoeld?"
     antwoord: "Horecamanagers, bedrijfsleiders en shiftleiders met leidinggevende verantwoordelijkheid. Voorwaarde voor deelname: leidinggevende verantwoordelijkheid in een horecagelegenheid."
   - vraag: "Waar vindt de training plaats?"
