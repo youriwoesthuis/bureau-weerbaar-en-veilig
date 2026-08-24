@@ -185,6 +185,32 @@ const praktisch: [string, string | undefined][] = [
           <!-- GEO-openingsantwoord: direct citeerbaar, vóór alle marketingtaal -->
           <p class="mt-5 text-lg leading-relaxed text-white/85">{d.samenvatting}</p>
         </div>
+
+        {/*
+          De vier feiten waarop een opdrachtgever meteen scant: hoe lang, met
+          hoeveel mensen, waar, en krijgen ze iets mee.
+
+          Ze stonden alleen in de zijkolom "Praktische informatie". Op een breed
+          scherm valt die rechts naast de tekst, maar op een telefoon zakt hij
+          onder de hele pagina — dus precies daar waar de meeste bezoekers hem
+          nooit zien. Hier staan ze boven de vouw, in dezelfde volgorde als de
+          vragen die mensen stellen.
+        */}
+        <ul class="mt-9 flex flex-wrap gap-x-8 gap-y-4 border-t border-white/15 pt-7">
+          {[
+            ['Duur', d.duur],
+            ['Groep', d.groepsgrootte.replace(/^maximaal /, 'max. ')],
+            ['Locatie', d.locatie === 'incompany' ? 'Incompany of in Neede' : d.locatie],
+            ...(d.certificaat ? [['Afsluiting', 'Deelnamecertificaat']] : []),
+          ].map(([label, waarde]) => (
+            <li>
+              <span class="block text-xs font-bold uppercase tracking-wide text-white/55">
+                {label}
+              </span>
+              <span class="mt-1 block font-semibold">{waarde}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
     <div class="lijn-merk" aria-hidden="true"></div>
@@ -261,8 +287,19 @@ const praktisch: [string, string | undefined][] = [
           </ul>
         </section>
 
-        <!-- FAQ -->
-        <section aria-labelledby="faq-titel">
+        {/*
+          De vragen op een eigen vlak. Deze pagina liep hiervoor als één wit
+          blok van ruim vierduizend pixels door: verhaal, leeruitkomsten,
+          programma, werkvormen en vragen zonder één zichtbare overgang. Dan
+          voelt het lang, ook als elk onderdeel op zichzelf kort is.
+
+          Dit is het laatste blok voordat de bezoeker een keuze maakt, en het
+          eigen vlak markeert dat.
+        */}
+        <section
+          class="gloed-warm -mx-4 rounded-2xl px-5 py-8 sm:mx-0 sm:px-8"
+          aria-labelledby="faq-titel"
+        >
           <h2 id="faq-titel" class="kop-onderstreept text-2xl font-bold text-marine">
             Veelgestelde vragen
           </h2>

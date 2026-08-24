@@ -803,6 +803,304 @@ body {
 }
 
 /* ---------------------------------------------------------------
+   Ritme: de overgang tussen secties
+   ---------------------------------------------------------------
+   De pagina bestond uit een handvol zeer hoge vlakken die met een kaarsrechte
+   lijn op elkaar aansloten. Dat leest als een stapel dozen: je ziet nooit dat
+   er iets nieuws begint, alleen dat het vorige ophoudt.
+
+   Een schuine overgang lost dat op zonder één woord tekst toe te voegen. Het
+   oog ziet een hoek en leest dat als een nieuw hoofdstuk. Puur decoratief, dus
+   het zit in een pseudo-element: er verandert niets aan de inhoud, aan de
+   volgorde in de HTML of aan wat een schermlezer voorleest.
+*/
+.rand-schuin-onder,
+.rand-schuin-boven {
+  position: relative;
+}
+
+.rand-schuin-onder::after,
+.rand-schuin-boven::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: clamp(2rem, 4.5vw, 4.5rem);
+  background: inherit;
+  pointer-events: none;
+}
+
+/* De onderrand loopt door in het vlak eronder en kantelt naar rechts omhoog. */
+.rand-schuin-onder::after {
+  bottom: 0;
+  transform: translateY(99%);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+/* De bovenrand steekt omhoog in het vlak erboven, met dezelfde hoek. */
+.rand-schuin-boven::before {
+  top: 0;
+  transform: translateY(-99%);
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+}
+
+/*
+  Fijne stippentextuur voor lichte vlakken.
+
+  Een wit vlak van tweeduizend pixels hoog voelt leeg, ook als er inhoud op
+  staat. Deze textuur is bijna onzichtbaar — je ziet hem pas als je erop let —
+  maar hij geeft het vlak een oppervlak in plaats van een leegte. Bewust in
+  marine met lage dekking: een grijze stip zou vuil ogen.
+*/
+.textuur-stip {
+  background-image: radial-gradient(rgb(33 46 86 / 0.055) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/*
+  Zachte gloed in de merkkleuren. Voor lichte vlakken die net iets meer nodig
+  hebben dan wit, maar waar de volle .vlak-zweem te nadrukkelijk is.
+*/
+.gloed-warm {
+  background-color: var(--color-vlak-warm);
+  background-image:
+    radial-gradient(38rem 26rem at 88% -10%, rgb(241 137 25 / 0.13), transparent 62%),
+    radial-gradient(34rem 24rem at 4% 108%, rgb(115 85 120 / 0.11), transparent 64%);
+}
+
+/* ---------------------------------------------------------------
+   Grote getallen als interpunctie
+   ---------------------------------------------------------------
+   Dit merk heeft cijfers die niemand hoeft te geloven op zijn woord: 132
+   trainingen, 44 beroepsgroepen, 19 sectoren, één dag, maximaal tien
+   deelnemers. Ze stonden in lopende tekst, waar ze wegvallen.
+
+   Groot gezet zijn ze het tegenovergestelde van een superlatief: controleerbaar
+   en in één oogopslag te vergelijken. Ze breken tegelijk de pagina op, zodat er
+   tussen twee lange blokken iets staat dat je in een halve seconde leest.
+*/
+.cijferband {
+  display: grid;
+  gap: 1.5rem 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (min-width: 48rem) {
+  .cijferband {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.cijferband > * {
+  position: relative;
+  padding-left: 1.25rem;
+}
+
+/*
+  Een streepje in de merkkleuren vóór elk getal, in plaats van een lijn ertussen.
+  Een scheidingslijn tussen kolommen valt weg zodra de kolommen op mobiel onder
+  elkaar komen; dit streepje blijft altijd kloppen.
+*/
+.cijferband > *::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.3rem;
+  bottom: 0.3rem;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--gradient-merk-lijn);
+}
+
+.cijfer-groot {
+  font-size: clamp(2.25rem, 5.5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  background: var(--gradient-merk-lijn);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Op donker is een verloop in tekst te onrustig; daar het volle merk-oranje. */
+.op-donker .cijfer-groot {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: var(--color-oranje);
+}
+
+.cijfer-label {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--color-grijs);
+}
+.op-donker .cijfer-label {
+  color: rgb(255 255 255 / 0.78);
+}
+
+/* ---------------------------------------------------------------
+   Genummerde stappen
+   ---------------------------------------------------------------
+   Een opsomming met bolletjes zegt: dit zijn losse punten. Een genummerde reeks
+   met een lijn ertussen zegt: dit is een volgorde, en er zit een begin en een
+   eind aan. Voor een aanpak die in stappen verloopt is dat het verschil tussen
+   een lijst en een verhaal.
+*/
+.stappen {
+  counter-reset: stap;
+  display: grid;
+  gap: 0;
+}
+
+.stap {
+  counter-increment: stap;
+  position: relative;
+  padding-left: 4.25rem;
+  padding-bottom: 2.25rem;
+}
+.stap:last-child {
+  padding-bottom: 0;
+}
+
+/*
+  Het nummer in een cirkel in de merkkleuren.
+
+  Niet het gewone merkverloop: dat loopt van oranje via een bruine tussentint
+  naar indigo, en op een vlakje van vijfenveertig pixels zie je vooral dat
+  bruin. Hier daarom rechtstreeks van het knop-oranje naar het paars.
+
+  Die twee zijn ook precies gekozen op leesbaarheid: het oranje haalt 4,95:1
+  met wit erop en het paars 6,36:1, dus elk punt op het verloop is genoeg voor
+  witte tekst. De vorige versie leunde op een tekstschaduw om leesbaar te
+  blijven, en een schaduw telt niet mee als contrast.
+*/
+.stap::before {
+  content: counter(stap);
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  background: linear-gradient(145deg, var(--color-oranje-knop), var(--color-paars));
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* De verbindingslijn loopt van cirkel naar cirkel, en stopt bij de laatste. */
+.stap::after {
+  content: '';
+  position: absolute;
+  left: 1.3125rem;
+  top: 3.25rem;
+  bottom: 0.5rem;
+  width: 2px;
+  border-radius: 2px;
+  /*
+    In de merkkleuren en niet in het randgrijs. Grijs op een warm vlak valt
+    weg, en dan lijken de cirkels los te zweven in plaats van een reeks te
+    vormen — precies het tegenovergestelde van wat een genummerde stap moet
+    doen. Naar onderen toe dunner, zodat het oog de reeks afmaakt.
+  */
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--color-paars) 55%, transparent),
+    color-mix(in srgb, var(--color-paars) 12%, transparent)
+  );
+}
+.stap:last-child::after {
+  display: none;
+}
+
+.op-donker .stap::after {
+  background: linear-gradient(to bottom, rgb(255 255 255 / 0.28), rgb(255 255 255 / 0.04));
+}
+
+/* ---------------------------------------------------------------
+   Uitgelicht blok
+   ---------------------------------------------------------------
+   Eén zin die er echt toe doet, uit de lopende tekst gelicht. Geen citaat van
+   een klant — die zijn er nog niet, en verzonnen worden ze niet — maar de
+   kernbelofte, groot genoeg om te blijven hangen.
+*/
+.uitgelicht {
+  position: relative;
+  padding: 1.75rem 1.75rem 1.75rem 2.5rem;
+  border-radius: 1rem;
+  background: var(--color-vlak-warm);
+  font-size: clamp(1.125rem, 2.2vw, 1.4rem);
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--color-marine);
+  text-wrap: pretty;
+}
+
+.uitgelicht::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1rem;
+  bottom: 1rem;
+  width: 4px;
+  border-radius: 0 4px 4px 0;
+  background: var(--gradient-merk-lijn);
+}
+
+/* ---------------------------------------------------------------
+   Kaarten met meer leven
+   ---------------------------------------------------------------
+   De kaarten reageerden alleen met een randkleur. Deze variant tilt de kaart
+   een paar pixels op en legt er een zachte schaduw onder, zodat een raster van
+   negentien kaarten aanvoelt als iets waar je doorheen kunt in plaats van als
+   een tabel.
+
+   Alleen op apparaten met een echte muisaanwijzer: op een aanraakscherm blijft
+   een hover-staat plakken na het tikken.
+*/
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .kaart-til {
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      border-color 180ms ease;
+  }
+  .kaart-til:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px -18px rgb(33 46 86 / 0.45);
+  }
+}
+
+/*
+  Het sectorpictogram in een getint schijfje in plaats van los op wit. Dat geeft
+  elk pictogram dezelfde optische massa, waardoor het raster rustig blijft ook
+  al is het ene pictogram voller dan het andere.
+*/
+.icoonschijf {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  background: var(--color-oranje-licht);
+  color: var(--color-oranje-tekst);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .icoonschijf {
+    transition: background-color 180ms ease;
+  }
+  .kaart-til:hover .icoonschijf {
+    background: color-mix(in srgb, var(--color-oranje-licht) 55%, var(--color-paars-licht));
+  }
+}
+
+/* ---------------------------------------------------------------
    Afdrukken
    ---------------------------------------------------------------
    Een trainingsvoorstel wordt uitgeprint om in een overleg te bespreken. Zonder

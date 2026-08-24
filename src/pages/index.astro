@@ -7,6 +7,7 @@ import Base from '../layouts/Base.astro';
 import NiveauBadge from '../components/NiveauBadge.astro';
 import Terugbelverzoek from '../components/Terugbelverzoek.astro';
 import SectorIcoon from '../components/SectorIcoon.astro';
+import { TRAININGSDAG } from '../lib/trainingsdag';
 import {
   SECTOR_NAMEN,
   NIVEAU_BESCHRIJVING,
@@ -114,14 +115,20 @@ const cijfers = [
         </ul>
       </div>
 
-      <!-- Cijfers: concreet en verifieerbaar, geteld uit de content -->
-      <dl class="mt-16 grid grid-cols-2 gap-6 border-t border-white/15 pt-10 sm:grid-cols-4">
+      {/*
+        Cijfers, geteld uit de content. Ze stonden hier al, maar klein en met een
+        scheidingslijn erboven — waardoor ze lazen als een voetnoot onder de
+        hero. Groot gezet zijn ze het tegenovergestelde van een superlatief:
+        controleerbaar, en in één oogopslag te vergelijken met elke concurrent
+        die "ruime ervaring" schrijft.
+      */}
+      <dl class="cijferband mt-16 border-t border-white/15 pt-12">
         {cijfers.map((c) => (
           <div>
             <dt class="sr-only">{c.label}</dt>
             <dd>
-              <span class="cijfer block">{c.getal}</span>
-              <span class="mt-1 block text-sm text-white/70">{c.label}</span>
+              <span class="cijfer-groot block tabular-nums">{c.getal}</span>
+              <span class="cijfer-label block">{c.label}</span>
             </dd>
           </div>
         ))}
@@ -131,7 +138,8 @@ const cijfers = [
   <div class="lijn-merk" aria-hidden="true"></div>
 
   <!-- Sectoren -->
-  <section class="mx-auto max-w-6xl px-4 py-20" aria-labelledby="sectoren-titel">
+  <section class="textuur-stip" aria-labelledby="sectoren-titel">
+    <div class="mx-auto max-w-6xl px-4 py-20">
     <p class="kicker">Kies je vertrekpunt</p>
     <h2 id="sectoren-titel" class="kop-onderstreept mt-4 text-3xl font-bold text-marine md:text-4xl">
       Trainingen per sector
@@ -155,8 +163,8 @@ const cijfers = [
     */}
     <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {sectoren.map((s) => (
-        <li class="kaart rol-in flex items-center gap-4 p-5">
-          <span class="sectoricoon" aria-hidden="true">
+        <li class="kaart kaart-til rol-in flex items-center gap-4 p-5">
+          <span class="icoonschijf" aria-hidden="true">
             <SectorIcoon sector={s.data.slug} />
           </span>
           <div class="min-w-0">
@@ -182,6 +190,56 @@ const cijfers = [
         <a href="tel:+31857600435" class="font-semibold text-blauw hover:underline">085 760 0435</a>.
       </p>
     )}
+    </div>
+  </section>
+
+  {/*
+    Wat er die dag gebeurt.
+
+    Dit stond alleen in de trainingsgids, vier klikken diep. Het is de vraag die
+    iedereen heeft die nog nooit een training bij ons boekte, en voor een merk
+    zonder klantverhalen is het antwoord erop het enige bewijs dat er is: laten
+    zien hoe je werkt, in plaats van vertellen dat je goed bent.
+
+    De tekst komt uit src/lib/trainingsdag.ts, dezelfde bron als de gidspagina,
+    zodat de twee niet uit elkaar kunnen lopen.
+  */}
+  <section class="gloed-warm rand-schuin-boven border-t border-lijn" aria-labelledby="dag-titel">
+    <div class="mx-auto max-w-6xl px-4 py-20">
+      <div class="grid gap-14 lg:grid-cols-[.9fr_1.1fr]">
+        <div class="lg:sticky lg:top-28 lg:self-start">
+          <p class="kicker">Wat je die dag kunt verwachten</p>
+          <h2 id="dag-titel" class="kop-onderstreept mt-4 text-3xl font-bold text-marine md:text-4xl">
+            Hoe een trainingsdag verloopt
+          </h2>
+          <p class="mt-5 leading-relaxed text-grijs">
+            Elke training duurt één dag, met maximaal tien deelnemers. De dag
+            draait om situaties die deelnemers zelf inbrengen — niet om een
+            script. De volgorde ligt niet vast; de opbouw wel.
+          </p>
+
+          <p class="uitgelicht mt-8">
+            Er wordt geoefend, en het wordt oncomfortabel — anders leer je niets.
+            Maar het vertrekpunt is een situatie die iemand zelf heeft
+            meegemaakt.
+          </p>
+
+          <a href={link('/trainingsgids/de-trainingsdag/')} class="knop knop-secundair mt-8">
+            Lees het hele verloop
+            <span class="pijl" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <ol class="stappen">
+          {TRAININGSDAG.map((d) => (
+            <li class="stap rol-in">
+              <h3 class="text-lg font-bold leading-snug text-marine">{d.titel}</h3>
+              <p class="mt-1.5 leading-relaxed text-grijs">{d.kort}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
   </section>
 
   <!-- Niveaus -->
@@ -299,7 +357,8 @@ const cijfers = [
   </section>
 
   <!-- Waarom BWV -->
-  <section class="mx-auto max-w-6xl px-4 py-20" aria-labelledby="waarom-titel">
+  <section class="textuur-stip" aria-labelledby="waarom-titel">
+    <div class="mx-auto max-w-6xl px-4 py-20">
     <div class="grid gap-12 lg:grid-cols-[1fr_22rem]">
       <div>
         <p class="kicker">Waarom een specialist</p>
@@ -321,6 +380,17 @@ const cijfers = [
           </p>
         </div>
 
+        <p class="uitgelicht mt-8">
+          Geen breed trainingsbureau dat agressie er ook bij doet. Eén
+          onderwerp, en daarom de ruimte om het per beroepsgroep uit te werken.
+        </p>
+
+        {/*
+          Deze vier punten stonden als opsomming met een bolletje ervoor. Dat
+          leest als een rijtje kenmerken op een productpagina — je scant het en
+          onthoudt niets. Als kaart met een accentlijn krijgt elk punt een eigen
+          vlak, en dat is precies wat het zijn: vier losse redenen, geen reeks.
+        */}
         <ul class="mt-8 grid gap-4 sm:grid-cols-2">
           {[
             ['Per beroepsgroep', 'Geen algemene training met een sectorsausje, maar situaties uit jouw dagelijkse werk.'],
@@ -328,20 +398,15 @@ const cijfers = [
             ['Incompany of in Neede', 'Op je eigen locatie of bij ons, in groepen van maximaal 10.'],
             ['Reactie binnen één werkdag', 'Bel of vraag een terugbelverzoek aan, dan denken we mee.'],
           ].map(([kop, tekst]) => (
-            <li class="flex gap-3">
-              <span
-                class="mt-1.5 h-2.5 w-2.5 flex-none rounded-full"
-                style="background: var(--gradient-merk-lijn)"
-                aria-hidden="true"></span>
-              <span>
-                <strong class="block font-bold text-marine">{kop}</strong>
-                <span class="text-sm leading-relaxed text-grijs">{tekst}</span>
-              </span>
+            <li class="kaart kaart-til rol-in p-5">
+              <strong class="block font-bold text-marine">{kop}</strong>
+              <span class="mt-1.5 block text-sm leading-relaxed text-grijs">{tekst}</span>
             </li>
           ))}
         </ul>
       </div>
       <Terugbelverzoek onderwerp="een training voor jouw team" />
+    </div>
     </div>
   </section>
 </Base>

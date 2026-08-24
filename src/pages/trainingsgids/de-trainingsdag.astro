@@ -5,6 +5,7 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 import Terugbelverzoek from '../../components/Terugbelverzoek.astro';
 import GidsNavigatie from '../../components/GidsNavigatie.astro';
 import { gidsPagina } from '../../lib/trainingsgids';
+import { TRAININGSDAG } from '../../lib/trainingsdag';
 
 const pagina = gidsPagina('de-trainingsdag')!;
 
@@ -16,33 +17,7 @@ const pagina = gidsPagina('de-trainingsdag')!;
   weken. Wijzigt dat, dan klopt deze pagina niet meer — daarom staan de
   aantallen er niet in, alleen de patronen.
 */
-const dagdelen = [
-  {
-    titel: 'Aankomst en afspraken',
-    inhoud:
-      'Kennismaken en vastleggen wat er in de zaal blijft. Zonder die afspraak brengt niemand een situatie in waar hij zich ongemakkelijk over voelt, en dan valt de training terug op theorie.',
-  },
-  {
-    titel: 'Herkennen: wat gebeurt hier eigenlijk?',
-    inhoud:
-      'Het onderscheid tussen agressie uit emotie en agressie als middel. Dat onderscheid bepaalt je hele reactie: bij de eerste werkt begrip tonen, bij de tweede werkt het averechts.',
-  },
-  {
-    titel: 'Eigen casuïstiek op tafel',
-    inhoud:
-      'Deelnemers brengen situaties in uit hun eigen werk. Dit is het deel waar de training staat of valt, en de reden dat we vooraf vragen om voorbeelden te verzamelen.',
-  },
-  {
-    titel: 'Oefenen',
-    inhoud:
-      'Praktijkgericht oefenen met de ingebrachte situaties, met directe feedback. Geen bedachte rollenspellen met een acteur die overdrijft, maar de situatie zoals hij zich echt voordeed.',
-  },
-  {
-    titel: 'Afspraken voor morgen',
-    inhoud:
-      'Wat neemt het team mee naar de werkvloer, en wat vraagt dat van de organisatie? Hier komen bijna altijd punten uit die verder gaan dan de individuele vaardigheid.',
-  },
-];
+const dagdelen = TRAININGSDAG;
 ---
 
 <Base
