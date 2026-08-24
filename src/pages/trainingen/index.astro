@@ -56,6 +56,21 @@ const filterCss = [
     (s) => `.filterblok:has(#sector-${s}:checked) .groep:not([data-sector="${s}"]) { display: none; }`
   ),
 ].join('\n  ');
+
+/*
+  De naam van de gekozen sector in de dichtgeklapte knop. Zonder dit weet je na
+  het sluiten niet meer waarop je filtert. De radioknop blijft de bron van
+  waarheid; dit is alleen de zichtbare weerslag daarvan, en dus aria-hidden.
+*/
+const sectorkeuzeCss = [
+  `.sectorkeuze::after { content: 'alle'; }`,
+  ...sectorSlugs.map(
+    (s) =>
+      `.filterblok:has(#sector-${s}:checked) .sectorkeuze::after { content: '${(
+        SECTOR_NAMEN[s] ?? s
+      ).replace(/'/g, "\\'")}'; }`
+  ),
+].join('\n  ');
 ---
 
 <Base
@@ -112,13 +127,30 @@ const filterCss = [
             </div>
           </div>
 
-          <div class="filterrij" role="group" aria-labelledby="label-sector">
-              <span class="filterlabel" id="label-sector">Sector</span>
-            <div class="pillen">
+          {/*
+            De negentien sectoren staan ingeklapt. Uitgeklapt vulden ze drie
+            regels, en dan staat er meer keuze op het scherm dan iemand in één
+            blik kan overzien. Nu is de ruststand één regel, met de gekozen
+            sector in de knop zelf, en zie je de lijst pas als je hem opent.
+
+            Werkt zonder JavaScript: details/summary is gewoon HTML, en de
+            radioknoppen erin blijven bestaan ook als het blok dicht is — dus het
+            filter blijft werken en een crawler ziet alles.
+          */}
+          <details class="filterrij sectorfilter">
+            <summary>
+              <span class="filterlabel">Sector</span>
+              <span class="sectorkeuze" aria-hidden="true"></span>
+              <svg viewBox="0 0 20 20" class="chevron" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m5 7.5 5 5 5-5" />
+              </svg>
+            </summary>
+
+            <div class="pillen" role="group" aria-label="Sector">
               <label class="pil">
                 <input type="radio" name="sector" id="sector-alle" checked />
                 {/* Het getal telt beroepsgroepen, net als bij de sectoren zelf */}
-                <span>Alle <span class="pil-aantal">{groepen.length}</span></span>
+                <span>Alle sectoren <span class="pil-aantal">{groepen.length}</span></span>
               </label>
               {sectorSlugs.map((s) => (
                 <label class="pil">
@@ -129,7 +161,7 @@ const filterCss = [
                 </label>
               ))}
             </div>
-          </div>
+          </details>
         </form>
       </div>
     </div>
@@ -206,6 +238,47 @@ const filterCss = [
     padding: .3rem 0;
   }
   .filterrij + .filterrij { border-top: 1px solid var(--color-lijn); margin-top: .3rem; padding-top: .6rem; }
+
+  /* ---------- De ingeklapte sectorkeuze ---------- */
+  .sectorfilter { display: block; }
+  .sectorfilter summary {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    list-style: none;
+    cursor: pointer;
+    padding: .3rem 0;
+    border-radius: .375rem;
+  }
+  .sectorfilter summary::-webkit-details-marker { display: none; }
+  .sectorfilter summary:hover .sectorkeuze { background: var(--color-vlak); color: var(--color-marine); }
+  .sectorfilter summary:focus-visible {
+    outline: 3px solid var(--color-blauw);
+    outline-offset: 2px;
+  }
+  .sectorkeuze {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.75rem;
+    padding: .3rem .7rem;
+    border-radius: 9999px;
+    background: var(--color-marine);
+    color: #fff;
+    font-size: .8125rem;
+    font-weight: 600;
+    transition: background-color 140ms ease, color 140ms ease;
+  }
+  .sectorfilter .chevron {
+    width: 1.05rem;
+    height: 1.05rem;
+    color: var(--color-grijs);
+    transition: transform 180ms ease;
+  }
+  .sectorfilter[open] .chevron { transform: rotate(180deg); }
+  .sectorfilter .pillen { padding: .5rem 0 .2rem; }
+  @media (min-width: 601px) {
+    .sectorfilter .pillen { padding-left: 4.85rem; }
+  }
   .filterlabel {
     flex: none;
     width: 4rem;
@@ -333,4 +406,6 @@ const filterCss = [
   }
 
   ${filterCss}
+
+  ${sectorkeuzeCss}
 `} />
