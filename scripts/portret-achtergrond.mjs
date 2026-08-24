@@ -25,7 +25,16 @@ const proef = process.argv.includes('--proef');
 const ONDER = 18;
 const BOVEN = 55;
 
-/** Het merkverloop als achtergrond, in hetzelfde formaat als de foto. */
+/**
+ * Het merkverloop als achtergrond, in hetzelfde formaat als de foto.
+ *
+ * Met een fijne ruislaag erover. Een vloeiend kleurverloop is het lastigste wat
+ * je een compressor kunt geven: JPEG en daarna WebP hakken hem in banden, en
+ * die randen zie je als vlekken of donkere pixels. Een klein beetje ruis breekt
+ * die banden en verdwijnt zelf in de compressie. Standaardtruc in de
+ * beeldbewerking, en hier hard nodig omdat het beeld twee compressieslagen
+ * ondergaat: eerst mijn JPEG, daarna de WebP die Astro ervan maakt.
+ */
 const achtergrond = (breedte, hoogte) =>
   Buffer.from(`
     <svg width="${breedte}" height="${hoogte}" xmlns="http://www.w3.org/2000/svg">
@@ -41,9 +50,14 @@ const achtergrond = (breedte, hoogte) =>
           <stop offset="0%" stop-color="#ffffff" stop-opacity="0.22"/>
           <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
         </radialGradient>
+        <filter id="ruis" x="0" y="0" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+          <feColorMatrix type="saturate" values="0"/>
+        </filter>
       </defs>
       <rect width="${breedte}" height="${hoogte}" fill="url(#merk)"/>
       <rect width="${breedte}" height="${hoogte}" fill="url(#licht)"/>
+      <rect width="${breedte}" height="${hoogte}" filter="url(#ruis)" opacity="0.035"/>
     </svg>`);
 
 async function verwerk(bestand, doel) {
@@ -78,7 +92,7 @@ async function verwerk(bestand, doel) {
   */
   const klaar = await sharp(achtergrond(width, height))
     .composite([{ input: persoon }])
-    .jpeg({ quality: 88, mozjpeg: true })
+    .jpeg({ quality: 96, mozjpeg: true, chromaSubsampling: '4:4:4' })
     .toBuffer();
 
   writeFileSync(doel, klaar);

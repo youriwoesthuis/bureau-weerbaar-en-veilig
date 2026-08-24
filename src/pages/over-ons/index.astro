@@ -8,18 +8,15 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 const team = (await getCollection('team')).sort((a, b) => a.data.volgorde - b.data.volgorde);
 
 /*
-  Drie groepen, ingedeeld op de rol die in de content staat en niet op een lijst
-  namen. Zo klopt de indeling vanzelf als er iemand bij komt of een rol verandert.
+  Eén team, één raster. Er stonden hier eerst kopjes boven — trainers, acteurs,
+  achter de schermen — maar dat las als drie losse afdelingen terwijl het één
+  club is die samen op een trainingsdag staat. De rol staat op elke kaart, dus
+  wie wil weten wie wat doet, ziet dat gewoon.
 
-  Wie zowel traint als speelt — dat komt voor — staat bij de acteurs: dat is de
-  rol waarmee dit team zich onderscheidt van andere aanbieders.
+  Alleen het aantal acteurs wordt nog geteld, want dat getal zegt iets in de
+  tekst erboven.
 */
-const isActeur = (rol: string) => /acteur/i.test(rol);
-const isTrainer = (rol: string) => /trainer|coach/i.test(rol);
-
-const acteurs = team.filter((lid) => isActeur(lid.data.rol));
-const trainers = team.filter((lid) => !isActeur(lid.data.rol) && isTrainer(lid.data.rol));
-const kantoor = team.filter((lid) => !isActeur(lid.data.rol) && !isTrainer(lid.data.rol));
+const acteurs = team.filter((lid) => /acteur/i.test(lid.data.rol));
 
 /** Initialen als terugval wanneer er nog geen portretfoto is. */
 const initialen = (naam: string) =>
@@ -113,63 +110,46 @@ function fotoVan(id: string) {
       {team.length === 0 ? (
         <p class="mt-3 text-grijs">De teampagina wordt op dit moment gevuld.</p>
       ) : (
-        <div class="mt-10 space-y-10">
-          {[
-            { titel: 'Trainers en coaches', leden: trainers },
-            { titel: 'Trainingsacteurs', leden: acteurs },
-            { titel: 'Achter de schermen', leden: kantoor },
-          ]
-            .filter((groep) => groep.leden.length > 0)
-            .map((groep) => (
-              <div>
-                <h3 class="text-sm font-bold uppercase tracking-wide text-grijs">
-                  {groep.titel}
-                </h3>
-                <ul class="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                  {groep.leden.map((lid) => {
-                    const foto = fotoVan(lid.id);
-                    return (
-                      <li class="group overflow-hidden rounded-xl border border-lijn bg-white shadow-[var(--shadow-kaart)] transition-shadow hover:shadow-[var(--shadow-kaart-hover)]">
-                        {foto ? (
-                          <Image
-                            src={foto}
-                            alt={lid.data.foto?.alt ?? `Portretfoto van ${lid.data.naam}`}
-                            width={400}
-                            height={500}
-                            widths={[300, 400, 600]}
-                            sizes="(min-width: 1024px) 260px, (min-width: 640px) 45vw, 90vw"
-                            format="webp"
-                            quality={78}
-                            loading="lazy"
-                            class="aspect-[4/5] w-full object-cover object-top"
-                          />
-                        ) : (
-                          /*
-                            Nog geen portretfoto. In plaats van een gat of een
-                            nepafbeelding: de initialen op het merkverloop, zodat
-                            de kaart in het raster even zwaar weegt als de rest.
-                          */
-                          <div
-                            class="flex aspect-[4/5] w-full items-center justify-center"
-                            style="background: var(--gradient-merk)"
-                            aria-hidden="true"
-                          >
-                            <span class="text-4xl font-bold text-white/90">
-                              {initialen(lid.data.naam)}
-                            </span>
-                          </div>
-                        )}
-                        <div class="p-5">
-                          <h4 class="font-bold text-marine">{lid.data.naam}</h4>
-                          <p class="mt-1 text-sm leading-snug text-grijs">{lid.data.rol}</p>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            ))}
-        </div>
+        <ul class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {team.map((lid) => {
+            const foto = fotoVan(lid.id);
+            return (
+              <li class="overflow-hidden rounded-xl border border-lijn bg-white shadow-[var(--shadow-kaart)] transition-shadow hover:shadow-[var(--shadow-kaart-hover)]">
+                {foto ? (
+                  <Image
+                    src={foto}
+                    alt={lid.data.foto?.alt ?? `Portretfoto van ${lid.data.naam}`}
+                    width={400}
+                    height={500}
+                    widths={[300, 400, 600]}
+                    sizes="(min-width: 1024px) 260px, (min-width: 640px) 45vw, 90vw"
+                    format="webp"
+                    quality={88}
+                    loading="lazy"
+                    class="aspect-[4/5] w-full object-cover object-top"
+                  />
+                ) : (
+                  /*
+                    Nog geen portretfoto. Bewust géén merkverloop hier: dat is
+                    precies de achtergrond van de échte portretten, waardoor zo'n
+                    kaart eruitzag als een foto die niet geladen was. Nu een
+                    rustig vlak met initialen, dat zichtbaar iets anders is.
+                  */
+                  <div
+                    class="flex aspect-[4/5] w-full items-center justify-center bg-vlak-warm"
+                    aria-hidden="true"
+                  >
+                    <span class="text-3xl font-bold text-lijn">{initialen(lid.data.naam)}</span>
+                  </div>
+                )}
+                <div class="p-5">
+                  <h3 class="font-bold text-marine">{lid.data.naam}</h3>
+                  <p class="mt-1 text-sm leading-snug text-grijs">{lid.data.rol}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
       )}
     </section>
 
