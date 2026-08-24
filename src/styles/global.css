@@ -1220,6 +1220,357 @@ a {
   text-underline-offset: 0.15em;
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   DE HOMEPAGE EN OVERZICHTSPAGINA'S
+   ═══════════════════════════════════════════════════════════════════
+   Kleurrijker en met meer beweging dan de detailpagina's. Waar een
+   trainingspagina een dossier is dat je leest, is een instappagina een
+   etalage waar je kiest — die mag aanzetten.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── De hero: tekst links, beeld rechts ── */
+.hero {
+  background: var(--color-marine-diep);
+  color: #ffffff;
+  padding-block: var(--ruimte-16) var(--ruimte-24);
+  /* Twee zachte lichtvlekken in de merkkleuren: geeft diepte aan een vlak
+     dat anders een effen donkerblauw rechthoek is. */
+  background-image:
+    radial-gradient(48rem 34rem at 8% -10%, rgb(241 137 25 / 0.22), transparent 62%),
+    radial-gradient(42rem 32rem at 96% 12%, rgb(115 85 120 / 0.5), transparent 64%);
+}
+
+.hero-raster {
+  display: grid;
+  gap: var(--ruimte-12);
+  align-items: center;
+}
+@media (min-width: 62rem) {
+  .hero-raster {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: var(--ruimte-16);
+  }
+}
+
+.hero-titel {
+  margin-top: var(--ruimte-6);
+  font-size: var(--text-display);
+  color: #ffffff;
+  max-width: 15ch;
+}
+/* Het tweede deel van de kop in de merkkleur: dat maakt van een zin een beeld. */
+.hero-titel em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--color-oranje) 0%, var(--color-paars-helder) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-lead {
+  margin-top: var(--ruimte-6);
+  max-width: 48ch;
+  font-size: var(--text-lead);
+  line-height: 1.65;
+  color: rgb(255 255 255 / 0.82);
+}
+
+.hero-acties {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ruimte-3);
+  margin-top: var(--ruimte-8);
+}
+
+.hero-beeld {
+  position: relative;
+}
+.hero-beeld svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ── De cijferstrip ── */
+.cijferstrip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ruimte-3);
+  margin-top: calc(var(--ruimte-16) * -1);
+  position: relative;
+  z-index: 2;
+}
+@media (min-width: 48rem) {
+  .cijferstrip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.cijferkaart {
+  display: block;
+  padding: var(--ruimte-6);
+  background: #ffffff;
+  border: 1px solid var(--color-lijn);
+  border-radius: var(--radius);
+  box-shadow: var(--schaduw);
+  /* De accentkleur als streep bovenaan; elke kaart een andere, zodat de rij
+     kleur krijgt zonder bont te worden. */
+  border-top: 3px solid var(--accent, var(--color-oranje));
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .cijferkaart {
+    transition: transform 160ms ease, box-shadow 160ms ease;
+  }
+  .cijferkaart:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--schaduw-hoog);
+  }
+}
+
+.cijferkaart b {
+  display: block;
+  font-family: var(--font-kop);
+  font-size: clamp(2.25rem, 3.5vw + 1rem, 3rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-tekst, var(--color-marine));
+}
+.cijferkaart span {
+  display: block;
+  margin-top: var(--ruimte-2);
+  font-size: var(--text-klein);
+  color: var(--color-grijs);
+}
+
+/* ── Sectorkaarten met gekleurd pictogram ── */
+.sectorraster {
+  display: grid;
+  gap: var(--ruimte-4);
+  margin-top: var(--ruimte-8);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+}
+
+.sectorkaart {
+  display: flex;
+  align-items: center;
+  gap: var(--ruimte-4);
+  padding: var(--ruimte-4) var(--ruimte-5, 1.25rem);
+  background: #ffffff;
+  border: 1px solid var(--color-lijn);
+  border-radius: var(--radius);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .sectorkaart {
+    transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+  }
+  .sectorkaart:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--schaduw);
+    border-color: transparent;
+  }
+}
+
+/*
+  Het pictogram in een gekleurd vierkantje. De kleur rouleert over de drie
+  merkkleuren, zodat negentien kaarten samen kleur hebben zonder dat er
+  negentien kleuren nodig zijn.
+*/
+.sectoricoon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-klein);
+  background: var(--accent-vlak, var(--color-oranje-licht));
+  color: var(--accent-tekst, var(--color-oranje-tekst));
+}
+.sectoricoon svg {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+.sectorkaart-naam {
+  font-family: var(--font-kop);
+  font-size: var(--text-body);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--color-marine);
+}
+.sectorkaart-bij {
+  margin-top: 0.15rem;
+  font-size: var(--text-mini);
+  color: var(--color-grijs);
+}
+.sectorkaart-pijl {
+  margin-left: auto;
+  flex: none;
+  color: var(--color-grijs-licht);
+}
+.sectorkaart:hover .sectorkaart-pijl {
+  color: var(--accent-tekst, var(--color-oranje-tekst));
+}
+
+/* ── De niveauladder: interactief zonder JavaScript ── */
+.ladder {
+  display: grid;
+  gap: var(--ruimte-3);
+  margin-top: var(--ruimte-8);
+}
+
+.ladder-trede {
+  border: 1px solid var(--color-lijn);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.ladder-kop {
+  display: flex;
+  align-items: center;
+  gap: var(--ruimte-4);
+  padding: var(--ruimte-4) var(--ruimte-6);
+  cursor: pointer;
+  list-style: none;
+}
+.ladder-kop::-webkit-details-marker {
+  display: none;
+}
+.ladder-kop:hover {
+  background: var(--accent-vlak);
+}
+
+.ladder-nummer {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  background: var(--accent-vlak);
+  color: var(--accent-tekst);
+  font-family: var(--font-kop);
+  font-size: var(--text-klein);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+  Allebei op een eigen regel. Het zijn spans binnen een span — inline dus — en
+  zonder deze regel liep de ondertitel achter de titel aan op dezelfde regel,
+  waardoor "Basis — Herkennen en de-escaleren" en "Voor iedereen die..." één
+  onleesbare zin werden.
+*/
+.ladder-titel {
+  display: block;
+  font-family: var(--font-kop);
+  font-size: var(--text-h3);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--color-marine);
+}
+.ladder-bij {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: var(--text-klein);
+  line-height: 1.45;
+  color: var(--color-grijs);
+}
+
+/* Het chevron-teken draait mee als de trede openklapt. */
+.ladder-teken {
+  margin-left: auto;
+  flex: none;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-right: 2px solid var(--accent-tekst);
+  border-bottom: 2px solid var(--accent-tekst);
+  transform: rotate(45deg);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ladder-teken {
+    transition: transform 180ms ease;
+  }
+}
+.ladder-trede[open] .ladder-teken {
+  transform: rotate(-135deg);
+}
+
+.ladder-inhoud {
+  padding: 0 var(--ruimte-6) var(--ruimte-6);
+  border-top: 1px solid var(--color-lijn);
+  padding-top: var(--ruimte-5, 1.25rem);
+}
+.ladder-lijst {
+  display: grid;
+  gap: var(--ruimte-2);
+  font-size: var(--text-klein);
+  line-height: 1.55;
+}
+.ladder-lijst li {
+  position: relative;
+  padding-left: 1.15rem;
+}
+.ladder-lijst li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.42em;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-right: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  transform: rotate(-45deg);
+}
+
+/* ── De actieband met merkverloop ── */
+.actieband {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ruimte-8);
+  padding: var(--ruimte-12);
+  border-radius: var(--radius-groot);
+  /*
+    Van knop-oranje naar paars. Beide halen genoeg contrast met wit — 4,95:1 en
+    6,36:1 — dus elk punt op dit verloop draagt witte tekst. Het volle
+    merk-oranje zou hier 2,2:1 geven en dus onleesbaar zijn.
+  */
+  /*
+    Eerst een effen kleur, dan het verloop eroverheen. Zonder die eerste regel
+    staat er alleen een background-image, en dan is de band wit met witte tekst
+    zodra dat verloop niet wordt getekend: bij geforceerde kleuren, in een
+    hoog-contrastmodus, of in een afdruk. Deze effen kleur ligt tussen de twee
+    eindkleuren in en haalt zelf 6,58:1 met wit.
+  */
+  background-color: #8f4a30;
+  background-image: linear-gradient(118deg, var(--color-oranje-knop) 0%, var(--color-paars) 100%);
+  color: #ffffff;
+}
+.actieband h2 {
+  color: #ffffff;
+  max-width: 20ch;
+}
+.actieband p {
+  margin-top: var(--ruimte-3);
+  max-width: 44ch;
+  color: rgb(255 255 255 / 0.9);
+  line-height: 1.6;
+}
+.actieband .knop-rand {
+  background: rgb(0 0 0 / 0.18);
+  border-color: rgb(255 255 255 / 0.55);
+  color: #ffffff;
+}
+.actieband .knop-rand:hover {
+  background: rgb(0 0 0 / 0.3);
+  border-color: #ffffff;
+}
+
 /* ───────────────────────────────────────────────────────────────────
    Beweging bij binnenkomst
    ───────────────────────────────────────────────────────────────────

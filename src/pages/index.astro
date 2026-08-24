@@ -1,516 +1,360 @@
 ---
-import { link } from '../lib/link';
+/**
+ * De homepage.
+ *
+ * Opgezet in dezelfde taal als agressievisie.nl, want dat is de site waar de
+ * opdrachtgever naar wees: gesplitste kop met een tekening ernaast, een
+ * klikbare cijferstrip die over de kop heen valt, kaarten met gekleurde
+ * pictogrammen, een afwisseling van lichte en donkere vlakken, en een
+ * afsluitende band in het merkverloop.
+ *
+ * Wat anders is: daar gaat het over kennis, hier over trainingen. En de
+ * kleuren zijn die van dit merk — oranje, paars en indigo uit het beeldmerk,
+ * waarbij elke kleur bovendien een niveau aanduidt.
+ *
+ * ── De tekst is kort gehouden ──
+ *
+ * De vorige homepage telde achttienhonderd woorden. Dit is een instappagina,
+ * geen brochure: wie hier komt kiest, en leest pas op de pagina daarna. Uit
+ * het overleg met Gemini kwam vierhonderd à vijfhonderd woorden als ondergrens,
+ * mits de entiteitsdefinitie in de eerste vijftig woorden staat en de cijfers
+ * aanwezig blijven. Dat is de opzet hier.
+ */
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import Base from '../layouts/Base.astro';
-import NiveauBadge from '../components/NiveauBadge.astro';
-import Terugbelverzoek from '../components/Terugbelverzoek.astro';
 import SectorIcoon from '../components/SectorIcoon.astro';
-import { TRAININGSDAG } from '../lib/trainingsdag';
-import { situatieSelectie, alleSituaties } from '../lib/situaties';
-import TrainingFinder from '../components/ui/TrainingFinder.astro';
-import {
-  SECTOR_NAMEN,
-  NIVEAU_BESCHRIJVING,
-  NIVEAU_LABELS,
-  NIVEAU_LINKTEKST,
-  telwoord,
-} from '../lib/sectoren';
+import { link } from '../lib/link';
+import { inZin } from '../lib/naam';
+import { telwoord } from '../lib/sectoren';
+import { alleSituaties } from '../lib/situaties';
+import { voorDeGroep } from '../lib/team';
 
 const sectoren = (await getCollection('sectoren')).sort((a, b) =>
   a.data.naam.localeCompare(b.data.naam)
 );
-const gevuldeSlugs = new Set(sectoren.map((s) => s.data.slug));
-const overigeSectoren = Object.entries(SECTOR_NAMEN).filter(([slug]) => !gevuldeSlugs.has(slug));
-const niveaus = ['basis', 'gevorderd', 'expert'] as const;
-
-
-/*
-  De cijfers in het hero-blok worden geteld uit de content zelf, niet met de
-  hand ingevuld. Voegen we een training of beroepsgroep toe, dan klopt het
-  getal de volgende build vanzelf nog steeds.
-*/
 const trainingen = await getCollection('trainingen');
 const beroepsgroepen = await getCollection('beroepsgroepen');
+const situaties = await alleSituaties();
+const team = await voorDeGroep();
 
-/* Het team, voor het blok met gezichten verderop */
-const team = (await getCollection('team')).sort((a, b) => a.data.volgorde - b.data.volgorde);
 const fotos = import.meta.glob<{ default: ImageMetadata }>('../images/team/*.jpg', { eager: true });
 const fotoVan = (id: string) => {
-  const sleutel = Object.keys(fotos).find((pad) => pad.endsWith(`/${id}.jpg`));
+  const sleutel = Object.keys(fotos).find((p) => p.endsWith(`/${id}.jpg`));
   return sleutel ? fotos[sleutel].default : undefined;
 };
+const acteurs = team.filter((l) => /acteur/i.test(l.data.rol)).length;
 
-const aantalTrainingen = (sector: string) =>
-  trainingen.filter((t) => t.data.sector === sector).length;
-const aantalGroepen = (sector: string) =>
-  beroepsgroepen.filter((b) => b.data.sector === sector).length;
-/* De sectoren met hun beroepsgroepen, in de vorm die de keuzehulp verwacht. */
-const finderSectoren = sectoren.map((s) => ({
-  slug: s.data.slug,
-  naam: s.data.naam,
-  groepen: beroepsgroepen
-    .filter((b) => b.data.sector === s.data.slug)
-    .sort((a, z) => a.data.naam.localeCompare(z.data.naam))
-    .map((b) => ({
-      slug: b.data.slug,
-      naam: b.data.naam,
-      aantalTrainingen: trainingen.filter((t) => t.data.beroepsgroep === b.data.slug).length,
-    })),
-}));
-
-const situaties = await situatieSelectie(6);
-const aantalSituaties = (await alleSituaties()).length;
-
+/*
+  De cijfers worden geteld uit de content, niet met de hand ingevuld. Komt er
+  een training bij, dan klopt het getal de volgende build vanzelf nog steeds —
+  en dat is precies waarom ze hier mogen staan: ze zijn na te rekenen.
+*/
 const cijfers = [
-  { getal: trainingen.length, label: 'trainingen' },
-  { getal: sectoren.length, label: 'sectoren' },
-  { getal: beroepsgroepen.length, label: 'beroepsgroepen' },
-  { getal: 3, label: 'niveaus' },
+  { getal: trainingen.length, wat: 'trainingen', pad: '/trainingen/', niveau: 'basis' },
+  { getal: beroepsgroepen.length, wat: 'beroepsgroepen', pad: '/sectoren/', niveau: 'gevorderd' },
+  { getal: sectoren.length, wat: 'sectoren', pad: '/sectoren/', niveau: 'expert' },
+  { getal: situaties.length, wat: 'praktijksituaties', pad: '/trainingen/', niveau: 'basis' },
 ];
+
+const aantalTrainingen = (s: string) => trainingen.filter((t) => t.data.sector === s).length;
+const aantalGroepen = (s: string) => beroepsgroepen.filter((b) => b.data.sector === s).length;
+
+/* De drie niveaus rouleren over de merkkleuren, zodat het raster kleur krijgt. */
+const NIVEAUS = ['basis', 'gevorderd', 'expert'] as const;
+
+/*
+  De ladder: drie treden die openklappen. Wat erin staat komt uit de
+  trainingen zelf — de meest voorkomende leeruitkomsten per niveau, geteld over
+  alle vierenveertig beroepsgroepen. Zo staat er geen bedachte omschrijving maar
+  wat er daadwerkelijk geleerd wordt.
+*/
+const ladder = NIVEAUS.map((niveau, i) => {
+  const vanNiveau = trainingen.filter((t) => t.data.niveau === niveau);
+  const telling = new Map<string, number>();
+  for (const t of vanNiveau) {
+    for (const r of t.data.resultaat) telling.set(r, (telling.get(r) ?? 0) + 1);
+  }
+  return {
+    niveau,
+    nummer: String(i + 1).padStart(2, '0'),
+    titel: { basis: 'Basis', gevorderd: 'Gevorderd', expert: 'Expert' }[niveau],
+    kern: {
+      basis: 'Herkennen en de-escaleren',
+      gevorderd: 'Zwaardere en structurele situaties',
+      expert: 'Beleid, teamnorm en borging',
+    }[niveau],
+    aantal: vanNiveau.length,
+    voorWie: {
+      basis: 'Voor iedereen die met agressie te maken kan krijgen.',
+      gevorderd: 'Voor wie de basis beheerst en structureel met zwaardere situaties werkt.',
+      expert: 'Voor leidinggevenden en coördinatoren.',
+    }[niveau],
+    leert: [...telling.entries()]
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .slice(0, 4)
+      .map(([tekst]) => tekst),
+  };
+});
+
+/* Vier situaties, elk uit een andere beroepsgroep, gespreid over het alfabet. */
+const perGroep = new Map<string, typeof situaties>();
+for (const s of situaties) {
+  const l = perGroep.get(s.beroepsgroep) ?? [];
+  l.push(s);
+  perGroep.set(s.beroepsgroep, l);
+}
+const kandidaten = [...perGroep.values()]
+  .map((l) => l.slice().sort((a, b) => b.tekst.length - a.tekst.length)[0])
+  .sort((a, b) => a.beroepsgroep.localeCompare(b.beroepsgroep));
+const stap = Math.max(1, Math.floor(kandidaten.length / 4));
+const uitgelicht = [0, 1, 2, 3].map((i) => kandidaten[(i * stap) % kandidaten.length]);
 ---
 
 <Base
   titel="Agressietraining per beroepsgroep | Bureau Weerbaar en Veilig"
   beschrijving="Bureau Weerbaar en Veilig is dé specialist in agressietraining: de-escaleren, grenzen stellen en veilig werken, per sector en beroepsgroep, in drie niveaus."
 >
-  <!-- Hero -->
-  <section class="vlak-donker op-donker relative overflow-hidden text-white">
-    <div class="motief-chevron absolute inset-0 opacity-60" aria-hidden="true"></div>
+  {/* ═══ Kop ═══ */}
+  <section class="hero op-donker">
+    <div class="omvat hero-raster">
+      <div>
+        <p class="label">Specialist in agressietraining</p>
 
-    <div class="relative mx-auto max-w-6xl px-4 py-20 md:py-28">
-      <div class="grid items-center gap-14 lg:grid-cols-[1.05fr_.95fr]">
-        <div>
-          <p class="kicker">Specialist in agressietraining</p>
-          <h1 class="mt-5 text-4xl font-bold leading-[1.1] md:text-5xl lg:text-6xl">
-            Agressietraining voor jouw beroepsgroep,
-            <span class="text-oranje">op het juiste niveau</span>
-          </h1>
-          <!-- GEO-openingsantwoord -->
-          <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/85">
-            Bureau Weerbaar en Veilig traint teams in het omgaan met agressie,
-            intimidatie en grensoverschrijdend gedrag op de werkvloer: één
-            onderwerp, tot in de diepte, per beroepsgroep vertaald. In drie
-            niveaus: basis, gevorderd en expert. Incompany of in Neede, in
-            groepen van maximaal 10 deelnemers.
-          </p>
-          <div class="mt-9 flex flex-col gap-3 sm:flex-row">
-            <a href={link('/sectoren/')} class="knop knop-primair">
-              Vind de training voor jouw sector
-              <span aria-hidden="true">→</span>
-            </a>
-            <a href={link('/agressietraining/')} class="knop knop-omlijnd-licht">
-              Hoe onze aanpak werkt
-            </a>
-          </div>
+        {/*
+          De entiteitsdefinitie staat in de eerste vijftig woorden: wie we
+          zijn, wat we doen, voor wie. Dat is het stuk dat een AI-systeem
+          overneemt als iemand vraagt wat Bureau Weerbaar en Veilig is.
+        */}
+        <h1 class="hero-titel">
+          Agressietraining voor <em>jouw beroepsgroep</em>
+        </h1>
+        <p class="hero-lead">
+          Bureau Weerbaar en Veilig traint teams in het omgaan met agressie,
+          intimidatie en grensoverschrijdend gedrag op de werkvloer. Eén
+          onderwerp, tot in de diepte, per beroepsgroep uitgewerkt — in drie
+          niveaus. Incompany of in Neede, in groepen van maximaal tien.
+        </p>
+
+        <div class="hero-acties">
+          <a href={link('/sectoren/')} class="knop knop-accent niveau-basis">
+            Vind jouw beroepsgroep
+            <span class="pijl" aria-hidden="true">→</span>
+          </a>
+          <a href="#niveaus" class="knop knop-rand">Welk niveau heb ik nodig?</a>
         </div>
-
-        <!-- Niveaukaartjes: laten meteen zien dat er een opbouw in zit -->
-        <ul class="grid gap-3" aria-label="De drie niveaus">
-          {niveaus.map((n, i) => (
-            <li class={`niveau-${n} group relative overflow-hidden rounded-xl border border-white/15 bg-white/[0.07] p-5 backdrop-blur-sm transition-colors hover:bg-white/[0.12]`}>
-              <span
-                class="absolute inset-y-0 left-0 w-1"
-                style={`background: var(--accent)`}
-                aria-hidden="true"></span>
-              <div class="flex items-baseline gap-4 pl-3">
-                <span class="text-2xl font-bold tabular-nums text-white/35">
-                  0{i + 1}
-                </span>
-                <div>
-                  <h2 class="text-lg font-bold">
-                    <a href={link(`/niveaus/${n}/`)} class="after:absolute after:inset-0">
-                      {NIVEAU_LABELS[n]}
-                    </a>
-                  </h2>
-                  <p class="mt-1 text-sm leading-relaxed text-white/75">
-                    {NIVEAU_BESCHRIJVING[n]}
-                  </p>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
       </div>
 
       {/*
-        Cijfers, geteld uit de content. Ze stonden hier al, maar klein en met een
-        scheidingslijn erboven — waardoor ze lazen als een voetnoot onder de
-        hero. Groot gezet zijn ze het tegenovergestelde van een superlatief:
-        controleerbaar, en in één oogopslag te vergelijken met elke concurrent
-        die "ruime ervaring" schrijft.
+        De drie niveaus als oplopende staven, in de kleuren die ze op de hele
+        site dragen. Geen sfeerplaatje: de tekening zégt wat de opbouw is —
+        van herkennen, via zwaardere situaties, naar beleid.
       */}
-      <dl class="cijferband mt-16 border-t border-white/15 pt-12">
-        {cijfers.map((c) => (
-          <div>
-            <dt class="sr-only">{c.label}</dt>
-            <dd>
-              <span class="cijfer-groot block tabular-nums">{c.getal}</span>
-              <span class="cijfer-label block">{c.label}</span>
-            </dd>
-          </div>
-        ))}
-      </dl>
+      <div class="hero-beeld" aria-hidden="true">
+        <svg viewBox="0 0 420 320" role="presentation">
+          <defs>
+            <linearGradient id="staafExpert" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0%" stop-color="#35409b" />
+              <stop offset="100%" stop-color="#735578" />
+            </linearGradient>
+          </defs>
+
+          {/* De grondlijn */}
+          <line x1="20" y1="292" x2="400" y2="292" stroke="#ffffff" stroke-opacity="0.16" stroke-width="2" />
+
+          {/* Basis */}
+          <rect x="52" y="196" width="72" height="96" rx="10" fill="#f18919" />
+          <text x="88" y="180" text-anchor="middle" fill="#f18919" font-size="15" font-weight="700"
+                font-family="Space Grotesk Variable, sans-serif">Basis</text>
+
+          {/* Gevorderd */}
+          <rect x="174" y="132" width="72" height="160" rx="10" fill="#9a7a9f" />
+          <text x="210" y="116" text-anchor="middle" fill="#c9a9d0" font-size="15" font-weight="700"
+                font-family="Space Grotesk Variable, sans-serif">Gevorderd</text>
+
+          {/* Expert */}
+          <rect x="296" y="52" width="72" height="240" rx="10" fill="url(#staafExpert)" />
+          <text x="332" y="36" text-anchor="middle" fill="#a9b2e8" font-size="15" font-weight="700"
+                font-family="Space Grotesk Variable, sans-serif">Expert</text>
+
+          {/* De chevron uit het beeldmerk, bovenop de hoogste staaf */}
+          <path d="M316 74 l16 14 l16 -14" fill="none" stroke="#ffffff" stroke-opacity="0.65"
+                stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M316 92 l16 14 l16 -14" fill="none" stroke="#ffffff" stroke-opacity="0.35"
+                stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
     </div>
   </section>
-  <div class="lijn-merk" aria-hidden="true"></div>
 
-  {/*
-    De loopband met beroepsgroepen.
-
-    Vierenveertig namen in een raster is een lijst die je overslaat. In beweging
-    langs de rand zie je in drie seconden dat dit over vierenveertig
-    verschillende vakken gaat, zonder dat je één naam hoeft te lezen — en dat
-    is precies het verhaal van dit merk: niet één algemene training, maar
-    vierenveertig keer hetzelfde onderwerp anders uitgewerkt.
-
-    aria-hidden, want dit is een beeld en geen navigatie. De echte lijst met
-    links staat in de sectie eronder; hier gaat dus niets verloren.
-  */}
-  <div class="loopband border-b border-lijn bg-white py-5" aria-hidden="true">
-    <div class="loopband-rij">
-      {[...beroepsgroepen, ...beroepsgroepen].map((b) => (
-        <>
-          <span class="loopband-item">{b.data.naam}</span>
-          <span class="loopband-scheiding"></span>
-        </>
+  {/* ═══ De cijfers ═══ */}
+  <div class="omvat">
+    <div class="cijferstrip">
+      {cijfers.map((c) => (
+        <a href={link(c.pad)} class={`cijferkaart niveau-${c.niveau}`}>
+          <b>{c.getal}</b>
+          <span>{c.wat}</span>
+        </a>
       ))}
     </div>
   </div>
 
-  {/*
-    Wat er in dat vak echt gebeurt.
-
-    Deze zinnen komen uit de trainingen zelf, uit het blok "Herkenbare
-    praktijksituaties". Er staan er ruim vijfhonderd op de site, en ze stonden
-    allemaal alleen als opsomming halverwege een trainingspagina.
-
-    Dit is het enige op deze site dat een concurrent niet kan overschrijven.
-    Iedereen kan opschrijven dat hij professionele agressietraining verzorgt;
-    hiervoor moet je de vakken kennen. Daarom staan ze hier op de maat van een
-    kop, op het enige vlak van de site waar de merkkleuren de volle breedte
-    krijgen.
-  */}
-  <section class="merkvlak op-donker text-white" aria-labelledby="situaties-titel">
-    <div class="relative mx-auto max-w-6xl px-4 py-20 md:py-24">
-      <p class="kicker">Waar het over gaat</p>
-      <h2 id="situaties-titel" class="mt-5 max-w-3xl text-3xl font-bold leading-tight md:text-4xl">
-        Dit staat er in de trainingen, letterlijk
-      </h2>
-      <p class="mt-5 max-w-2xl text-lg leading-relaxed text-white/80">
-        Geen bedachte voorbeelden. Dit zijn situaties zoals ze in de trainingen
-        van Bureau Weerbaar en Veilig staan beschreven, per beroepsgroep.
+  {/* ═══ Sectoren ═══ */}
+  <section class="vlak">
+    <div class="omvat">
+      <p class="label">Kies je vertrekpunt</p>
+      <h2 class="sectie-titel">Trainingen per sector</h2>
+      <p class="sectie-lead">
+        Elke sector kent zijn eigen situaties. De balie van een gemeente is de
+        spreekkamer van een huisarts niet, en dat verschil bepaalt de training.
       </p>
 
-      <ul class="mt-14 grid gap-x-12 gap-y-12 md:grid-cols-2">
-        {situaties.map((s) => (
-          <li class="rol-in border-l-2 border-white/25 pl-6">
-            <p class="situatie">{s.tekst}</p>
-            <p class="situatie-bron accent-warm">
-              <a
-                href={link(`/trainingen/${s.slug}/`)}
-                class="hover:underline"
-              >{s.beroepsgroep}</a>
-            </p>
+      <ul class="sectorraster">
+        {sectoren.map((s, i) => (
+          <li class={`sectorkaart niveau-${NIVEAUS[i % 3]} komt-op`}>
+            <span class="sectoricoon" aria-hidden="true">
+              <SectorIcoon sector={s.data.slug} />
+            </span>
+            <span>
+              <span class="sectorkaart-naam">
+                <a href={link(`/sectoren/${s.data.slug}/`)} class="vlakdek">{s.data.naam}</a>
+              </span>
+              <span class="sectorkaart-bij">
+                {telwoord(aantalTrainingen(s.data.slug), 'training', 'trainingen')} ·
+                {' '}{telwoord(aantalGroepen(s.data.slug), 'beroepsgroep', 'beroepsgroepen')}
+              </span>
+            </span>
+            <span class="pijl sectorkaart-pijl" aria-hidden="true">→</span>
           </li>
         ))}
       </ul>
+    </div>
+  </section>
 
-      <p class="mt-14 text-white/75">
-        Er staan er {aantalSituaties} op deze site, verdeeld over
+  {/* ═══ Wat er in het vak gebeurt ═══ */}
+  <section class="vlak-papier vlak">
+    <div class="omvat">
+      <p class="label">Waar het over gaat</p>
+      <h2 class="sectie-titel">Dit staat er in de trainingen, letterlijk</h2>
+      <p class="sectie-lead">
+        Geen bedachte voorbeelden. Deze situaties staan woordelijk in de
+        trainingen, per beroepsgroep uitgewerkt.
+      </p>
+
+      <div class="dossierrij" style="margin-top: var(--ruimte-8)">
+        {uitgelicht.map((s, i) => (
+          <article class={`dossier niveau-${NIVEAUS[i % 3]} komt-op`}>
+            <p class="dossier-kenmerk">
+              <span>Casus {String(i + 1).padStart(2, '0')}</span>
+              <span>{s.beroepsgroep}</span>
+            </p>
+            <p class="dossier-tekst">{s.tekst}</p>
+          </article>
+        ))}
+      </div>
+
+      <p class="dossier-bij">
+        Er staan er {situaties.length} op deze site, verdeeld over
         {' '}{beroepsgroepen.length} beroepsgroepen.
-        <a href={link('/sectoren/')} class="accent-warm ml-1 font-bold hover:underline">
-          Zoek die van jou op
+      </p>
+    </div>
+  </section>
+
+  {/* ═══ De niveaus, als ladder ═══ */}
+  <section id="niveaus" class="vlak">
+    <div class="omvat">
+      <p class="label">Van herkennen tot borgen</p>
+      <h2 class="sectie-titel">Drie niveaus, één opbouw</h2>
+      <p class="sectie-lead">
+        Klap een niveau open om te zien wat er geleerd wordt. Wat daar staat is
+        geteld uit alle trainingen van dat niveau.
+      </p>
+
+      <div class="ladder">
+        {ladder.map((n) => (
+          <details class={`ladder-trede niveau-${n.niveau}`}>
+            <summary class="ladder-kop">
+              <span class="ladder-nummer">{n.nummer}</span>
+              <span>
+                <span class="ladder-titel">{n.titel} — {n.kern}</span>
+                <span class="ladder-bij">{n.voorWie} · {n.aantal} trainingen</span>
+              </span>
+              <span class="ladder-teken" aria-hidden="true"></span>
+            </summary>
+            <div class="ladder-inhoud">
+              <ul class="ladder-lijst">
+                {n.leert.map((l) => <li>{l}</li>)}
+              </ul>
+              <a href={link(`/niveaus/${n.niveau}/`)} class="knop knop-rand" style="margin-top: var(--ruimte-6)">
+                Alle {n.aantal} trainingen op dit niveau
+                <span class="pijl" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ═══ De mensen ═══ */}
+  <section class="vlak-donker op-donker vlak">
+    <div class="omvat mensen">
+      <div>
+        <p class="label">Wie er voor de groep staat</p>
+        <h2 class="sectie-titel mensen-titel">Eén vast team, met {acteurs} trainingsacteurs</h2>
+        <p class="mensen-tekst">
+          Iedereen hier geeft alle trainingen, want Bureau Weerbaar en Veilig
+          doet maar één ding. Dankzij de acteurs oefen je met de situatie die
+          jij inbrengt, in plaats van met een bedacht rollenspel.
+        </p>
+        <a href={link('/over-ons/')} class="knop knop-rand mensen-knop">
+          Maak kennis met het team
           <span class="pijl" aria-hidden="true">→</span>
         </a>
-      </p>
-    </div>
-  </section>
+      </div>
 
-  <!-- Sectoren -->
-  <section class="textuur-stip rand-schuin-boven" aria-labelledby="sectoren-titel">
-    <div class="mx-auto max-w-6xl px-4 py-20">
-    <p class="kicker">Kies je vertrekpunt</p>
-    <h2 id="sectoren-titel" class="kop-onderstreept mt-4 text-3xl font-bold text-marine md:text-4xl">
-      Trainingen per sector
-    </h2>
-    <p class="mt-5 max-w-2xl leading-relaxed text-grijs">
-      Elke sector kent zijn eigen agressieproblematiek. Kies je sector, en zie
-      meteen welke beroepsgroepen daaronder vallen.
-    </p>
-
-    {/*
-      De keuzehulp staat vóór het sectorraster, niet in plaats daarvan.
-
-      Wie zijn sector al weet, klikt hierin door naar zijn beroepsgroep zonder
-      tussenpagina. Wie liever rondkijkt, scrolt naar het raster eronder. Beide
-      routes leiden naar dezelfde pagina's, en alle vierenveertig beroepsgroepen
-      staan sowieso in de HTML — dus voor een crawler verandert er niets behalve
-      dat de homepage nu rechtstreeks naar alle vierenveertig linkt.
-    */}
-    <div class="mt-10">
-      <TrainingFinder sectoren={finderSectoren} />
-    </div>
-
-    {/*
-      Bewust geen samenvatting op deze kaarten. Elke samenvatting begint met
-      "Bureau Weerbaar en Veilig traint…", dus met negentien kaarten naast elkaar
-      stonden er negentien identieke openingszinnen in beeld en begon het
-      onderscheidende woord pas op positie zes. Onleesbaar om te scannen, en de
-      kaarten werden bovendien ongelijk hoog.
-
-      Een keuzeraster hoeft niet te overtuigen, het moet navigeren. Daarom de
-      sectornaam groot, en daaronder twee harde getallen: die verschillen wél per
-      sector en zijn in één oogopslag te vergelijken. De volledige tekst staat op
-      de sectorpagina zelf, waar hij thuishoort.
-    */}
-    <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {sectoren.map((s) => (
-        <li class="kaart kaart-til rol-in flex items-center gap-4 p-5">
-          <span class="icoonschijf" aria-hidden="true">
-            <SectorIcoon sector={s.data.slug} />
-          </span>
-          <div class="min-w-0">
-            <h3 class="text-lg font-bold text-marine">
-              <a href={link(`/sectoren/${s.data.slug}/`)} class="after:absolute after:inset-0">
-                {s.data.naam}
+      <ul class="gezichtenrij">
+        {team.map((lid) => {
+          const foto = fotoVan(lid.id);
+          return foto ? (
+            <li>
+              <a href={link(`/team/${lid.id}/`)}>
+                <Image
+                  src={foto}
+                  alt={`${lid.data.naam}, ${inZin(lid.data.rol)}`}
+                  width={112}
+                  height={112}
+                  format="webp"
+                  quality={86}
+                  loading="lazy"
+                  decoding="async"
+                  class="gezicht"
+                />
               </a>
-            </h3>
-            <p class="mt-1 text-sm text-grijs">
-              {telwoord(aantalTrainingen(s.data.slug), 'training', 'trainingen')} ·
-              {' '}{telwoord(aantalGroepen(s.data.slug), 'beroepsgroep', 'beroepsgroepen')}
-            </p>
-          </div>
-          <span class="pijl ml-auto text-xl text-marine" aria-hidden="true">→</span>
-        </li>
-      ))}
-    </ul>
-
-    {overigeSectoren.length > 0 && (
-      <p class="mt-8 rounded-lg bg-vlak-warm p-5 text-sm leading-relaxed text-grijs">
-        Ook voor: {overigeSectoren.map(([, naam]) => naam).join(' · ')}: deze
-        sectorpagina's volgen binnenkort. Bel gerust alvast via
-        <a href="tel:+31857600435" class="font-semibold text-blauw hover:underline">085 760 0435</a>.
-      </p>
-    )}
-    </div>
-  </section>
-
-  {/*
-    Wat er die dag gebeurt.
-
-    Dit stond alleen in de trainingsgids, vier klikken diep. Het is de vraag die
-    iedereen heeft die nog nooit een training bij ons boekte, en voor een merk
-    zonder klantverhalen is het antwoord erop het enige bewijs dat er is: laten
-    zien hoe je werkt, in plaats van vertellen dat je goed bent.
-
-    De tekst komt uit src/lib/trainingsdag.ts, dezelfde bron als de gidspagina,
-    zodat de twee niet uit elkaar kunnen lopen.
-  */}
-  <section class="gloed-warm rand-schuin-boven border-t border-lijn" aria-labelledby="dag-titel">
-    <div class="mx-auto max-w-6xl px-4 py-20">
-      <div class="grid gap-14 lg:grid-cols-[.9fr_1.1fr]">
-        <div class="lg:sticky lg:top-28 lg:self-start">
-          <p class="kicker">Wat je die dag kunt verwachten</p>
-          <h2 id="dag-titel" class="kop-onderstreept mt-4 text-3xl font-bold text-marine md:text-4xl">
-            Hoe een trainingsdag verloopt
-          </h2>
-          <p class="mt-5 leading-relaxed text-grijs">
-            Elke training duurt één dag, met maximaal tien deelnemers. De dag
-            draait om situaties die deelnemers zelf inbrengen — niet om een
-            script. De volgorde ligt niet vast; de opbouw wel.
-          </p>
-
-          <p class="uitgelicht mt-8">
-            Er wordt geoefend, en het wordt oncomfortabel — anders leer je niets.
-            Maar het vertrekpunt is een situatie die iemand zelf heeft
-            meegemaakt.
-          </p>
-
-          <a href={link('/trainingsgids/de-trainingsdag/')} class="knop knop-secundair mt-8">
-            Lees het hele verloop
-            <span class="pijl" aria-hidden="true">→</span>
-          </a>
-        </div>
-
-        <ol class="stappen">
-          {TRAININGSDAG.map((d) => (
-            <li class="stap rol-in">
-              <h3 class="text-lg font-bold leading-snug text-marine">{d.titel}</h3>
-              <p class="mt-1.5 leading-relaxed text-grijs">{d.kort}</p>
             </li>
-          ))}
-        </ol>
-      </div>
+          ) : null;
+        })}
+      </ul>
     </div>
   </section>
 
-  <!-- Niveaus -->
-  <section class="vlak-zweem border-y border-lijn" aria-labelledby="niveaus-titel">
-    <div class="mx-auto max-w-6xl px-4 py-20">
-      <p class="kicker">Van herkennen tot borgen</p>
-      <h2 id="niveaus-titel" class="kop-onderstreept mt-4 text-3xl font-bold text-marine md:text-4xl">
-        Drie niveaus, één opbouw
-      </h2>
-      <p class="mt-5 max-w-2xl leading-relaxed text-grijs">
-        Niet elk team heeft hetzelfde nodig. Wie net begint leert herkennen en
-        de-escaleren; wie er dagelijks mee werkt oefent met zwaardere
-        casuïstiek; leidinggevenden werken aan beleid, teamnorm en nazorg.
-      </p>
-
-      <ol class="mt-10 grid gap-6 md:grid-cols-3">
-        {niveaus.map((n, i) => (
-          <li class={`niveau-${n} kaart flex flex-col p-7`}>
-            <div class="flex items-center justify-between">
-              <NiveauBadge niveau={n} />
-              {/*
-                Het dubbele chevron uit het beeldmerk, herhaald naar niveau: één
-                voor basis, twee voor gevorderd, drie voor expert. Een vorm in
-                plaats van een cijfer, zodat er geen tekst staat die de
-                contrasteis niet kan halen.
-              */}
-              <span class="flex gap-0.5" aria-hidden="true">
-                {Array.from({ length: i + 1 }).map(() => (
-                  <svg viewBox="0 0 12 16" class="h-5 w-4" style="color: var(--accent)" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M2 3l6 5-6 5" />
-                  </svg>
-                ))}
-              </span>
-            </div>
-            <h3 class="mt-5 text-xl font-bold text-marine">{NIVEAU_LABELS[n]}</h3>
-            <p class="mt-3 flex-1 leading-relaxed text-grijs">{NIVEAU_BESCHRIJVING[n]}</p>
-            <a
-              href={link(`/niveaus/${n}/`)}
-              class="mt-6 inline-flex items-center gap-2 text-sm font-bold after:absolute after:inset-0"
-              style="color: var(--accent-tekst)"
-            >
-              {NIVEAU_LINKTEKST[n]}
-              <span class="pijl" aria-hidden="true">→</span>
-            </a>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <!--
-    Het team, met de acteurs als verhaal. Dit staat hier omdat de homepage
-    verder geen enkel gezicht toonde, terwijl dit voor een merk dat nog geen
-    klantreferenties heeft het sterkste bewijs is dat er is: laten zien wie er
-    voor de groep staat.
-  -->
-  <section class="vlak-donker op-donker relative overflow-hidden text-white" aria-labelledby="team-titel">
-    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
-    <div class="relative mx-auto max-w-6xl px-4 py-20">
-      <div class="grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-center">
+  {/* ═══ Afsluiting ═══ */}
+  <section class="vlak-krap">
+    <div class="omvat">
+      <div class="actieband">
         <div>
-          <p class="kicker">Wie er voor de groep staat</p>
-          <h2 id="team-titel" class="mt-5 text-3xl font-bold leading-tight md:text-4xl">
-            Zes van de twaalf zijn
-            <span class="text-oranje">trainingsacteur</span>
-          </h2>
-          <p class="mt-5 max-w-xl text-lg leading-relaxed text-white/85">
-            Daarom kan er geoefend worden met situaties die kloppen. Het
-            bekendste bezwaar tegen agressietraining is de acteur die harder
-            schreeuwt dan welke cliënt ook, waarna iedereen zich opgelaten voelt
-            en niemand iets meeneemt.
-          </p>
-          <p class="mt-4 max-w-xl leading-relaxed text-white/70">
-            Een acteur die het vak beheerst doet het omgekeerde: die speelt
-            precies de patiënt, huurder of klant die jíj beschreef, en stuurt
-            halverwege bij als het te makkelijk of te heftig wordt.
-          </p>
-          <a href={link('/over-ons/')} class="knop knop-omlijnd-licht mt-8">
-            Maak kennis met het team
-            <span class="pijl" aria-hidden="true">→</span>
-          </a>
-        </div>
-
-        {/*
-          De gezichten overlappen elkaar een beetje: dat leest als één groep in
-          plaats van twaalf losse pasfoto's. Bij hover of toetsenbordfocus komt
-          er één naar voren met zijn naam erbij.
-        */}
-        <ul class="gezichten" aria-label={`De ${team.length} mensen van Bureau Weerbaar en Veilig`}>
-          {team.map((lid) => {
-            const foto = fotoVan(lid.id);
-            return (
-              <li class="gezicht">
-                {foto && (
-                  <Image
-                    src={foto}
-                    alt={lid.data.foto?.alt ?? `Portretfoto van ${lid.data.naam}`}
-                    width={160}
-                    height={160}
-                    format="webp"
-                    quality={88}
-                    loading="lazy"
-                  />
-                )}
-                <span class="gezicht-naam">
-                  {lid.data.naam}
-                  <span class="gezicht-rol">{lid.data.rol}</span>
-                </span>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- Waarom BWV -->
-  <section class="textuur-stip" aria-labelledby="waarom-titel">
-    <div class="mx-auto max-w-6xl px-4 py-20">
-    <div class="grid gap-12 lg:grid-cols-[1fr_22rem]">
-      <div>
-        <p class="kicker">Waarom een specialist</p>
-        <h2 id="waarom-titel" class="kop-onderstreept mt-4 text-3xl font-bold text-marine md:text-4xl">
-          Eén onderwerp, tot in de diepte
-        </h2>
-        <div class="mt-6 max-w-2xl space-y-5 leading-relaxed">
+          <h2>Niet zeker welk niveau je team nodig heeft?</h2>
           <p>
-            Bureau Weerbaar en Veilig doet één ding: agressietraining. Geen breed
-            aanbod waar agressie een onderdeel van is, maar volledige focus:
-            per beroepsgroep uitgewerkt, met situaties uit het echte werk.
-            Praktijkgericht, zonder naïeve rollenspellen.
-          </p>
-          <p>
-            De trainingen zijn incompany op de eigen locatie of bij Bureau
-            Weerbaar en Veilig in Neede (Gelderland), in groepen van maximaal 10
-            deelnemers (expertniveau: maximaal 8). Elke deelnemer ontvangt een
-            deelnamecertificaat.
+            Bel of vraag een terugbelverzoek aan. We denken mee over de juiste
+            training, en je krijgt binnen één werkdag antwoord.
           </p>
         </div>
-
-        <p class="uitgelicht mt-8">
-          Geen breed trainingsbureau dat agressie er ook bij doet. Eén
-          onderwerp, en daarom de ruimte om het per beroepsgroep uit te werken.
-        </p>
-
-        {/*
-          Deze vier punten stonden als opsomming met een bolletje ervoor. Dat
-          leest als een rijtje kenmerken op een productpagina — je scant het en
-          onthoudt niets. Als kaart met een accentlijn krijgt elk punt een eigen
-          vlak, en dat is precies wat het zijn: vier losse redenen, geen reeks.
-        */}
-        <ul class="mt-8 grid gap-4 sm:grid-cols-2">
-          {[
-            ['Per beroepsgroep', 'Geen algemene training met een sectorsausje, maar situaties uit jouw dagelijkse werk.'],
-            ['Op het juiste niveau', 'Basis, gevorderd of expert: passend bij wat het team al kan.'],
-            ['Incompany of in Neede', 'Op je eigen locatie of bij ons, in groepen van maximaal 10.'],
-            ['Reactie binnen één werkdag', 'Bel of vraag een terugbelverzoek aan, dan denken we mee.'],
-          ].map(([kop, tekst]) => (
-            <li class="kaart kaart-til rol-in p-5">
-              <strong class="block font-bold text-marine">{kop}</strong>
-              <span class="mt-1.5 block text-sm leading-relaxed text-grijs">{tekst}</span>
-            </li>
-          ))}
-        </ul>
+        <div class="hero-acties" style="margin-top: 0">
+          <a href="tel:+31857600435" class="knop knop-vol">Bel 085 760 0435</a>
+          <a href={link('/contact/')} class="knop knop-rand">Vraag een terugbelverzoek</a>
+        </div>
       </div>
-      <Terugbelverzoek onderwerp="een training voor jouw team" />
-    </div>
     </div>
   </section>
 </Base>
