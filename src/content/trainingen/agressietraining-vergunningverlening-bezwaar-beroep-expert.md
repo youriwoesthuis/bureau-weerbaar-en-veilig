@@ -4,7 +4,7 @@ slug: agressietraining-vergunningverlening-bezwaar-beroep-expert
 sector: overheid-handhaving
 beroepsgroep: vergunningverlening-bezwaar-beroep
 niveau: expert
-duur: 2 dagen (inclusief intervisie na 6 weken)
+duur: 1 dag
 groepsgrootte: maximaal 8 deelnemers
 locatie: incompany
 locatie_detail: op eigen locatie of bij Bureau Weerbaar en Veilig in Neede

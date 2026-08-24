@@ -10,10 +10,11 @@ const pagina = gidsPagina('de-trainingsdag')!;
 
 /*
   De feiten hieronder komen uit de trainingsdata zelf, niet uit een aanname:
-  88 trainingen duren 1 dag met maximaal 10 deelnemers, 44 duren 2 dagen met
-  maximaal 8, waarvan 38 met intervisie na zes weken. Alle 132 geven een
-  deelnamecertificaat. Wijzigt dat, dan klopt deze pagina niet meer — daarom
-  staan de aantallen er niet in, alleen de patronen.
+  alle 132 trainingen duren één dag en geven een deelnamecertificaat. Op basis-
+  en gevorderd niveau zitten er maximaal 10 deelnemers in een groep, op
+  expertniveau maximaal 8, met bij veel trainingen een intervisiemoment na zes
+  weken. Wijzigt dat, dan klopt deze pagina niet meer — daarom staan de
+  aantallen er niet in, alleen de patronen.
 */
 const dagdelen = [
   {
@@ -61,10 +62,10 @@ const dagdelen = [
       <p class="kicker mt-7">Wat je kunt verwachten</p>
       <h1 class="mt-4 max-w-3xl text-3xl font-bold leading-[1.15] md:text-5xl">{pagina.titel}</h1>
       <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
-        Een training van Bureau Weerbaar en Veilig duurt één dag, of twee dagen
-        op expertniveau. De groep telt maximaal tien deelnemers, op expertniveau
-        maximaal acht. De dag draait om situaties die deelnemers zelf inbrengen,
-        en iedereen ontvangt na afloop een deelnamecertificaat.
+        Elke training van Bureau Weerbaar en Veilig duurt één dag. De groep telt
+        maximaal tien deelnemers, op expertniveau maximaal acht. De dag draait om
+        situaties die deelnemers zelf inbrengen, en iedereen ontvangt na afloop
+        een deelnamecertificaat.
       </p>
     </div>
   </div>

@@ -4,7 +4,7 @@ slug: agressietraining-huisartsassistenten-expert
 sector: zorg
 beroepsgroep: huisartsassistenten
 niveau: expert
-duur: 2 dagen
+duur: 1 dag
 groepsgrootte: maximaal 8 deelnemers
 locatie: incompany
 locatie_detail: op eigen locatie of bij Bureau Weerbaar en Veilig in Neede

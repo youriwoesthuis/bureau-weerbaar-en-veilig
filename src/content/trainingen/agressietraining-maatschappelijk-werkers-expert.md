@@ -4,7 +4,7 @@ slug: agressietraining-maatschappelijk-werkers-expert
 sector: welzijn
 beroepsgroep: maatschappelijk-werkers
 niveau: expert
-duur: 2 dagen (inclusief intervisie na 6 weken)
+duur: 1 dag
 groepsgrootte: maximaal 8 deelnemers
 locatie: incompany
 locatie_detail: op eigen locatie of bij Bureau Weerbaar en Veilig in Neede
