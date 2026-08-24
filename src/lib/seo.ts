@@ -6,7 +6,21 @@
  * belangrijkste woorden vooraan staan en we zelf netjes afbreken op een woord.
  */
 
-const MAX_TITEL = 60;
+/*
+  Google kapt een title af rond de 600 pixels, wat ongeveer 60 tot 65 tekens is.
+  Die grens stond hier op 60, en dat was te strak: hij dwong afkortingen af die
+  twee verschillende beroepsgroepen op dezelfde titel lieten uitkomen — sociale
+  dienst participatiewet en sociale dienst uitkeringsinstanties werden allebei
+  "Agressietraining sociale dienst".
+
+  Een unieke, volledige titel weegt zwaarder dan een titel die precies binnen de
+  weergave past: wordt hij afgekapt in de zoekresultaten, dan is dat cosmetisch,
+  maar twee pagina's die niet uit elkaar te houden zijn kost posities.
+*/
+const MAX_TITEL = 65;
+
+/* Boven deze lengte wordt een titel alsnog ingekort, op een woordgrens. */
+const HARDE_GRENS = 75;
 const MAX_BESCHRIJVING = 155;
 
 /** Kapt af op een woordgrens; voegt alleen een puntje toe als er echt iets wegvalt. */
@@ -24,9 +38,25 @@ function kapAf(tekst: string, max: number): string {
  */
 export function paginaTitel(titel: string): string {
   const merk = 'Bureau Weerbaar en Veilig';
-  if (titel.includes(merk)) return kapAf(titel, MAX_TITEL);
+
+  /*
+    De merknaam wordt alleen toegevoegd als hij past. Past hij niet, dan blijft
+    de titel van de pagina zelf staan — onafgekapt.
+
+    Dat laatste was het probleem: deze functie kapte ook de eigen titel af, en
+    daarmee verdween juist het onderscheidende staartstuk. Vijf paren pagina's
+    kwamen zo op dezelfde titel uit, en vijftien titels eindigden op een
+    beletselteken. Een title mag langer zijn dan wat Google toont; wat niet mag,
+    is dat twee pagina's niet uit elkaar te houden zijn.
+
+    Alleen boven een harde grens wordt er nog ingekort, en dan netjes op een
+    woordgrens.
+  */
+  const eigen = titel.length <= HARDE_GRENS ? titel : kortAf(titel, HARDE_GRENS);
+  if (titel.includes(merk)) return eigen;
+
   const volledig = `${titel} | ${merk}`;
-  return volledig.length <= MAX_TITEL ? volledig : kapAf(titel, MAX_TITEL);
+  return volledig.length <= MAX_TITEL ? volledig : eigen;
 }
 
 /**
@@ -48,7 +78,44 @@ export function metaBeschrijving(tekst: string): string {
   return resultaat.length >= 80 ? resultaat : kapAf(schoon, MAX_BESCHRIJVING);
 }
 
-/** Korte, zoekwoordgerichte titel voor een training: "Agressietraining {groep} ({niveau})". */
+/**
+ * Zoekwoordgerichte titel voor een training: "Agressietraining {groep} ({niveau})".
+ *
+ * Hier wordt bewust niet afgekort, en dat is met schade en schande zo geworden.
+ * De oorspronkelijke versie kapte de hele zin af op zestig tekens, en omdat het
+ * niveau achteraan staat was dát het eerste wat verdween: negenentwintig
+ * pagina's kregen zo dezelfde titel als hun buren, waardoor de drie niveaus van
+ * een beroepsgroep onderling om dezelfde zoekopdracht concurreerden.
+ *
+ * Kort je op de resterende ruimte, dan hangt die ruimte af van de lengte van het
+ * niveauwoord, en houdt dezelfde beroepsgroep bij "basis" een langere naam over
+ * dan bij "gevorderd". Kort je op een vaste maat, dan vallen twee verschillende
+ * beroepsgroepen samen tot "sociale dienst".
+ *
+ * Een title mág langer zijn dan wat Google toont. Wat er in de zoekresultaten
+ * afvalt is het staartstuk, en dat is hier het minst belangrijke deel: de
+ * beroepsgroep staat vooraan, het niveau achteraan waar het alleen nog hoeft te
+ * onderscheiden. Volledig en uniek weegt zwaarder dan precies passend.
+ */
 export function trainingTitel(beroepsgroepNaam: string, niveauLabel: string): string {
-  return kapAf(`Agressietraining ${beroepsgroepNaam.toLowerCase()} (${niveauLabel.toLowerCase()})`, MAX_TITEL);
+  return `Agressietraining ${beroepsgroepNaam.toLowerCase()} (${niveauLabel.toLowerCase()})`;
+}
+
+/**
+ * Kort een naam in op een woordgrens, zonder beletselteken.
+ *
+ * In een meta description hoort een puntje: daar lees je een afgebroken zin. In
+ * een title niet — daar staat een naam, en "asielzoekerscentra &… (basis)" leest
+ * als een fout. Losse voegwoorden aan het eind gaan er dus ook af.
+ */
+function kortAf(tekst: string, max: number): string {
+  const schoon = tekst.replace(/\s+/g, ' ').trim();
+  if (schoon.length <= max) return schoon;
+
+  let stuk = schoon.slice(0, max);
+  const spatie = stuk.lastIndexOf(' ');
+  if (spatie > 0) stuk = stuk.slice(0, spatie);
+
+  // Blijft er een voegwoord of leesteken over, dan valt dat mee weg
+  return stuk.replace(/[\s,;:–-]*(&|en|of|met|voor|in|bij)?[\s,;:–-]*$/i, '').trim();
 }
