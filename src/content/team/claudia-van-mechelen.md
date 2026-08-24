@@ -1,6 +1,9 @@
 ---
 naam: Claudia van Mechelen
 rol: Trainer en trainingsacteur
+foto:
+  src: /images/team/claudia-van-mechelen.jpg
+  alt: Portretfoto van Claudia van Mechelen, trainer en trainingsacteur
 volgorde: 9
 ---
 

@@ -1,6 +1,9 @@
 ---
 naam: Ruben Lusink
 rol: Adviseur proces en innovatie
+foto:
+  src: /images/team/ruben-lusink.jpg
+  alt: Portretfoto van Ruben Lusink, adviseur proces en innovatie
 volgorde: 12
 ---
 

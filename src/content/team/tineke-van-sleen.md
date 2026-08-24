@@ -1,6 +1,9 @@
 ---
 naam: Tineke van Sleen
 rol: Trainer, spreker en dagvoorzitter
+foto:
+  src: /images/team/tineke-van-sleen.jpg
+  alt: Portretfoto van Tineke van Sleen, trainer
 volgorde: 10
 ---
 

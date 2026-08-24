@@ -22,7 +22,7 @@ const MAP = join(process.cwd(), 'src', 'images', 'team');
 const proef = process.argv.includes('--proef');
 
 /* Onder deze groenwaarde is het de persoon, erboven de achtergrond. */
-const ONDER = 18;
+const ONDER = 12;
 const BOVEN = 55;
 
 /**
@@ -72,15 +72,28 @@ async function verwerk(bestand, doel) {
 
   for (let i = 0; i < data.length; i += 4) {
     const r = data[i], g = data[i + 1], b = data[i + 2];
-    const groen = g - Math.max(r, b);
+    const hoogste = Math.max(r, b);
+    const groen = g - hoogste;
 
+    // 1. Achtergrond doorzichtig maken, met een zachte band aan de rand
     if (groen > ONDER) {
-      // Zachte overgang: volledig doorzichtig pas boven BOVEN
       const t = Math.min(1, (groen - ONDER) / (BOVEN - ONDER));
       data[i + 3] = Math.round(255 * (1 - t));
-      // Groenzweem terugdringen op wat er van de pixel overblijft
-      const doelG = Math.max(r, b);
-      data[i + 1] = Math.round(g + (doelG - g) * t);
+    }
+
+    /*
+      2. Groenzweem terugdringen. Dit gebeurt op élke pixel die te groen is, niet
+         alleen op de achtergrond: bij licht haar schijnt het doek erdoorheen en
+         blijft er anders een groene rand staan.
+
+         Op de zachte rand (deels doorzichtig) mag dat volledig — daar is groen
+         altijd zweem. In de persoon zelf maar voor twee derde, zodat iets wat
+         écht groen is, zoals een bril of een blouse, niet grijs wordt.
+    */
+    if (groen > 0) {
+      const opRand = data[i + 3] < 250;
+      const mate = opRand ? 1 : 0.66;
+      data[i + 1] = Math.round(g - groen * mate);
     }
   }
 
@@ -102,7 +115,16 @@ async function verwerk(bestand, doel) {
 if (proef) {
   console.log(await verwerk('jeroen-woesthuis.jpg', join(MAP, '..', 'proef-portret.jpg')));
 } else {
-  const bestanden = readdirSync(MAP).filter((f) => f.endsWith('.jpg'));
+  /*
+    Zonder argumenten worden alle portretten verwerkt. Geef je namen mee, dan
+    alleen die. Dat is belangrijk: een tweede keer draaien over een al verwerkte
+    foto legt de ruislaag er nog een keer overheen, en dan wordt hij zichtbaar.
+  */
+  const gevraagd = process.argv.slice(2).filter((a) => !a.startsWith('--'));
+  const bestanden = gevraagd.length
+    ? gevraagd.map((n) => (n.endsWith('.jpg') ? n : `${n}.jpg`))
+    : readdirSync(MAP).filter((f) => f.endsWith('.jpg'));
+
   for (const f of bestanden) {
     console.log(await verwerk(f, join(MAP, f)));
   }

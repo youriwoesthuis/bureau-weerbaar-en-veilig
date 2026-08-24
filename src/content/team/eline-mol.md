@@ -1,6 +1,9 @@
 ---
 naam: Eline Mol
 rol: Office en communicatie
+foto:
+  src: /images/team/eline-mol.jpg
+  alt: Portretfoto van Eline Mol, office en communicatie
 volgorde: 11
 ---
 
