@@ -20,9 +20,22 @@ const paginas = [];
   }
 })('dist');
 
+/*
+  Titels en omschrijvingen staan in de HTML met entiteiten: een & is daar
+  &amp;. Voor een lengtemeting moet dat teruggerekend worden, anders telt één
+  ampersand voor vijf tekens en meldt deze controle titels als te lang die dat
+  niet zijn.
+*/
+const ENTITEITEN = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' };
+const ontcijfer = (t) =>
+  t
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n))
+    .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCharCode(parseInt(n, 16)))
+    .replace(/&([a-z]+);/gi, (heel, naam) => ENTITEITEN[naam.toLowerCase()] ?? heel);
+
 const pak = (html, re) => {
   const m = html.match(re);
-  return m ? m[1].trim() : null;
+  return m ? ontcijfer(m[1]).trim() : null;
 };
 
 const alles = paginas.map((pad) => {

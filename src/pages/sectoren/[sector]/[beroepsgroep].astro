@@ -5,7 +5,7 @@ import Base from '../../../layouts/Base.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 import NiveauBadge from '../../../components/NiveauBadge.astro';
 import Terugbelverzoek from '../../../components/Terugbelverzoek.astro';
-import { SECTOR_NAMEN, NIVEAU_BESCHRIJVING } from '../../../lib/sectoren';
+import { SECTOR_NAMEN } from '../../../lib/sectoren';
 
 export async function getStaticPaths() {
   const beroepsgroepen = await getCollection('beroepsgroepen');
@@ -25,9 +25,101 @@ const trainingen = (await getCollection('trainingen'))
   .sort((a, z) => NIVEAU_VOLGORDE[a.data.niveau] - NIVEAU_VOLGORDE[z.data.niveau]);
 
 const sectorNaam = SECTOR_NAMEN[b.sector] ?? b.sector;
+
+/*
+  Dit is de landingsplek voor "agressietraining {beroepsgroep}" — de
+  zoekopdracht waar dit merk op moet staan. Er stond per niveau alleen duur en
+  groepsgrootte, en omdat elke training één dag duurt en tien deelnemers telt,
+  waren de drie kaarten praktisch niet van elkaar te onderscheiden.
+
+  Wie hier komt heeft één vraag: welk niveau heb ik nodig? Die wordt nu
+  beantwoord met wat er per niveau écht verschilt — voor wie het is, wat je
+  vooraf moet kunnen, en wat je meeneemt. Dat is meteen de tekst die een
+  AI-antwoordsysteem citeert bij "verschil tussen basis en gevorderd".
+
+  De algemene niveauomschrijving die hier eerst stond is bewust weg: die was
+  woordelijk gelijk op alle vierenveertig beroepsgroeppagina's. Wat er nu
+  staat komt uit de trainingen zelf en is dus per beroepsgroep anders.
+*/
+/*
+  Korte kop per kaart. De volledige trainingstitel stond hier eerst, en die is
+  bijna woordelijk gelijk aan de H1 erboven — drie keer achter elkaar dezelfde
+  zin lezen zegt niets en maakt de kaart onnodig hoog. Wat de bezoeker hier
+  moet zien is waar dit niveau over gaat; de volledige titel staat op de
+  trainingspagina zelf.
+*/
+const NIVEAU_KOP = {
+  basis: 'Herkennen en de-escaleren',
+  gevorderd: 'Zwaardere en structurele situaties',
+  expert: 'Beleid, teamnorm en borging',
+};
+
+/*
+  De voorwaarde staat in de trainingen als zinsdeel, omdat hij daar achter het
+  woord "Voorwaarde:" in een tabel komt te staan. Hier vormt hij een eigen
+  regel, dus wordt er een lopende zin van gemaakt.
+*/
+function alsZin(tekst: string): string {
+  const schoon = tekst.trim();
+  const metHoofdletter = schoon.charAt(0).toUpperCase() + schoon.slice(1);
+  return /[.!?]$/.test(metHoofdletter) ? metHoofdletter : `${metHoofdletter}.`;
+}
+
+const niveaus = trainingen.map((t) => ({
+  slug: t.data.slug,
+  niveau: t.data.niveau,
+  kop: NIVEAU_KOP[t.data.niveau],
+  niveauLabel: { basis: 'Basis', gevorderd: 'Gevorderd', expert: 'Expert' }[t.data.niveau],
+  doelgroep: t.data.doelgroep,
+  voorwaarde: t.data.voorwaarde
+    ? alsZin(t.data.voorwaarde)
+    : 'Geen voorkennis nodig — dit is het instapniveau.',
+  meeneemt: t.data.resultaat.slice(0, 3),
+}));
+
+/* Duur en groepsgrootte zijn voor alle niveaus gelijk: één keer noemen volstaat. */
+const duur = trainingen[0]?.data.duur;
+const groep = trainingen[0]?.data.groepsgrootte;
+const gelijkeGroep = groep !== undefined && trainingen.every((t) => t.data.groepsgrootte === groep);
+
+/*
+  Deze pagina somt de trainingen voor deze beroepsgroep op, en dat is precies
+  wat er in de gestructureerde data staat: een ItemList met de vermeldingen
+  erin. De volledige Course-opmaak hoort op de trainingspagina zelf — hier
+  alleen naam, doelgroep en verwijzing, zodat er niets dubbel wordt opgevoerd.
+*/
+const lijstSchema = trainingen.length
+  ? JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: `Agressietraining voor ${b.naam.toLowerCase()}`,
+      numberOfItems: trainingen.length,
+      itemListOrder: 'https://schema.org/ItemListOrderAscending',
+      itemListElement: trainingen.map((t, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        item: {
+          '@type': 'Course',
+          name: t.data.titel,
+          description: t.data.doelgroep,
+          educationalLevel: t.data.niveau,
+          url: new URL(link(`/trainingen/${t.data.slug}/`), Astro.site).href,
+          provider: {
+            '@type': 'Organization',
+            name: 'Bureau Weerbaar en Veilig',
+            url: 'https://bureauweerbaarenveilig.nl',
+          },
+        },
+      })),
+    })
+  : null;
 ---
 
-<Base titel={`Agressietraining ${b.naam.toLowerCase()}`} beschrijving={b.samenvatting}>
+<Base
+  titel={`Agressietraining ${b.naam.toLowerCase()}`}
+  beschrijving={b.samenvatting}
+  schema={lijstSchema ? [lijstSchema] : []}
+>
   <div class="vlak-donker op-donker relative overflow-hidden text-white">
     <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
     <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
@@ -53,38 +145,90 @@ const sectorNaam = SECTOR_NAMEN[b.sector] ?? b.sector;
       <Content />
     </section>
 
-    <!-- De drie niveaus naast elkaar -->
+    <!-- De niveaus naast elkaar, op wat er tussen verschilt -->
     <section class="mt-14" aria-labelledby="niveaus-titel">
-      <p class="kicker">Drie niveaus</p>
+      <p class="kicker">Welk niveau heb ik nodig?</p>
       <h2 id="niveaus-titel" class="kop-onderstreept mt-4 text-3xl font-bold text-marine">
-        Kies je niveau
+        {niveaus.length === 1 ? 'De training' : `De ${niveaus.length} niveaus vergeleken`}
       </h2>
+
+      {duur && (
+        <p class="mt-5 max-w-2xl leading-relaxed text-grijs">
+          Elke training duurt <strong class="font-semibold text-marine">{duur}</strong>{
+            gelijkeGroep ? (
+              <> en telt <strong class="font-semibold text-marine">{groep}</strong></>
+            ) : null
+          }. De training wordt incompany gegeven, op je eigen locatie of bij
+          Bureau Weerbaar en Veilig in Neede. Wat per niveau verschilt, staat
+          hieronder.
+        </p>
+      )}
+
       <div class="mt-8 grid gap-6 md:grid-cols-3">
-        {trainingen.map((t) => (
-          <article class={`niveau-${t.data.niveau} kaart flex flex-col p-6`}>
-            <NiveauBadge niveau={t.data.niveau} />
-            <h3 class="mt-4 text-lg font-bold leading-snug text-marine">{t.data.titel}</h3>
-            <p class="mt-2 flex-1 text-sm leading-relaxed text-grijs">
-              {NIVEAU_BESCHRIJVING[t.data.niveau]}
-            </p>
-            <dl class="mt-5 divide-y divide-lijn border-t border-lijn text-sm">
-              <div class="flex justify-between gap-2 py-2">
-                <dt class="font-semibold text-grijs">Duur</dt>
-                <dd class="text-right font-medium">{t.data.duur}</dd>
+        {niveaus.map((n) => (
+          <article class={`niveau-${n.niveau} kaart flex flex-col p-6`}>
+            <NiveauBadge niveau={n.niveau} />
+            {/*
+              De badge toont het niveau al zichtbaar. In een koppenlijst van een
+              schermlezer staat die badge er niet bij, dus krijgt de kop het
+              niveau daar alsnog mee — anders staat er drie keer een kop die op
+              zichzelf niet zegt bij welk niveau hij hoort.
+            */}
+            <h3 class="mt-4 text-lg font-bold leading-snug text-marine">
+              <span class="sr-only">{n.niveauLabel}: </span>{n.kop}
+            </h3>
+
+            <dl class="mt-5 space-y-4 border-t border-lijn pt-5 text-sm leading-relaxed">
+              <div>
+                <dt class="font-bold text-marine">Voor wie</dt>
+                <dd class="mt-1 text-grijs">{n.doelgroep}</dd>
               </div>
-              <div class="flex justify-between gap-2 py-2">
-                <dt class="font-semibold text-grijs">Groep</dt>
-                <dd class="text-right font-medium">{t.data.groepsgrootte}</dd>
+              <div>
+                <dt class="font-bold text-marine">Vooraf</dt>
+                <dd class="mt-1 text-grijs">{n.voorwaarde}</dd>
+              </div>
+              <div>
+                <dt class="font-bold text-marine">Wat je meeneemt</dt>
+                <dd class="mt-2">
+                  <ul class="space-y-2 text-grijs">
+                    {n.meeneemt.map((r) => (
+                      <li class="flex items-start gap-2.5">
+                        <svg
+                          aria-hidden="true"
+                          viewBox="0 0 20 20"
+                          class="mt-0.5 h-4 w-4 flex-none"
+                          style="color: var(--accent-tekst)"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M7.6 14.3 3.7 10.4l1.4-1.4 2.5 2.5 6.9-6.9 1.4 1.4z"
+                          />
+                        </svg>
+                        <span>{r}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
               </div>
             </dl>
-            <a
-              href={link(`/trainingen/${t.data.slug}/`)}
-              class="mt-5 inline-flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-center text-sm font-bold text-white after:absolute after:inset-0"
-              style="background: var(--accent-sterk)"
-            >
-              Bekijk deze training
-              <span class="pijl" aria-hidden="true">→</span>
-            </a>
+
+            {/*
+              mt-auto op de omhulling duwt de knop naar de onderrand, zodat de
+              knoppen van drie kaarten met verschillend lange teksten toch op
+              één lijn staan. De marge hoort op die omhulling en niet op de
+              knop zelf: een inline margin-top zou de mt-auto overschrijven en
+              de kaarten weer ongelijk maken.
+            */}
+            <div class="mt-auto pt-6">
+              <a
+                href={link(`/trainingen/${n.slug}/`)}
+                class="flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-center text-sm font-bold text-white after:absolute after:inset-0"
+                style="background: var(--accent-sterk)"
+              >
+                <span>Bekijk het hele programma</span>
+                <span class="pijl" aria-hidden="true">→</span>
+              </a>
+            </div>
           </article>
         ))}
       </div>

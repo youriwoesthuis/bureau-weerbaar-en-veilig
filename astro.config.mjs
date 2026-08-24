@@ -18,6 +18,17 @@ import { remarkLeestijd } from './src/lib/remark-leestijd.mjs';
 const siteUrl = process.env.PUBLIC_SITE_URL || 'https://bureauweerbaarenveilig.nl';
 const basePad = process.env.PUBLIC_BASE_PATH || undefined;
 
+/*
+  Pagina's die wel bestaan maar niet in de sitemap horen, omdat ze op noindex
+  staan (zie de prop `nietIndexeren` in src/layouts/Base.astro). Een sitemap is
+  een lijst met pagina's die je geïndexeerd wilt hebben; daar een pagina in
+  zetten die tegelijk zegt "neem mij niet op" is een tegenstrijdig signaal en
+  levert een melding op in Search Console.
+
+  Voeg hier het pad toe zodra je ergens `nietIndexeren` gebruikt.
+*/
+const GEEN_SITEMAP = new Set(['/contact/bedankt/']);
+
 /**
  * Schrijft na het bouwen een `_redirects`-bestand: het formaat dat Netlify en
  * Cloudflare Pages lezen om échte 301's te sturen.
@@ -69,7 +80,7 @@ export default defineConfig({
       */
       filter: (pagina) => {
         const pad = new URL(pagina).pathname.replace(basePad ?? '', '') || '/';
-        return !(pad in REDIRECTS);
+        return !(pad in REDIRECTS) && !GEEN_SITEMAP.has(pad);
       },
     }),
   ],

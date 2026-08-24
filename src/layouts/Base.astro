@@ -12,9 +12,25 @@ interface Props {
   schema?: string[];
   /** Eigen deelafbeelding; laat leeg voor de standaard van de site */
   deelafbeelding?: string;
+  /**
+   * Houd deze pagina uit de zoekresultaten. Voor pagina's die alleen bestaan
+   * als vervolgstap in een handeling — een bedankpagina bijvoorbeeld. Zo'n
+   * pagina heeft geen zoekwaarde, en wie er via Google op binnenkomt krijgt
+   * een bevestiging te zien van iets wat diegene nooit heeft ingevuld.
+   *
+   * Let op: een pagina die op noindex staat hoort ook uit de sitemap; dat is
+   * apart geregeld in astro.config.mjs.
+   */
+  nietIndexeren?: boolean;
 }
 
-const { titel, beschrijving, schema = [], deelafbeelding } = Astro.props;
+const {
+  titel,
+  beschrijving,
+  schema = [],
+  deelafbeelding,
+  nietIndexeren = false,
+} = Astro.props;
 const paginaTitel = maakTitel(titel);
 const paginaBeschrijving = metaBeschrijving(beschrijving);
 
@@ -82,7 +98,22 @@ const hoofdmenu = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{paginaTitel}</title>
     <meta name="description" content={paginaBeschrijving} />
-    <link rel="canonical" href={paginaUrl} />
+    {
+      /*
+        Canonical en noindex sluiten elkaar uit. Ze spreken elkaar tegen: de
+        canonical zegt "dit is het origineel, neem dit op" en de noindex zegt
+        het omgekeerde. Google negeert er dan een van, en welke ligt niet vast.
+
+        Dezelfde fout stond eerder op de doorverwijspagina's van deze site, en
+        staat als les vastgelegd in de netlify.toml van agressievisie.nl. Dus:
+        of een canonical, of een noindex — nooit allebei.
+      */
+      nietIndexeren ? (
+        <meta name="robots" content="noindex, follow" />
+      ) : (
+        <link rel="canonical" href={paginaUrl} />
+      )
+    }
 
     <!-- Pictogram in het tabblad; SVG blijft op elk scherm scherp -->
     <link rel="icon" href={link('/favicon.svg')} type="image/svg+xml" />
