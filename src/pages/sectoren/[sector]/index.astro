@@ -72,21 +72,46 @@ const lijstSchema = beroepsgroepen.length
       <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
         {sector.data.samenvatting}
       </p>
+
+      {/*
+        Wat deze sector omvat, in cijfers. Ze staan verderop in de kaarten ook
+        wel, maar dan moet je tellen; hier is in één blik te zien of dit een
+        sector met één beroepsgroep is of met acht.
+      */}
+      <ul class="mt-9 flex flex-wrap gap-x-8 gap-y-4 border-t border-white/15 pt-7">
+        {[
+          ['Beroepsgroepen', String(beroepsgroepen.length)],
+          ['Trainingen', String(trainingen.length)],
+          ['Duur', 'Elke training 1 dag'],
+          ['Locatie', 'Incompany of in Neede'],
+        ].map(([label, waarde]) => (
+          <li>
+            <span class="block text-xs font-bold uppercase tracking-wide text-white/55">
+              {label}
+            </span>
+            <span class="mt-1 block font-semibold">{waarde}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   </div>
   <div class="lijn-merk" aria-hidden="true"></div>
 
-  <div class="mx-auto max-w-6xl px-4 py-12">
-    <section class="leestekst">
-      <Content />
-    </section>
+  <div class="textuur-stip">
+    <div class="mx-auto max-w-6xl px-4 py-14">
+      <section class="leestekst">
+        <Content />
+      </section>
+    </div>
+  </div>
 
-    <section class="mt-14" aria-labelledby="beroepsgroepen-titel">
+  <section class="gloed-warm rand-schuin-boven border-t border-lijn" aria-labelledby="beroepsgroepen-titel">
+    <div class="mx-auto max-w-6xl px-4 py-16">
       <p class="kicker">Binnen deze sector</p>
-      <h2 id="beroepsgroepen-titel" class="kop-onderstreept mt-4 text-3xl font-bold text-marine">
+      <h2 id="beroepsgroepen-titel" class="kop-onderstreept mt-4 text-3xl font-bold text-marine md:text-4xl">
         Kies je beroepsgroep
       </h2>
-      <div class="mt-8 space-y-6">
+      <div class="mt-10 space-y-6">
         {beroepsgroepen.map((b) => (
           <div class="relative overflow-hidden rounded-xl border border-lijn bg-white p-6 shadow-[var(--shadow-kaart)] md:p-7">
             <span class="lijn-merk absolute inset-x-0 top-0" aria-hidden="true"></span>
@@ -121,9 +146,11 @@ const lijstSchema = beroepsgroepen.length
           </div>
         ))}
       </div>
-    </section>
+    </div>
+  </section>
 
-    <div class="mt-12 max-w-3xl">
+  <div class="mx-auto max-w-6xl px-4 py-14">
+    <div class="max-w-3xl">
       <Terugbelverzoek onderwerp={`agressietraining in de ${sector.data.naam.toLowerCase()}`} />
     </div>
   </div>

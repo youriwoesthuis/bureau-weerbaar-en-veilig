@@ -35,6 +35,14 @@ function paginaTekst(html) {
     .replace(/<style[\s\S]*?<\/style>/g, ' ')
     .replace(/<section[^>]*aria-labelledby="trainers-titel"[\s\S]*?<\/section>/g, ' ')
     .replace(/<aside[^>]*aria-labelledby="terugbel-titel"[\s\S]*?<\/aside>/g, ' ')
+    /*
+      De feitenstrip in de kop: duur, groep, locatie en afsluiting. Die is op
+      alle honderdtweeëndertig pagina's woordelijk gelijk — elke training duurt
+      een dag en wordt incompany gegeven — dus telt hij mee als overlap zonder
+      dat het iets zegt over de inhoud. Hij kwam er later bij, en de gemeten
+      overlap sprong er meteen van 33,3 naar 35,2 procent door.
+    */
+    .replace(/<ul[^>]*border-white\/15[^>]*>[\s\S]*?<\/ul>/g, ' ')
     .replace(/<[^>]+>/g, ' ')
     .replace(/&[a-z]+;/g, ' ')
     .replace(/\s+/g, ' ')

@@ -76,10 +76,26 @@ const niveaus = trainingen.map((t) => ({
   meeneemt: t.data.resultaat.slice(0, 3),
 }));
 
-/* Duur en groepsgrootte zijn voor alle niveaus gelijk: één keer noemen volstaat. */
 const duur = trainingen[0]?.data.duur;
-const groep = trainingen[0]?.data.groepsgrootte;
-const gelijkeGroep = groep !== undefined && trainingen.every((t) => t.data.groepsgrootte === groep);
+
+/*
+  Groepsgrootte voor de feitenstrip.
+
+  De niveaus verschillen hierin: basis en gevorderd tellen maximaal tien
+  deelnemers, expert maximaal acht. Eerst liet deze strip het getal daarom
+  helemaal weg zodra de niveaus niet gelijk waren — maar dat is precies een van
+  de drie dingen waar een opdrachtgever op scant, en niets tonen is slechter
+  dan een bereik tonen. Nu wordt het "max. 8–10 deelnemers".
+*/
+const groepsgrootte = (() => {
+  const getallen = trainingen
+    .map((t) => Number(t.data.groepsgrootte.match(/\d+/)?.[0]))
+    .filter((n) => Number.isFinite(n));
+  if (!getallen.length) return undefined;
+  const laag = Math.min(...getallen);
+  const hoog = Math.max(...getallen);
+  return laag === hoog ? `max. ${hoog} deelnemers` : `max. ${laag}–${hoog} deelnemers`;
+})();
 
 /*
   Deze pagina somt de trainingen voor deze beroepsgroep op, en dat is precies
@@ -132,35 +148,69 @@ const lijstSchema = trainingen.length
         Agressietraining voor {b.naam.toLowerCase()}
       </h1>
       <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">{b.samenvatting}</p>
+
+      {/*
+        Dezelfde feitenstrip als op de trainingspagina's. Dit is de pagina waar
+        iemand landt die zoekt op "agressietraining {beroepsgroep}", en de
+        eerste vraag daarna is altijd: hoe lang, met hoeveel mensen, en waar.
+
+        Die stonden alleen verderop in de lopende tekst van het niveaublok.
+        Hier staan ze boven de vouw, waar ze in één blik te lezen zijn.
+      */}
+      {duur && (
+        <ul class="mt-9 flex flex-wrap gap-x-8 gap-y-4 border-t border-white/15 pt-7">
+          {[
+            ['Duur', duur],
+            ...(groepsgrootte ? [['Groep', groepsgrootte]] : []),
+            ['Locatie', 'Incompany of in Neede'],
+            ['Niveaus', `${niveaus.length} van basis tot expert`],
+          ].map(([label, waarde]) => (
+            <li>
+              <span class="block text-xs font-bold uppercase tracking-wide text-white/55">
+                {label}
+              </span>
+              <span class="mt-1 block font-semibold">{waarde}</span>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   </div>
   <div class="lijn-merk" aria-hidden="true"></div>
 
-  <div class="mx-auto max-w-6xl px-4 py-12">
-    <section class="leestekst">
-      <Content />
-    </section>
+  <div class="textuur-stip">
+    <div class="mx-auto max-w-6xl px-4 py-14">
+      <section class="leestekst">
+        <Content />
+      </section>
+    </div>
+  </div>
 
-    <!-- De niveaus naast elkaar, op wat er tussen verschilt -->
-    <section class="mt-14" aria-labelledby="niveaus-titel">
+  {/*
+    De niveauvergelijking op een eigen vlak met een schuine bovenrand. Dit is de
+    beslissing waarvoor iemand hier is — welk niveau heb ik nodig — en die
+    verdient een eigen hoofdstuk in plaats van door te lopen in hetzelfde witte
+    vlak als de introtekst.
+  */}
+  <section class="gloed-warm rand-schuin-boven border-t border-lijn" aria-labelledby="niveaus-titel">
+    <div class="mx-auto max-w-6xl px-4 py-16">
       <p class="kicker">Welk niveau heb ik nodig?</p>
-      <h2 id="niveaus-titel" class="kop-onderstreept mt-4 text-3xl font-bold text-marine">
+      <h2 id="niveaus-titel" class="kop-onderstreept mt-4 text-3xl font-bold text-marine md:text-4xl">
         {niveaus.length === 1 ? 'De training' : `De ${niveaus.length} niveaus vergeleken`}
       </h2>
 
-      {duur && (
-        <p class="mt-5 max-w-2xl leading-relaxed text-grijs">
-          Elke training duurt <strong class="font-semibold text-marine">{duur}</strong>{
-            gelijkeGroep ? (
-              <> en telt <strong class="font-semibold text-marine">{groep}</strong></>
-            ) : null
-          }. De training wordt incompany gegeven, op je eigen locatie of bij
-          Bureau Weerbaar en Veilig in Neede. Wat per niveau verschilt, staat
-          hieronder.
-        </p>
-      )}
+      {/*
+        Duur, groepsgrootte en locatie stonden hier in een alinea. Die staan nu
+        in de feitenstrip in de kop, waar ze eerder gezien worden — dus hier
+        alleen nog waar het echt om gaat.
+      */}
+      <p class="mt-5 max-w-2xl leading-relaxed text-grijs">
+        Alle drie de niveaus behandelen hetzelfde onderwerp, maar niet dezelfde
+        situaties en niet voor dezelfde mensen. Wat per niveau verschilt, staat
+        hieronder.
+      </p>
 
-      <div class="mt-8 grid gap-6 md:grid-cols-3">
+      <div class="mt-10 grid gap-6 md:grid-cols-3">
         {niveaus.map((n) => (
           <article class={`niveau-${n.niveau} kaart flex flex-col p-6`}>
             <NiveauBadge niveau={n.niveau} />
@@ -228,9 +278,11 @@ const lijstSchema = trainingen.length
           </article>
         ))}
       </div>
-    </section>
+    </div>
+  </section>
 
-    <div class="mt-12 max-w-3xl">
+  <div class="mx-auto max-w-6xl px-4 py-14">
+    <div class="max-w-3xl">
       <Terugbelverzoek onderwerp={`de agressietraining voor ${b.naam.toLowerCase()}`} />
     </div>
   </div>
