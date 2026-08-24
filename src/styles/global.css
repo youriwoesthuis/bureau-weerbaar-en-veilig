@@ -802,6 +802,93 @@ body {
   }
 }
 
+/* ---------------------------------------------------------------
+   Afdrukken
+   ---------------------------------------------------------------
+   Een trainingsvoorstel wordt uitgeprint om in een overleg te bespreken. Zonder
+   deze regels rolt daar de navigatie, een donker kopblok en een terugbelknop
+   uit de printer, en gaat de helft van de inkt op aan vlakken.
+*/
+@media print {
+  /* Donkere vlakken worden wit met zwarte tekst: geen inkt aan achtergronden */
+  .vlak-donker,
+  .vlak-zweem,
+  footer {
+    background: none !important;
+    background-image: none !important;
+    color: #000 !important;
+  }
+  .op-donker,
+  .op-donker * {
+    color: #000 !important;
+  }
+
+  /* Weg: navigatie, decoratie, knoppen en alles wat je niet kunt aanklikken */
+  header nav,
+  .menu-mobiel,
+  .motief-chevron,
+  .lijn-merk,
+  .filterbalk,
+  .knop,
+  .gezichten,
+  .skip-link,
+  footer ul {
+    display: none !important;
+  }
+
+  body {
+    font-size: 11pt;
+    line-height: 1.45;
+    color: #000;
+  }
+  .leestekst {
+    max-width: none;
+    font-size: 11pt;
+  }
+
+  /* Kaarten en koppen niet over een paginarand heen breken */
+  .kaart,
+  .groep,
+  .tegel,
+  .tijdlijn-stap,
+  .uitklap {
+    break-inside: avoid;
+    box-shadow: none !important;
+    border-color: #999 !important;
+  }
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  /* Uitklapbare vragen staan open op papier: dichtklappen kan niet op papier */
+  details {
+    display: block !important;
+  }
+  details > *:not(summary) {
+    display: block !important;
+  }
+  .uitklap .chevron {
+    display: none;
+  }
+
+  /*
+    Het adres achter een link, want een papieren pagina heeft geen klikbare
+    links. Alleen bij echte adressen: interne ankers en telefoonlinks leveren
+    anders onleesbare rommel op.
+  */
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 9pt;
+    word-break: break-all;
+  }
+
+  @page {
+    margin: 18mm 16mm;
+  }
+}
+
 /* Wie minder beweging wil, krijgt minder beweging */
 @media (prefers-reduced-motion: reduce) {
   html {

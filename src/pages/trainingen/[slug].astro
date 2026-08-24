@@ -5,6 +5,7 @@ import Base from '../../layouts/Base.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import NiveauBadge from '../../components/NiveauBadge.astro';
 import Terugbelverzoek from '../../components/Terugbelverzoek.astro';
+import TrainersBlok from '../../components/TrainersBlok.astro';
 import { SECTOR_NAMEN } from '../../lib/sectoren';
 import { trainingTitel } from '../../lib/seo';
 
@@ -228,6 +229,8 @@ const praktisch: [string, string | undefined][] = [
             ))}
           </div>
         </section>
+
+        <TrainersBlok />
 
         <Terugbelverzoek onderwerp={`de ${d.titel.toLowerCase()}`} />
       </div>

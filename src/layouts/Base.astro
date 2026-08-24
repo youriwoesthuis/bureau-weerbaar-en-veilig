@@ -2,6 +2,7 @@
 import { link } from '../lib/link';
 import '../styles/global.css';
 import { paginaTitel as maakTitel, metaBeschrijving } from '../lib/seo';
+import { ClientRouter } from 'astro:transitions';
 import Logo from '../components/Logo.astro';
 
 interface Props {
@@ -102,6 +103,15 @@ const hoofdmenu = [
       content="Bureau Weerbaar en Veilig, specialist in agressietraining"
     />
     <meta name="twitter:card" content="summary_large_image" />
+
+    {/*
+      Zachte overgang tussen pagina's in plaats van een harde sprong. Puur
+      afwerking: de volledige HTML van elke pagina blijft gewoon op de server
+      staan, dus een zoekmachine of AI-crawler die geen scripts uitvoert ziet
+      exact hetzelfde als eerst. Wie minder beweging wil ingesteld heeft, krijgt
+      geen overgang — dat regelt Astro zelf.
+    */}
+    <ClientRouter />
 
     <script type="application/ld+json" set:html={organisatieSchema} />
     {schema.map((s) => <script type="application/ld+json" set:html={s} />)}
