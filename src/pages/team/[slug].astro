@@ -108,6 +108,16 @@ const persoonSchema = JSON.stringify({
             sizes="(min-width: 1024px) 20rem, 90vw"
             format="webp"
             quality={88}
+            {/*
+              Dit portret is op deze pagina het grootste element boven de vouw,
+              en daarmee het element waarop de laadtijd wordt gemeten. Het stond
+              op lazy met een automatische prioriteit: de browser stelde het dus
+              uit en gaf het geen voorrang, precies bij de afbeelding die de
+              score bepaalt. Alle andere afbeeldingen op deze pagina blijven
+              lazy — die staan onder de vouw.
+            */}
+            loading="eager"
+            fetchpriority="high"
             class="w-full rounded-2xl object-cover object-top shadow-[var(--shadow-kaart)]"
           />
         )}

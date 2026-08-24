@@ -1,0 +1,118 @@
+---
+/**
+ * Keuzehulp: kies je sector, zie je beroepsgroep.
+ *
+ * Op de homepage stond een raster van negentien sectorkaarten. Dat werkt, maar
+ * het vraagt van de bezoeker dat die eerst een pagina laadt en dan pas ziet of
+ * zijn beroepsgroep ertussen staat. Voor iemand die zoekt op "hebben jullie
+ * iets voor bibliotheekmedewerkers" is dat een klik te veel op het verkeerde
+ * moment.
+ *
+ * Deze component zet de twee stappen naast elkaar: links de sectoren, rechts
+ * de beroepsgroepen van de gekozen sector, met een directe link naar de
+ * juiste pagina.
+ *
+ * ── Waarom dit zonder JavaScript werkt ──
+ *
+ * De keuze zit in radioknoppen, en het tonen en verbergen in CSS met :has().
+ * Dat is geen truc omwille van de truc: de projectbrief eist dat de volledige
+ * inhoud zichtbaar is zonder scripts, omdat AI-crawlers die vaak niet
+ * uitvoeren. Alle vierenveertig beroepsgroepen staan dus gewoon in de HTML —
+ * het filter bepaalt alleen wat een mens ziet.
+ *
+ * Bijkomend en niet onbelangrijk: hiermee krijgt elke beroepsgroeppagina een
+ * link vanaf de homepage, de pagina met het meeste gewicht van de site.
+ */
+import { link } from '../../lib/link';
+import { telwoord } from '../../lib/sectoren';
+
+export interface FinderSector {
+  slug: string;
+  naam: string;
+  groepen: { slug: string; naam: string; aantalTrainingen: number }[];
+}
+
+interface Props {
+  sectoren: FinderSector[];
+}
+
+const { sectoren } = Astro.props;
+
+/*
+  Eén regel per sector: kies je die, dan verdwijnen de beroepsgroepen van alle
+  andere. De regels worden hier gegenereerd omdat het er negentien zijn en ze
+  alleen in getal verschillen — met de hand geschreven zou er vroeg of laat een
+  sector bijkomen zonder regel.
+*/
+const finderCss = [
+  /* Zolang er niets gekozen is, staat alleen de uitnodiging in beeld. */
+  `.finder:has(#finder-leeg:checked) .finder-groep { display: none; }`,
+  `.finder:not(:has(#finder-leeg:checked)) .finder-uitnodiging { display: none; }`,
+  ...sectoren.map(
+    (s) =>
+      `.finder:has(#finder-${s.slug}:checked) .finder-groep:not([data-sector="${s.slug}"]) { display: none; }`
+  ),
+].join('\n  ');
+---
+
+<div class="finder">
+  <form class="finder-raster" aria-label="Vind de training voor jouw beroepsgroep">
+    {/*
+      Een fieldset zou hier logischer lijken, maar een legend is geen flex-item
+      van zijn fieldset — dat is eerder op deze site al een keer misgegaan.
+      role="group" met aria-labelledby doet hetzelfde voor hulpsoftware en laat
+      de opmaak wél toe.
+    */}
+    <div class="finder-kolom" role="group" aria-labelledby="finder-label-sector">
+      <p class="finder-koplabel" id="finder-label-sector">1. Kies je sector</p>
+
+      <div class="finder-keuzes">
+        {/*
+          De verborgen beginstand. Zonder deze knop is er geen manier om terug
+          te keren naar "nog niets gekozen", en dan zou de uitnodiging na de
+          eerste klik nooit meer verschijnen.
+        */}
+        <input class="sr-only" type="radio" name="finder-sector" id="finder-leeg" checked />
+
+        {sectoren.map((s) => (
+          <>
+            <input class="sr-only" type="radio" name="finder-sector" id={`finder-${s.slug}`} />
+            <label class="finder-chip" for={`finder-${s.slug}`}>
+              {s.naam}
+              <span class="finder-chip-getal">{s.groepen.length}</span>
+            </label>
+          </>
+        ))}
+      </div>
+    </div>
+
+    <div class="finder-kolom finder-uitkomst">
+      <p class="finder-koplabel">2. Kies je beroepsgroep</p>
+
+      <p class="finder-uitnodiging">
+        Kies links een sector. De beroepsgroepen die daaronder vallen verschijnen
+        hier, met een directe link naar de training.
+      </p>
+
+      <ul class="finder-lijst">
+        {sectoren.flatMap((s) =>
+          s.groepen.map((g) => (
+            <li class="finder-groep" data-sector={s.slug}>
+              <a class="finder-link" href={link(`/sectoren/${s.slug}/${g.slug}/`)}>
+                <span class="finder-link-naam">{g.naam}</span>
+                <span class="finder-link-meta">
+                  {telwoord(g.aantalTrainingen, 'training', 'trainingen')}
+                </span>
+                <span class="pijl finder-link-pijl" aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))
+        )}
+      </ul>
+    </div>
+  </form>
+</div>
+
+<style set:html={`
+  ${finderCss}
+`}></style>

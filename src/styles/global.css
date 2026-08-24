@@ -1442,6 +1442,194 @@ body {
 }
 
 /* ---------------------------------------------------------------
+   De keuzehulp
+   ---------------------------------------------------------------
+   Twee kolommen: links de sectoren als chips, rechts de beroepsgroepen van de
+   gekozen sector. Alles staat in de HTML; CSS bepaalt wat er zichtbaar is.
+*/
+.finder {
+  border-radius: 1.25rem;
+  border: 1px solid var(--color-lijn);
+  background: #ffffff;
+  box-shadow: var(--shadow-kaart);
+  overflow: hidden;
+}
+
+.finder-raster {
+  display: grid;
+}
+@media (min-width: 56rem) {
+  .finder-raster {
+    grid-template-columns: 20rem 1fr;
+  }
+  .finder-uitkomst {
+    border-left: 1px solid var(--color-lijn);
+  }
+}
+
+.finder-kolom {
+  padding: 1.5rem;
+}
+@media (min-width: 56rem) {
+  .finder-kolom {
+    padding: 1.75rem;
+  }
+}
+
+.finder-uitkomst {
+  background: var(--color-vlak-warm);
+  border-top: 1px solid var(--color-lijn);
+}
+@media (min-width: 56rem) {
+  .finder-uitkomst {
+    border-top: 0;
+  }
+}
+
+.finder-koplabel {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--color-grijs);
+}
+
+.finder-keuzes {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.finder-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  /* py van 0.55rem brengt het klikdoel op 40px; ruim boven de 24px-ondergrens. */
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-lijn);
+  background: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-inkt);
+  cursor: pointer;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .finder-chip {
+    transition:
+      border-color 140ms ease,
+      background-color 140ms ease;
+  }
+}
+.finder-chip:hover {
+  border-color: var(--color-paars);
+}
+
+/*
+  De gekozen chip krijgt het merkverloop. Wit op dit verloop haalt minimaal
+  4,95:1 — beide eindkleuren zijn daarop gekozen, zie de genummerde stappen.
+*/
+.finder-keuzes input:checked + .finder-chip {
+  /*
+    Eerst een effen kleur, dan het verloop eroverheen. Zonder die eerste regel
+    staat er alleen een background-image, en dan is de chip wit met witte tekst
+    zodra dat verloop niet wordt getekend — bij geforceerde kleuren, in een
+    hoog-contrastmodus, of in een afdruk. De effen kleur ligt tussen de twee
+    eindkleuren in en haalt zelf ruim vier en een half staat met wit.
+  */
+  background-color: #8f4a30;
+  background-image: linear-gradient(145deg, var(--color-oranje-knop), var(--color-paars));
+  border-color: transparent;
+  color: #ffffff;
+}
+.finder-keuzes input:checked + .finder-chip .finder-chip-getal {
+  background: rgb(255 255 255 / 0.22);
+  color: #ffffff;
+}
+
+/*
+  De focusring hoort om de zichtbare chip, niet om de verborgen radioknop.
+  Zonder deze regel is met het toetsenbord niet te zien waar je bent.
+*/
+.finder-keuzes input:focus-visible + .finder-chip {
+  outline: 3px solid var(--color-blauw);
+  outline-offset: 2px;
+}
+
+.finder-chip-getal {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.375rem;
+  height: 1.375rem;
+  padding: 0 0.3rem;
+  border-radius: 999px;
+  background: var(--color-vlak);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-grijs);
+}
+
+.finder-uitnodiging {
+  margin-top: 1rem;
+  max-width: 30rem;
+  line-height: 1.6;
+  color: var(--color-grijs);
+}
+
+.finder-lijst {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.5rem;
+}
+@media (min-width: 40rem) {
+  .finder-lijst {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.finder-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-lijn);
+  background: #ffffff;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .finder-link {
+    transition:
+      border-color 140ms ease,
+      box-shadow 140ms ease;
+  }
+}
+.finder-link:hover {
+  border-color: var(--color-marine);
+  box-shadow: 0 10px 22px -16px rgb(33 46 86 / 0.5);
+}
+
+.finder-link-naam {
+  font-weight: 700;
+  color: var(--color-marine);
+  line-height: 1.3;
+}
+
+.finder-link-meta {
+  margin-left: auto;
+  flex: none;
+  font-size: 0.75rem;
+  color: var(--color-grijs);
+}
+
+.finder-link-pijl {
+  flex: none;
+  color: var(--color-marine);
+}
+
+/* ---------------------------------------------------------------
    Afdrukken
    ---------------------------------------------------------------
    Een trainingsvoorstel wordt uitgeprint om in een overleg te bespreken. Zonder

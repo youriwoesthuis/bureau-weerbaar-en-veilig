@@ -112,8 +112,15 @@ function fotoVan(id: string) {
         <p class="mt-3 text-grijs">De teampagina wordt op dit moment gevuld.</p>
       ) : (
         <ul class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {team.map((lid) => {
+          {team.map((lid, i) => {
             const foto = fotoVan(lid.id);
+            /*
+              De bovenste rij staat boven de vouw en bepaalt daar de gemeten
+              laadtijd. Die vier laden meteen en met voorrang; de rest blijft
+              lui, want dat scheelt bij het openen van de pagina acht
+              afbeeldingen die nog niemand ziet.
+            */
+            const bovenDeVouw = i < 4;
             return (
               <li class="kaart overflow-hidden">
                 {foto ? (
@@ -126,7 +133,8 @@ function fotoVan(id: string) {
                     sizes="(min-width: 1024px) 260px, (min-width: 640px) 45vw, 90vw"
                     format="webp"
                     quality={88}
-                    loading="lazy"
+                    loading={bovenDeVouw ? 'eager' : 'lazy'}
+                    fetchpriority={bovenDeVouw ? 'high' : 'auto'}
                     class="aspect-[4/5] w-full object-cover object-top"
                   />
                 ) : (

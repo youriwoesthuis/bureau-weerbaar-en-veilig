@@ -9,6 +9,7 @@ import Terugbelverzoek from '../components/Terugbelverzoek.astro';
 import SectorIcoon from '../components/SectorIcoon.astro';
 import { TRAININGSDAG } from '../lib/trainingsdag';
 import { situatieSelectie, alleSituaties } from '../lib/situaties';
+import TrainingFinder from '../components/ui/TrainingFinder.astro';
 import {
   SECTOR_NAMEN,
   NIVEAU_BESCHRIJVING,
@@ -45,6 +46,20 @@ const aantalTrainingen = (sector: string) =>
   trainingen.filter((t) => t.data.sector === sector).length;
 const aantalGroepen = (sector: string) =>
   beroepsgroepen.filter((b) => b.data.sector === sector).length;
+/* De sectoren met hun beroepsgroepen, in de vorm die de keuzehulp verwacht. */
+const finderSectoren = sectoren.map((s) => ({
+  slug: s.data.slug,
+  naam: s.data.naam,
+  groepen: beroepsgroepen
+    .filter((b) => b.data.sector === s.data.slug)
+    .sort((a, z) => a.data.naam.localeCompare(z.data.naam))
+    .map((b) => ({
+      slug: b.data.slug,
+      naam: b.data.naam,
+      aantalTrainingen: trainingen.filter((t) => t.data.beroepsgroep === b.data.slug).length,
+    })),
+}));
+
 const situaties = await situatieSelectie(6);
 const aantalSituaties = (await alleSituaties()).length;
 
@@ -221,9 +236,22 @@ const cijfers = [
       Trainingen per sector
     </h2>
     <p class="mt-5 max-w-2xl leading-relaxed text-grijs">
-      Elke sector kent zijn eigen agressieproblematiek. Kies je sector en vind
-      binnen drie klikken de juiste training voor beroepsgroep én niveau.
+      Elke sector kent zijn eigen agressieproblematiek. Kies je sector, en zie
+      meteen welke beroepsgroepen daaronder vallen.
     </p>
+
+    {/*
+      De keuzehulp staat vóór het sectorraster, niet in plaats daarvan.
+
+      Wie zijn sector al weet, klikt hierin door naar zijn beroepsgroep zonder
+      tussenpagina. Wie liever rondkijkt, scrolt naar het raster eronder. Beide
+      routes leiden naar dezelfde pagina's, en alle vierenveertig beroepsgroepen
+      staan sowieso in de HTML — dus voor een crawler verandert er niets behalve
+      dat de homepage nu rechtstreeks naar alle vierenveertig linkt.
+    */}
+    <div class="mt-10">
+      <TrainingFinder sectoren={finderSectoren} />
+    </div>
 
     {/*
       Bewust geen samenvatting op deze kaarten. Elke samenvatting begint met
