@@ -9,6 +9,7 @@ import {
   NIVEAU_BESCHRIJVING,
   NIVEAU_LABELS,
   NIVEAU_LINKTEKST,
+  telwoord,
 } from '../lib/sectoren';
 
 const sectoren = (await getCollection('sectoren')).sort((a, b) =>
@@ -26,6 +27,11 @@ const niveaus = ['basis', 'gevorderd', 'expert'] as const;
 */
 const trainingen = await getCollection('trainingen');
 const beroepsgroepen = await getCollection('beroepsgroepen');
+
+const aantalTrainingen = (sector: string) =>
+  trainingen.filter((t) => t.data.sector === sector).length;
+const aantalGroepen = (sector: string) =>
+  beroepsgroepen.filter((b) => b.data.sector === sector).length;
 const cijfers = [
   { getal: trainingen.length, label: 'trainingen' },
   { getal: sectoren.length, label: 'sectoren' },
@@ -124,16 +130,33 @@ const cijfers = [
       binnen drie klikken de juiste training voor beroepsgroep én niveau.
     </p>
 
-    <ul class="kaartraster mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    {/*
+      Bewust geen samenvatting op deze kaarten. Elke samenvatting begint met
+      "Bureau Weerbaar en Veilig traint…", dus met negentien kaarten naast elkaar
+      stonden er negentien identieke openingszinnen in beeld en begon het
+      onderscheidende woord pas op positie zes. Onleesbaar om te scannen, en de
+      kaarten werden bovendien ongelijk hoog.
+
+      Een keuzeraster hoeft niet te overtuigen, het moet navigeren. Daarom de
+      sectornaam groot, en daaronder twee harde getallen: die verschillen wél per
+      sector en zijn in één oogopslag te vergelijken. De volledige tekst staat op
+      de sectorpagina zelf, waar hij thuishoort.
+    */}
+    <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {sectoren.map((s) => (
-        <li class="kaart rol-in p-6">
-          <h3 class="text-lg font-bold text-marine">
-            <a href={link(`/sectoren/${s.data.slug}/`)} class="after:absolute after:inset-0">
-              {s.data.naam}
-              <span class="pijl ml-1" aria-hidden="true">→</span>
-            </a>
-          </h3>
-          <p class="mt-2 text-sm leading-relaxed text-grijs">{s.data.samenvatting}</p>
+        <li class="kaart rol-in flex items-center justify-between gap-4 p-5">
+          <div>
+            <h3 class="text-lg font-bold text-marine">
+              <a href={link(`/sectoren/${s.data.slug}/`)} class="after:absolute after:inset-0">
+                {s.data.naam}
+              </a>
+            </h3>
+            <p class="mt-1 text-sm text-grijs">
+              {telwoord(aantalTrainingen(s.data.slug), 'training', 'trainingen')} ·
+              {' '}{telwoord(aantalGroepen(s.data.slug), 'beroepsgroep', 'beroepsgroepen')}
+            </p>
+          </div>
+          <span class="pijl text-xl text-marine" aria-hidden="true">→</span>
         </li>
       ))}
     </ul>

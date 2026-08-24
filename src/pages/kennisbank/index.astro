@@ -7,6 +7,13 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 const artikelen = (await getCollection('kennisbank')).sort(
   (a, b) => b.data.datum.getTime() - a.data.datum.getTime()
 );
+
+/*
+  Bewust geen kaartraster op deze pagina. Kleur betekent op deze site het niveau
+  van een training; artikelen hebben geen niveau. Ze krijgen daarom een neutrale
+  lijn die bij hover het merkverloop wordt, in plaats van 53 kaarten die drie
+  kleuren afwisselen zonder dat die iets zeggen.
+*/
 ---
 
 <Base
@@ -37,17 +44,10 @@ const artikelen = (await getCollection('kennisbank')).sort(
     {artikelen.length === 0 ? (
       <p class="text-grijs">De artikelen worden op dit moment overgezet en verschijnen hier binnenkort.</p>
     ) : (
-      <ul class="kaartraster grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {artikelen.map((a) => (
           <li class="kaart flex flex-col p-6">
-            {/*
-              Het onderwerp-label stond in het volle merk-oranje op wit: 2,52:1,
-              te licht. Het gebruikt nu de tekstvariant van het kaartaccent.
-            */}
-            <p
-              class="text-xs font-bold uppercase tracking-wide"
-              style="color: var(--accent-tekst)"
-            >
+            <p class="text-xs font-bold uppercase tracking-wide text-grijs">
               {a.data.onderwerp}
             </p>
             <h2 class="mt-2 text-lg font-bold leading-snug text-marine">

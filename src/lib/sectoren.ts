@@ -21,6 +21,15 @@ export const SECTOR_NAMEN: Record<string, string> = {
   uitvaart: 'Uitvaart',
 };
 
+/**
+ * Zet een aantal om naar tekst met het juiste enkelvoud of meervoud:
+ * telwoord(1, 'training', 'trainingen') → "1 training"
+ * telwoord(6, 'training', 'trainingen') → "6 trainingen"
+ */
+export function telwoord(aantal: number, enkelvoud: string, meervoud: string): string {
+  return `${aantal} ${aantal === 1 ? enkelvoud : meervoud}`;
+}
+
 export const NIVEAU_LABELS = {
   basis: 'Basis',
   gevorderd: 'Gevorderd',

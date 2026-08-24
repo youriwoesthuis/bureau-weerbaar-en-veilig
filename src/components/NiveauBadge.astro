@@ -1,8 +1,14 @@
 ---
 interface Props {
   niveau: 'basis' | 'gevorderd' | 'expert';
+  /**
+   * Laat het woord "Niveau:" weg. Voor lijsten waarin de badge tientallen keren
+   * onder elkaar staat: daar is die aanhef puur herhaling, en dragen de kleur en
+   * de omgeving de betekenis al.
+   */
+  kort?: boolean;
 }
-const { niveau } = Astro.props;
+const { niveau, kort = false } = Astro.props;
 
 /*
   De drie niveaus dragen de drie merkkleuren, in de volgorde van het
@@ -34,5 +40,5 @@ const label = { basis: 'Basis', gevorderd: 'Gevorderd', expert: 'Expert' }[nivea
   class={`inline-flex self-start items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${stijl}`}
 >
   <span class={`h-1.5 w-1.5 rounded-full ${stip}`} aria-hidden="true"></span>
-  Niveau: {label}
+  {kort ? label : `Niveau: ${label}`}
 </span>

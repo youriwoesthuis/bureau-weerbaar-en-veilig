@@ -3,12 +3,14 @@ import { link } from '../../lib/link';
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import { SECTOR_NAMEN } from '../../lib/sectoren';
+import { SECTOR_NAMEN, telwoord } from '../../lib/sectoren';
 
 const sectoren = await getCollection('sectoren');
 const trainingen = await getCollection('trainingen');
+const beroepsgroepen = await getCollection('beroepsgroepen');
 
 const perSector = (slug: string) => trainingen.filter((t) => t.data.sector === slug).length;
+const perGroepen = (slug: string) => beroepsgroepen.filter((b) => b.data.sector === slug).length;
 
 /* Sectoren met een eigen contentbestand eerst, daarna de nog te vullen sectoren als lijst */
 const gevuld = sectoren.sort((a, b) => a.data.naam.localeCompare(b.data.naam));
@@ -38,35 +40,46 @@ const nogTeVullen = Object.entries(SECTOR_NAMEN).filter(([slug]) => !gevuldeSlug
   <div class="lijn-merk" aria-hidden="true"></div>
 
   <div class="mx-auto max-w-6xl px-4 py-16">
-    <ul class="kaartraster grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    {/*
+      Zelfde keuze als op de homepage: geen samenvatting in het keuzeraster.
+      Elke samenvatting opent met dezelfde vijf woorden, dus negentien kaarten
+      naast elkaar leverden negentien identieke openingszinnen op. De naam en
+      twee harde getallen verschillen wél per sector en zijn te vergelijken.
+    */}
+    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {gevuld.map((s) => (
-        <li class="kaart flex flex-col p-6">
-          <h2 class="text-xl font-bold text-marine">
-            {/* De pseudo-laag maakt de hele kaart klikbaar, dus ook de regel eronder */}
-            <a href={link(`/sectoren/${s.data.slug}/`)} class="after:absolute after:inset-0">
-              {s.data.naam}
-            </a>
-          </h2>
-          <p class="mt-2 flex-1 text-sm leading-relaxed text-grijs">{s.data.samenvatting}</p>
-          <p
-            class="mt-4 inline-flex items-center gap-2 text-sm font-bold"
-            style="color: var(--accent-tekst)"
-          >
-            {perSector(s.data.slug)} trainingen
-            <span class="pijl" aria-hidden="true">→</span>
-          </p>
+        <li class="kaart flex items-center justify-between gap-4 p-5">
+          <div>
+            <h2 class="text-lg font-bold text-marine">
+              {/* De pseudo-laag maakt de hele kaart klikbaar, dus ook de regel eronder */}
+              <a href={link(`/sectoren/${s.data.slug}/`)} class="after:absolute after:inset-0">
+                {s.data.naam}
+              </a>
+            </h2>
+            <p class="mt-1 text-sm text-grijs">
+              {telwoord(perSector(s.data.slug), 'training', 'trainingen')} ·
+              {' '}{telwoord(perGroepen(s.data.slug), 'beroepsgroep', 'beroepsgroepen')}
+            </p>
+          </div>
+          <span class="pijl text-xl text-marine" aria-hidden="true">→</span>
         </li>
       ))}
       {nogTeVullen.map(([, naam]) => (
-        <li class="rounded-xl border border-dashed border-lijn bg-vlak-warm p-6">
-          <h2 class="text-xl font-bold text-grijs">{naam}</h2>
-          <p class="mt-2 text-sm leading-relaxed text-grijs">
-            Trainingen voor deze sector volgen binnenkort op deze pagina.
-            Bel gerust alvast via
-            <a href="tel:+31857600435" class="font-semibold text-blauw hover:underline">085 760 0435</a>.
-          </p>
+        <li class="flex items-center justify-between gap-4 rounded-xl border border-dashed border-lijn bg-vlak-warm p-5">
+          <div>
+            <h2 class="text-lg font-bold text-grijs">{naam}</h2>
+            <p class="mt-1 text-sm text-grijs">Volgt binnenkort</p>
+          </div>
         </li>
       ))}
     </ul>
+
+    {nogTeVullen.length > 0 && (
+      <p class="mt-8 text-sm leading-relaxed text-grijs">
+        Staat jouw sector er nog niet bij? Bel
+        <a href="tel:+31857600435" class="font-semibold text-blauw hover:underline">085 760 0435</a>:
+        Bureau Weerbaar en Veilig traint ook buiten deze lijst.
+      </p>
+    )}
   </div>
 </Base>

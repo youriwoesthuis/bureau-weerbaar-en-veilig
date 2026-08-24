@@ -223,14 +223,25 @@ body {
   bleef een raster van negentien kaarten wit-op-wit — precies de vlakheid die
   we juist weg wilden hebben. Bij hover wordt de balk dikker.
 */
+/*
+  Kleur draagt hier betekenis: oranje is basis, paars is gevorderd, indigo is
+  expert. Een kaart die géén niveau heeft — een sector, een artikel — krijgt
+  daarom geen merkkleur maar een neutrale lijn, die bij hover het merkverloop
+  wordt. Anders wisselen negentien sectorkaarten drie kleuren af die niets
+  betekenen, en dat leest als ruis in plaats van als systeem.
+*/
 .kaart::before {
   content: '';
   position: absolute;
   inset-inline: 0;
   top: 0;
   height: 3px;
-  background: var(--accent, var(--color-oranje));
-  transition: height 200ms ease;
+  background: var(--accent, var(--color-lijn));
+  transition: height 200ms ease, background 200ms ease;
+}
+.kaart:hover::before,
+.kaart:focus-within::before {
+  background: var(--accent, var(--gradient-merk-lijn));
 }
 /* De hele kaart is klikbaar via een uitgerekte link; focus telt daarom mee */
 .kaart:hover,
