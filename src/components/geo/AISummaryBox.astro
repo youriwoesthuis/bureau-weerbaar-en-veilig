@@ -1,0 +1,97 @@
+---
+/**
+ * Direct citeerbaar antwoordblok, bovenaan een beroepsgroep- of sectorpagina.
+ *
+ * Een AI-antwoordsysteem neemt zelden een hele pagina over. Het zoekt een blok
+ * dat op zichzelf klopt: een vraag, en daaronder een antwoord dat je kunt
+ * losknippen zonder dat het betekenisloos wordt. Dat is wat hier staat, boven
+ * alle lopende tekst.
+ *
+ * ── Waarom deze drie vragen, en niet die uit het oorspronkelijke plan ──
+ *
+ * Het plan vroeg om antwoorden op "welke agressievorm overheerst in deze
+ * werkomgeving" en "wat is de wettelijke basis voor training". Die twee zijn
+ * hier bewust niet ingevuld, om twee redenen.
+ *
+ * De eerste is dat we het niet weten. Welke agressievorm overheerst bij
+ * buurtbeheerders tegenover apotheekmedewerkers is een empirische vraag, en
+ * daar is op deze site geen bron voor. Een verzonnen antwoord is hier extra
+ * schadelijk: dit blok is juist gebouwd om geciteerd te worden, dus een fout
+ * gaat rechtstreeks een AI-antwoord in. CLAUDE.md hoofdstuk 11 is daar
+ * expliciet over: ontbreekt iets, dan vragen en niet gokken.
+ *
+ * De tweede is de taakverdeling binnen de merkgroep. Wetgeving, cijfers en
+ * achtergrond horen bij agressievisie.nl; deze site verkoopt training per
+ * beroepsgroep. Een Arbowet-blok op vierenveertig pagina's is precies waarom
+ * de kennisbank hier eerder is weggehaald. Zie MERKGROEP.md.
+ *
+ * Wat er wél staat komt uit de trainingen zelf en is per beroepsgroep anders:
+ * voor wie het is, welke situaties er langskomen, en hoe het is opgebouwd.
+ */
+import { link } from '../../lib/link';
+
+export interface AntwoordBlok {
+  /** De vraag zoals iemand hem stelt. */
+  vraag: string;
+  /** Het antwoord: één losstaande zin, hooguit dertig woorden. */
+  antwoord: string;
+}
+
+interface Props {
+  /** Waar dit blok over gaat, voor het toegankelijke label. */
+  onderwerp: string;
+  blokken: AntwoordBlok[];
+  /** Optionele verdiepingslink onder het blok. */
+  meer?: { tekst: string; pad: string };
+}
+
+const { onderwerp, blokken, meer } = Astro.props;
+
+/*
+  Het aantal woorden wordt tijdens het bouwen gecontroleerd en niet stilzwijgend
+  afgekapt. Afkappen zou het antwoord halverwege een zin laten eindigen, en dan
+  is precies het losknipbare karakter weg waar dit blok voor bestaat. Bij een te
+  lang antwoord hoort de tekst korter, niet de weergave.
+*/
+const TE_LANG = 30;
+for (const b of blokken) {
+  const woorden = b.antwoord.trim().split(/\s+/).length;
+  if (woorden > TE_LANG) {
+    console.warn(
+      `[AISummaryBox] Antwoord van ${woorden} woorden op "${b.vraag}" (${onderwerp}). ` +
+        `Boven de ${TE_LANG} wordt het zelden in zijn geheel geciteerd.`
+    );
+  }
+}
+---
+
+<aside class="antwoordblok" aria-labelledby="antwoordblok-titel">
+  <p id="antwoordblok-titel" class="antwoordblok-kop">
+    Kort antwoord
+    <span class="sr-only">op de meestgestelde vragen over {onderwerp}</span>
+  </p>
+
+  {/*
+    Een definitielijst en geen koppen: dit blok staat bovenaan de pagina, en
+    drie extra koppen zouden de koppenstructuur van de pagina verstoren voor
+    wie met een schermlezer op koppen navigeert. Een dt/dd-paar zegt
+    "vraag hoort bij antwoord" zonder die bijwerking.
+  */}
+  <dl class="antwoordblok-lijst">
+    {blokken.map((b) => (
+      <div class="antwoordblok-item">
+        <dt class="antwoordblok-vraag">{b.vraag}</dt>
+        <dd class="antwoordblok-antwoord">{b.antwoord}</dd>
+      </div>
+    ))}
+  </dl>
+
+  {meer && (
+    <p class="antwoordblok-meer">
+      <a href={link(meer.pad)}>
+        {meer.tekst}
+        <span class="pijl" aria-hidden="true">→</span>
+      </a>
+    </p>
+  )}
+</aside>

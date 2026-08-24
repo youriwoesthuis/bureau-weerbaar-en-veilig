@@ -1276,6 +1276,172 @@ body {
 }
 
 /* ---------------------------------------------------------------
+   Het antwoordblok
+   ---------------------------------------------------------------
+   Vraag-en-antwoord bovenaan de pagina, bedoeld om losgeknipt te worden. Het
+   moet opvallen zonder de indruk te wekken dat het reclame is: een AI-systeem
+   dat een kader met een knop erin ziet, leest dat als promotie en slaat het
+   over. Vandaar rustig vlak, merkstreep, geen knop.
+*/
+.antwoordblok {
+  border-radius: 1rem;
+  border: 1px solid var(--color-lijn);
+  background: var(--color-vlak-warm);
+  padding: 1.5rem;
+}
+@media (min-width: 48rem) {
+  .antwoordblok {
+    padding: 1.75rem 2rem;
+  }
+}
+
+.antwoordblok-kop {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-oranje-tekst);
+}
+.antwoordblok-kop::before {
+  content: '';
+  width: 1.75rem;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--gradient-merk-lijn);
+}
+
+.antwoordblok-lijst {
+  margin-top: 1.25rem;
+  display: grid;
+  gap: 1.125rem;
+}
+
+/* Een streep vóór elk paar in plaats van een lijn ertussen: die laatste valt
+   weg zodra de items onder elkaar komen te staan. */
+.antwoordblok-item {
+  border-left: 3px solid color-mix(in srgb, var(--color-paars) 35%, transparent);
+  padding-left: 1rem;
+}
+
+.antwoordblok-vraag {
+  font-weight: 700;
+  color: var(--color-marine);
+  line-height: 1.4;
+}
+
+.antwoordblok-antwoord {
+  margin-top: 0.375rem;
+  line-height: 1.6;
+  color: var(--color-inkt);
+  text-wrap: pretty;
+}
+
+.antwoordblok-meer {
+  margin-top: 1.25rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+.antwoordblok-meer a {
+  color: var(--color-blauw);
+}
+.antwoordblok-meer a:hover {
+  text-decoration: underline;
+}
+
+/* ---------------------------------------------------------------
+   De niveautabel
+   ---------------------------------------------------------------
+   Een echte tabel en geen raster van kaarten. Kaarten zijn mooier, maar een
+   tabel is het enige dat een cel aan een rij- én een kolomkop koppelt — voor
+   een schermlezer en voor een systeem dat de vergelijking wil uitlezen is dat
+   het verschil tussen "gevorderd, afgeronde basistraining" en drie losse
+   woorden.
+*/
+.niveaumatrix-omhulling {
+  overflow-x: auto;
+  border-radius: 1rem;
+  border: 1px solid var(--color-lijn);
+  background: #ffffff;
+}
+/* Zichtbare focus, want dit kader is met het toetsenbord te bereiken. */
+.niveaumatrix-omhulling:focus-visible {
+  outline: 3px solid var(--color-blauw);
+  outline-offset: 2px;
+}
+
+.niveaumatrix {
+  width: 100%;
+  min-width: 44rem;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9375rem;
+}
+
+.niveaumatrix-caption {
+  padding: 1.25rem 1.25rem 0;
+  text-align: left;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-grijs);
+}
+
+.niveaumatrix th,
+.niveaumatrix td {
+  padding: 1rem 1.25rem;
+  vertical-align: top;
+  border-top: 1px solid var(--color-lijn);
+}
+
+.niveaumatrix-hoek {
+  border-top: 0;
+}
+
+.niveaumatrix thead th {
+  border-top: 0;
+  border-bottom: 3px solid var(--accent, var(--color-lijn));
+  background: var(--accent-vlak, var(--color-vlak));
+}
+
+.niveaumatrix-koplabel {
+  display: block;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-marine);
+}
+
+.niveaumatrix-koplink {
+  display: inline-block;
+  margin-top: 0.375rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-blauw);
+}
+.niveaumatrix-koplink:hover {
+  text-decoration: underline;
+}
+
+/* De eerste kolom is de vraag, en die mag niet meelezen als antwoord. */
+.niveaumatrix tbody th {
+  width: 11rem;
+  font-weight: 700;
+  color: var(--color-grijs);
+  background: var(--color-vlak-warm);
+}
+
+.niveaumatrix-lijst {
+  display: grid;
+  gap: 0.5rem;
+  list-style: disc;
+  padding-left: 1.1rem;
+}
+.niveaumatrix-lijst li {
+  line-height: 1.5;
+}
+
+/* ---------------------------------------------------------------
    Afdrukken
    ---------------------------------------------------------------
    Een trainingsvoorstel wordt uitgeprint om in een overleg te bespreken. Zonder

@@ -7,6 +7,9 @@ import NiveauBadge from '../../../components/NiveauBadge.astro';
 import Terugbelverzoek from '../../../components/Terugbelverzoek.astro';
 import { SECTOR_NAMEN } from '../../../lib/sectoren';
 import { ORGANISATIE } from '../../../lib/organisatie';
+import { alleSituaties } from '../../../lib/situaties';
+import AISummaryBox from '../../../components/geo/AISummaryBox.astro';
+import NiveauMatrix from '../../../components/geo/NiveauMatrix.astro';
 
 export async function getStaticPaths() {
   const beroepsgroepen = await getCollection('beroepsgroepen');
@@ -63,6 +66,74 @@ function alsZin(tekst: string): string {
   const metHoofdletter = schoon.charAt(0).toUpperCase() + schoon.slice(1);
   return /[.!?]$/.test(metHoofdletter) ? metHoofdletter : `${metHoofdletter}.`;
 }
+
+/*
+  De drie antwoorden voor het citeerbare blok bovenaan.
+
+  Alle drie komen uit de trainingen van deze beroepsgroep, dus ze verschillen
+  per pagina en er staat niets in wat niet ergens anders op de site ook staat.
+  Ze zijn geschreven om losgeknipt te kunnen worden: elk antwoord noemt de
+  beroepsgroep, zodat het buiten de pagina nog steeds klopt.
+*/
+const basis = trainingen.find((t) => t.data.niveau === 'basis') ?? trainingen[0];
+const groepKort = b.naam.toLowerCase();
+
+/*
+  Rechtstreeks alle situaties van déze beroepsgroep, niet via de gespreide
+  selectie. Die spreidt juist over beroepsgroepen heen — precies één per groep —
+  dus filteren op deze groep leverde meestal niets op.
+*/
+const situatiesHier = (await alleSituaties()).filter((s) => s.beroepsgroep === b.naam);
+/*
+  Met een dubbele punt en een puntkomma, niet met "en" ertussen.
+
+  De situaties zijn niet allemaal hetzelfde soort zin: sommige zijn een hele
+  zin ("Je wilt de woning verlaten maar wordt tegengehouden"), andere een
+  naamwoordgroep ("Intimidatie door familieleden"). Aan elkaar geregen met "en"
+  levert dat kromme zinnen op. Als opsomming achter een dubbele punt staan
+  beide vormen naast elkaar zonder te wringen.
+*/
+const situatieZin = situatiesHier.length
+  ? situatiesHier
+      .slice(0, 2)
+      .map((s) => s.tekst.charAt(0).toLowerCase() + s.tekst.slice(1))
+      .join('; ')
+  : null;
+
+const antwoorden = [
+  {
+    vraag: `Voor wie is de agressietraining ${groepKort}?`,
+    antwoord: basis?.data.doelgroep ?? '',
+  },
+  ...(situatieZin
+    ? [
+        {
+          vraag: 'Welke situaties komen aan bod?',
+          antwoord: `Onder meer: ${situatieZin}.`,
+        },
+      ]
+    : []),
+  {
+    vraag: 'Hoe is het aanbod opgebouwd?',
+    antwoord:
+      `Bureau Weerbaar en Veilig geeft ${trainingen.length} niveaus voor ${groepKort}: ` +
+      `basis, gevorderd en expert. Elke training duurt één dag.`,
+  },
+].filter((a) => a.antwoord);
+
+/* Dezelfde gegevens, in de vorm die de tabelcomponent verwacht. */
+const matrixRijen = trainingen.map((t) => ({
+  niveau: t.data.niveau,
+  label: { basis: 'Basis', gevorderd: 'Gevorderd', expert: 'Expert' }[t.data.niveau],
+  voorWie: t.data.doelgroep,
+  vooraf: t.data.voorwaarde
+    ? t.data.voorwaarde.charAt(0).toUpperCase() + t.data.voorwaarde.slice(1)
+    : 'Geen voorkennis nodig',
+  meeneemt: t.data.resultaat.slice(0, 3),
+  duur: t.data.duur,
+  groepsgrootte: t.data.groepsgrootte,
+  pad: link(`/trainingen/${t.data.slug}/`),
+}));
 
 const niveaus = trainingen.map((t) => ({
   slug: t.data.slug,
@@ -180,6 +251,20 @@ const lijstSchema = trainingen.length
 
   <div class="textuur-stip">
     <div class="mx-auto max-w-6xl px-4 py-14">
+      {/*
+        Het antwoordblok staat vóór de lopende tekst, niet erna. Dat is het hele
+        punt: wat een AI-systeem overneemt is wat het als eerste tegenkomt.
+      */}
+      {antwoorden.length > 0 && (
+        <div class="mb-12 max-w-3xl">
+          <AISummaryBox
+            onderwerp={`agressietraining voor ${groepKort}`}
+            blokken={antwoorden}
+            meer={{ tekst: 'Welk niveau heeft mijn team nodig?', pad: '/trainingsgids/welk-niveau/' }}
+          />
+        </div>
+      )}
+
       <section class="leestekst">
         <Content />
       </section>
@@ -210,7 +295,25 @@ const lijstSchema = trainingen.length
         hieronder.
       </p>
 
-      <div class="mt-10 grid gap-6 md:grid-cols-3">
+      {/*
+        Dezelfde vergelijking twee keer: als tabel en als kaarten.
+
+        Dat is geen dubbelop maar een bewuste verdeling. De tabel koppelt elke
+        cel aan een rij- én een kolomkop, en dat is wat een schermlezer en een
+        uitlezend systeem nodig hebben om "gevorderd" en "afgeronde
+        basistraining" aan elkaar te verbinden. De kaarten zijn wat een bezoeker
+        op een telefoon prettiger scant.
+
+        De tabel verschijnt daarom vanaf de breedte waarop hij past, en de
+        kaarten daaronder. Op een smal scherm blijft alleen de kaartweergave
+        over, zodat er geen tabel van vierenveertig rem in een scherm van
+        twintig wordt geperst.
+      */}
+      <div class="mt-10 hidden lg:block">
+        <NiveauMatrix beroepsgroep={b.naam} rijen={matrixRijen} />
+      </div>
+
+      <div class="mt-10 grid gap-6 md:grid-cols-3 lg:hidden">
         {niveaus.map((n) => (
           <article class={`niveau-${n.niveau} kaart flex flex-col p-6`}>
             <NiveauBadge niveau={n.niveau} />
