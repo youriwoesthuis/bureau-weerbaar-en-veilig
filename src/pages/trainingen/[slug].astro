@@ -103,12 +103,36 @@ const praktisch: [string, string | undefined][] = [
     <div class="vlak-donker op-donker relative overflow-hidden text-white">
       <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
       <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
+        {/*
+          De beroepsgroep hoort in dit pad. Hij ontbrak, en daarmee sprong het
+          kruimelpad van de sector rechtstreeks naar de training — een niveau
+          dat in de sitestructuur wél bestaat.
+
+          Dat had twee gevolgen. De BreadcrumbList in de gestructureerde data
+          beschreef een andere hiërarchie dan de site heeft. En de
+          beroepsgroeppagina's, juist de pagina's die op "agressietraining
+          {beroepsgroep}" moeten landen, kregen geen enkele link vanaf de
+          honderdtweeëndertig trainingen die eronder vallen: alleen vanaf de
+          sectorpagina en het trainingsoverzicht, twee stuks.
+
+          Het niveau sluit het pad af in plaats van de volledige titel. Die
+          titel herhaalt de beroepsgroep die er nu vlak voor staat, en liep
+          over meerdere regels.
+        */}
         <Breadcrumb
           pad={[
             { naam: 'Home', pad: '/' },
             { naam: 'Sectoren', pad: '/sectoren/' },
             { naam: SECTOR_NAMEN[d.sector] ?? d.sector, pad: `/sectoren/${d.sector}/` },
-            { naam: d.titel },
+            ...(beroepsgroep
+              ? [
+                  {
+                    naam: beroepsgroep.data.naam,
+                    pad: `/sectoren/${d.sector}/${d.beroepsgroep}/`,
+                  },
+                ]
+              : []),
+            { naam: niveauLabel },
           ]}
         />
         <div class="mt-7 max-w-3xl">
@@ -242,6 +266,21 @@ const praktisch: [string, string | undefined][] = [
           <div class="p-6">
             <h2 class="text-lg font-bold text-marine">Praktische informatie</h2>
             <dl class="mt-4 divide-y divide-lijn text-sm">
+              {/*
+                Het niveau stond hier niet bij, terwijl het het eerste is wat
+                een opdrachtgever wil verifiëren. Het verwijst door naar het
+                overzicht van dat niveau over alle sectoren heen: die drie
+                pagina's kregen anders nauwelijks links, en wie twijfelt of dit
+                het juiste niveau is, is daar precies op zijn plek.
+              */}
+              <div class="py-2.5 first:pt-0 last:pb-0">
+                <dt class="text-xs font-bold uppercase tracking-wide text-grijs">Niveau</dt>
+                <dd class="mt-1 font-medium text-inkt">
+                  <a href={link(`/niveaus/${d.niveau}/`)} class="text-blauw hover:underline">
+                    {niveauLabel}
+                  </a>
+                </dd>
+              </div>
               {praktisch
                 .filter(([, waarde]) => waarde)
                 .map(([label, waarde]) => (

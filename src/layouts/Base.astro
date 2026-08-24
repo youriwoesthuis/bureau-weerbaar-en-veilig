@@ -4,6 +4,7 @@ import '../styles/global.css';
 import { paginaTitel as maakTitel, metaBeschrijving } from '../lib/seo';
 import { ClientRouter } from 'astro:transitions';
 import Logo from '../components/Logo.astro';
+import { TRAININGSGIDS } from '../lib/trainingsgids';
 
 interface Props {
   titel: string;
@@ -222,7 +223,7 @@ const hoofdmenu = [
 
     <footer class="op-donker mt-20 bg-marine text-white">
       <div class="lijn-merk" aria-hidden="true"></div>
-      <div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 md:grid-cols-3">
+      <div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Logo variant="wit" class="h-20 w-auto" />
           <p class="mt-4 text-sm leading-relaxed text-white/80">
@@ -253,6 +254,26 @@ const hoofdmenu = [
               <li><a href={link(item.pad)} class="inline-block py-1 hover:text-white">{item.naam}</a></li>
             ))}
             <li><a href={link('/contact/')} class="hover:text-white">Contact</a></li>
+          </ul>
+        </div>
+        {/*
+          De trainingsgids stond alleen als hub in het menu, waardoor de vijf
+          pagina's zelf twee tot vier links kregen op een site van
+          tweehonderdvierentwintig pagina's — te weinig om gevonden te worden,
+          terwijl het precies de vragen zijn waarmee een opdrachtgever
+          rondloopt. Ze staan nu overal onderaan, waar iemand ook kijkt die het
+          menu voorbij is gescrold.
+        */}
+        <div>
+          <p class="font-semibold">Voordat je boekt</p>
+          <ul class="mt-2 space-y-1 text-sm text-white/80">
+            {TRAININGSGIDS.map((p) => (
+              <li>
+                <a href={link(`/trainingsgids/${p.slug}/`)} class="inline-block py-1 hover:text-white">
+                  {p.titel}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
