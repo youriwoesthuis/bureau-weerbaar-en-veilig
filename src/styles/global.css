@@ -370,12 +370,21 @@ body {
 */
 .kaartraster > *:nth-child(3n + 1) {
   --accent: var(--color-oranje);
+  --accent-sterk: var(--color-oranje-knop);
+  --accent-tekst: var(--color-oranje-tekst);
+  --accent-vlak: var(--color-oranje-licht);
 }
 .kaartraster > *:nth-child(3n + 2) {
   --accent: var(--color-paars);
+  --accent-sterk: var(--color-paars);
+  --accent-tekst: var(--color-paars);
+  --accent-vlak: var(--color-paars-licht);
 }
 .kaartraster > *:nth-child(3n + 3) {
   --accent: var(--color-indigo);
+  --accent-sterk: var(--color-indigo);
+  --accent-tekst: var(--color-indigo);
+  --accent-vlak: var(--color-blauw-licht);
 }
 
 /* ---------------------------------------------------------------

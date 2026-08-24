@@ -26,7 +26,12 @@ const label = { basis: 'Basis', gevorderd: 'Gevorderd', expert: 'Expert' }[nivea
 ---
 
 <span
-  class={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${stijl}`}
+  {/*
+    self-start houdt de badge om zijn tekst heen. Zonder dat rekt hij mee tot de
+    volle breedte zodra hij in een flexkolom staat, wat op de kaarten gebeurt.
+    Buiten een flexcontainer heeft de regel geen effect.
+  */}
+  class={`inline-flex self-start items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${stijl}`}
 >
   <span class={`h-1.5 w-1.5 rounded-full ${stip}`} aria-hidden="true"></span>
   Niveau: {label}

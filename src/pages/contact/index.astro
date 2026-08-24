@@ -17,16 +17,18 @@ const actief = KEY.length > 0;
   titel="Contact en terugbelverzoek"
   beschrijving="Neem contact op met Bureau Weerbaar en Veilig: bel 085 760 0435, mail info@bureauweerbaarenveilig.nl of vraag een terugbelverzoek aan. Reactie binnen één werkdag."
 >
-  <div class="border-b border-lijn bg-vlak">
-    <div class="mx-auto max-w-6xl px-4 py-8">
+  <div class="vlak-donker op-donker relative overflow-hidden text-white">
+    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
       <Breadcrumb pad={[{ naam: 'Home', pad: '/' }, { naam: 'Contact' }]} />
-      <h1 class="mt-6 text-3xl font-bold text-marine md:text-4xl">Contact</h1>
-      <p class="mt-4 max-w-3xl text-lg leading-relaxed">
+      <h1 class="mt-7 text-3xl font-bold leading-[1.15] md:text-5xl">Contact</h1>
+      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
         Bureau Weerbaar en Veilig reageert binnen één werkdag. Bel, mail of laat je
         gegevens achter voor een terugbelverzoek.
       </p>
     </div>
   </div>
+  <div class="lijn-merk" aria-hidden="true"></div>
 
   <div class="mx-auto grid max-w-6xl gap-12 px-4 py-12 lg:grid-cols-2">
     <section aria-labelledby="direct-titel">
@@ -113,7 +115,7 @@ const actief = KEY.length > 0;
         <button
           type="submit"
           disabled={!actief}
-          class="w-full rounded-md bg-oranje px-6 py-3 font-bold text-white hover:bg-oranje-donker disabled:cursor-not-allowed disabled:bg-grijs/50"
+          class="knop knop-primair w-full disabled:cursor-not-allowed disabled:bg-grijs/50"
         >
           Verstuur terugbelverzoek
         </button>

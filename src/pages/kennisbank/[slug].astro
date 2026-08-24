@@ -49,8 +49,9 @@ const artikelSchema = JSON.stringify({
 
 <Base titel={d.seo_titel ?? d.titel} beschrijving={d.samenvatting} schema={[artikelSchema]}>
   <article>
-    <div class="border-b border-lijn bg-vlak">
-      <div class="mx-auto max-w-6xl px-4 py-8">
+    <div class="vlak-donker op-donker relative overflow-hidden text-white">
+      <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
+      <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
         <Breadcrumb
           pad={[
             { naam: 'Home', pad: '/' },
@@ -58,12 +59,12 @@ const artikelSchema = JSON.stringify({
             { naam: d.titel },
           ]}
         />
-        <div class="mt-6 max-w-3xl">
-          <p class="text-xs font-bold uppercase tracking-wide text-oranje">{d.onderwerp}</p>
-          <h1 class="mt-2 text-3xl font-bold leading-tight text-marine md:text-4xl">{d.titel}</h1>
+        <div class="mt-7 max-w-3xl">
+          <p class="kicker">{d.onderwerp}</p>
+          <h1 class="mt-4 text-3xl font-bold leading-[1.15] md:text-5xl">{d.titel}</h1>
 
           <!-- Leestijd en publicatiedatum, bewust ingetogen -->
-          <p class="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-grijs">
+          <p class="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-white/70">
             <svg viewBox="0 0 20 20" class="h-4 w-4 shrink-0" aria-hidden="true" fill="currentColor">
               <path
                 fill-rule="evenodd"
@@ -76,10 +77,11 @@ const artikelSchema = JSON.stringify({
             <time datetime={d.datum.toISOString().slice(0, 10)}>{datumNL}</time>
           </p>
 
-          <p class="mt-4 text-lg leading-relaxed">{d.samenvatting}</p>
+          <p class="mt-5 text-lg leading-relaxed text-white/85">{d.samenvatting}</p>
         </div>
       </div>
     </div>
+    <div class="lijn-merk" aria-hidden="true"></div>
 
     <div class="mx-auto max-w-6xl px-4 py-12">
       <div class="grid gap-12 lg:grid-cols-[1fr_20rem]">

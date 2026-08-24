@@ -13,14 +13,15 @@ const niveaus = ['basis', 'gevorderd', 'expert'] as const;
   titel="Agressietraining: aanpak en opbouw"
   beschrijving="Agressietraining leert medewerkers agressie herkennen, de-escaleren en begrenzen. Bureau Weerbaar en Veilig traint per beroepsgroep, in drie niveaus, met realistische praktijksituaties."
 >
-  <div class="border-b border-lijn bg-vlak">
-    <div class="mx-auto max-w-6xl px-4 py-8">
+  <div class="vlak-donker op-donker relative overflow-hidden text-white">
+    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
       <Breadcrumb pad={[{ naam: 'Home', pad: '/' }, { naam: 'Agressietraining' }]} />
-      <h1 class="mt-6 text-3xl font-bold text-marine md:text-4xl">
+      <h1 class="mt-7 text-3xl font-bold leading-[1.15] md:text-5xl">
         Agressietraining: wat het is en hoe het werkt
       </h1>
       <!-- GEO-openingsantwoord -->
-      <p class="mt-4 max-w-3xl text-lg leading-relaxed">
+      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
         Agressietraining leert medewerkers agressie, intimidatie en
         grensoverschrijdend gedrag herkennen, de-escaleren en begrenzen. Bureau
         Weerbaar en Veilig traint uitsluitend op dit onderwerp: per
@@ -29,6 +30,7 @@ const niveaus = ['basis', 'gevorderd', 'expert'] as const;
       </p>
     </div>
   </div>
+  <div class="lijn-merk" aria-hidden="true"></div>
 
   <div class="mx-auto max-w-6xl px-4 py-12">
     <div class="grid gap-12 lg:grid-cols-[1fr_20rem]">
@@ -45,7 +47,7 @@ const niveaus = ['basis', 'gevorderd', 'expert'] as const;
           </p>
           <a
             href={link('/sectoren/')}
-            class="mt-4 inline-block rounded-md bg-oranje px-5 py-2.5 text-sm font-bold text-white hover:bg-oranje-donker"
+            class="knop knop-primair mt-4 px-5 py-2.5 text-sm"
           >
             Bekijk alle sectoren
           </a>

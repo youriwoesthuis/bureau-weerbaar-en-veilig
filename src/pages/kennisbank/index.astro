@@ -13,34 +13,53 @@ const artikelen = (await getCollection('kennisbank')).sort(
   titel="Kennisbank over agressie op de werkvloer"
   beschrijving="Praktijkgerichte artikelen van Bureau Weerbaar en Veilig over omgaan met agressie: de-escaleren, grenzen stellen, nazorg, meldbeleid en veilig werken."
 >
-  <div class="border-b border-lijn bg-vlak">
-    <div class="mx-auto max-w-6xl px-4 py-8">
+  <div class="vlak-donker op-donker relative overflow-hidden text-white">
+    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
       <Breadcrumb pad={[{ naam: 'Home', pad: '/' }, { naam: 'Kennisbank' }]} />
-      <h1 class="mt-6 text-3xl font-bold text-marine md:text-4xl">Kennisbank</h1>
-      <p class="mt-4 max-w-3xl text-lg leading-relaxed">
+      <p class="kicker mt-7">Uit de praktijk</p>
+      <h1 class="mt-4 text-3xl font-bold leading-[1.15] md:text-5xl">Kennisbank</h1>
+      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
         Praktijkgerichte artikelen van Bureau Weerbaar en Veilig over omgaan met
         agressie op de werkvloer: de-escaleren, grenzen stellen, nazorg en
         beleid. Voor achtergrond en cijfers over agressie verwijzen we naar
-        <a href="https://agressievisie.nl" class="font-semibold text-blauw hover:underline">agressievisie.nl</a>.
+        <a
+          href="https://agressievisie.nl"
+          class="font-semibold text-white underline decoration-white/40 underline-offset-2 hover:decoration-white"
+          >agressievisie.nl</a
+        >.
       </p>
     </div>
   </div>
+  <div class="lijn-merk" aria-hidden="true"></div>
 
-  <div class="mx-auto max-w-6xl px-4 py-12">
+  <div class="mx-auto max-w-6xl px-4 py-16">
     {artikelen.length === 0 ? (
       <p class="text-grijs">De artikelen worden op dit moment overgezet en verschijnen hier binnenkort.</p>
     ) : (
-      <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <ul class="kaartraster grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {artikelen.map((a) => (
-          <li class="group relative flex flex-col rounded-xl border border-lijn p-6 transition-shadow hover:shadow-md">
-            <p class="text-xs font-bold uppercase tracking-wide text-oranje">{a.data.onderwerp}</p>
-            <h2 class="mt-2 text-lg font-bold leading-snug text-marine group-hover:text-blauw">
-              <a href={link(`/kennisbank/${a.data.slug}/`)} class="after:absolute after:inset-0 after:rounded-xl">
+          <li class="kaart flex flex-col p-6">
+            {/*
+              Het onderwerp-label stond in het volle merk-oranje op wit: 2,52:1,
+              te licht. Het gebruikt nu de tekstvariant van het kaartaccent.
+            */}
+            <p
+              class="text-xs font-bold uppercase tracking-wide"
+              style="color: var(--accent-tekst)"
+            >
+              {a.data.onderwerp}
+            </p>
+            <h2 class="mt-2 text-lg font-bold leading-snug text-marine">
+              <a href={link(`/kennisbank/${a.data.slug}/`)} class="after:absolute after:inset-0">
                 {a.data.titel}
               </a>
             </h2>
             <p class="mt-2 flex-1 text-sm leading-relaxed text-grijs">{a.data.samenvatting}</p>
-            <p class="mt-3 text-sm font-semibold text-blauw group-hover:underline">Lees het artikel →</p>
+            <p class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-blauw">
+              Lees het artikel
+              <span class="pijl" aria-hidden="true">→</span>
+            </p>
           </li>
         ))}
       </ul>
