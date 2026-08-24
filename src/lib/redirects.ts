@@ -333,13 +333,11 @@ export const REDIRECTS: Record<string, string> = {
   '/kennisbank_intern/ademhaling-en-rust/': '/trainingsgids/',
   '/kennisbank_intern/mindfulness-op-het-werk/': '/trainingsgids/',
 
-  /* ---------- Teampagina's worden een sectie op /over-ons/ ---------- */
-  '/team/jeroen-woesthuis/': '/over-ons/#team',
-  '/team/cindy-woesthuis/': '/over-ons/#team',
-  '/team/youri-woesthuis/': '/over-ons/#team',
-  '/team/constant-cornelissen/': '/over-ons/#team',
-  '/team/lucien-ost/': '/over-ons/#team',
-  '/team/koen-van-weerden/': '/over-ons/#team',
-  '/team/marieke-van-leeuwen/': '/over-ons/#team',
-  '/team/sandra-den-dulk/': '/over-ons/#team',
+  /*
+    De teampagina's stonden hier als doorverwijzing naar /over-ons/#team. Dat is
+    teruggedraaid: elk teamlid heeft weer een eigen pagina op precies het adres
+    dat de oude site gebruikte, met het verhaal dat al in de content stond. Een
+    oude URL komt zo op inhoud uit in plaats van op een doorverwijzing, en de
+    linkwaarde blijft waar hij hoort.
+  */
 };
