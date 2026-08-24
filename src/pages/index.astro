@@ -145,17 +145,12 @@ const uitgelicht = [0, 1, 2, 3].map((i) => kandidaten[(i * stap) % kandidaten.le
       </div>
 
       {/*
-        De drie niveaus als oplopende staven, in de kleuren die ze op de hele
-        site dragen. Geen sfeerplaatje: de tekening zégt wat de opbouw is —
-        van herkennen, via zwaardere situaties, naar beleid.
+        De drie niveaus als oplopende staven. Geen sfeerplaatje: de tekening
+        zegt wat de opbouw is, van herkennen via zwaardere situaties naar
+        beleid. De staven staan op een wit vlak, dus ze dragen de volle
+        merkkleuren zonder dat de tekst eronder lijdt.
       */}
       <div class="hero-beeld" aria-hidden="true">
-        {/*
-          De staven waren oranje en paars op een donker vlak. Nu het vlak zelf
-          oranje en paars is, zouden ze daarin verdwijnen — dus zijn ze
-          omgekeerd: donkere staven op fel. Dat leest bovendien scherper, want
-          de tekening is een diagram en geen sfeerbeeld.
-        */}
         <svg viewBox="0 0 420 320" role="presentation">
           <defs>
             <linearGradient id="staafExpert" x1="0" y1="1" x2="1" y2="0">
@@ -195,8 +190,17 @@ const uitgelicht = [0, 1, 2, 3].map((i) => kandidaten[(i * stap) % kandidaten.le
   {/* ═══ De cijfers ═══ */}
   <div class="omvat">
     <div class="cijferstrip">
-      {cijfers.map((c) => (
-        <a href={link(c.pad)} class={`cijferkaart niveau-${c.niveau}`}>
+      {/*
+        De eerste kaart krijgt het volle merk-oranje als vlak. Dat trekt het oog
+        naar het belangrijkste getal — het aantal trainingen — en laat de
+        merkkleur op volle sterkte zien, zonder dat vier felle vlakken om
+        aandacht gaan vechten.
+      */}
+      {cijfers.map((c, i) => (
+        <a
+          href={link(c.pad)}
+          class={`cijferkaart niveau-${c.niveau}${i === 0 ? ' cijferkaart-vol' : ''}`}
+        >
           <b>{c.getal}</b>
           <span>{c.wat}</span>
         </a>

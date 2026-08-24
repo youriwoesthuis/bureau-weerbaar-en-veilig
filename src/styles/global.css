@@ -89,9 +89,26 @@
   blauw, niet in paars.
 */
 @theme {
-  /* Oranje — het niveau basis */
-  --color-oranje: #f18919;            /* 6,36:1 op marine-diep */
-  --color-oranje-tekst: #a35405;      /* als tekst op wit: 5,49:1 */
+  /*
+    ── Oranje, in vier sterktes en met een reden per stuk ──
+
+    Hier zat de fout die de site dof maakte. Ik gebruikte overal #a35405, want
+    dat haalt 4,5:1 op wit. Maar dat is 68 procent van de merkkleur, en dus een
+    bruinoranje in plaats van hét oranje.
+
+    De eis hangt af van de tekstgrootte. Voor grote tekst — 24 pixels of meer,
+    of 18,66 vet — vraagt WCAG maar 3:1. Daar kan het oranje dus veel voller.
+
+    #d97b16 is het merk-oranje op 90 procent sterkte: exact dezelfde tint,
+    3,08:1 op wit. Dat is de kleur voor koppen.
+
+    En het volle #f18919 is prima bruikbaar — alleen niet als tekst op wit. Als
+    vlak met donkere tekst erop haalt het 6,02:1, en op een donker vlak 6,36:1.
+    Daar hoort het thuis.
+  */
+  --color-oranje: #f18919;            /* het merk-oranje. Als vlak of op donker */
+  --color-oranje-kop: #d97b16;        /* grote koppen op wit: 3,08:1 */
+  --color-oranje-tekst: #ad5a06;      /* kleine tekst op wit: 4,95:1 */
   --color-oranje-knop: #ad5a06;       /* vlak met witte tekst: 4,95:1 */
   --color-oranje-diep: #8f4a03;       /* 6,67:1 */
   --color-oranje-licht: #fdf1e2;
@@ -1399,10 +1416,19 @@ a {
   overschrijft dat een donkere sectie zelf al zet.
 */
 :not(.op-donker) > * > .sectie-titel,
-:not(.op-donker) .hero-titel,
-.vlak-papier .sectie-titel {
-  color: var(--color-oranje-tekst);
+:not(.op-donker) .hero-titel {
+  color: var(--color-oranje-kop);
 }
+
+/*
+  Het papiervlak is net iets donkerder dan wit, en daar zakt #d97b16 naar
+  2,96:1 — nipt onder de eis van 3 voor grote tekst. Eén slag dieper haalt
+  3,08, en dat verschil zie je met het blote oog niet.
+*/
+.vlak-papier .sectie-titel {
+  color: #d47916;
+}
+
 .op-donker .sectie-titel,
 .op-donker h2 {
   color: #ffffff;
@@ -1494,10 +1520,13 @@ a {
 }
 
 /*
-  Gevuld met de accenttint in plaats van wit met een streepje. Vier kaarten met
-  een eigen kleurvlak maken de rij een blikvanger; wit met een randje maakte er
-  een tabel van. De tinten zijn licht genoeg om donkere tekst te dragen: 11 tot
-  13:1, dus ruim leesbaar.
+  De eerste kaart draagt het volle merk-oranje als vlak. Dat kán hier: als
+  achtergrond met donkere tekst erop haalt #f18919 6,02:1, terwijl datzelfde
+  oranje als tekst op wit maar 2,52 zou halen. De merkkleur op volle sterkte
+  hoort dus in een vlak, niet in een letter.
+
+  De overige drie dragen de lichte accenttint, zodat de rij kleur heeft zonder
+  dat vier felle vlakken om aandacht vechten.
 */
 .cijferkaart {
   display: block;
@@ -1507,6 +1536,11 @@ a {
   border-radius: var(--radius);
   box-shadow: var(--schaduw);
   border-top: 4px solid var(--accent, var(--color-oranje));
+}
+
+.cijferkaart-vol {
+  background: var(--color-oranje);
+  border-top-color: var(--color-oranje-diep);
 }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .cijferkaart {
@@ -1533,6 +1567,17 @@ a {
   margin-top: var(--ruimte-2);
   font-size: var(--text-klein);
   color: var(--color-grijs);
+}
+
+/*
+  Deze twee regels moeten ná .cijferkaart b en .cijferkaart span staan, niet
+  ervoor. Ze hebben dezelfde specificiteit, dus de laatste wint — stonden ze
+  hierboven, dan bleef het getal in de accentkleur staan en haalde het op het
+  volle oranje 1,96:1. Marine haalt er 5,24.
+*/
+.cijferkaart-vol b,
+.cijferkaart-vol span {
+  color: var(--color-marine);
 }
 
 /* ── Sectorkaarten met gekleurd pictogram ── */
@@ -1645,6 +1690,13 @@ a {
   background: var(--accent-vlak);
 }
 
+/*
+  Het nummer stond in de accentkleur op de accenttint, en bij basis haalde die
+  combinatie 4,45:1 — nipt onder de eis. Andersom werkt beter én is
+  opvallender: de volle accentkleur als vlak, met wit erop. Alle drie de
+  accenten dragen wit (4,95 tot 8,91), en de cirkel wordt meteen een
+  kleurpunt in plaats van een vage tint.
+*/
 .ladder-nummer {
   display: grid;
   place-items: center;
@@ -1652,8 +1704,8 @@ a {
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 999px;
-  background: var(--accent-vlak);
-  color: var(--accent-tekst);
+  background: var(--accent-diep, var(--accent));
+  color: #ffffff;
   font-family: var(--font-kop);
   font-size: var(--text-klein);
   font-weight: 700;
