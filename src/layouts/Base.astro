@@ -160,66 +160,46 @@ const hoofdmenu = [
     <a href="#inhoud" class="skip-link">Direct naar inhoud</a>
 
     {/*
-      Dekkende achtergrond, geen backdrop-blur. Samen met een tweede plakkend
-      element eronder (de filterbalk op de overzichtspagina) liet Chrome het
-      vlak ertussen ongetekend tijdens het scrollen.
+      Dekkende achtergrond, geen doorschijnendheid. Een plakkende kop met
+      backdrop-filter liet in Chrome een ongetekende strook achter zodra er een
+      tweede plakkend element onder stond.
     */}
-    <header class="sticky top-0 z-40 border-b border-lijn bg-white">
-      <div class="relative mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-4">
-        <a href={link('/')} aria-label="Bureau Weerbaar en Veilig, naar de homepage">
-          <Logo class="h-14 w-auto md:h-16" />
+    <header class="kop niet-printen">
+      <div class="omvat kop-binnen">
+        <a href={link('/')} class="kop-merk" aria-label="Bureau Weerbaar en Veilig, naar de homepage">
+          <Logo class="kop-logo" />
         </a>
 
-        <nav aria-label="Hoofdmenu" class="hidden items-center gap-6 md:flex">
+        <nav class="kop-menu" aria-label="Hoofdmenu">
           {hoofdmenu.map((item) => (
             <a
               href={link(item.pad)}
               aria-current={isActief(item.pad) ? 'page' : undefined}
-              class="menulink py-1.5 text-sm font-semibold text-inkt hover:text-blauw"
+              class="kop-link"
             >
               {item.naam}
             </a>
           ))}
-          <a href={link('/contact/')} class="knop knop-primair px-5 py-2.5 text-sm">
-            Contact
-          </a>
+          <a href={link('/contact/')} class="knop knop-vol kop-actie">Contact</a>
         </nav>
 
-        <!-- Mobiel menu: werkt zonder JavaScript via details/summary -->
-        <details class="menu-mobiel md:hidden">
-          <summary
-            class="flex cursor-pointer list-none items-center gap-2 rounded-md border border-lijn px-3 py-2 text-sm font-semibold"
-            aria-label="Menu openen en sluiten"
-          >
-            <svg viewBox="0 0 20 20" class="h-5 w-5" aria-hidden="true" fill="currentColor">
+        {/* Mobiel menu zonder JavaScript, via details/summary */}
+        <details class="kop-mobiel">
+          <summary class="kop-mobiel-knop" aria-label="Menu openen en sluiten">
+            <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" fill="currentColor">
               <rect x="2" y="4" width="16" height="2" rx="1" />
               <rect x="2" y="9" width="16" height="2" rx="1" />
               <rect x="2" y="14" width="16" height="2" rx="1" />
             </svg>
             Menu
           </summary>
-          <nav
-            aria-label="Mobiel hoofdmenu"
-            class="absolute left-0 right-0 z-40 border-b border-lijn bg-white px-4 pb-6 pt-2 shadow-lg"
-          >
-            <ul class="space-y-1">
-              {hoofdmenu.map((item) => (
-                <li>
-                  <a
-                    href={link(item.pad)}
-                    aria-current={isActief(item.pad) ? 'page' : undefined}
-                    class="block rounded-md px-3 py-3 font-semibold hover:bg-vlak aria-[current=page]:bg-vlak aria-[current=page]:text-marine"
-                  >
-                    {item.naam}
-                  </a>
-                </li>
-              ))}
-              <li class="pt-2">
-                <a href={link('/contact/')} class="knop knop-primair w-full">
-                  Contact
-                </a>
-              </li>
-            </ul>
+          <nav class="kop-mobiel-menu" aria-label="Mobiel hoofdmenu">
+            {hoofdmenu.map((item) => (
+              <a href={link(item.pad)} aria-current={isActief(item.pad) ? 'page' : undefined}>
+                {item.naam}
+              </a>
+            ))}
+            <a href={link('/contact/')}>Contact</a>
           </nav>
         </details>
       </div>
@@ -229,65 +209,60 @@ const hoofdmenu = [
       <slot />
     </main>
 
-    <footer class="op-donker mt-20 bg-marine text-white">
-      <div class="lijn-merk" aria-hidden="true"></div>
-      <div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
-        <div>
-          <Logo variant="wit" class="h-20 w-auto" />
-          <p class="mt-4 text-sm leading-relaxed text-white/80">
+    <footer class="voet op-donker niet-printen">
+      <div class="omvat voet-binnen">
+        <div class="voet-merk">
+          <Logo variant="wit" class="voet-logo" />
+          <p class="voet-zin">
             Dé specialist in agressietraining. Eén onderwerp, tot in de diepte,
             vertaald naar jouw beroepsgroep.
           </p>
-          <p class="mt-4 text-sm text-white/80">
-            Onderdeel van <a href="https://actinmove.nl" class="underline hover:text-white">Actinmove</a>
+          <p class="voet-groep">
+            Onderdeel van <a href="https://actinmove.nl">Actinmove</a>
           </p>
         </div>
+
         <div>
-          <p class="font-semibold">Contact</p>
-          <ul class="mt-2 space-y-1 text-sm text-white/80">
+          <p class="voet-kop">Contact</p>
+          <ul class="voet-lijst">
             <li>Russchemorsweg 5-04, 7161 RT Neede</li>
-            <li><a href="tel:+31857600435" class="inline-block py-1 hover:text-white">085 760 0435</a></li>
-            <li>
-              <a href="mailto:info@bureauweerbaarenveilig.nl" class="inline-block py-1 hover:text-white">
-                info@bureauweerbaarenveilig.nl
-              </a>
-            </li>
+            <li><a href="tel:+31857600435">085 760 0435</a></li>
+            <li><a href="mailto:info@bureauweerbaarenveilig.nl">info@bureauweerbaarenveilig.nl</a></li>
             <li>ma t/m vr 08:30–17:00</li>
           </ul>
         </div>
+
         <div>
-          <p class="font-semibold">Snel naar</p>
-          <ul class="mt-2 space-y-1 text-sm text-white/80">
+          <p class="voet-kop">Snel naar</p>
+          <ul class="voet-lijst">
             {hoofdmenu.map((item) => (
-              <li><a href={link(item.pad)} class="inline-block py-1 hover:text-white">{item.naam}</a></li>
+              <li><a href={link(item.pad)}>{item.naam}</a></li>
             ))}
-            <li><a href={link('/contact/')} class="inline-block py-1 hover:text-white">Contact</a></li>
+            <li><a href={link('/contact/')}>Contact</a></li>
           </ul>
         </div>
+
         {/*
           De trainingsgids stond alleen als hub in het menu, waardoor de vijf
           pagina's zelf twee tot vier links kregen op een site van
-          tweehonderdvierentwintig pagina's — te weinig om gevonden te worden,
-          terwijl het precies de vragen zijn waarmee een opdrachtgever
-          rondloopt. Ze staan nu overal onderaan, waar iemand ook kijkt die het
-          menu voorbij is gescrold.
+          tweehonderdvierentwintig — te weinig om gevonden te worden, terwijl het
+          precies de vragen zijn waarmee een opdrachtgever rondloopt.
         */}
         <div>
-          <p class="font-semibold">Voordat je boekt</p>
-          <ul class="mt-2 space-y-1 text-sm text-white/80">
+          <p class="voet-kop">Voordat je boekt</p>
+          <ul class="voet-lijst">
             {TRAININGSGIDS.map((p) => (
-              <li>
-                <a href={link(`/trainingsgids/${p.slug}/`)} class="inline-block py-1 hover:text-white">
-                  {p.titel}
-                </a>
-              </li>
+              <li><a href={link(`/trainingsgids/${p.slug}/`)}>{p.titel}</a></li>
             ))}
           </ul>
         </div>
       </div>
-      <div class="border-t border-white/15 py-4 text-center text-xs text-white/60">
-        © {new Date().getFullYear()} Bureau Weerbaar en Veilig · Meer over agressie op
-        <a href="https://agressievisie.nl" class="underline hover:text-white">agressievisie.nl</a>
+
+      <div class="voet-onder">
+        <div class="omvat">
+          © {new Date().getFullYear()} Bureau Weerbaar en Veilig · Meer over agressie op
+          <a href="https://agressievisie.nl">agressievisie.nl</a>
+        </div>
       </div>
     </footer>
   </body>

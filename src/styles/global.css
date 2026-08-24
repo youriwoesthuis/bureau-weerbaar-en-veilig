@@ -1,36 +1,44 @@
 @import 'tailwindcss';
 
-/*
-  Twee letters, elk met een eigen taak.
+/* ═══════════════════════════════════════════════════════════════════
+   BUREAU WEERBAAR EN VEILIG — DESIGNSYSTEEM
+   ═══════════════════════════════════════════════════════════════════
 
-  De hele site draaide op Montserrat, voor koppen én lopende tekst. Montserrat
-  is een prima letter, maar het is ook dé letter van elke template en elk
-  startup-landingspaginaatje van het afgelopen decennium — te veel ronding en
-  te veel opgewektheid voor een onderwerp als agressie op de werkvloer. En één
-  geometrische sans voor alles is precies wat een sjabloon doet. Dat was de
-  grootste enkele oorzaak van "het ziet er goedkoop uit".
+   Opnieuw opgebouwd op 25 augustus 2026, nadat de vorige versie werd
+   afgekeurd. Die was in een dag gegroeid tot achttienhonderd regels
+   aangekoekte losse ingrepen: verlopen, texturen, schuine randen. Wat
+   ontbrak was een systeem.
 
-  Space Grotesk voor de koppen: schreefloos met een technische ondertoon die
-  je terugziet in de cijfers en de a. Dat straalt beheerste precisie uit —
-  protocol, gezag — zonder stoffig te worden.
+   ── Het idee ──
 
-  IBM Plex Sans voor de lopende tekst: gemaakt voor technische documentatie,
-  met een hoge x-hoogte die lange alinea's rustig houdt. Hij legt het naast
-  Space Grotesk bewust af in karakter, en dat hoort ook: de kop is het beeld,
-  de tekst is er om gelezen te worden.
+   Bureau Weerbaar en Veilig kent vierenveertig beroepen tot in detail. Dat
+   is het bestaansrecht van dit merk en het enige wat een concurrent niet
+   kan overschrijven. De site moet dus niet aanvoelen als een brochure met
+   een hero en drie verkoopargumenten, maar als het openslaan van een goed
+   gemaakt vakdossier: precies, geordend, zelfverzekerd.
 
-  Alleen de latijnse subsets. De vorige opzet laadde ook Cyrillisch, Grieks en
-  Vietnamees mee — honderdveertig kilobyte aan letters die op een Nederlandse
-  site nooit een teken zetten.
-*/
-/*
-  De @font-face-regels staan hier met de hand in plaats van via een import van
-  het pakket. Die imports halen álle subsets binnen — Cyrillisch, Grieks,
-  Vietnamees — en de variabele pakketten hebben geen los latin.css om dat mee
-  te omzeilen. Zo laden we exact twee bestanden.
+   ── En het tegenwicht ──
 
-  font-display: swap zorgt dat de tekst meteen leesbaar is in de systeemletter
-  en daarna omwisselt, in plaats van dat de pagina een halve seconde leeg staat.
+   Een dossier alleen wordt koud. Agressietraining draait om vertrouwen; een
+   HR-adviseur koopt geen rechtbankstuk maar een trainer die zijn team het
+   gevoel van veiligheid teruggeeft. Er zijn geen trainingsfoto's, dus de
+   twaalf echte portretten van het team dragen die warmte. Ze zijn geen
+   sfeermaker maar dragend onderdeel.
+
+   ── Waarom er geen fotografie in dit systeem zit ──
+
+   Honderdvijfennegentig pagina's verwijzen naar een afbeelding die niet
+   bestaat. Er komt voorlopig geen fotografie, en er wordt bewust omheen
+   ontworpen: typografie en structuur dragen het beeld, in plaats van dat er
+   lege plekken op een foto staan te wachten.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ───────────────────────────────────────────────────────────────────
+   Letters
+   ───────────────────────────────────────────────────────────────────
+   Met de hand geschreven @font-face in plaats van een pakket-import: de
+   variabele pakketten hebben geen los latin.css, en de import haalt anders
+   Cyrillisch, Grieks en Vietnamees mee. Twee bestanden, 72 kB in totaal.
 */
 @font-face {
   font-family: 'Space Grotesk Variable';
@@ -56,844 +64,1182 @@
     U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/*
-  Designtokens: Bureau Weerbaar en Veilig
-  Kleuren gemeten op de bestaande site (dev) en het logo.
-  Wordt later 1-op-1 vervangen door de definitieve brandkit.
-*/
-/*
-  De kleuren komen uit public/images/logo/logo.svg. Dat verloop heeft vier
-  stops — #f18919 → #e8801f → #b06a55 → #35409b — en juist het middenstuk
-  daarvan levert het paars op dat het beeldmerk zijn karakter geeft. Een
-  eerdere versie van DESIGN.md versimpelde dit tot twee stops en liet het paars
-  weg; die versimpeling is hier ongedaan gemaakt.
-
-  Achter elke kleur staat de contrastverhouding (WCAG 2.1 AA vraagt 4,5:1 voor
-  gewone tekst en 3:1 voor grote tekst en voor de rand van bedieningselementen).
+/* ───────────────────────────────────────────────────────────────────
+   Tokens
+   ───────────────────────────────────────────────────────────────────
+   De kleuren komen uit public/images/logo/logo.svg en zijn stuk voor stuk
+   doorgerekend op contrast. Achter elke waarde staat de verhouding; WCAG
+   2.1 AA vraagt 4,5:1 voor gewone tekst en 3:1 voor grote tekst en voor de
+   rand van bedieningselementen. Die getallen zijn met de rekenmachine
+   vastgesteld, niet op het oog — verander ze niet zonder opnieuw te meten.
 */
 @theme {
-  /* Oranje: vol op donkere vlakken, gedempt zodra het op wit moet staan */
-  --color-oranje: #f18919;        /* het merk-oranje. 6,36:1 op marine-diep */
-  --color-oranje-tekst: #a35405;  /* oranje als tekst op wit: 5,49:1 */
-  --color-oranje-knop: #ad5a06;   /* oranje vlak met witte tekst: 4,95:1 */
-  --color-oranje-knop-hover: #8f4a03; /* 6,67:1 */
-  --color-oranje-donker: #d4720a; /* hover van het merk-oranje op donker */
-  --color-oranje-licht: #fdf1e2;  /* zachte oranje achtergrondtint */
+  /* Oranje — het niveau basis */
+  --color-oranje: #f18919;            /* 6,36:1 op marine-diep */
+  --color-oranje-tekst: #a35405;      /* als tekst op wit: 5,49:1 */
+  --color-oranje-knop: #ad5a06;       /* vlak met witte tekst: 4,95:1 */
+  --color-oranje-diep: #8f4a03;       /* 6,67:1 */
+  --color-oranje-licht: #fdf1e2;
 
-  /* Paars: het middenstuk van het logoverloop */
-  --color-paars: #735578;         /* 6,36:1 op wit én met wit erop */
-  --color-paars-diep: #4a3455;    /* 10,97:1 op wit */
-  --color-paars-helder: #c9a9d0;  /* paars op donkere vlakken */
-  --color-paars-licht: #f4eff6;   /* zachte paarse achtergrondtint */
+  /* Paars — het niveau gevorderd */
+  --color-paars: #735578;             /* 6,36:1 op wit én met wit erop */
+  --color-paars-diep: #4a3455;        /* 10,97:1 op wit */
+  --color-paars-helder: #c9a9d0;      /* op donkere vlakken */
+  --color-paars-licht: #f4eff6;
 
-  /* Blauw en marine */
-  --color-marine: #212e56;        /* primaire donkere merkkleur. 13,21:1 */
-  --color-marine-diep: #17203d;   /* onderkant van het donkere verloop */
+  /* Indigo — het niveau expert */
+  --color-indigo: #35409b;            /* 8,91:1 op wit */
+  --color-indigo-diep: #262f75;
+  --color-indigo-helder: #a9b2e8;
+  --color-indigo-licht: #eaecf8;
+
+  /* Marine — de dragende donkere kleur */
+  --color-marine: #212e56;            /* 13,21:1 */
+  --color-marine-diep: #17203d;
   --color-marine-licht: #35447a;
-  --color-indigo: #35409b;        /* de echte eindkleur van het logo. 8,91:1 */
-  --color-blauw: #203e91;         /* links en focusring. 9,73:1 */
-  --color-blauw-licht: #eaeffb;   /* zachte blauwe achtergrondtint */
+
+  --color-blauw: #203e91;             /* links en focusring: 9,73:1 */
 
   /* Neutralen */
-  --color-inkt: #33373d;          /* bodytekst */
-  --color-grijs: #5b6068;         /* secundaire tekst */
-  --color-vlak: #f4f4f4;          /* lichte vlakken */
-  --color-vlak-warm: #faf7f3;     /* iets warmer vlak, voor afwisseling */
-  --color-lijn: #e2e4e8;          /* randen */
+  --color-inkt: #23262b;              /* bodytekst: donkerder dan hiervoor */
+  --color-grijs: #5b6068;             /* secundaire tekst: 6,04:1 */
+  --color-grijs-licht: #8b9099;       /* alleen voor grote tekst en randen */
+  --color-papier: #fbfaf8;            /* het vlak van het dossier */
+  --color-vlak: #f2f1ee;
+  --color-lijn: #e0dedb;
+  --color-lijn-sterk: #c9c6c1;
 
-  /*
-    Typografie. --font-sans is de leesletter, want dat is wat Tailwind standaard
-    op de body zet; de kopletter wordt expliciet toegewezen aan h1 t/m h3 en aan
-    de elementen die als kop functioneren.
-  */
+  /* Letters */
   --font-sans: 'IBM Plex Sans Variable', system-ui, sans-serif;
   --font-kop: 'Space Grotesk Variable', 'IBM Plex Sans Variable', system-ui, sans-serif;
 
-  /* Het merkverloop, nu met alle vier de stops uit het logobestand */
-  --gradient-merk: linear-gradient(
-    163deg,
-    #f18919 0%,
-    #e8801f 50%,
-    #b06a55 72%,
-    #35409b 100%
-  );
-  /* Kortere variant voor smalle accenten, waar 163° niets toevoegt */
-  --gradient-merk-lijn: linear-gradient(
-    90deg,
-    #f18919 0%,
-    #b06a55 55%,
-    #35409b 100%
-  );
+  /*
+    Typografische schaal. Elke stap gebruikt clamp() zodat er geen breekpunt
+    nodig is: de maat loopt vloeiend mee met het scherm.
+  */
+  --text-mini: 0.75rem;
+  --text-klein: 0.875rem;
+  --text-body: 1rem;
+  --text-lead: clamp(1.0625rem, 0.4vw + 1rem, 1.1875rem);
+  --text-h3: clamp(1.125rem, 0.6vw + 1rem, 1.375rem);
+  --text-h2: clamp(1.625rem, 1.8vw + 1.1rem, 2.5rem);
+  --text-h1: clamp(2rem, 3.4vw + 1.2rem, 3.75rem);
+  --text-display: clamp(2.5rem, 6vw + 1rem, 5.5rem);
 
-  /* Schaduwen: zacht en gelaagd, nooit hard */
-  --shadow-kaart: 0 1px 2px rgb(33 46 86 / 0.04), 0 4px 12px rgb(33 46 86 / 0.06);
-  --shadow-kaart-hover: 0 2px 4px rgb(33 46 86 / 0.06), 0 12px 28px rgb(33 46 86 / 0.13);
-  --shadow-diep: 0 24px 60px rgb(23 32 61 / 0.28);
+  /* Ruimte: één reeks, overal dezelfde */
+  --ruimte-1: 0.25rem;
+  --ruimte-2: 0.5rem;
+  --ruimte-3: 0.75rem;
+  --ruimte-4: 1rem;
+  --ruimte-6: 1.5rem;
+  --ruimte-8: 2rem;
+  --ruimte-12: 3rem;
+  --ruimte-16: 4rem;
+  --ruimte-24: 6rem;
+
+  --radius-klein: 0.375rem;
+  --radius: 0.625rem;
+  --radius-groot: 1rem;
+
+  --schaduw-laag: 0 1px 2px rgb(35 38 43 / 0.06);
+  --schaduw: 0 4px 16px -6px rgb(35 38 43 / 0.14);
+  --schaduw-hoog: 0 18px 40px -22px rgb(35 38 43 / 0.4);
 }
-
-/* ---------------------------------------------------------------
-   Basis
-   --------------------------------------------------------------- */
 
 /*
-  De hoogte van de plakkende kop. Alles wat daaronder zelf ook moet plakken —
-  de filterbalk, een inhoudsopgave — rekent hiermee, zodat het niet onder de
-  kop verdwijnt. Ook scroll-margin-top van ankers gebruikt deze waarde: zonder
-  dat schuift een aangeklikte kop precies achter de balk.
+  De hoogte van de plakkende kop. Alles wat naar een anker springt houdt hier
+  rekening mee, anders verdwijnt de kop van de sectie erachter.
 */
 :root {
-  --kophoogte: 5.5rem;
+  --kophoogte: 4.5rem;
 }
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   :root {
-    --kophoogte: 6.125rem;
+    --kophoogte: 5rem;
   }
 }
 
 html {
   scroll-behavior: smooth;
-  /* Ankers landen onder de plakkende kop in plaats van erachter */
   scroll-padding-top: calc(var(--kophoogte) + 1rem);
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   Basis
+   ─────────────────────────────────────────────────────────────────── */
+body {
+  background: #ffffff;
+  color: var(--color-inkt);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
 /*
-  Koppen sitebreed evenwichtig afbreken. Zonder dit blijft er geregeld één woord
-  op de laatste regel van een kop staan, en dat leest als een fout in plaats van
-  als een keuze. Browsers die het niet kennen negeren de regel gewoon.
+  Koppen dragen hier het beeld, dus ze zijn strak afgesteld. Space Grotesk
+  staat van huis uit ruim; op grote maat valt dat uit elkaar in losse letters.
+  De negatieve letterafstand trekt een kop samen tot één blok, en de lage
+  regelafstand maakt van twee regels één uitspraak in plaats van twee zinnen.
 */
 h1,
 h2,
-h3 {
-  text-wrap: balance;
-
-  /*
-    De kopletter, en meteen de instellingen die hem laten werken op grote maat.
-
-    Space Grotesk staat standaard vrij ruim; op koppen van veertig pixels en
-    groter valt dat uit elkaar. Een negatieve letterafstand trekt het samen tot
-    één blok, en dat is precies het effect dat een kop tot beeld maakt in een
-    ontwerp zonder fotografie.
-
-    De regelafstand gaat mee omlaag: standaard staat er te veel lucht tussen
-    twee regels van een grote kop, waardoor hij leest als twee losse zinnen in
-    plaats van als één uitspraak.
-  */
+h3,
+h4 {
   font-family: var(--font-kop);
   font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.08;
+  text-wrap: balance;
+  color: var(--color-marine);
 }
 
-/*
-  Onder de dertig pixels heeft die strakke afstelling het tegenovergestelde
-  effect: dan plakken de letters aan elkaar. Kleine koppen krijgen hun lucht
-  terug.
-*/
-h3,
-h4,
-h5,
-h6 {
-  letter-spacing: -0.01em;
-  line-height: 1.25;
+h1 {
+  font-size: var(--text-h1);
+  letter-spacing: -0.03em;
+  line-height: 1.04;
 }
 
-/* Losse alinea's buiten de leestekst hebben dezelfde bescherming tegen weeskinderen */
+h2 {
+  font-size: var(--text-h2);
+  letter-spacing: -0.022em;
+  line-height: 1.1;
+}
+
+/* Onder de dertig pixels doet die strakke afstelling het omgekeerde: dan
+   plakken de letters aan elkaar. Kleine koppen krijgen hun lucht terug. */
+h3 {
+  font-size: var(--text-h3);
+  letter-spacing: -0.008em;
+  line-height: 1.3;
+}
+
+h4 {
+  font-size: var(--text-body);
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+
 p {
   text-wrap: pretty;
 }
-body {
-  @apply font-sans text-inkt bg-white antialiased;
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-/* Toegankelijke focus-stijl (WCAG 2.1 AA) */
 :focus-visible {
   outline: 3px solid var(--color-blauw);
   outline-offset: 2px;
   border-radius: 2px;
 }
-/* Op donkere vlakken moet de ring juist licht zijn, anders valt hij weg */
 .op-donker :focus-visible {
   outline-color: #ffffff;
 }
 
-/*
-  Het kruimelpad staat standaard in grijs op wit. Komt het op een donker vlak
-  te staan, dan zou dat grijs wegvallen (2,9:1); daar wordt het licht.
-*/
-.op-donker .kruimelpad {
-  color: rgb(255 255 255 / 0.72);
-}
-.op-donker .kruimelpad a:hover {
-  color: #ffffff;
-}
-.op-donker .kruimelpad [aria-current='page'] {
-  color: #ffffff;
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-/* Mobiel menu: verberg de standaard driehoek van <summary> */
-.menu-mobiel summary::-webkit-details-marker {
-  display: none;
-}
-.menu-mobiel summary::marker {
-  content: '';
-}
-
-/* Skip-link voor toetsenbordnavigatie */
 .skip-link {
-  @apply absolute -top-96 left-4 z-50 rounded-md bg-marine px-4 py-2 text-white;
+  position: absolute;
+  left: -9999px;
+  z-index: 999;
+  padding: var(--ruimte-3) var(--ruimte-6);
+  background: var(--color-marine);
+  color: #ffffff;
+  font-weight: 600;
 }
 .skip-link:focus {
-  @apply top-4;
+  left: var(--ruimte-4);
+  top: var(--ruimte-4);
 }
 
-/* ---------------------------------------------------------------
-   Donkere vlakken met merkverloop
-   --------------------------------------------------------------- */
+/* ───────────────────────────────────────────────────────────────────
+   Layout
+   ─────────────────────────────────────────────────────────────────── */
+.omvat {
+  width: 100%;
+  max-width: 78rem;
+  margin-inline: auto;
+  padding-inline: var(--ruimte-4);
+}
+@media (min-width: 48rem) {
+  .omvat {
+    padding-inline: var(--ruimte-8);
+  }
+}
 
-/*
-  Het donkere vlak achter hero en call-to-action. Marine als basis, met twee
-  zachte kleurgloeden erboven: oranje linksboven, blauw rechtsonder. Samen
-  echoën ze het verloop uit het logo zonder dat de tekst eroverheen onleesbaar
-  wordt — de gloeden blijven ruim onder de 25% dekking.
-*/
+/* Smaller, voor lopende tekst die gelezen moet worden */
+.omvat-smal {
+  width: 100%;
+  max-width: 44rem;
+  margin-inline: auto;
+  padding-inline: var(--ruimte-4);
+}
+
+.vlak {
+  padding-block: var(--ruimte-16);
+}
+@media (min-width: 48rem) {
+  .vlak {
+    padding-block: var(--ruimte-24);
+  }
+}
+.vlak-krap {
+  padding-block: var(--ruimte-12);
+}
+
+.vlak-papier {
+  background: var(--color-papier);
+}
 .vlak-donker {
-  background-color: var(--color-marine-diep);
-  background-image:
-    radial-gradient(58rem 40rem at 6% -12%, rgb(241 137 25 / 0.30), transparent 60%),
-    radial-gradient(44rem 34rem at 52% 116%, rgb(115 85 120 / 0.62), transparent 64%),
-    radial-gradient(52rem 38rem at 104% 8%, rgb(53 64 155 / 0.55), transparent 62%);
+  background: var(--color-marine-diep);
+  color: #ffffff;
 }
 
-/* Lichte variant: dezelfde drie kleuren, maar als zweem op een wit vlak */
-.vlak-zweem {
-  background-color: #ffffff;
-  background-image:
-    radial-gradient(44rem 30rem at 100% 0%, rgb(241 137 25 / 0.10), transparent 60%),
-    radial-gradient(40rem 28rem at 0% 100%, rgb(115 85 120 / 0.10), transparent 62%);
-}
-
-/*
-  Het dubbele chevron-motief uit het beeldmerk, als rustige achtergrondtextuur.
-  Puur decoratief: aria-hidden in de markup, en zo licht dat het nooit met
-  tekst concurreert.
+/* ───────────────────────────────────────────────────────────────────
+   Het dossierlabel
+   ───────────────────────────────────────────────────────────────────
+   Het kenmerkende element van dit ontwerp: een klein, gespatieerd label in
+   de kopletter, met een liggend streepje ervoor. Het markeert waar je bent
+   zonder een kop te zijn, en geeft de pagina het karakter van een geordend
+   document in plaats van een verkooppagina.
 */
-.motief-chevron {
-  background-image:
-    linear-gradient(135deg, rgb(255 255 255 / 0.028) 25%, transparent 25%),
-    linear-gradient(225deg, rgb(255 255 255 / 0.028) 25%, transparent 25%);
-  background-size: 22px 22px;
-  background-position: 0 0;
-}
-
-/* Dunne accentlijn in de merkkleuren, als scheiding tussen secties */
-.lijn-merk {
-  height: 3px;
-  background: var(--gradient-merk-lijn);
-}
-
-/*
-  Kicker boven een kop: klein, vet, in kapitalen, met een streepje in de
-  merkkleuren ervoor. Op wit staat de tekst in het gedempte oranje (5,49:1),
-  op donker mag het volle merk-oranje (6,36:1).
-*/
-.kicker {
-  @apply inline-flex items-center gap-3 text-sm font-bold uppercase tracking-widest;
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ruimte-3);
+  font-family: var(--font-kop);
+  font-size: var(--text-mini);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--color-oranje-tekst);
 }
-.kicker::before {
+.label::before {
   content: '';
-  width: 2rem;
-  height: 3px;
-  border-radius: 2px;
-  background: var(--gradient-merk-lijn);
+  width: 1.5rem;
+  height: 2px;
+  background: currentColor;
 }
-.op-donker .kicker {
+.op-donker .label {
   color: var(--color-oranje);
 }
 
-/*
-  Op het merkvlak is het merk-oranje onleesbaar: dat vlak is zelf oranje aan de
-  ene kant, en dan blijft er 2,65:1 over. Daar het perzikaccent, dat 5,02:1
-  haalt op het slechtste punt van het verloop.
-*/
-.merkvlak .kicker {
-  color: var(--kleur-accent-op-merkvlak);
-}
-
-/* Kop met een verloopstreep eronder */
-.kop-onderstreept {
-  @apply relative pb-4;
-}
-.kop-onderstreept::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 4.5rem;
-  height: 3px;
-  border-radius: 2px;
-  background: var(--gradient-merk-lijn);
-}
-
-/* ---------------------------------------------------------------
-   Kaarten
-   --------------------------------------------------------------- */
-
-/*
-  Basiskaart. De accentbalk bovenin krijgt zijn kleur via --accent, zodat
-  dezelfde component per sector of niveau een andere merkkleur kan dragen.
-*/
-.kaart {
-  @apply relative overflow-hidden rounded-xl border border-lijn bg-white;
-  box-shadow: var(--shadow-kaart);
-  transition:
-    transform 180ms ease,
-    box-shadow 180ms ease,
-    border-color 180ms ease;
-}
-/*
-  De accentbalk staat er meteen, niet pas bij hover. Zonder die kleur in rust
-  bleef een raster van negentien kaarten wit-op-wit — precies de vlakheid die
-  we juist weg wilden hebben. Bij hover wordt de balk dikker.
-*/
-/*
-  Kleur draagt hier betekenis: oranje is basis, paars is gevorderd, indigo is
-  expert. Een kaart die géén niveau heeft — een sector, een artikel — krijgt
-  daarom geen merkkleur maar een neutrale lijn, die bij hover het merkverloop
-  wordt. Anders wisselen negentien sectorkaarten drie kleuren af die niets
-  betekenen, en dat leest als ruis in plaats van als systeem.
-*/
-.kaart::before {
-  content: '';
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: 3px;
-  background: var(--accent, var(--color-lijn));
-  transition: height 200ms ease, background 200ms ease;
-}
-.kaart:hover::before,
-.kaart:focus-within::before {
-  background: var(--accent, var(--gradient-merk-lijn));
-}
-/* De hele kaart is klikbaar via een uitgerekte link; focus telt daarom mee */
-.kaart:hover,
-.kaart:focus-within {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-kaart-hover);
-  border-color: transparent;
-}
-.kaart:hover::before,
-.kaart:focus-within::before {
-  height: 6px;
-}
-/* Zachte kleurzweem in de kaart zelf, zodat het accent niet alleen bovenin zit */
-.kaart::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(24rem 12rem at 100% 0%, var(--accent), transparent 70%);
-  opacity: 0;
-  transition: opacity 220ms ease;
-}
-.kaart:hover::after,
-.kaart:focus-within::after {
-  opacity: 0.07;
-}
-/* De zweem ligt achter de inhoud, niet eroverheen */
-.kaart > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* Het pijltje achter een kaarttitel schuift mee op hover */
-.kaart .pijl {
-  display: inline-block;
-  transition: transform 180ms ease;
-}
-.kaart:hover .pijl,
-.kaart:focus-within .pijl {
-  transform: translateX(4px);
-}
-
-/*
-  Het actieve menu-item. Kleur alleen is niet genoeg — dat is de enige aanwijzing
-  voor iemand die kleuren slecht onderscheidt. Daarom ook een streepje eronder in
-  de merkkleuren, dus twee signalen in plaats van één (WCAG 1.4.1).
-*/
-.menulink[aria-current='page'] {
-  @apply relative text-marine;
-}
-.menulink[aria-current='page']::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -0.35rem;
-  height: 3px;
-  border-radius: 2px;
-  background: var(--gradient-merk-lijn);
-}
-
-/*
-  Het sectoricoon in een rond vlak. Het neemt de accentkleur van zijn kaart over,
-  dus in het kaartraster wisselt het mee met oranje, paars en indigo. Puur
-  decoratief: de sectornaam staat er altijd in tekst naast.
-*/
-.sectoricoon {
-  @apply flex h-11 w-11 flex-none items-center justify-center rounded-xl;
-  background: var(--accent-vlak, var(--color-vlak));
-  color: var(--accent-tekst, var(--color-marine));
-  transition: background-color 180ms ease;
-}
-.kaart:hover .sectoricoon,
-.kaart:focus-within .sectoricoon {
-  background: color-mix(in srgb, var(--accent, var(--color-marine)) 18%, #fff);
-}
-
-/* ---------------------------------------------------------------
-   Knoppen
-   --------------------------------------------------------------- */
-.knop {
-  @apply inline-flex items-center justify-center gap-2 rounded-md px-6 py-3 text-center font-bold;
-  transition:
-    background-color 160ms ease,
-    color 160ms ease,
-    transform 160ms ease,
-    box-shadow 160ms ease;
-}
-.knop:hover {
-  transform: translateY(-1px);
-}
-/*
-  De primaire knop stond eerder op het volle merk-oranje met witte tekst. Dat
-  haalt maar 2,52:1 en zakte daarmee door de AA-eis. Hij staat nu op het
-  gedempte oranje (4,95:1), wat in kleur nauwelijks verschilt maar wel leesbaar
-  is. De gloed eronder gebruikt wél het volle merk-oranje.
-*/
-.knop-primair {
-  background-color: var(--color-oranje-knop);
-  @apply text-white;
-  box-shadow: 0 4px 14px rgb(241 137 25 / 0.35);
-}
-.knop-primair:hover {
-  background-color: var(--color-oranje-knop-hover);
-  box-shadow: 0 8px 22px rgb(241 137 25 / 0.45);
-}
-.knop-secundair {
-  @apply border border-marine text-marine bg-white;
-}
-.knop-secundair:hover {
-  @apply bg-marine text-white;
-}
-/* Paarse variant, voor de tweede actie naast een oranje knop */
-.knop-paars {
-  background-color: var(--color-paars);
-  @apply text-white;
-  box-shadow: 0 4px 14px rgb(115 85 120 / 0.32);
-}
-.knop-paars:hover {
-  background-color: var(--color-paars-diep);
-  box-shadow: 0 8px 22px rgb(115 85 120 / 0.42);
-}
-/* Variant voor op een donkere achtergrond */
-.knop-omlijnd-licht {
-  @apply border border-white/45 text-white;
-}
-.knop-omlijnd-licht:hover {
-  @apply bg-white text-marine;
-}
-
-/* ---------------------------------------------------------------
-   Niveaukleuren
-   ---------------------------------------------------------------
-   De drie niveaus krijgen elk een eigen merkkleur, en die volgorde loopt
-   gelijk met het logoverloop: van oranje via paars naar indigo. Zo staat de
-   opbouw basis → gevorderd → expert ook in kleur.
-*/
-/*
-  Elk niveau levert drie varianten van zijn kleur:
-  --accent        het volle merkaccent, voor balken en lijnen (geen tekst erop)
-  --accent-sterk  dezelfde kleur, donker genoeg voor witte tekst erop (≥4,5:1)
-  --accent-tekst  donker genoeg om zelf als tekst op wit te staan (≥4,5:1)
-  --accent-vlak   de zachte tint als achtergrond
-
-  Voor paars en indigo vallen die drie samen; alleen oranje moet dempen,
-  omdat wit op #f18919 maar 2,52:1 haalt.
+/* ───────────────────────────────────────────────────────────────────
+   Niveaus: kleur die informatie draagt
+   ───────────────────────────────────────────────────────────────────
+   Oranje is basis, paars is gevorderd, indigo is expert. Overal, consequent,
+   zodat de kleur je vertelt waar je bent zonder dat er een woord bij hoeft.
+   Elk niveau zet drie variabelen die de rest van het systeem oppikt.
 */
 .niveau-basis {
   --accent: var(--color-oranje);
-  --accent-sterk: var(--color-oranje-knop);
+  --accent-diep: var(--color-oranje-knop);
   --accent-tekst: var(--color-oranje-tekst);
   --accent-vlak: var(--color-oranje-licht);
 }
 .niveau-gevorderd {
   --accent: var(--color-paars);
-  --accent-sterk: var(--color-paars);
-  --accent-tekst: var(--color-paars);
+  --accent-diep: var(--color-paars);
+  --accent-tekst: var(--color-paars-diep);
   --accent-vlak: var(--color-paars-licht);
 }
 .niveau-expert {
   --accent: var(--color-indigo);
-  --accent-sterk: var(--color-indigo);
-  --accent-tekst: var(--color-indigo);
-  --accent-vlak: var(--color-blauw-licht);
+  --accent-diep: var(--color-indigo);
+  --accent-tekst: var(--color-indigo-diep);
+  --accent-vlak: var(--color-indigo-licht);
 }
 
-/*
-  Sectorkaarten wisselen de drie merkkleuren af, zodat een raster van negentien
-  kaarten leeft zonder een regenboog te worden. De cyclus is oranje, paars,
-  indigo — opnieuw de volgorde van het logoverloop.
-*/
-.kaartraster > *:nth-child(3n + 1) {
-  --accent: var(--color-oranje);
-  --accent-sterk: var(--color-oranje-knop);
-  --accent-tekst: var(--color-oranje-tekst);
-  --accent-vlak: var(--color-oranje-licht);
+.niveaumerk {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ruimte-2);
+  padding: 0.3rem 0.7rem 0.3rem 0.55rem;
+  border-radius: var(--radius-klein);
+  background: var(--accent-vlak, var(--color-vlak));
+  color: var(--accent-tekst, var(--color-marine));
+  font-family: var(--font-kop);
+  font-size: var(--text-mini);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
-.kaartraster > *:nth-child(3n + 2) {
-  --accent: var(--color-paars);
-  --accent-sterk: var(--color-paars);
-  --accent-tekst: var(--color-paars);
-  --accent-vlak: var(--color-paars-licht);
-}
-.kaartraster > *:nth-child(3n + 3) {
-  --accent: var(--color-indigo);
-  --accent-sterk: var(--color-indigo);
-  --accent-tekst: var(--color-indigo);
-  --accent-vlak: var(--color-blauw-licht);
+.niveaumerk::before {
+  /* De chevron uit het beeldmerk, als vorm en niet als behang. */
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translate(-1px, -1px);
 }
 
-/* ---------------------------------------------------------------
-   Gezichten
-   ---------------------------------------------------------------
-   Een rij portretten die elkaar licht overlappen. Dat leest als één groep in
-   plaats van twaalf losse pasfoto's. Bij hover of toetsenbordfocus komt er één
-   naar voren, met naam en rol eronder.
+/* ───────────────────────────────────────────────────────────────────
+   Het dossieritem
+   ───────────────────────────────────────────────────────────────────
+   Een praktijksituatie uit een training, in een container die eruitziet als
+   een dossierregel. Dat is bewust: de rauwe zin ("Je wilt de woning verlaten
+   maar wordt tegengehouden") wordt zo vaktechnische beheersing in plaats van
+   dreiging. Angstmarketing schrikt zakelijke kopers af; dit doseert.
+
+   Hoogstens één of twee tegelijk in beeld. Een pagina vol van deze zinnen
+   leest als een muur van ellende en bereikt het omgekeerde van vertrouwen.
 */
-.gezichten {
+.dossier {
+  position: relative;
+  padding: var(--ruimte-6);
+  background: #ffffff;
+  border: 1px solid var(--color-lijn);
+  border-left: 3px solid var(--accent, var(--color-marine));
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.dossier-kenmerk {
   display: flex;
   flex-wrap: wrap;
-  padding-bottom: 4.5rem;
-  padding-left: 1.1rem;
-}
-.gezicht {
-  position: relative;
-  margin-left: -1.1rem;
-  margin-top: .5rem;
-  border-radius: 9999px;
-  transition: transform 200ms ease, z-index 0s;
-}
-.gezicht img {
-  display: block;
-  width: 4.5rem;
-  height: 4.5rem;
-  border-radius: 9999px;
-  object-fit: cover;
-  object-position: top;
-  border: 3px solid var(--color-marine-diep);
-  transition: border-color 200ms ease;
-}
-@media (min-width: 1024px) {
-  .gezicht img { width: 5.25rem; height: 5.25rem; }
-}
-
-.gezicht:hover,
-.gezicht:focus-within {
-  transform: translateY(-.5rem) scale(1.06);
-  z-index: 5;
-}
-.gezicht:hover img,
-.gezicht:focus-within img {
-  border-color: var(--color-oranje);
-}
-
-/* Naam en rol verschijnen onder de rij, op een vaste plek */
-.gezicht-naam {
-  position: absolute;
-  left: 50%;
-  top: calc(100% + .6rem);
-  translate: -50% 0;
-  display: block;
-  width: max-content;
-  max-width: 15rem;
-  padding: .4rem .7rem;
-  border-radius: .5rem;
-  background: rgb(255 255 255 / .1);
-  font-size: .8125rem;
-  font-weight: 700;
-  line-height: 1.3;
-  text-align: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 160ms ease;
-}
-.gezicht-rol {
-  display: block;
+  gap: var(--ruimte-2) var(--ruimte-4);
+  font-family: var(--font-kop);
+  font-size: var(--text-mini);
   font-weight: 500;
-  opacity: .75;
-}
-.gezicht:hover .gezicht-naam,
-.gezicht:focus-within .gezicht-naam {
-  opacity: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-grijs);
 }
 
-/*
-  Op een aanraakscherm bestaat hover niet, en dan zou de naam nooit verschijnen.
-  Daar staan alle namen dus gewoon zichtbaar onder elkaar in plaats van als
-  zwevend label.
+.dossier-tekst {
+  margin-top: var(--ruimte-3);
+  font-family: var(--font-kop);
+  font-size: var(--text-h3);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--color-marine);
+  text-wrap: pretty;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   Gegevensrijen
+   ───────────────────────────────────────────────────────────────────
+   Duur, groepsgrootte, locatie: de feiten waarop een opdrachtgever scant.
+   Als rij met een lijn ertussen, zoals in een specificatieblad.
 */
-@media (hover: none) {
-  .gezichten { padding-bottom: 0; }
-  .gezicht-naam { display: none; }
+.gegevens {
+  display: grid;
+  gap: 0;
+}
+.gegevens > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ruimte-2) var(--ruimte-4);
+  justify-content: space-between;
+  padding-block: var(--ruimte-3);
+  border-top: 1px solid var(--color-lijn);
+}
+.gegevens > div:last-child {
+  border-bottom: 1px solid var(--color-lijn);
+}
+.gegevens dt {
+  font-family: var(--font-kop);
+  font-size: var(--text-mini);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-grijs);
+}
+.gegevens dd {
+  font-weight: 600;
+  color: var(--color-marine);
+  text-align: right;
+}
+.op-donker .gegevens > div {
+  border-color: rgb(255 255 255 / 0.16);
+}
+.op-donker .gegevens dt {
+  color: rgb(255 255 255 / 0.7);
+}
+.op-donker .gegevens dd {
+  color: #ffffff;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .gezicht:hover,
-  .gezicht:focus-within { transform: none; }
-}
-
-/* ---------------------------------------------------------------
-   Cijferblok
-   ---------------------------------------------------------------
-   Concrete, verifieerbare getallen (aantal trainingen, sectoren, niveaus).
-   De projectbrief vraagt daar expliciet om voor AI-antwoordsystemen: harde
-   feiten in plaats van superlatieven.
+/* ───────────────────────────────────────────────────────────────────
+   Grote cijfers
+   ───────────────────────────────────────────────────────────────────
+   132 trainingen, 44 beroepsgroepen, 461 situaties. Allemaal geteld uit de
+   content, dus altijd waar — en voor een merk zonder klantverhalen het enige
+   harde bewijs dat er is. In de kopletter, want daar zitten de cijfers met
+   dat technische karakter.
 */
+.cijferreeks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ruimte-8) var(--ruimte-6);
+}
+@media (min-width: 48rem) {
+  .cijferreeks {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
 .cijfer {
-  @apply text-3xl font-bold leading-none md:text-4xl;
-  background: var(--gradient-merk-lijn);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  display: block;
+  font-family: var(--font-kop);
+  font-size: clamp(2.5rem, 4vw + 1rem, 3.75rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-marine);
 }
-/* Op donkere vlakken is een verloop in tekst te onrustig: daar gewoon oranje */
 .op-donker .cijfer {
-  background: none;
-  -webkit-text-fill-color: currentColor;
   color: var(--color-oranje);
 }
 
-/* ---------------------------------------------------------------
-   Leestekst
-   ---------------------------------------------------------------
-   Eén typografisch systeem voor alle lopende tekst: kennisbankartikelen, de
-   bodytekst van een training, de intro van een sector of beroepsgroep. Stond
-   eerder als losse [&_h2]:… hulpklassen in elk sjabloon, en dus overal net
-   anders.
-
-   De regellengte is hier het belangrijkst: bij meer dan ongeveer 75 tekens per
-   regel verliest het oog bij de terugsprong makkelijk de juiste regel. De tekst
-   zat op circa 80; 41rem brengt hem op 68, midden in het comfortabele bereik.
-
-   Bewust rem en geen ch. De ch-eenheid meet de breedte van het cijfer nul, en
-   dat cijfer is in Montserrat ongewoon breed (0,66em). 65ch leverde hier 732px
-   op, oftewel ruim 70 tekens — de eenheid belooft iets anders dan ze geeft.
-   Het getal hieronder is gemeten aan echte alinea's op deze site.
-
-   Tekengrootte omhoog naar 17px en de regelafstand naar 1,75: dat is
-   leesformaat in plaats van interfaceformaat.
-*/
-.leestekst {
-  max-width: 41rem;
-  font-size: 1.0625rem;
-  line-height: 1.75;
-
-  /*
-    text-wrap: pretty voorkomt dat er één los woord op de laatste regel van een
-    alinea achterblijft. Zo'n weeskind laat een alinea onaf ogen en trekt de
-    aandacht naar de verkeerde plek. De browser herverdeelt de laatste regels.
-  */
-  text-wrap: pretty;
-
+.cijfer-bij {
+  display: block;
+  margin-top: var(--ruimte-3);
+  font-size: var(--text-klein);
+  line-height: 1.4;
+  color: var(--color-grijs);
+}
+.op-donker .cijfer-bij {
+  color: rgb(255 255 255 / 0.75);
 }
 
-/*
-  Nederlands zit vol lange samenstellingen — grensoverschrijdend,
-  agressieproblematiek, verantwoordelijkheid. Op een telefoon past zo'n woord
-  soms niet op een regel en springt de woordafstand alle kanten op. Daar helpt
-  afbreken; de browser weet via lang="nl" waar dat mag.
-
-  Op een breed scherm juist niet: in een kolom van zeventig tekens leverde het
-  drie afbreekstreepjes in vijf regels op, en dat leidt meer af dan de rafelrand
-  die het oplost.
-*/
-@media (max-width: 640px) {
-  .leestekst {
-    hyphens: auto;
+/* ───────────────────────────────────────────────────────────────────
+   Knoppen
+   ─────────────────────────────────────────────────────────────────── */
+.knop {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ruimte-2);
+  padding: 0.8rem 1.4rem;
+  border-radius: var(--radius-klein);
+  border: 1px solid transparent;
+  font-family: var(--font-kop);
+  font-size: var(--text-klein);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  text-align: center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .knop {
+    transition: background-color 150ms ease, border-color 150ms ease;
   }
 }
+
+.knop-vol {
+  background: var(--color-marine);
+  color: #ffffff;
+}
+.knop-vol:hover {
+  background: var(--color-marine-diep);
+}
+
+.knop-accent {
+  background: var(--accent-diep, var(--color-oranje-knop));
+  color: #ffffff;
+}
+.knop-accent:hover {
+  filter: brightness(0.92);
+}
+
+.knop-rand {
+  border-color: var(--color-lijn-sterk);
+  color: var(--color-marine);
+  background: #ffffff;
+}
+.knop-rand:hover {
+  border-color: var(--color-marine);
+}
+
+.op-donker .knop-rand {
+  background: transparent;
+  border-color: rgb(255 255 255 / 0.35);
+  color: #ffffff;
+}
+.op-donker .knop-rand:hover {
+  border-color: #ffffff;
+}
+
+/* Het pijltje schuift mee bij hover; puur afwerking. */
+.pijl {
+  display: inline-block;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .pijl {
+    transition: transform 150ms ease;
+  }
+  a:hover > .pijl,
+  .knop:hover > .pijl {
+    transform: translateX(3px);
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   Leestekst
+   ───────────────────────────────────────────────────────────────────
+   Voor de lopende tekst op detailpagina's, waar iemand daadwerkelijk zit te
+   lezen omdat hij bijna besloten heeft. Een regel van ongeveer vijfenzestig
+   tekens leest het prettigst; breder dan dat en het oog verliest de volgende
+   regel.
+*/
+.leestekst {
+  max-width: 40rem;
+  font-size: var(--text-lead);
+  line-height: 1.7;
+}
 .leestekst > * + * {
-  margin-top: 1.35em;
+  margin-top: var(--ruimte-6);
+}
+.leestekst h2 {
+  margin-top: var(--ruimte-12);
+}
+.leestekst h3 {
+  margin-top: var(--ruimte-8);
+}
+.leestekst ul,
+.leestekst ol {
+  padding-left: 1.3em;
+  list-style: disc;
+}
+.leestekst ol {
+  list-style: decimal;
+}
+.leestekst li + li {
+  margin-top: var(--ruimte-2);
+}
+.leestekst strong {
+  font-weight: 600;
+  color: var(--color-marine);
+}
+.leestekst a {
+  color: var(--color-blauw);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   Kaarten
+   ─────────────────────────────────────────────────────────────────── */
+.kaart {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid var(--color-lijn);
+  border-radius: var(--radius);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .kaart {
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+  .kaart:hover {
+    border-color: var(--color-lijn-sterk);
+    box-shadow: var(--schaduw);
+  }
+}
+
+/* De hele kaart klikbaar maken vanaf de link in de kop */
+.vlakdek::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   Mensen
+   ───────────────────────────────────────────────────────────────────
+   Het warme tegenwicht tegen de strakke dossierstijl. Zonder trainingsfoto's
+   zijn deze twaalf gezichten de sterkste troef die de site heeft, dus ze
+   staan groot en niet als bijzaak onderaan.
+*/
+.gezichtenrij {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ruimte-3);
+}
+
+.gezicht {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 999px;
+  object-fit: cover;
+  object-position: top;
+  border: 2px solid #ffffff;
+  box-shadow: var(--schaduw-laag);
+}
+
+/* Overlappend, als een teamfoto in miniatuur */
+.gezichtenrij-dicht {
+  display: flex;
+  padding-left: 0.5rem;
+}
+.gezichtenrij-dicht > * {
+  margin-left: -0.5rem;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   Het kopvlak van een detailpagina
+   ─────────────────────────────────────────────────────────────────── */
+.kopvlak {
+  padding-block: var(--ruimte-8) var(--ruimte-16);
+}
+
+.kopblok {
+  display: grid;
+  gap: var(--ruimte-12);
+  margin-top: var(--ruimte-8);
+}
+@media (min-width: 62rem) {
+  .kopblok {
+    grid-template-columns: 1.5fr 1fr;
+    gap: var(--ruimte-16);
+    align-items: start;
+  }
+}
+
+.kopblok-label {
+  margin-bottom: var(--ruimte-4);
+}
+
+.kopblok-titel {
+  color: #ffffff;
+  max-width: 18ch;
+}
+
+.kopblok-lead {
+  margin-top: var(--ruimte-6);
+  max-width: 46ch;
+  font-size: var(--text-lead);
+  line-height: 1.6;
+  color: rgb(255 255 255 / 0.82);
+}
+
+.kopblok-acties {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ruimte-3);
+  margin-top: var(--ruimte-8);
+}
+
+/* De feitenlijst staat op een eigen vlak, zodat hij leest als een
+   specificatieblad naast de kop in plaats van als losse regels. */
+.kopblok-feiten {
+  padding: var(--ruimte-6);
+  background: rgb(255 255 255 / 0.05);
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: var(--radius);
+}
+.kopblok-feiten > div:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.kopblok-feiten > div:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   Sectiekoppen
+   ─────────────────────────────────────────────────────────────────── */
+.sectie-titel {
+  margin-top: var(--ruimte-4);
+}
+
+.sectie-lead {
+  margin-top: var(--ruimte-4);
+  max-width: 52ch;
+  font-size: var(--text-lead);
+  line-height: 1.6;
+  color: var(--color-grijs);
+}
+
+.leestekst-na-label {
+  margin-top: var(--ruimte-6);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   De dossierrij
+   ─────────────────────────────────────────────────────────────────── */
+.dossierrij {
+  display: grid;
+  gap: var(--ruimte-4);
+  margin-top: var(--ruimte-6);
+}
+@media (min-width: 48rem) {
+  .dossierrij {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.dossier-bij {
+  margin-top: var(--ruimte-6);
+  max-width: 56ch;
+  font-size: var(--text-klein);
+  line-height: 1.6;
+  color: var(--color-grijs);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   Niveaukaarten
+   ─────────────────────────────────────────────────────────────────── */
+.niveaus {
+  display: grid;
+  gap: var(--ruimte-6);
+  margin-top: var(--ruimte-8);
+}
+@media (min-width: 62rem) {
+  .niveaus {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.niveaukaart {
+  padding: var(--ruimte-6);
+  /* De accentkleur van het niveau als kop van de kaart: kleur draagt hier
+     informatie, niet sfeer. */
+  border-top: 3px solid var(--accent);
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+
+.niveaukaart-titel {
+  margin-top: var(--ruimte-4);
+}
+
+.niveaukaart-info {
+  margin-top: var(--ruimte-6);
+}
+.niveaukaart-info dd {
+  text-align: left;
+  font-weight: 400;
+  color: var(--color-inkt);
+  font-size: var(--text-klein);
+  line-height: 1.55;
+}
+.niveaukaart-info > div {
+  flex-direction: column;
+  gap: var(--ruimte-1);
+  justify-content: flex-start;
+}
+
+.niveaukaart-kopje {
+  margin-top: var(--ruimte-6);
+  font-family: var(--font-kop);
+  font-size: var(--text-mini);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-grijs);
+}
+
+.niveaukaart-lijst {
+  margin-top: var(--ruimte-3);
+  display: grid;
+  gap: var(--ruimte-2);
+  font-size: var(--text-klein);
+  line-height: 1.55;
+}
+.niveaukaart-lijst li {
+  position: relative;
+  padding-left: 1.15rem;
+}
+/* De chevron uit het beeldmerk als opsommingsteken. */
+.niveaukaart-lijst li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.42em;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-right: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  transform: rotate(-45deg);
+}
+
+/* mt-auto duwt de knop naar de onderrand, zodat drie kaarten met verschillend
+   lange teksten hun knop toch op één lijn hebben. */
+.niveaukaart-knop {
+  margin-top: auto;
+  padding-top: 0.8rem;
+}
+.niveaukaart .niveaukaart-knop {
+  margin-top: var(--ruimte-8);
+}
+@media (min-width: 62rem) {
+  .niveaukaart .niveaukaart-knop {
+    margin-top: auto;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   Het mensenblok
+   ─────────────────────────────────────────────────────────────────── */
+.mensen {
+  display: grid;
+  gap: var(--ruimte-12);
+  align-items: center;
+}
+@media (min-width: 62rem) {
+  .mensen {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--ruimte-16);
+  }
+}
+
+.mensen-titel {
+  color: #ffffff;
+  max-width: 16ch;
+}
+
+.mensen-tekst {
+  margin-top: var(--ruimte-6);
+  max-width: 44ch;
+  font-size: var(--text-lead);
+  line-height: 1.65;
+  color: rgb(255 255 255 / 0.82);
+}
+
+.mensen-knop {
+  margin-top: var(--ruimte-8);
+}
+
+/* De gezichten groter dan een pictogram: dit is het warme tegenwicht tegen de
+   strakke dossierstijl, dus het mag gezien worden. */
+.mensen .gezicht {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-color: rgb(255 255 255 / 0.25);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .mensen .gezicht {
+    transition: transform 160ms ease, border-color 160ms ease;
+  }
+  .mensen a:hover .gezicht {
+    transform: translateY(-3px);
+    border-color: var(--color-oranje);
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   Verwante beroepsgroepen
+   ─────────────────────────────────────────────────────────────────── */
+.verwant {
+  display: grid;
+  gap: var(--ruimte-4);
+  margin-top: var(--ruimte-6);
+}
+@media (min-width: 48rem) {
+  .verwant {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.verwant-kaart {
+  padding: var(--ruimte-6);
+}
+
+.verwant-naam {
+  font-size: var(--text-h3);
+}
+
+.verwant-sector {
+  margin-top: var(--ruimte-2);
+  font-family: var(--font-kop);
+  font-size: var(--text-mini);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-grijs);
+}
+
+.verwant-pijl {
+  margin-top: var(--ruimte-6);
+  color: var(--color-blauw);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   Kruimelpad
+   ─────────────────────────────────────────────────────────────────── */
+.kruimelpad {
+  font-size: var(--text-klein);
+  color: var(--color-grijs);
+}
+.kruimelpad ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ruimte-1);
+}
+.kruimelpad li {
+  display: flex;
+  align-items: center;
+  gap: var(--ruimte-1);
+}
+.kruimelpad a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+.kruimelpad [aria-current='page'] {
+  font-weight: 600;
+  color: var(--color-inkt);
+}
+.op-donker .kruimelpad {
+  color: rgb(255 255 255 / 0.7);
+}
+.op-donker .kruimelpad [aria-current='page'] {
+  color: #ffffff;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   Kop
+   ─────────────────────────────────────────────────────────────────── */
+.kop {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: #ffffff;
+  border-bottom: 1px solid var(--color-lijn);
+}
+
+.kop-binnen {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ruimte-6);
+  height: var(--kophoogte);
+}
+
+.kop-logo {
+  height: 2.75rem;
+  width: auto;
+}
+@media (min-width: 48rem) {
+  .kop-logo {
+    height: 3.25rem;
+  }
+}
+
+.kop-menu {
+  display: none;
+  align-items: center;
+  gap: var(--ruimte-6);
+}
+@media (min-width: 62rem) {
+  .kop-menu {
+    display: flex;
+  }
+}
+
+.kop-link {
+  position: relative;
+  padding-block: 0.4rem;
+  font-family: var(--font-kop);
+  font-size: var(--text-klein);
+  font-weight: 600;
+  color: var(--color-inkt);
+}
+.kop-link:hover {
+  color: var(--color-blauw);
 }
 
 /*
-  De eerste alinea als aanloop: iets groter en donkerder. Dat geeft de lezer een
-  zachte start en maakt in één oogopslag duidelijk waar de tekst begint. Alleen
-  wanneer een pagina écht met een alinea opent — begint hij met een tussenkop,
-  dan is er niets om aan te lopen.
+  De actieve pagina krijgt een streepje in de merkkleur. Kleur alleen zou te
+  weinig zijn: dat is niet het enige onderscheid dat WCAG toestaat.
 */
-.leestekst > p:first-child {
-  font-size: 1.1875rem;
-  line-height: 1.7;
-  color: var(--color-marine);
+.kop-link[aria-current='page']::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.1rem;
+  height: 2px;
+  background: var(--color-oranje-knop);
 }
 
-/* Koppen krijgen ruim lucht bóven zich en weinig eronder, zodat ze bij hun
-   eigen alinea horen in plaats van er los boven te zweven. */
-.leestekst h2 {
-  @apply text-2xl font-bold text-marine;
-  margin-top: 2.75em;
-  margin-bottom: 0;
-  line-height: 1.25;
-  scroll-margin-top: 6rem;
-  /* Verdeelt een kop over de regels in plaats van één woord te laten hangen */
-  text-wrap: balance;
-  hyphens: manual;
-}
-.leestekst h2 + * {
-  margin-top: 0.6em;
-}
-.leestekst h3 {
-  @apply text-lg font-bold text-marine;
-  margin-top: 2em;
-  margin-bottom: 0;
-  line-height: 1.35;
-}
-.leestekst h3 + * {
-  margin-top: 0.5em;
-}
-.leestekst > :first-child {
-  margin-top: 0;
+.kop-actie {
+  padding-block: 0.6rem;
 }
 
-.leestekst strong {
-  @apply font-bold text-marine;
-}
-.leestekst a {
-  @apply font-semibold text-blauw underline;
-  text-underline-offset: 2px;
-  text-decoration-thickness: 1px;
-}
-.leestekst a:hover {
-  text-decoration-thickness: 2px;
-}
-
-/* Lijsten met een merkbolletje in plaats van de standaard schijf */
-.leestekst ul,
-.leestekst ol {
-  padding-left: 1.5rem;
-}
-.leestekst li + li {
-  margin-top: 0.5em;
-}
-.leestekst ul {
-  list-style: none;
-  padding-left: 0;
-}
-.leestekst ul > li {
+.kop-mobiel {
   position: relative;
-  padding-left: 1.6rem;
 }
-.leestekst ul > li::before {
-  content: '';
-  position: absolute;
-  left: 0.15rem;
-  top: 0.72em;
-  width: 0.45rem;
-  height: 0.45rem;
-  border-radius: 9999px;
-  background: var(--accent, var(--color-oranje));
-}
-.leestekst ol > li::marker {
-  @apply font-bold;
-  color: var(--accent-tekst, var(--color-oranje-tekst));
+@media (min-width: 62rem) {
+  .kop-mobiel {
+    display: none;
+  }
 }
 
-/* Een citaat of kernzin: verlooprand links, geen aanhalingstekens */
-.leestekst blockquote {
-  border-left: 3px solid transparent;
-  border-image: var(--gradient-merk-lijn) 1;
-  padding-left: 1.25rem;
-  font-size: 1.125rem;
+.kop-mobiel-knop {
+  display: flex;
+  align-items: center;
+  gap: var(--ruimte-2);
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--color-lijn-sterk);
+  border-radius: var(--radius-klein);
+  font-family: var(--font-kop);
+  font-size: var(--text-klein);
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+.kop-mobiel-knop::-webkit-details-marker {
+  display: none;
+}
+
+.kop-mobiel-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.6rem);
+  z-index: 50;
+  display: grid;
+  min-width: 15rem;
+  padding: var(--ruimte-2);
+  background: #ffffff;
+  border: 1px solid var(--color-lijn);
+  border-radius: var(--radius);
+  box-shadow: var(--schaduw-hoog);
+}
+.kop-mobiel-menu a {
+  padding: 0.7rem 0.8rem;
+  border-radius: var(--radius-klein);
+  font-family: var(--font-kop);
+  font-size: var(--text-klein);
+  font-weight: 600;
+}
+.kop-mobiel-menu a:hover {
+  background: var(--color-vlak);
+}
+.kop-mobiel-menu a[aria-current='page'] {
+  color: var(--color-oranje-tekst);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   Voet
+   ─────────────────────────────────────────────────────────────────── */
+.voet {
+  margin-top: var(--ruimte-24);
+  background: var(--color-marine-diep);
+  color: #ffffff;
+}
+
+.voet-binnen {
+  display: grid;
+  gap: var(--ruimte-12);
+  padding-block: var(--ruimte-16);
+}
+@media (min-width: 40rem) {
+  .voet-binnen {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 64rem) {
+  .voet-binnen {
+    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+  }
+}
+
+.voet-logo {
+  height: 3.5rem;
+  width: auto;
+}
+
+.voet-zin {
+  margin-top: var(--ruimte-4);
+  max-width: 22rem;
+  font-size: var(--text-klein);
   line-height: 1.6;
-  @apply font-semibold text-marine;
+  color: rgb(255 255 255 / 0.78);
 }
 
-/* ---------------------------------------------------------------
-   Tijdlijn (het programma van een training)
-   ---------------------------------------------------------------
-   De genummerde bollen staan op een verticale lijn, zodat zichtbaar is dat de
-   blokken op elkaar voortbouwen. De lijn loopt niet door onder de laatste bol.
-*/
-.tijdlijn-stap {
-  @apply relative flex gap-5 pl-0;
+.voet-groep {
+  margin-top: var(--ruimte-4);
+  font-size: var(--text-klein);
+  color: rgb(255 255 255 / 0.78);
 }
-.tijdlijn-stap::before {
-  content: '';
-  position: absolute;
-  left: 1.125rem;
-  top: 2.25rem;
-  bottom: 0;
-  width: 2px;
-  background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--accent) 45%, transparent),
-    color-mix(in srgb, var(--accent) 8%, transparent)
-  );
+.voet-groep a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
 }
-.tijdlijn-stap:last-child::before {
-  display: none;
-}
-.tijdlijn-bol {
-  @apply relative z-10 flex h-9 w-9 flex-none items-center justify-center rounded-full text-sm font-bold text-white;
-  background: var(--accent-sterk, var(--color-oranje-knop));
-  box-shadow: 0 0 0 4px #ffffff;
+.voet-groep a:hover {
+  color: #ffffff;
 }
 
-/* ---------------------------------------------------------------
-   Uitklapblokken (veelgestelde vragen)
-   --------------------------------------------------------------- */
-.uitklap summary::-webkit-details-marker {
-  display: none;
-}
-.uitklap summary::marker {
-  content: '';
-}
-.uitklap summary {
-  @apply flex cursor-pointer items-start justify-between gap-4;
-}
-.uitklap .chevron {
-  transition: transform 200ms ease;
-  flex: none;
-}
-.uitklap[open] .chevron {
-  transform: rotate(180deg);
+.voet-kop {
+  font-family: var(--font-kop);
+  font-size: var(--text-mini);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-oranje);
 }
 
-/* ---------------------------------------------------------------
-   Binnenrollen bij het scrollen
-   ---------------------------------------------------------------
-   Alleen ingeschakeld waar de browser scroll-gedreven animaties ondersteunt.
-   Kan de browser het niet, dan staat de inhoud er gewoon meteen — er wordt
-   dus nooit iets verborgen dat afhankelijk is van JavaScript of van een
-   animatie die niet loopt. Dat is ook wat AI-crawlers te zien krijgen.
+.voet-lijst {
+  margin-top: var(--ruimte-4);
+  display: grid;
+  gap: var(--ruimte-1);
+  font-size: var(--text-klein);
+  color: rgb(255 255 255 / 0.78);
+}
+/* py brengt het klikdoel op 24 px, ook op een telefoon te raken */
+.voet-lijst a {
+  display: inline-block;
+  padding-block: 0.25rem;
+}
+.voet-lijst a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.voet-onder {
+  border-top: 1px solid rgb(255 255 255 / 0.14);
+  padding-block: var(--ruimte-4);
+  font-size: var(--text-mini);
+  text-align: center;
+  color: rgb(255 255 255 / 0.7);
+}
+.voet-onder a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   Beweging bij binnenkomst
+   ───────────────────────────────────────────────────────────────────
+   Alleen waar de browser het zelf kan tijdens het scrollen, en alleen als de
+   bezoeker niet heeft aangegeven minder beweging te willen. Kan de browser
+   het niet, dan staat alles gewoon meteen zichtbaar.
 */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .rol-in {
-      animation: rol-in linear both;
+    .komt-op {
+      animation: komt-op linear both;
       animation-timeline: view();
-      animation-range: entry 0% entry 55%;
+      animation-range: entry 0% entry 45%;
     }
   }
 }
-@keyframes rol-in {
+@keyframes komt-op {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
@@ -901,990 +1247,33 @@ body {
   }
 }
 
-/* ---------------------------------------------------------------
-   Ritme: de overgang tussen secties
-   ---------------------------------------------------------------
-   De pagina bestond uit een handvol zeer hoge vlakken die met een kaarsrechte
-   lijn op elkaar aansloten. Dat leest als een stapel dozen: je ziet nooit dat
-   er iets nieuws begint, alleen dat het vorige ophoudt.
-
-   Een schuine overgang lost dat op zonder één woord tekst toe te voegen. Het
-   oog ziet een hoek en leest dat als een nieuw hoofdstuk. Puur decoratief, dus
-   het zit in een pseudo-element: er verandert niets aan de inhoud, aan de
-   volgorde in de HTML of aan wat een schermlezer voorleest.
-*/
-.rand-schuin-onder,
-.rand-schuin-boven {
-  position: relative;
-}
-
-.rand-schuin-onder::after,
-.rand-schuin-boven::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: clamp(2rem, 4.5vw, 4.5rem);
-  background: inherit;
-  pointer-events: none;
-}
-
-/* De onderrand loopt door in het vlak eronder en kantelt naar rechts omhoog. */
-.rand-schuin-onder::after {
-  bottom: 0;
-  transform: translateY(99%);
-  clip-path: polygon(0 0, 100% 0, 0 100%);
-}
-
-/* De bovenrand steekt omhoog in het vlak erboven, met dezelfde hoek. */
-.rand-schuin-boven::before {
-  top: 0;
-  transform: translateY(-99%);
-  clip-path: polygon(0 100%, 100% 0, 100% 100%);
-}
-
-/*
-  Fijne stippentextuur voor lichte vlakken.
-
-  Een wit vlak van tweeduizend pixels hoog voelt leeg, ook als er inhoud op
-  staat. Deze textuur is bijna onzichtbaar — je ziet hem pas als je erop let —
-  maar hij geeft het vlak een oppervlak in plaats van een leegte. Bewust in
-  marine met lage dekking: een grijze stip zou vuil ogen.
-*/
-.textuur-stip {
-  background-image: radial-gradient(rgb(33 46 86 / 0.055) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-/*
-  Zachte gloed in de merkkleuren. Voor lichte vlakken die net iets meer nodig
-  hebben dan wit, maar waar de volle .vlak-zweem te nadrukkelijk is.
-*/
-.gloed-warm {
-  background-color: var(--color-vlak-warm);
-  background-image:
-    radial-gradient(38rem 26rem at 88% -10%, rgb(241 137 25 / 0.13), transparent 62%),
-    radial-gradient(34rem 24rem at 4% 108%, rgb(115 85 120 / 0.11), transparent 64%);
-}
-
-/* ---------------------------------------------------------------
-   Grote getallen als interpunctie
-   ---------------------------------------------------------------
-   Dit merk heeft cijfers die niemand hoeft te geloven op zijn woord: 132
-   trainingen, 44 beroepsgroepen, 19 sectoren, één dag, maximaal tien
-   deelnemers. Ze stonden in lopende tekst, waar ze wegvallen.
-
-   Groot gezet zijn ze het tegenovergestelde van een superlatief: controleerbaar
-   en in één oogopslag te vergelijken. Ze breken tegelijk de pagina op, zodat er
-   tussen twee lange blokken iets staat dat je in een halve seconde leest.
-*/
-.cijferband {
-  display: grid;
-  gap: 1.5rem 1rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-@media (min-width: 48rem) {
-  .cijferband {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-.cijferband > * {
-  position: relative;
-  padding-left: 1.25rem;
-}
-
-/*
-  Een streepje in de merkkleuren vóór elk getal, in plaats van een lijn ertussen.
-  Een scheidingslijn tussen kolommen valt weg zodra de kolommen op mobiel onder
-  elkaar komen; dit streepje blijft altijd kloppen.
-*/
-.cijferband > *::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.3rem;
-  bottom: 0.3rem;
-  width: 3px;
-  border-radius: 3px;
-  background: var(--gradient-merk-lijn);
-}
-
-.cijfer-groot {
-  font-size: clamp(2.25rem, 5.5vw, 3.5rem);
-  font-weight: 700;
-  line-height: 0.95;
-  letter-spacing: -0.02em;
-  background: var(--gradient-merk-lijn);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-/* Op donker is een verloop in tekst te onrustig; daar het volle merk-oranje. */
-.op-donker .cijfer-groot {
-  background: none;
-  -webkit-text-fill-color: currentColor;
-  color: var(--color-oranje);
-}
-
-.cijfer-label {
-  margin-top: 0.5rem;
-  font-size: 0.875rem;
-  line-height: 1.4;
-  color: var(--color-grijs);
-}
-.op-donker .cijfer-label {
-  color: rgb(255 255 255 / 0.78);
-}
-
-/* ---------------------------------------------------------------
-   Genummerde stappen
-   ---------------------------------------------------------------
-   Een opsomming met bolletjes zegt: dit zijn losse punten. Een genummerde reeks
-   met een lijn ertussen zegt: dit is een volgorde, en er zit een begin en een
-   eind aan. Voor een aanpak die in stappen verloopt is dat het verschil tussen
-   een lijst en een verhaal.
-*/
-.stappen {
-  counter-reset: stap;
-  display: grid;
-  gap: 0;
-}
-
-.stap {
-  counter-increment: stap;
-  position: relative;
-  padding-left: 4.25rem;
-  padding-bottom: 2.25rem;
-}
-.stap:last-child {
-  padding-bottom: 0;
-}
-
-/*
-  Het nummer in een cirkel in de merkkleuren.
-
-  Niet het gewone merkverloop: dat loopt van oranje via een bruine tussentint
-  naar indigo, en op een vlakje van vijfenveertig pixels zie je vooral dat
-  bruin. Hier daarom rechtstreeks van het knop-oranje naar het paars.
-
-  Die twee zijn ook precies gekozen op leesbaarheid: het oranje haalt 4,95:1
-  met wit erop en het paars 6,36:1, dus elk punt op het verloop is genoeg voor
-  witte tekst. De vorige versie leunde op een tekstschaduw om leesbaar te
-  blijven, en een schaduw telt niet mee als contrast.
-*/
-.stap::before {
-  content: counter(stap);
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: grid;
-  place-items: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 999px;
-  background: linear-gradient(145deg, var(--color-oranje-knop), var(--color-paars));
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 1.05rem;
-  font-variant-numeric: tabular-nums;
-}
-
-/* De verbindingslijn loopt van cirkel naar cirkel, en stopt bij de laatste. */
-.stap::after {
-  content: '';
-  position: absolute;
-  left: 1.3125rem;
-  top: 3.25rem;
-  bottom: 0.5rem;
-  width: 2px;
-  border-radius: 2px;
-  /*
-    In de merkkleuren en niet in het randgrijs. Grijs op een warm vlak valt
-    weg, en dan lijken de cirkels los te zweven in plaats van een reeks te
-    vormen — precies het tegenovergestelde van wat een genummerde stap moet
-    doen. Naar onderen toe dunner, zodat het oog de reeks afmaakt.
-  */
-  background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--color-paars) 55%, transparent),
-    color-mix(in srgb, var(--color-paars) 12%, transparent)
-  );
-}
-.stap:last-child::after {
-  display: none;
-}
-
-.op-donker .stap::after {
-  background: linear-gradient(to bottom, rgb(255 255 255 / 0.28), rgb(255 255 255 / 0.04));
-}
-
-/* ---------------------------------------------------------------
-   Uitgelicht blok
-   ---------------------------------------------------------------
-   Eén zin die er echt toe doet, uit de lopende tekst gelicht. Geen citaat van
-   een klant — die zijn er nog niet, en verzonnen worden ze niet — maar de
-   kernbelofte, groot genoeg om te blijven hangen.
-*/
-.uitgelicht {
-  position: relative;
-  padding: 1.75rem 1.75rem 1.75rem 2.5rem;
-  border-radius: 1rem;
-  background: var(--color-vlak-warm);
-  font-size: clamp(1.125rem, 2.2vw, 1.4rem);
-  line-height: 1.5;
-  font-weight: 600;
-  color: var(--color-marine);
-  text-wrap: pretty;
-}
-
-.uitgelicht::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 1rem;
-  bottom: 1rem;
-  width: 4px;
-  border-radius: 0 4px 4px 0;
-  background: var(--gradient-merk-lijn);
-}
-
-/* ---------------------------------------------------------------
-   Kaarten met meer leven
-   ---------------------------------------------------------------
-   De kaarten reageerden alleen met een randkleur. Deze variant tilt de kaart
-   een paar pixels op en legt er een zachte schaduw onder, zodat een raster van
-   negentien kaarten aanvoelt als iets waar je doorheen kunt in plaats van als
-   een tabel.
-
-   Alleen op apparaten met een echte muisaanwijzer: op een aanraakscherm blijft
-   een hover-staat plakken na het tikken.
-*/
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .kaart-til {
-    transition:
-      transform 180ms ease,
-      box-shadow 180ms ease,
-      border-color 180ms ease;
-  }
-  .kaart-til:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 14px 30px -18px rgb(33 46 86 / 0.45);
-  }
-}
-
-/*
-  Het sectorpictogram in een getint schijfje in plaats van los op wit. Dat geeft
-  elk pictogram dezelfde optische massa, waardoor het raster rustig blijft ook
-  al is het ene pictogram voller dan het andere.
-*/
-.icoonschijf {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 999px;
-  background: var(--color-oranje-licht);
-  color: var(--color-oranje-tekst);
-}
-
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .icoonschijf {
-    transition: background-color 180ms ease;
-  }
-  .kaart-til:hover .icoonschijf {
-    background: color-mix(in srgb, var(--color-oranje-licht) 55%, var(--color-paars-licht));
-  }
-}
-
-/* ---------------------------------------------------------------
-   Het merkvlak
-   ---------------------------------------------------------------
-   Oranje en paars stonden overal op de site als dun accentje: een streepje van
-   drie pixels, een randje, een pictogram. Herkenbaar, maar nooit aanwezig.
-
-   Dit is het vlak waar die twee kleuren de hele breedte krijgen. Eén keer per
-   pagina, hooguit twee — een merkkleur die je overal opzet is geen merkkleur
-   meer, maar behang.
-
-   De richting loopt diagonaal, zodat het verloop niet samenvalt met de
-   leesrichting en het vlak niet leest als een balk. De donkere marine aan het
-   eind houdt de onderkant rustig genoeg om er witte tekst op te zetten.
-*/
-.merkvlak {
-  position: relative;
-  background-color: #412d4b;
-  /*
-    Drie donkere stops, en dat is met de rekenmachine zo geworden.
-
-    De eerste opzet begon op een lichter oranje en liep via een bruine
-    tussentint. Doorgerekend over de hele as haalde witte tekst daar op het
-    lichtste punt 5,64:1 en de inleidende alinea op 80% dekking nog maar 4,23 —
-    onder de eis. Het merk-oranje als accent kwam niet verder dan 2,24.
-
-    Deze drie stops zijn allemaal donker genoeg om wit te dragen: het slechtste
-    punt geeft 6,67:1 voor volle witte tekst en 4,92:1 op 80% dekking. Dat
-    schept ook ruimte voor een warm accent, zie --kleur-accent-op-merkvlak.
-  */
-  background-image: linear-gradient(118deg, #8f4a03 0%, #6b3f57 50%, #412d4b 100%);
-
-  /*
-    Het merk-oranje is op dit vlak onleesbaar (2,65:1). Dit zachte perzik houdt
-    de warme merkkant vast en haalt 5,02:1 op het slechtste punt van het
-    verloop.
-  */
-  --kleur-accent-op-merkvlak: #ffd9b0;
-}
-
-.merkvlak .accent-warm {
-  color: var(--kleur-accent-op-merkvlak);
-}
-
-/*
-  Een zweem van het chevron-motief eroverheen, iets sterker dan op de marine
-  vlakken: op een verloop met zoveel kleur verdwijnt een textuur van 2,8%.
-*/
-.merkvlak::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(135deg, rgb(255 255 255 / 0.05) 25%, transparent 25%),
-    linear-gradient(225deg, rgb(255 255 255 / 0.05) 25%, transparent 25%);
-  background-size: 26px 26px;
-}
-
-/* ---------------------------------------------------------------
-   Grote citaten: de situaties uit het vak
-   ---------------------------------------------------------------
-   Deze zinnen komen uit de trainingen zelf en zijn het enige op deze site dat
-   een concurrent niet kan overschrijven. Ze verdienen de maat van een kop, niet
-   die van een opsommingsteken.
-*/
-.situatie {
-  font-size: clamp(1.35rem, 3.4vw, 2.1rem);
-  line-height: 1.25;
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  text-wrap: balance;
-}
-
-.situatie-bron {
-  margin-top: 0.75rem;
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-/* ---------------------------------------------------------------
-   De loopband met beroepsgroepen
-   ---------------------------------------------------------------
-   Vierenveertig beroepsgroepen in een raster is een lijst die je overslaat. In
-   beweging langs de rand is het iets anders: je ziet in drie seconden dat dit
-   over vierenveertig verschillende vakken gaat, zonder dat je één naam hoeft
-   te lezen.
-
-   De rij staat twee keer in de HTML en schuift precies de halve breedte op, zo
-   sluit het einde naadloos op het begin aan. Puur decoratief: de echte lijst
-   met links staat gewoon in de sectie eronder, dus er gaat geen navigatie
-   verloren als dit niet beweegt.
-*/
-.loopband {
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-}
-
-.loopband-rij {
-  display: flex;
-  width: max-content;
-  gap: 0;
-  animation: loopband 70s linear infinite;
-}
-
-/*
-  Stilstaan bij hover. Iemand die iets probeert te lezen wordt anders gedwongen
-  mee te bewegen met de tekst.
-*/
-@media (hover: hover) {
-  .loopband:hover .loopband-rij {
-    animation-play-state: paused;
-  }
-}
-
-/*
-  Wie minder beweging heeft ingesteld krijgt een stilstaande rij. Niet
-  verbergen: de namen zijn dan gewoon het eerste stuk van de lijst, en dat
-  leest prima.
-*/
-@media (prefers-reduced-motion: reduce) {
-  .loopband-rij {
-    animation: none;
-  }
-}
-
-@keyframes loopband {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.loopband-item {
-  padding: 0 1.75rem;
-  font-size: clamp(1.1rem, 2.2vw, 1.6rem);
-  font-weight: 700;
-  white-space: nowrap;
-  color: var(--color-marine);
-  opacity: 0.55;
-}
-
-/* Elk vierde item in de merkkleur, zodat de rij niet één grijze streep wordt. */
-.loopband-item:nth-child(4n) {
-  color: var(--color-oranje-tekst);
-  opacity: 0.9;
-}
-.loopband-item:nth-child(4n + 2) {
-  color: var(--color-paars);
-  opacity: 0.85;
-}
-
-.loopband-scheiding {
-  align-self: center;
-  width: 6px;
-  height: 6px;
-  flex: none;
-  border-radius: 999px;
-  background: var(--color-oranje);
-  opacity: 0.5;
-}
-
-/* ---------------------------------------------------------------
-   Het antwoordblok
-   ---------------------------------------------------------------
-   Vraag-en-antwoord bovenaan de pagina, bedoeld om losgeknipt te worden. Het
-   moet opvallen zonder de indruk te wekken dat het reclame is: een AI-systeem
-   dat een kader met een knop erin ziet, leest dat als promotie en slaat het
-   over. Vandaar rustig vlak, merkstreep, geen knop.
-*/
-.antwoordblok {
-  border-radius: 1rem;
-  border: 1px solid var(--color-lijn);
-  background: var(--color-vlak-warm);
-  padding: 1.5rem;
-}
-@media (min-width: 48rem) {
-  .antwoordblok {
-    padding: 1.75rem 2rem;
-  }
-}
-
-.antwoordblok-kop {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 0.8125rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-oranje-tekst);
-}
-.antwoordblok-kop::before {
-  content: '';
-  width: 1.75rem;
-  height: 3px;
-  border-radius: 2px;
-  background: var(--gradient-merk-lijn);
-}
-
-.antwoordblok-lijst {
-  margin-top: 1.25rem;
-  display: grid;
-  gap: 1.125rem;
-}
-
-/* Een streep vóór elk paar in plaats van een lijn ertussen: die laatste valt
-   weg zodra de items onder elkaar komen te staan. */
-.antwoordblok-item {
-  border-left: 3px solid color-mix(in srgb, var(--color-paars) 35%, transparent);
-  padding-left: 1rem;
-}
-
-.antwoordblok-vraag {
-  font-weight: 700;
-  color: var(--color-marine);
-  line-height: 1.4;
-}
-
-.antwoordblok-antwoord {
-  margin-top: 0.375rem;
-  line-height: 1.6;
-  color: var(--color-inkt);
-  text-wrap: pretty;
-}
-
-.antwoordblok-meer {
-  margin-top: 1.25rem;
-  font-size: 0.9375rem;
-  font-weight: 700;
-}
-.antwoordblok-meer a {
-  color: var(--color-blauw);
-}
-.antwoordblok-meer a:hover {
-  text-decoration: underline;
-}
-
-/* ---------------------------------------------------------------
-   De niveautabel
-   ---------------------------------------------------------------
-   Een echte tabel en geen raster van kaarten. Kaarten zijn mooier, maar een
-   tabel is het enige dat een cel aan een rij- én een kolomkop koppelt — voor
-   een schermlezer en voor een systeem dat de vergelijking wil uitlezen is dat
-   het verschil tussen "gevorderd, afgeronde basistraining" en drie losse
-   woorden.
-*/
-.niveaumatrix-omhulling {
-  overflow-x: auto;
-  border-radius: 1rem;
-  border: 1px solid var(--color-lijn);
-  background: #ffffff;
-}
-/* Zichtbare focus, want dit kader is met het toetsenbord te bereiken. */
-.niveaumatrix-omhulling:focus-visible {
-  outline: 3px solid var(--color-blauw);
-  outline-offset: 2px;
-}
-
-.niveaumatrix {
-  width: 100%;
-  min-width: 44rem;
-  border-collapse: collapse;
-  text-align: left;
-  font-size: 0.9375rem;
-}
-
-.niveaumatrix-caption {
-  padding: 1.25rem 1.25rem 0;
-  text-align: left;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  color: var(--color-grijs);
-}
-
-.niveaumatrix th,
-.niveaumatrix td {
-  padding: 1rem 1.25rem;
-  vertical-align: top;
-  border-top: 1px solid var(--color-lijn);
-}
-
-.niveaumatrix-hoek {
-  border-top: 0;
-}
-
-.niveaumatrix thead th {
-  border-top: 0;
-  border-bottom: 3px solid var(--accent, var(--color-lijn));
-  background: var(--accent-vlak, var(--color-vlak));
-}
-
-.niveaumatrix-koplabel {
-  display: block;
-  font-size: 1.0625rem;
-  font-weight: 700;
-  color: var(--color-marine);
-}
-
-.niveaumatrix-koplink {
-  display: inline-block;
-  margin-top: 0.375rem;
-  font-size: 0.8125rem;
-  font-weight: 700;
-  color: var(--color-blauw);
-}
-.niveaumatrix-koplink:hover {
-  text-decoration: underline;
-}
-
-/* De eerste kolom is de vraag, en die mag niet meelezen als antwoord. */
-.niveaumatrix tbody th {
-  width: 11rem;
-  font-weight: 700;
-  color: var(--color-grijs);
-  background: var(--color-vlak-warm);
-}
-
-.niveaumatrix-lijst {
-  display: grid;
-  gap: 0.5rem;
-  list-style: disc;
-  padding-left: 1.1rem;
-}
-.niveaumatrix-lijst li {
-  line-height: 1.5;
-}
-
-/* ---------------------------------------------------------------
-   De keuzehulp
-   ---------------------------------------------------------------
-   Twee kolommen: links de sectoren als chips, rechts de beroepsgroepen van de
-   gekozen sector. Alles staat in de HTML; CSS bepaalt wat er zichtbaar is.
-*/
-.finder {
-  border-radius: 1.25rem;
-  border: 1px solid var(--color-lijn);
-  background: #ffffff;
-  box-shadow: var(--shadow-kaart);
-  overflow: hidden;
-}
-
-.finder-raster {
-  display: grid;
-}
-@media (min-width: 56rem) {
-  .finder-raster {
-    grid-template-columns: 20rem 1fr;
-  }
-  .finder-uitkomst {
-    border-left: 1px solid var(--color-lijn);
-  }
-}
-
-.finder-kolom {
-  padding: 1.5rem;
-}
-@media (min-width: 56rem) {
-  .finder-kolom {
-    padding: 1.75rem;
-  }
-}
-
-.finder-uitkomst {
-  background: var(--color-vlak-warm);
-  border-top: 1px solid var(--color-lijn);
-}
-@media (min-width: 56rem) {
-  .finder-uitkomst {
-    border-top: 0;
-  }
-}
-
-.finder-koplabel {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  color: var(--color-grijs);
-}
-
-.finder-keuzes {
-  margin-top: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.finder-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  /* py van 0.55rem brengt het klikdoel op 40px; ruim boven de 24px-ondergrens. */
-  padding: 0.55rem 0.9rem;
-  border-radius: 999px;
-  border: 1px solid var(--color-lijn);
-  background: #ffffff;
-  font-size: 0.875rem;
-  font-weight: 600;
-  line-height: 1.2;
-  color: var(--color-inkt);
-  cursor: pointer;
-}
-
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .finder-chip {
-    transition:
-      border-color 140ms ease,
-      background-color 140ms ease;
-  }
-}
-.finder-chip:hover {
-  border-color: var(--color-paars);
-}
-
-/*
-  De gekozen chip krijgt het merkverloop. Wit op dit verloop haalt minimaal
-  4,95:1 — beide eindkleuren zijn daarop gekozen, zie de genummerde stappen.
-*/
-.finder-keuzes input:checked + .finder-chip {
-  /*
-    Eerst een effen kleur, dan het verloop eroverheen. Zonder die eerste regel
-    staat er alleen een background-image, en dan is de chip wit met witte tekst
-    zodra dat verloop niet wordt getekend — bij geforceerde kleuren, in een
-    hoog-contrastmodus, of in een afdruk. De effen kleur ligt tussen de twee
-    eindkleuren in en haalt zelf ruim vier en een half staat met wit.
-  */
-  background-color: #8f4a30;
-  background-image: linear-gradient(145deg, var(--color-oranje-knop), var(--color-paars));
-  border-color: transparent;
-  color: #ffffff;
-}
-.finder-keuzes input:checked + .finder-chip .finder-chip-getal {
-  background: rgb(255 255 255 / 0.22);
-  color: #ffffff;
-}
-
-/*
-  De focusring hoort om de zichtbare chip, niet om de verborgen radioknop.
-  Zonder deze regel is met het toetsenbord niet te zien waar je bent.
-*/
-.finder-keuzes input:focus-visible + .finder-chip {
-  outline: 3px solid var(--color-blauw);
-  outline-offset: 2px;
-}
-
-.finder-chip-getal {
-  display: inline-grid;
-  place-items: center;
-  min-width: 1.375rem;
-  height: 1.375rem;
-  padding: 0 0.3rem;
-  border-radius: 999px;
-  background: var(--color-vlak);
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--color-grijs);
-}
-
-.finder-uitnodiging {
-  margin-top: 1rem;
-  max-width: 30rem;
-  line-height: 1.6;
-  color: var(--color-grijs);
-}
-
-.finder-lijst {
-  margin-top: 1rem;
-  display: grid;
-  gap: 0.5rem;
-}
-@media (min-width: 40rem) {
-  .finder-lijst {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.finder-link {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 0.9rem;
-  border-radius: 0.75rem;
-  border: 1px solid var(--color-lijn);
-  background: #ffffff;
-}
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .finder-link {
-    transition:
-      border-color 140ms ease,
-      box-shadow 140ms ease;
-  }
-}
-.finder-link:hover {
-  border-color: var(--color-marine);
-  box-shadow: 0 10px 22px -16px rgb(33 46 86 / 0.5);
-}
-
-.finder-link-naam {
-  font-weight: 700;
-  color: var(--color-marine);
-  line-height: 1.3;
-}
-
-.finder-link-meta {
-  margin-left: auto;
-  flex: none;
-  font-size: 0.75rem;
-  color: var(--color-grijs);
-}
-
-.finder-link-pijl {
-  flex: none;
-  color: var(--color-marine);
-}
-
-/* ---------------------------------------------------------------
-   Verwante beroepsgroepen
-   --------------------------------------------------------------- */
-.verwant {
-  border-top: 1px solid var(--color-lijn);
-  padding-top: 2rem;
-}
-
-.verwant-titel {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  color: var(--color-grijs);
-}
-
-.verwant-lijst {
-  margin-top: 1rem;
-  display: grid;
-  gap: 0.75rem;
-}
-@media (min-width: 48rem) {
-  .verwant-lijst {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-.verwant-link {
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-  gap: 0.375rem;
-  padding: 1rem 1.1rem;
-  border-radius: 0.875rem;
-  border: 1px solid var(--color-lijn);
-  background: #ffffff;
-}
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .verwant-link {
-    transition:
-      border-color 140ms ease,
-      box-shadow 140ms ease;
-  }
-}
-.verwant-link:hover {
-  border-color: var(--color-marine);
-  box-shadow: 0 10px 22px -16px rgb(33 46 86 / 0.5);
-}
-
-.verwant-tekst {
-  font-weight: 700;
-  line-height: 1.35;
-  color: var(--color-marine);
-  text-wrap: pretty;
-}
-
-.verwant-sector {
-  font-size: 0.75rem;
-  color: var(--color-grijs);
-}
-
-/* De pijl onderaan, los van de tekst, zodat drie kaarten van verschillende
-   hoogte hun pijl toch op dezelfde plek hebben. */
-.verwant-pijl {
-  margin-top: auto;
-  padding-top: 0.5rem;
-  color: var(--color-blauw);
-}
-
-/* ---------------------------------------------------------------
+/* ───────────────────────────────────────────────────────────────────
    Afdrukken
-   ---------------------------------------------------------------
-   Een trainingsvoorstel wordt uitgeprint om in een overleg te bespreken. Zonder
-   deze regels rolt daar de navigatie, een donker kopblok en een terugbelknop
-   uit de printer, en gaat de helft van de inkt op aan vlakken.
+   ───────────────────────────────────────────────────────────────────
+   Een trainingsvoorstel wordt uitgeprint om in een overleg te bespreken.
+   Zonder deze regels rolt de navigatie, een donker kopblok en een
+   terugbelknop uit de printer, en gaat de helft van de inkt op aan vlakken.
 */
 @media print {
-  /* Donkere vlakken worden wit met zwarte tekst: geen inkt aan achtergronden */
-  .vlak-donker,
-  .vlak-zweem,
-  footer {
-    background: none !important;
-    background-image: none !important;
-    color: #000 !important;
-  }
-  .op-donker,
-  .op-donker * {
-    color: #000 !important;
-  }
-
-  /* Weg: navigatie, decoratie, knoppen en alles wat je niet kunt aanklikken */
-  header nav,
-  .menu-mobiel,
-  .motief-chevron,
-  .lijn-merk,
-  .filterbalk,
-  .knop,
-  .gezichten,
-  .skip-link,
-  footer ul {
+  .niet-printen,
+  header,
+  footer,
+  .knop {
     display: none !important;
   }
-
+  .vlak-donker {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .op-donker * {
+    color: #000000 !important;
+  }
   body {
     font-size: 11pt;
-    line-height: 1.45;
-    color: #000;
   }
-  .leestekst {
-    max-width: none;
-    font-size: 11pt;
-  }
-
-  /* Kaarten en koppen niet over een paginarand heen breken */
-  .kaart,
-  .groep,
-  .tegel,
-  .tijdlijn-stap,
-  .uitklap {
-    break-inside: avoid;
-    box-shadow: none !important;
-    border-color: #999 !important;
-  }
-  h1,
-  h2,
-  h3 {
-    break-after: avoid;
-  }
-
-  /* Uitklapbare vragen staan open op papier: dichtklappen kan niet op papier */
-  details {
-    display: block !important;
-  }
-  details > *:not(summary) {
-    display: block !important;
-  }
-  .uitklap .chevron {
-    display: none;
-  }
-
-  /*
-    Het adres achter een link, want een papieren pagina heeft geen klikbare
-    links. Alleen bij echte adressen: interne ankers en telefoonlinks leveren
-    anders onleesbare rommel op.
-  */
   a[href^='http']::after {
     content: ' (' attr(href) ')';
     font-size: 9pt;
-    word-break: break-all;
-  }
-
-  @page {
-    margin: 18mm 16mm;
-  }
-}
-
-/* Wie minder beweging wil, krijgt minder beweging */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    color: #444;
   }
 }

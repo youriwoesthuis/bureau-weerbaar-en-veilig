@@ -1,17 +1,40 @@
 ---
-import { link } from '../../../lib/link';
+/**
+ * De beroepsgroeppagina — het ijkpunt van de herbouw.
+ *
+ * Dit is de landingsplek voor "agressietraining {beroepsgroep}", de
+ * zoekopdracht waar dit merk op moet staan, en het is de pagina waar de
+ * beslissing valt: welk niveau heeft mijn team nodig?
+ *
+ * ── Wat deze pagina anders doet dan de vorige ──
+ *
+ * De vorige versie was een lange strook proza met kaarten eronder. Deze is
+ * opgebouwd als dossier: wie hem opent ziet eerst waar het over gaat, dan de
+ * harde gegevens, dan het bewijs dat we het vak kennen, dan de keuze, en pas
+ * daarna de toelichting.
+ *
+ * De trainers staan er groot in. Dat is geen opsmuk: er is geen fotografie op
+ * deze site, en zonder de twaalf echte gezichten wordt een pagina vol
+ * incidenten, cijfers en strakke typografie een rapport van de
+ * Arbeidsinspectie. Agressietraining draait om vertrouwen, en vertrouwen heeft
+ * een gezicht nodig.
+ *
+ * De praktijksituaties staan er hooguit twee tegelijk, in een dossiercontainer
+ * met een kenmerkregel. Een pagina vol "intimidatie door familieleden" schrikt
+ * een inkoper af; twee zinnen in een nette container laten zien dat we weten
+ * waar we het over hebben.
+ */
 import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import Base from '../../../layouts/Base.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
+import { link } from '../../../lib/link';
 import { inZin } from '../../../lib/naam';
-import NiveauBadge from '../../../components/NiveauBadge.astro';
-import Terugbelverzoek from '../../../components/Terugbelverzoek.astro';
 import { SECTOR_NAMEN } from '../../../lib/sectoren';
 import { ORGANISATIE } from '../../../lib/organisatie';
 import { alleSituaties } from '../../../lib/situaties';
-import AISummaryBox from '../../../components/geo/AISummaryBox.astro';
-import NiveauMatrix from '../../../components/geo/NiveauMatrix.astro';
-import RelatedContextLinks from '../../../components/nav/RelatedContextLinks.astro';
+import { voorDeGroep } from '../../../lib/team';
 
 export async function getStaticPaths() {
   const beroepsgroepen = await getCollection('beroepsgroepen');
@@ -25,169 +48,83 @@ const { beroepsgroep } = Astro.props;
 const b = beroepsgroep.data;
 const { Content } = await render(beroepsgroep);
 
-const NIVEAU_VOLGORDE = { basis: 0, gevorderd: 1, expert: 2 };
-const trainingen = (await getCollection('trainingen'))
-  .filter((t) => t.data.beroepsgroep === b.slug)
-  .sort((a, z) => NIVEAU_VOLGORDE[a.data.niveau] - NIVEAU_VOLGORDE[z.data.niveau]);
-
-const sectorNaam = SECTOR_NAMEN[b.sector] ?? b.sector;
-
-/* Alle beroepsgroepen, voor de verwante verwijzingen onderaan. */
-const alleGroepen = (await getCollection('beroepsgroepen')).map((g) => ({
-  slug: g.data.slug,
-  naam: g.data.naam,
-  sector: g.data.sector,
-}));
-
-/*
-  Dit is de landingsplek voor "agressietraining {beroepsgroep}" — de
-  zoekopdracht waar dit merk op moet staan. Er stond per niveau alleen duur en
-  groepsgrootte, en omdat elke training één dag duurt en tien deelnemers telt,
-  waren de drie kaarten praktisch niet van elkaar te onderscheiden.
-
-  Wie hier komt heeft één vraag: welk niveau heb ik nodig? Die wordt nu
-  beantwoord met wat er per niveau écht verschilt — voor wie het is, wat je
-  vooraf moet kunnen, en wat je meeneemt. Dat is meteen de tekst die een
-  AI-antwoordsysteem citeert bij "verschil tussen basis en gevorderd".
-
-  De algemene niveauomschrijving die hier eerst stond is bewust weg: die was
-  woordelijk gelijk op alle vierenveertig beroepsgroeppagina's. Wat er nu
-  staat komt uit de trainingen zelf en is dus per beroepsgroep anders.
-
-  Ook de volledige trainingstitel als kaartkop is weg: die is bijna woordelijk
-  gelijk aan de H1 erboven, en drie keer achter elkaar dezelfde zin lezen zegt
-  niets. Wat de bezoeker hier moet zien is waar dit niveau over gaat; de
-  volledige titel staat op de trainingspagina zelf.
-*/
-const NIVEAU_KOP = {
+const VOLGORDE = { basis: 0, gevorderd: 1, expert: 2 };
+const LABEL = { basis: 'Basis', gevorderd: 'Gevorderd', expert: 'Expert' } as const;
+const KERN = {
   basis: 'Herkennen en de-escaleren',
   gevorderd: 'Zwaardere en structurele situaties',
   expert: 'Beleid, teamnorm en borging',
-};
+} as const;
 
-/*
-  De voorwaarde staat in de trainingen als zinsdeel, omdat hij daar achter het
-  woord "Voorwaarde:" in een tabel komt te staan. Hier vormt hij een eigen
-  regel, dus wordt er een lopende zin van gemaakt.
-*/
-function alsZin(tekst: string): string {
-  const schoon = tekst.trim();
-  const metHoofdletter = schoon.charAt(0).toUpperCase() + schoon.slice(1);
-  return /[.!?]$/.test(metHoofdletter) ? metHoofdletter : `${metHoofdletter}.`;
-}
+const trainingen = (await getCollection('trainingen'))
+  .filter((t) => t.data.beroepsgroep === b.slug)
+  .sort((a, z) => VOLGORDE[a.data.niveau] - VOLGORDE[z.data.niveau]);
 
-/*
-  De drie antwoorden voor het citeerbare blok bovenaan.
-
-  Alle drie komen uit de trainingen van deze beroepsgroep, dus ze verschillen
-  per pagina en er staat niets in wat niet ergens anders op de site ook staat.
-  Ze zijn geschreven om losgeknipt te kunnen worden: elk antwoord noemt de
-  beroepsgroep, zodat het buiten de pagina nog steeds klopt.
-*/
+const sectorNaam = SECTOR_NAMEN[b.sector] ?? b.sector;
+const groep = inZin(b.naam);
 const basis = trainingen.find((t) => t.data.niveau === 'basis') ?? trainingen[0];
-const groepKort = inZin(b.naam);
 
 /*
-  Rechtstreeks alle situaties van déze beroepsgroep, niet via de gespreide
-  selectie. Die spreidt juist over beroepsgroepen heen — precies één per groep —
-  dus filteren op deze groep leverde meestal niets op.
-*/
-const situatiesHier = (await alleSituaties()).filter((s) => s.beroepsgroep === b.naam);
-/*
-  Met een dubbele punt en een puntkomma, niet met "en" ertussen.
-
-  De situaties zijn niet allemaal hetzelfde soort zin: sommige zijn een hele
-  zin ("Je wilt de woning verlaten maar wordt tegengehouden"), andere een
-  naamwoordgroep ("Intimidatie door familieleden"). Aan elkaar geregen met "en"
-  levert dat kromme zinnen op. Als opsomming achter een dubbele punt staan
-  beide vormen naast elkaar zonder te wringen.
-*/
-const situatieZin = situatiesHier.length
-  ? situatiesHier
-      .slice(0, 2)
-      .map((s) => s.tekst.charAt(0).toLowerCase() + s.tekst.slice(1))
-      .join('; ')
-  : null;
-
-const antwoorden = [
-  {
-    vraag: `Voor wie is de agressietraining ${groepKort}?`,
-    antwoord: basis?.data.doelgroep ?? '',
-  },
-  ...(situatieZin
-    ? [
-        {
-          vraag: 'Welke situaties komen aan bod?',
-          antwoord: `Onder meer: ${situatieZin}.`,
-        },
-      ]
-    : []),
-  {
-    vraag: 'Hoe is het aanbod opgebouwd?',
-    antwoord:
-      `Bureau Weerbaar en Veilig geeft ${trainingen.length} niveaus voor ${groepKort}: ` +
-      `basis, gevorderd en expert. Elke training duurt één dag.`,
-  },
-].filter((a) => a.antwoord);
-
-/* Dezelfde gegevens, in de vorm die de tabelcomponent verwacht. */
-const matrixRijen = trainingen.map((t) => ({
-  niveau: t.data.niveau,
-  label: { basis: 'Basis', gevorderd: 'Gevorderd', expert: 'Expert' }[t.data.niveau],
-  voorWie: t.data.doelgroep,
-  vooraf: t.data.voorwaarde
-    ? t.data.voorwaarde.charAt(0).toUpperCase() + t.data.voorwaarde.slice(1)
-    : 'Geen voorkennis nodig',
-  meeneemt: t.data.resultaat.slice(0, 3),
-  duur: t.data.duur,
-  groepsgrootte: t.data.groepsgrootte,
-  pad: link(`/trainingen/${t.data.slug}/`),
-}));
-
-const niveaus = trainingen.map((t) => ({
-  slug: t.data.slug,
-  niveau: t.data.niveau,
-  kop: NIVEAU_KOP[t.data.niveau],
-  niveauLabel: { basis: 'Basis', gevorderd: 'Gevorderd', expert: 'Expert' }[t.data.niveau],
-  doelgroep: t.data.doelgroep,
-  voorwaarde: t.data.voorwaarde
-    ? alsZin(t.data.voorwaarde)
-    : 'Geen voorkennis nodig — dit is het instapniveau.',
-  meeneemt: t.data.resultaat.slice(0, 3),
-}));
-
-const duur = trainingen[0]?.data.duur;
-
-/*
-  Groepsgrootte voor de feitenstrip.
-
-  De niveaus verschillen hierin: basis en gevorderd tellen maximaal tien
-  deelnemers, expert maximaal acht. Eerst liet deze strip het getal daarom
-  helemaal weg zodra de niveaus niet gelijk waren — maar dat is precies een van
-  de drie dingen waar een opdrachtgever op scant, en niets tonen is slechter
-  dan een bereik tonen. Nu wordt het "max. 8–10 deelnemers".
+  Groepsgrootte verschilt per niveau: basis en gevorderd tellen tien
+  deelnemers, expert acht. Als bereik tonen in plaats van weglaten — het is een
+  van de drie dingen waarop een opdrachtgever scant.
 */
 const groepsgrootte = (() => {
-  const getallen = trainingen
+  const n = trainingen
     .map((t) => Number(t.data.groepsgrootte.match(/\d+/)?.[0]))
-    .filter((n) => Number.isFinite(n));
-  if (!getallen.length) return undefined;
-  const laag = Math.min(...getallen);
-  const hoog = Math.max(...getallen);
+    .filter((x) => Number.isFinite(x));
+  if (!n.length) return undefined;
+  const laag = Math.min(...n);
+  const hoog = Math.max(...n);
   return laag === hoog ? `max. ${hoog} deelnemers` : `max. ${laag}–${hoog} deelnemers`;
 })();
 
-/*
-  Deze pagina somt de trainingen voor deze beroepsgroep op, en dat is precies
-  wat er in de gestructureerde data staat: een ItemList met de vermeldingen
-  erin. De volledige Course-opmaak hoort op de trainingspagina zelf — hier
-  alleen naam, doelgroep en verwijzing, zodat er niets dubbel wordt opgevoerd.
-*/
+const kerngegevens = ([
+  ['Duur', trainingen[0]?.data.duur],
+  ['Groepsgrootte', groepsgrootte],
+  ['Locatie', 'Incompany of in Neede'],
+  ['Afsluiting', basis?.data.certificaat ? 'Deelnamecertificaat' : undefined],
+  ['Niveaus', `${trainingen.length}, van basis tot expert`],
+] as [string, string | undefined][]).filter((r): r is [string, string] => Boolean(r[1]));
+
+/* Hoogstens twee situaties: meer wordt een muur van ellende. */
+const situaties = (await alleSituaties())
+  .filter((s) => s.beroepsgroep === b.naam)
+  .sort((a, z) => z.tekst.length - a.tekst.length)
+  .slice(0, 2);
+
+/* De trainers, als menselijk tegenwicht. */
+const team = await voorDeGroep();
+const fotos = import.meta.glob<{ default: ImageMetadata }>('../../../images/team/*.jpg', {
+  eager: true,
+});
+const fotoVan = (id: string) => {
+  const sleutel = Object.keys(fotos).find((p) => p.endsWith(`/${id}.jpg`));
+  return sleutel ? fotos[sleutel].default : undefined;
+};
+const acteurs = team.filter((l) => /acteur/i.test(l.data.rol)).length;
+
+/* Verwante beroepsgroepen: eerst dezelfde sector, daarna roterend de rest. */
+const alleGroepen = (await getCollection('beroepsgroepen')).map((g) => g.data);
+const opNaam = (x: { naam: string }, y: { naam: string }) => x.naam.localeCompare(y.naam);
+const zelfdeSector = alleGroepen
+  .filter((g) => g.sector === b.sector && g.slug !== b.slug)
+  .sort(opNaam);
+const rest = alleGroepen.filter((g) => g.sector !== b.sector).sort(opNaam);
+let draai = 0;
+for (const teken of b.slug) draai = (draai + teken.charCodeAt(0)) % 9973;
+const verwant = [
+  ...zelfdeSector,
+  ...(rest.length
+    ? rest.slice(draai % rest.length).concat(rest.slice(0, draai % rest.length))
+    : []),
+].slice(0, 3);
+
 const lijstSchema = trainingen.length
   ? JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'ItemList',
-      name: `Agressietraining voor ${inZin(b.naam)}`,
+      name: `Agressietraining voor ${groep}`,
       numberOfItems: trainingen.length,
       itemListOrder: 'https://schema.org/ItemListOrderAscending',
       itemListElement: trainingen.map((t, i) => ({
@@ -199,7 +136,6 @@ const lijstSchema = trainingen.length
           description: t.data.doelgroep,
           educationalLevel: t.data.niveau,
           url: new URL(link(`/trainingen/${t.data.slug}/`), Astro.site).href,
-          /* Verwijst naar de sitebrede Organization, zie src/lib/organisatie.ts. */
           provider: ORGANISATIE,
         },
       })),
@@ -208,13 +144,13 @@ const lijstSchema = trainingen.length
 ---
 
 <Base
-  titel={`Agressietraining ${inZin(b.naam)}`}
+  titel={`Agressietraining ${groep}`}
   beschrijving={b.samenvatting}
   schema={lijstSchema ? [lijstSchema] : []}
 >
-  <div class="vlak-donker op-donker relative overflow-hidden text-white">
-    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
-    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
+  {/* ── Kop: waar ben ik, waar gaat dit over, wat zijn de feiten ── */}
+  <section class="vlak-donker op-donker kopvlak">
+    <div class="omvat">
       <Breadcrumb
         pad={[
           { naam: 'Home', pad: '/' },
@@ -223,187 +159,184 @@ const lijstSchema = trainingen.length
           { naam: b.naam },
         ]}
       />
-      <p class="kicker mt-7">Beroepsgroep</p>
-      <h1 class="mt-4 max-w-3xl text-3xl font-bold leading-[1.15] md:text-5xl">
-        Agressietraining voor {inZin(b.naam)}
-      </h1>
-      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">{b.samenvatting}</p>
 
-      {/*
-        Dezelfde feitenstrip als op de trainingspagina's. Dit is de pagina waar
-        iemand landt die zoekt op "agressietraining {beroepsgroep}", en de
-        eerste vraag daarna is altijd: hoe lang, met hoeveel mensen, en waar.
+      <div class="kopblok">
+        <div>
+          <p class="label kopblok-label">Beroepsgroep · {sectorNaam}</p>
+          <h1 class="kopblok-titel">Agressietraining voor {groep}</h1>
+          <p class="kopblok-lead">{b.samenvatting}</p>
 
-        Die stonden alleen verderop in de lopende tekst van het niveaublok.
-        Hier staan ze boven de vouw, waar ze in één blik te lezen zijn.
-      */}
-      {duur && (
-        <ul class="mt-9 flex flex-wrap gap-x-8 gap-y-4 border-t border-white/15 pt-7">
-          {[
-            ['Duur', duur],
-            ...(groepsgrootte ? [['Groep', groepsgrootte]] : []),
-            ['Locatie', 'Incompany of in Neede'],
-            ['Niveaus', `${niveaus.length} van basis tot expert`],
-          ].map(([label, waarde]) => (
-            <li>
-              <span class="block text-xs font-bold uppercase tracking-wide text-white/55">
-                {label}
-              </span>
-              <span class="mt-1 block font-semibold">{waarde}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  </div>
-  <div class="lijn-merk" aria-hidden="true"></div>
-
-  <div class="textuur-stip">
-    <div class="mx-auto max-w-6xl px-4 py-14">
-      {/*
-        Het antwoordblok staat vóór de lopende tekst, niet erna. Dat is het hele
-        punt: wat een AI-systeem overneemt is wat het als eerste tegenkomt.
-      */}
-      {antwoorden.length > 0 && (
-        <div class="mb-12 max-w-3xl">
-          <AISummaryBox
-            onderwerp={`agressietraining voor ${groepKort}`}
-            blokken={antwoorden}
-            meer={{ tekst: 'Welk niveau heeft mijn team nodig?', pad: '/trainingsgids/welk-niveau/' }}
-          />
+          <div class="kopblok-acties">
+            <a href="#niveaus" class="knop knop-accent niveau-basis">
+              Kies je niveau
+              <span class="pijl" aria-hidden="true">→</span>
+            </a>
+            <a href={link('/contact/')} class="knop knop-rand">Overleg met ons</a>
+          </div>
         </div>
-      )}
 
-      <section class="leestekst">
-        <Content />
-      </section>
-    </div>
-  </div>
-
-  {/*
-    De niveauvergelijking op een eigen vlak met een schuine bovenrand. Dit is de
-    beslissing waarvoor iemand hier is — welk niveau heb ik nodig — en die
-    verdient een eigen hoofdstuk in plaats van door te lopen in hetzelfde witte
-    vlak als de introtekst.
-  */}
-  <section class="gloed-warm rand-schuin-boven border-t border-lijn" aria-labelledby="niveaus-titel">
-    <div class="mx-auto max-w-6xl px-4 py-16">
-      <p class="kicker">Welk niveau heb ik nodig?</p>
-      <h2 id="niveaus-titel" class="kop-onderstreept mt-4 text-3xl font-bold text-marine md:text-4xl">
-        {niveaus.length === 1 ? 'De training' : `De ${niveaus.length} niveaus vergeleken`}
-      </h2>
-
-      {/*
-        Duur, groepsgrootte en locatie stonden hier in een alinea. Die staan nu
-        in de feitenstrip in de kop, waar ze eerder gezien worden — dus hier
-        alleen nog waar het echt om gaat.
-      */}
-      <p class="mt-5 max-w-2xl leading-relaxed text-grijs">
-        Alle drie de niveaus behandelen hetzelfde onderwerp, maar niet dezelfde
-        situaties en niet voor dezelfde mensen. Wat per niveau verschilt, staat
-        hieronder.
-      </p>
-
-      {/*
-        Dezelfde vergelijking twee keer: als tabel en als kaarten.
-
-        Dat is geen dubbelop maar een bewuste verdeling. De tabel koppelt elke
-        cel aan een rij- én een kolomkop, en dat is wat een schermlezer en een
-        uitlezend systeem nodig hebben om "gevorderd" en "afgeronde
-        basistraining" aan elkaar te verbinden. De kaarten zijn wat een bezoeker
-        op een telefoon prettiger scant.
-
-        De tabel verschijnt daarom vanaf de breedte waarop hij past, en de
-        kaarten daaronder. Op een smal scherm blijft alleen de kaartweergave
-        over, zodat er geen tabel van vierenveertig rem in een scherm van
-        twintig wordt geperst.
-      */}
-      <div class="mt-10 hidden lg:block">
-        <NiveauMatrix beroepsgroep={b.naam} rijen={matrixRijen} />
-      </div>
-
-      <div class="mt-10 grid gap-6 md:grid-cols-3 lg:hidden">
-        {niveaus.map((n) => (
-          <article class={`niveau-${n.niveau} kaart flex flex-col p-6`}>
-            <NiveauBadge niveau={n.niveau} />
-            {/*
-              De badge toont het niveau al zichtbaar. In een koppenlijst van een
-              schermlezer staat die badge er niet bij, dus krijgt de kop het
-              niveau daar alsnog mee — anders staat er drie keer een kop die op
-              zichzelf niet zegt bij welk niveau hij hoort.
-            */}
-            <h3 class="mt-4 text-lg font-bold leading-snug text-marine">
-              <span class="sr-only">{n.niveauLabel}: </span>{n.kop}
-            </h3>
-
-            <dl class="mt-5 space-y-4 border-t border-lijn pt-5 text-sm leading-relaxed">
-              <div>
-                <dt class="font-bold text-marine">Voor wie</dt>
-                <dd class="mt-1 text-grijs">{n.doelgroep}</dd>
-              </div>
-              <div>
-                <dt class="font-bold text-marine">Vooraf</dt>
-                <dd class="mt-1 text-grijs">{n.voorwaarde}</dd>
-              </div>
-              <div>
-                <dt class="font-bold text-marine">Wat je meeneemt</dt>
-                <dd class="mt-2">
-                  <ul class="space-y-2 text-grijs">
-                    {n.meeneemt.map((r) => (
-                      <li class="flex items-start gap-2.5">
-                        <svg
-                          aria-hidden="true"
-                          viewBox="0 0 20 20"
-                          class="mt-0.5 h-4 w-4 flex-none"
-                          style="color: var(--accent-tekst)"
-                        >
-                          <path
-                            fill="currentColor"
-                            d="M7.6 14.3 3.7 10.4l1.4-1.4 2.5 2.5 6.9-6.9 1.4 1.4z"
-                          />
-                        </svg>
-                        <span>{r}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </dd>
-              </div>
-            </dl>
-
-            {/*
-              mt-auto op de omhulling duwt de knop naar de onderrand, zodat de
-              knoppen van drie kaarten met verschillend lange teksten toch op
-              één lijn staan. De marge hoort op die omhulling en niet op de
-              knop zelf: een inline margin-top zou de mt-auto overschrijven en
-              de kaarten weer ongelijk maken.
-            */}
-            <div class="mt-auto pt-6">
-              <a
-                href={link(`/trainingen/${n.slug}/`)}
-                class="flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-center text-sm font-bold text-white after:absolute after:inset-0"
-                style="background: var(--accent-sterk)"
-              >
-                <span>Bekijk het hele programma</span>
-                <span class="pijl" aria-hidden="true">→</span>
-              </a>
+        {/*
+          De harde feiten staan naast de kop, niet in een zijkolom. Die zakt op
+          een telefoon onder de hele pagina, en dan ziet niemand ze.
+        */}
+        <dl class="gegevens kopblok-feiten">
+          {kerngegevens.map(([label, waarde]) => (
+            <div>
+              <dt>{label}</dt>
+              <dd>{waarde}</dd>
             </div>
-          </article>
-        ))}
+          ))}
+        </dl>
       </div>
     </div>
   </section>
 
-  <div class="mx-auto max-w-6xl px-4 py-14">
-    <div class="max-w-3xl">
-      <Terugbelverzoek onderwerp={`de agressietraining voor ${inZin(b.naam)}`} />
-    </div>
+  {/* ── Het bewijs: wat er in dit vak echt gebeurt ── */}
+  {situaties.length > 0 && (
+    <section class="vlak-papier vlak-krap">
+      <div class="omvat">
+        <p class="label">Uit de trainingen</p>
+        <div class="dossierrij">
+          {situaties.map((s, i) => (
+            <article class={`dossier niveau-${trainingen[i]?.data.niveau ?? 'basis'} komt-op`}>
+              <p class="dossier-kenmerk">
+                <span>Casus {String(i + 1).padStart(2, '0')}</span>
+                <span>{sectorNaam}</span>
+              </p>
+              <p class="dossier-tekst">{s.tekst}</p>
+            </article>
+          ))}
+        </div>
+        <p class="dossier-bij">
+          Deze situaties staan letterlijk in de trainingen voor {groep}. Ze zijn
+          niet bedacht als voorbeeld — ze zijn het uitgangspunt van de oefening.
+        </p>
+      </div>
+    </section>
+  )}
 
-    <div class="mt-14">
-      <RelatedContextLinks
-        huidigeSlug={b.slug}
-        huidigeSector={b.sector}
-        alle={alleGroepen}
-      />
+  {/* ── De keuze ── */}
+  <section id="niveaus" class="vlak">
+    <div class="omvat">
+      <p class="label">Welk niveau heeft mijn team nodig?</p>
+      <h2 class="sectie-titel">
+        {trainingen.length === 1 ? 'De training' : `De ${trainingen.length} niveaus`}
+      </h2>
+      <p class="sectie-lead">
+        Alle niveaus behandelen hetzelfde onderwerp, maar niet dezelfde situaties
+        en niet voor dezelfde mensen.
+      </p>
+
+      <ol class="niveaus">
+        {trainingen.map((t) => (
+          <li class={`niveau-${t.data.niveau} kaart niveaukaart komt-op`}>
+            <span class="niveaumerk">{LABEL[t.data.niveau]}</span>
+            <h3 class="niveaukaart-titel">{KERN[t.data.niveau]}</h3>
+
+            <dl class="gegevens niveaukaart-info">
+              <div>
+                <dt>Voor wie</dt>
+                <dd>{t.data.doelgroep}</dd>
+              </div>
+              <div>
+                <dt>Vooraf</dt>
+                <dd>
+                  {t.data.voorwaarde
+                    ? t.data.voorwaarde.charAt(0).toUpperCase() + t.data.voorwaarde.slice(1)
+                    : 'Geen voorkennis nodig'}
+                </dd>
+              </div>
+            </dl>
+
+            <p class="niveaukaart-kopje">Wat je meeneemt</p>
+            <ul class="niveaukaart-lijst">
+              {t.data.resultaat.slice(0, 3).map((r) => <li>{r}</li>)}
+            </ul>
+
+            <a href={link(`/trainingen/${t.data.slug}/`)} class="knop knop-accent niveaukaart-knop vlakdek">
+              Bekijk het programma
+              <span class="sr-only"> van het niveau {LABEL[t.data.niveau].toLowerCase()}</span>
+              <span class="pijl" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ol>
     </div>
-  </div>
+  </section>
+
+  {/* ── De mensen: het warme tegenwicht ── */}
+  <section class="vlak-donker op-donker vlak">
+    <div class="omvat mensen">
+      <div>
+        <p class="label">Wie er voor de groep staat</p>
+        <h2 class="sectie-titel mensen-titel">
+          Eén vast team, met {acteurs} trainingsacteurs
+        </h2>
+        <p class="mensen-tekst">
+          Iedereen hier geeft alle trainingen, want Bureau Weerbaar en Veilig doet
+          maar één ding. Dankzij de acteurs oefen je met de situatie die jij
+          inbrengt, in plaats van met een bedacht rollenspel.
+        </p>
+        <a href={link('/over-ons/')} class="knop knop-rand mensen-knop">
+          Maak kennis met het team
+          <span class="pijl" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <ul class="gezichtenrij">
+        {team.map((lid) => {
+          const foto = fotoVan(lid.id);
+          return foto ? (
+            <li>
+              <a href={link(`/team/${lid.id}/`)}>
+                <Image
+                  src={foto}
+                  alt={`${lid.data.naam}, ${inZin(lid.data.rol)}`}
+                  width={112}
+                  height={112}
+                  format="webp"
+                  quality={86}
+                  loading="lazy"
+                  decoding="async"
+                  class="gezicht"
+                />
+              </a>
+            </li>
+          ) : null;
+        })}
+      </ul>
+    </div>
+  </section>
+
+  {/* ── De toelichting: hier zit iemand die bijna besloten heeft ── */}
+  <section class="vlak">
+    <div class="omvat-smal">
+      <p class="label">Over dit vak</p>
+      <div class="leestekst leestekst-na-label">
+        <Content />
+      </div>
+    </div>
+  </section>
+
+  {/* ── Verder kijken ── */}
+  {verwant.length > 0 && (
+    <section class="vlak-papier vlak-krap">
+      <div class="omvat">
+        <p class="label">Ook relevant voor jouw organisatie</p>
+        <ul class="verwant">
+          {verwant.map((g) => (
+            <li class="kaart verwant-kaart">
+              <h3 class="verwant-naam">
+                <a href={link(`/sectoren/${g.sector}/${g.slug}/`)} class="vlakdek">
+                  {g.naam}
+                </a>
+              </h3>
+              <p class="verwant-sector">{SECTOR_NAMEN[g.sector] ?? g.sector}</p>
+              <span class="pijl verwant-pijl" aria-hidden="true">→</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
 </Base>
