@@ -79,26 +79,42 @@ export function metaBeschrijving(tekst: string): string {
 }
 
 /**
- * Zoekwoordgerichte titel voor een training: "Agressietraining {groep} ({niveau})".
+ * Titel voor een trainingspagina.
  *
- * Hier wordt bewust niet afgekort, en dat is met schade en schande zo geworden.
- * De oorspronkelijke versie kapte de hele zin af op zestig tekens, en omdat het
- * niveau achteraan staat was dát het eerste wat verdween: negenentwintig
- * pagina's kregen zo dezelfde titel als hun buren, waardoor de drie niveaus van
- * een beroepsgroep onderling om dezelfde zoekopdracht concurreerden.
+ * Deze titel is twee keer eerder fout geweest, en het is de moeite waard om te
+ * weten waarom, want de derde versie lost een ander probleem op dan de tweede.
  *
- * Kort je op de resterende ruimte, dan hangt die ruimte af van de lengte van het
- * niveauwoord, en houdt dezelfde beroepsgroep bij "basis" een langere naam over
- * dan bij "gevorderd". Kort je op een vaste maat, dan vallen twee verschillende
- * beroepsgroepen samen tot "sociale dienst".
+ * De eerste versie kapte de hele zin af op zestig tekens. Omdat het niveau
+ * achteraan stond was dát het eerste wat verdween: negenentwintig pagina's
+ * kregen dezelfde titel als hun buren.
  *
- * Een title mág langer zijn dan wat Google toont. Wat er in de zoekresultaten
- * afvalt is het staartstuk, en dat is hier het minst belangrijke deel: de
- * beroepsgroep staat vooraan, het niveau achteraan waar het alleen nog hoeft te
- * onderscheiden. Volledig en uniek weegt zwaarder dan precies passend.
+ * De tweede versie kortte niet meer af en zette het niveau tussen haakjes:
+ * "Agressietraining thuiszorg & wijkverpleging (basis)". Alle titels waren toen
+ * uniek, en daar leek het mee opgelost.
+ *
+ * Maar uniek is niet hetzelfde als onderscheidend. Vier pagina's begonnen met
+ * exact dezelfde woorden — de beroepsgroeppagina en de drie niveaus — en
+ * mikten daarmee alle vier op "agressietraining {beroepsgroep}". Dat is één
+ * zoekopdracht met vier kandidaten van dezelfde site. Zo'n stapel dwingt een
+ * zoekmachine te kiezen zonder houvast, en de kans is reëel dat de
+ * beroepsgroeppagina — juist de pagina die die zoekopdracht hoort te winnen —
+ * als een dunne tussenpagina wordt gezien die alleen doorlinkt.
+ *
+ * Nu claimt de beroepsgroeppagina de algemene term, en zeggen de drie
+ * niveaupagina's vooraan waarin ze verschillen. Dat is ook wat hun eigen H1 al
+ * deed: die van het expertniveau begint met "Expert agressietraining voor
+ * leidinggevenden". Alleen de titel liep achter.
  */
-export function trainingTitel(beroepsgroepNaam: string, niveauLabel: string): string {
-  return `Agressietraining ${beroepsgroepNaam.toLowerCase()} (${niveauLabel.toLowerCase()})`;
+export function trainingTitel(
+  beroepsgroepNaam: string,
+  niveau: 'basis' | 'gevorderd' | 'expert'
+): string {
+  const groep = beroepsgroepNaam.toLowerCase();
+  return {
+    basis: `Basistraining agressie voor ${groep}`,
+    gevorderd: `Gevorderde agressietraining voor ${groep}`,
+    expert: `Agressietraining leidinggevenden ${groep}`,
+  }[niveau];
 }
 
 /**

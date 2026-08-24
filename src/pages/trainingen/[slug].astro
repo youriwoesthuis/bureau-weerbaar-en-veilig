@@ -32,7 +32,7 @@ const niveauLabel = { basis: 'Basis', gevorderd: 'Gevorderd', expert: 'Expert' }
 
 /* Korte, zoekwoordgerichte title: de volledige H1 past zelden binnen 60 tekens. */
 const beroepsgroep = (await getCollection('beroepsgroepen')).find((b) => b.data.slug === d.beroepsgroep);
-const seoTitel = d.seo_titel ?? trainingTitel(beroepsgroep?.data.naam ?? d.beroepsgroep, niveauLabel);
+const seoTitel = d.seo_titel ?? trainingTitel(beroepsgroep?.data.naam ?? d.beroepsgroep, d.niveau);
 const seoBeschrijving = d.seo_beschrijving ?? d.samenvatting;
 
 /*
