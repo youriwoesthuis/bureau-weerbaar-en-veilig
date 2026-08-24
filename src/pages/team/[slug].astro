@@ -5,6 +5,7 @@ import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import Base from '../../layouts/Base.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import { ORGANISATIE, persoonId } from '../../lib/organisatie';
 import Terugbelverzoek from '../../components/Terugbelverzoek.astro';
 
 /*
@@ -43,24 +44,33 @@ const foto = fotoVan(lid.id);
 
 const isActeur = /acteur/i.test(d.rol);
 
+const paginaUrl = new URL(link(`/team/${lid.id}/`), Astro.site).href;
+
 const persoonSchema = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'Person',
   /*
     De trainingspagina's noemen deze persoon als instructor en verwijzen daarbij
-    naar deze URL. Zonder een @id dat daarmee overeenkomt blijven dat twee losse
-    vermeldingen van dezelfde naam; mét dit @id is het één persoon die op
-    honderdtweeëndertig trainingen staat en hier zijn eigen verhaal heeft.
+    naar dit identificatienummer. Komt het niet overeen, dan blijven het twee
+    losse vermeldingen van dezelfde naam; komt het wel overeen, dan is het één
+    persoon die op honderdtweeëndertig trainingen staat en hier zijn eigen
+    verhaal heeft.
+
+    Het anker `#persoon` scheidt de mens van de pagina. Zonder anker zou het
+    identificatienummer gelijk zijn aan de URL van dit document, en dan zeg je
+    dat de webpagina en de persoon hetzelfde ding zijn.
   */
-  '@id': new URL(link(`/team/${lid.id}/`), Astro.site).href,
+  '@id': persoonId(paginaUrl),
   name: d.naam,
   jobTitle: d.rol,
-  worksFor: {
-    '@type': 'Organization',
-    name: 'Bureau Weerbaar en Veilig',
-    url: 'https://bureauweerbaarenveilig.nl',
-  },
-  url: new URL(link(`/team/${lid.id}/`), Astro.site).href,
+  worksFor: ORGANISATIE,
+  url: paginaUrl,
+  /*
+    De portretfoto hoort erbij. Voor een merk zonder geschiedenis is een gezicht
+    bij een naam een van de weinige harde aanknopingspunten die er zijn, en de
+    foto staat toch al op de pagina.
+  */
+  ...(foto ? { image: new URL(foto.src, Astro.site).href } : {}),
 });
 ---
 

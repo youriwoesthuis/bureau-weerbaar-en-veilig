@@ -9,6 +9,7 @@ import TrainersBlok from '../../components/TrainersBlok.astro';
 import { SECTOR_NAMEN } from '../../lib/sectoren';
 import { trainingTitel } from '../../lib/seo';
 import { voorDeGroep as teamVoorDeGroep } from '../../lib/team';
+import { ORGANISATIE, persoonId } from '../../lib/organisatie';
 
 export async function getStaticPaths() {
   const trainingen = await getCollection('trainingen');
@@ -34,11 +35,14 @@ const beroepsgroep = (await getCollection('beroepsgroepen')).find((b) => b.data.
 const seoTitel = d.seo_titel ?? trainingTitel(beroepsgroep?.data.naam ?? d.beroepsgroep, niveauLabel);
 const seoBeschrijving = d.seo_beschrijving ?? d.samenvatting;
 
-const aanbieder = {
-  '@type': 'Organization',
-  name: 'Bureau Weerbaar en Veilig',
-  url: 'https://bureauweerbaarenveilig.nl',
-};
+/*
+  De organisatie stond hier twee keer volledig uitgeschreven: als provider van
+  de training en als uitgever van het certificaat. Voor een consument van
+  gestructureerde data waren dat twee naamloze knooppunten die toevallig
+  dezelfde naam droegen — en geen van beide was verbonden met de sitebrede
+  Organization. Nu verwijzen ze allebei naar dat ene identificatienummer.
+*/
+const aanbieder = ORGANISATIE;
 
 /*
   Wie de training geeft, ook in de gestructureerde data.
@@ -53,12 +57,22 @@ const aanbieder = {
   zichtbaar in het trainersblok. Het is een verwijzing naar de teampagina's, en
   niet de volledige Person-opmaak — die staat daar al, en twee keer opvoeren
   maakt het niet geloofwaardiger.
+
+  Naast het identificatienummer staan hier wel `name` en `url`. Een verwijzing
+  die alleen uit een `@id` bestaat is voor een lezer die de teampagina niet
+  ophaalt een lege huls; met deze twee velden is de vermelding op zichzelf al
+  te begrijpen, terwijl het `@id` de koppeling legt voor wie het netwerk wél
+  opbouwt.
 */
-const trainers = (await teamVoorDeGroep()).map((lid) => ({
-  '@type': 'Person',
-  '@id': new URL(link(`/team/${lid.id}/`), Astro.site).href,
-  name: lid.data.naam,
-}));
+const trainers = (await teamVoorDeGroep()).map((lid) => {
+  const paginaUrl = new URL(link(`/team/${lid.id}/`), Astro.site).href;
+  return {
+    '@type': 'Person',
+    '@id': persoonId(paginaUrl),
+    name: lid.data.naam,
+    url: paginaUrl,
+  };
+});
 
 const courseSchema = JSON.stringify({
   '@context': 'https://schema.org',

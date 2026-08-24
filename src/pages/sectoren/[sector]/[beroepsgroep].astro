@@ -6,6 +6,7 @@ import Breadcrumb from '../../../components/Breadcrumb.astro';
 import NiveauBadge from '../../../components/NiveauBadge.astro';
 import Terugbelverzoek from '../../../components/Terugbelverzoek.astro';
 import { SECTOR_NAMEN } from '../../../lib/sectoren';
+import { ORGANISATIE } from '../../../lib/organisatie';
 
 export async function getStaticPaths() {
   const beroepsgroepen = await getCollection('beroepsgroepen');
@@ -40,13 +41,11 @@ const sectorNaam = SECTOR_NAMEN[b.sector] ?? b.sector;
   De algemene niveauomschrijving die hier eerst stond is bewust weg: die was
   woordelijk gelijk op alle vierenveertig beroepsgroeppagina's. Wat er nu
   staat komt uit de trainingen zelf en is dus per beroepsgroep anders.
-*/
-/*
-  Korte kop per kaart. De volledige trainingstitel stond hier eerst, en die is
-  bijna woordelijk gelijk aan de H1 erboven — drie keer achter elkaar dezelfde
-  zin lezen zegt niets en maakt de kaart onnodig hoog. Wat de bezoeker hier
-  moet zien is waar dit niveau over gaat; de volledige titel staat op de
-  trainingspagina zelf.
+
+  Ook de volledige trainingstitel als kaartkop is weg: die is bijna woordelijk
+  gelijk aan de H1 erboven, en drie keer achter elkaar dezelfde zin lezen zegt
+  niets. Wat de bezoeker hier moet zien is waar dit niveau over gaat; de
+  volledige titel staat op de trainingspagina zelf.
 */
 const NIVEAU_KOP = {
   basis: 'Herkennen en de-escaleren',
@@ -104,11 +103,8 @@ const lijstSchema = trainingen.length
           description: t.data.doelgroep,
           educationalLevel: t.data.niveau,
           url: new URL(link(`/trainingen/${t.data.slug}/`), Astro.site).href,
-          provider: {
-            '@type': 'Organization',
-            name: 'Bureau Weerbaar en Veilig',
-            url: 'https://bureauweerbaarenveilig.nl',
-          },
+          /* Verwijst naar de sitebrede Organization, zie src/lib/organisatie.ts. */
+          provider: ORGANISATIE,
         },
       })),
     })

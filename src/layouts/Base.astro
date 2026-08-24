@@ -5,6 +5,7 @@ import { paginaTitel as maakTitel, metaBeschrijving } from '../lib/seo';
 import { ClientRouter } from 'astro:transitions';
 import Logo from '../components/Logo.astro';
 import { TRAININGSGIDS } from '../lib/trainingsgids';
+import { ORGANISATIE_ID } from '../lib/organisatie';
 
 interface Props {
   titel: string;
@@ -48,6 +49,13 @@ const deelUrl = new URL(link(deelafbeelding ?? '/og-afbeelding.png'), Astro.site
 const organisatieSchema = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': ['Organization', 'LocalBusiness'],
+  /*
+    Het identificatienummer waar de rest van de site naar verwijst. Zonder dit
+    was elke vermelding van de organisatie — als provider van een training, als
+    werkgever van een trainer, als uitgever van een certificaat — een los
+    knooppunt dat toevallig dezelfde naam droeg. Zie src/lib/organisatie.ts.
+  */
+  '@id': ORGANISATIE_ID,
   name: 'Bureau Weerbaar en Veilig',
   description:
     'Specialist in agressietraining: omgaan met agressie, intimidatie en grensoverschrijdend gedrag op de werkvloer, per sector en beroepsgroep.',
