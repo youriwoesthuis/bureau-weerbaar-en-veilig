@@ -221,6 +221,15 @@ body {
   color: var(--color-oranje);
 }
 
+/*
+  Op het merkvlak is het merk-oranje onleesbaar: dat vlak is zelf oranje aan de
+  ene kant, en dan blijft er 2,65:1 over. Daar het perzikaccent, dat 5,02:1
+  haalt op het slechtste punt van het verloop.
+*/
+.merkvlak .kicker {
+  color: var(--kleur-accent-op-merkvlak);
+}
+
 /* Kop met een verloopstreep eronder */
 .kop-onderstreept {
   @apply relative pb-4;
@@ -1098,6 +1107,172 @@ body {
   .kaart-til:hover .icoonschijf {
     background: color-mix(in srgb, var(--color-oranje-licht) 55%, var(--color-paars-licht));
   }
+}
+
+/* ---------------------------------------------------------------
+   Het merkvlak
+   ---------------------------------------------------------------
+   Oranje en paars stonden overal op de site als dun accentje: een streepje van
+   drie pixels, een randje, een pictogram. Herkenbaar, maar nooit aanwezig.
+
+   Dit is het vlak waar die twee kleuren de hele breedte krijgen. Eén keer per
+   pagina, hooguit twee — een merkkleur die je overal opzet is geen merkkleur
+   meer, maar behang.
+
+   De richting loopt diagonaal, zodat het verloop niet samenvalt met de
+   leesrichting en het vlak niet leest als een balk. De donkere marine aan het
+   eind houdt de onderkant rustig genoeg om er witte tekst op te zetten.
+*/
+.merkvlak {
+  position: relative;
+  background-color: #412d4b;
+  /*
+    Drie donkere stops, en dat is met de rekenmachine zo geworden.
+
+    De eerste opzet begon op een lichter oranje en liep via een bruine
+    tussentint. Doorgerekend over de hele as haalde witte tekst daar op het
+    lichtste punt 5,64:1 en de inleidende alinea op 80% dekking nog maar 4,23 —
+    onder de eis. Het merk-oranje als accent kwam niet verder dan 2,24.
+
+    Deze drie stops zijn allemaal donker genoeg om wit te dragen: het slechtste
+    punt geeft 6,67:1 voor volle witte tekst en 4,92:1 op 80% dekking. Dat
+    schept ook ruimte voor een warm accent, zie --kleur-accent-op-merkvlak.
+  */
+  background-image: linear-gradient(118deg, #8f4a03 0%, #6b3f57 50%, #412d4b 100%);
+
+  /*
+    Het merk-oranje is op dit vlak onleesbaar (2,65:1). Dit zachte perzik houdt
+    de warme merkkant vast en haalt 5,02:1 op het slechtste punt van het
+    verloop.
+  */
+  --kleur-accent-op-merkvlak: #ffd9b0;
+}
+
+.merkvlak .accent-warm {
+  color: var(--kleur-accent-op-merkvlak);
+}
+
+/*
+  Een zweem van het chevron-motief eroverheen, iets sterker dan op de marine
+  vlakken: op een verloop met zoveel kleur verdwijnt een textuur van 2,8%.
+*/
+.merkvlak::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(135deg, rgb(255 255 255 / 0.05) 25%, transparent 25%),
+    linear-gradient(225deg, rgb(255 255 255 / 0.05) 25%, transparent 25%);
+  background-size: 26px 26px;
+}
+
+/* ---------------------------------------------------------------
+   Grote citaten: de situaties uit het vak
+   ---------------------------------------------------------------
+   Deze zinnen komen uit de trainingen zelf en zijn het enige op deze site dat
+   een concurrent niet kan overschrijven. Ze verdienen de maat van een kop, niet
+   die van een opsommingsteken.
+*/
+.situatie {
+  font-size: clamp(1.35rem, 3.4vw, 2.1rem);
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.situatie-bron {
+  margin-top: 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------
+   De loopband met beroepsgroepen
+   ---------------------------------------------------------------
+   Vierenveertig beroepsgroepen in een raster is een lijst die je overslaat. In
+   beweging langs de rand is het iets anders: je ziet in drie seconden dat dit
+   over vierenveertig verschillende vakken gaat, zonder dat je één naam hoeft
+   te lezen.
+
+   De rij staat twee keer in de HTML en schuift precies de halve breedte op, zo
+   sluit het einde naadloos op het begin aan. Puur decoratief: de echte lijst
+   met links staat gewoon in de sectie eronder, dus er gaat geen navigatie
+   verloren als dit niet beweegt.
+*/
+.loopband {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.loopband-rij {
+  display: flex;
+  width: max-content;
+  gap: 0;
+  animation: loopband 70s linear infinite;
+}
+
+/*
+  Stilstaan bij hover. Iemand die iets probeert te lezen wordt anders gedwongen
+  mee te bewegen met de tekst.
+*/
+@media (hover: hover) {
+  .loopband:hover .loopband-rij {
+    animation-play-state: paused;
+  }
+}
+
+/*
+  Wie minder beweging heeft ingesteld krijgt een stilstaande rij. Niet
+  verbergen: de namen zijn dan gewoon het eerste stuk van de lijst, en dat
+  leest prima.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .loopband-rij {
+    animation: none;
+  }
+}
+
+@keyframes loopband {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.loopband-item {
+  padding: 0 1.75rem;
+  font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--color-marine);
+  opacity: 0.55;
+}
+
+/* Elk vierde item in de merkkleur, zodat de rij niet één grijze streep wordt. */
+.loopband-item:nth-child(4n) {
+  color: var(--color-oranje-tekst);
+  opacity: 0.9;
+}
+.loopband-item:nth-child(4n + 2) {
+  color: var(--color-paars);
+  opacity: 0.85;
+}
+
+.loopband-scheiding {
+  align-self: center;
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 999px;
+  background: var(--color-oranje);
+  opacity: 0.5;
 }
 
 /* ---------------------------------------------------------------

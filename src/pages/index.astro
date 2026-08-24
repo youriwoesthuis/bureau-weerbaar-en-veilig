@@ -8,6 +8,7 @@ import NiveauBadge from '../components/NiveauBadge.astro';
 import Terugbelverzoek from '../components/Terugbelverzoek.astro';
 import SectorIcoon from '../components/SectorIcoon.astro';
 import { TRAININGSDAG } from '../lib/trainingsdag';
+import { situatieSelectie, alleSituaties } from '../lib/situaties';
 import {
   SECTOR_NAMEN,
   NIVEAU_BESCHRIJVING,
@@ -44,6 +45,9 @@ const aantalTrainingen = (sector: string) =>
   trainingen.filter((t) => t.data.sector === sector).length;
 const aantalGroepen = (sector: string) =>
   beroepsgroepen.filter((b) => b.data.sector === sector).length;
+const situaties = await situatieSelectie(6);
+const aantalSituaties = (await alleSituaties()).length;
+
 const cijfers = [
   { getal: trainingen.length, label: 'trainingen' },
   { getal: sectoren.length, label: 'sectoren' },
@@ -137,8 +141,80 @@ const cijfers = [
   </section>
   <div class="lijn-merk" aria-hidden="true"></div>
 
+  {/*
+    De loopband met beroepsgroepen.
+
+    Vierenveertig namen in een raster is een lijst die je overslaat. In beweging
+    langs de rand zie je in drie seconden dat dit over vierenveertig
+    verschillende vakken gaat, zonder dat je één naam hoeft te lezen — en dat
+    is precies het verhaal van dit merk: niet één algemene training, maar
+    vierenveertig keer hetzelfde onderwerp anders uitgewerkt.
+
+    aria-hidden, want dit is een beeld en geen navigatie. De echte lijst met
+    links staat in de sectie eronder; hier gaat dus niets verloren.
+  */}
+  <div class="loopband border-b border-lijn bg-white py-5" aria-hidden="true">
+    <div class="loopband-rij">
+      {[...beroepsgroepen, ...beroepsgroepen].map((b) => (
+        <>
+          <span class="loopband-item">{b.data.naam}</span>
+          <span class="loopband-scheiding"></span>
+        </>
+      ))}
+    </div>
+  </div>
+
+  {/*
+    Wat er in dat vak echt gebeurt.
+
+    Deze zinnen komen uit de trainingen zelf, uit het blok "Herkenbare
+    praktijksituaties". Er staan er ruim vijfhonderd op de site, en ze stonden
+    allemaal alleen als opsomming halverwege een trainingspagina.
+
+    Dit is het enige op deze site dat een concurrent niet kan overschrijven.
+    Iedereen kan opschrijven dat hij professionele agressietraining verzorgt;
+    hiervoor moet je de vakken kennen. Daarom staan ze hier op de maat van een
+    kop, op het enige vlak van de site waar de merkkleuren de volle breedte
+    krijgen.
+  */}
+  <section class="merkvlak op-donker text-white" aria-labelledby="situaties-titel">
+    <div class="relative mx-auto max-w-6xl px-4 py-20 md:py-24">
+      <p class="kicker">Waar het over gaat</p>
+      <h2 id="situaties-titel" class="mt-5 max-w-3xl text-3xl font-bold leading-tight md:text-4xl">
+        Dit staat er in de trainingen, letterlijk
+      </h2>
+      <p class="mt-5 max-w-2xl text-lg leading-relaxed text-white/80">
+        Geen bedachte voorbeelden. Dit zijn situaties zoals ze in de trainingen
+        van Bureau Weerbaar en Veilig staan beschreven, per beroepsgroep.
+      </p>
+
+      <ul class="mt-14 grid gap-x-12 gap-y-12 md:grid-cols-2">
+        {situaties.map((s) => (
+          <li class="rol-in border-l-2 border-white/25 pl-6">
+            <p class="situatie">{s.tekst}</p>
+            <p class="situatie-bron accent-warm">
+              <a
+                href={link(`/trainingen/${s.slug}/`)}
+                class="hover:underline"
+              >{s.beroepsgroep}</a>
+            </p>
+          </li>
+        ))}
+      </ul>
+
+      <p class="mt-14 text-white/75">
+        Er staan er {aantalSituaties} op deze site, verdeeld over
+        {' '}{beroepsgroepen.length} beroepsgroepen.
+        <a href={link('/sectoren/')} class="accent-warm ml-1 font-bold hover:underline">
+          Zoek die van jou op
+          <span class="pijl" aria-hidden="true">→</span>
+        </a>
+      </p>
+    </div>
+  </section>
+
   <!-- Sectoren -->
-  <section class="textuur-stip" aria-labelledby="sectoren-titel">
+  <section class="textuur-stip rand-schuin-boven" aria-labelledby="sectoren-titel">
     <div class="mx-auto max-w-6xl px-4 py-20">
     <p class="kicker">Kies je vertrekpunt</p>
     <h2 id="sectoren-titel" class="kop-onderstreept mt-4 text-3xl font-bold text-marine md:text-4xl">
