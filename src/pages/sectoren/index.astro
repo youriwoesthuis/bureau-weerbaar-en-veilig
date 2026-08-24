@@ -3,6 +3,7 @@ import { link } from '../../lib/link';
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import SectorIcoon from '../../components/SectorIcoon.astro';
 import { SECTOR_NAMEN, telwoord } from '../../lib/sectoren';
 
 const sectoren = await getCollection('sectoren');
@@ -48,8 +49,11 @@ const nogTeVullen = Object.entries(SECTOR_NAMEN).filter(([slug]) => !gevuldeSlug
     */}
     <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {gevuld.map((s) => (
-        <li class="kaart flex items-center justify-between gap-4 p-5">
-          <div>
+        <li class="kaart flex items-center gap-4 p-5">
+          <span class="sectoricoon" aria-hidden="true">
+            <SectorIcoon sector={s.data.slug} />
+          </span>
+          <div class="min-w-0">
             <h2 class="text-lg font-bold text-marine">
               {/* De pseudo-laag maakt de hele kaart klikbaar, dus ook de regel eronder */}
               <a href={link(`/sectoren/${s.data.slug}/`)} class="after:absolute after:inset-0">
@@ -61,7 +65,7 @@ const nogTeVullen = Object.entries(SECTOR_NAMEN).filter(([slug]) => !gevuldeSlug
               {' '}{telwoord(perGroepen(s.data.slug), 'beroepsgroep', 'beroepsgroepen')}
             </p>
           </div>
-          <span class="pijl text-xl text-marine" aria-hidden="true">→</span>
+          <span class="pijl ml-auto text-xl text-marine" aria-hidden="true">→</span>
         </li>
       ))}
       {nogTeVullen.map(([, naam]) => (

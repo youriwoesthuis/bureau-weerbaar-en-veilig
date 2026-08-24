@@ -303,6 +303,41 @@ body {
   transform: translateX(4px);
 }
 
+/*
+  Het actieve menu-item. Kleur alleen is niet genoeg — dat is de enige aanwijzing
+  voor iemand die kleuren slecht onderscheidt. Daarom ook een streepje eronder in
+  de merkkleuren, dus twee signalen in plaats van één (WCAG 1.4.1).
+*/
+.menulink[aria-current='page'] {
+  @apply relative text-marine;
+}
+.menulink[aria-current='page']::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.35rem;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--gradient-merk-lijn);
+}
+
+/*
+  Het sectoricoon in een rond vlak. Het neemt de accentkleur van zijn kaart over,
+  dus in het kaartraster wisselt het mee met oranje, paars en indigo. Puur
+  decoratief: de sectornaam staat er altijd in tekst naast.
+*/
+.sectoricoon {
+  @apply flex h-11 w-11 flex-none items-center justify-center rounded-xl;
+  background: var(--accent-vlak, var(--color-vlak));
+  color: var(--accent-tekst, var(--color-marine));
+  transition: background-color 180ms ease;
+}
+.kaart:hover .sectoricoon,
+.kaart:focus-within .sectoricoon {
+  background: color-mix(in srgb, var(--accent, var(--color-marine)) 18%, #fff);
+}
+
 /* ---------------------------------------------------------------
    Knoppen
    --------------------------------------------------------------- */

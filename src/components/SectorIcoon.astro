@@ -1,0 +1,75 @@
+---
+/**
+ * Lijnicoon per sector.
+ *
+ * Eén samenhangende set: allemaal 24 bij 24, alleen lijnen, dezelfde dikte en
+ * ronde uiteinden. Ze nemen de kleur over van de tekst eromheen (currentColor),
+ * zodat ze meelopen met het accent van de kaart waar ze in staan.
+ *
+ * Ze zijn decoratief: de sectornaam staat er altijd naast in tekst. Daarom
+ * aria-hidden, zodat een schermlezer de naam niet twee keer voorleest.
+ */
+interface Props {
+  sector: string;
+  class?: string;
+}
+const { sector, class: klasse = 'h-6 w-6' } = Astro.props;
+
+const paden: Record<string, string> = {
+  // Hart met hartslaglijn
+  zorg: 'M12 20s-7-4.4-7-9.3A4 4 0 0 1 12 8a4 4 0 0 1 7 2.7c0 1.4-.6 2.7-1.4 3.9M4 15h3l1.5-2.5L11 17l2-6 1.5 4h6',
+  // Opengeslagen boek
+  onderwijs: 'M12 7.5v12M12 7.5C10.5 6 8.4 5.4 4.5 5.4v11.7c3.9 0 6 .6 7.5 2.1M12 7.5c1.5-1.5 3.6-2.1 7.5-2.1v11.7c-3.9 0-6 .6-7.5 2.1',
+  // Boodschappentas
+  retail: 'M6 8h12l1 12H5L6 8ZM9 8V6a3 3 0 0 1 6 0v2',
+  // Schild
+  beveiliging: 'M12 4l7 2.5v5.2c0 4-2.9 7.5-7 8.3-4.1-.8-7-4.3-7-8.3V6.5L12 4Z',
+  // Bus van voren
+  'openbaar-vervoer': 'M6 4.5h12a1.5 1.5 0 0 1 1.5 1.5v10.5a1 1 0 0 1-1 1H5.5a1 1 0 0 1-1-1V6A1.5 1.5 0 0 1 6 4.5ZM4.5 10.5h15M7 20v-2.5M17 20v-2.5M8 14h.01M16 14h.01',
+  // Bestelbus
+  transport: 'M3 7.5h10v8H3v-8ZM13 10h4l3 3.5v2h-7v-5.5ZM7 15.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM17.5 15.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z',
+  // Gebouw met zuilen
+  'overheid-handhaving': 'M4 9.5 12 5l8 4.5M5.5 9.5v8M10 9.5v8M14 9.5v8M18.5 9.5v8M4 20h16',
+  // Bankgebouw met euroteken
+  'financiele-dienstverlening': 'M4 9 12 4.5 20 9M6 9v9M18 9v9M4 20h16M14.5 12.5a3 3 0 1 0 0 4M9.5 13.5h4M9.5 15.5h4',
+  // Twee mensen naast elkaar
+  welzijn: 'M9 11a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM4.5 19c0-2.5 2-4.2 4.5-4.2S13.5 16.5 13.5 19M16 11.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM15 14.9c2.3.1 4 1.8 4 4.1',
+  // Kop en schotel
+  horeca: 'M5 9h11v4.5a4.5 4.5 0 0 1-9 0V9h-2ZM16 10h1.5a2 2 0 0 1 0 4H16M4 20h14',
+  // Boeken op een plank
+  bibliotheken: 'M6 6h3v12H6zM10.5 6h3v12h-3zM15.2 6.6l2.9.8-3.1 11.6-2.9-.8zM4 20h16',
+  // Huis met sleutelgat
+  woningcorporaties: 'M4 11 12 4.5l8 6.5M6 11.5V20h12v-8.5M12 14.5a1.2 1.2 0 1 0 0-2.4 1.2 1.2 0 0 0 0 2.4ZM12 14.5V17',
+  // Golven in het water
+  sportaccommodaties: 'M3 15.5c1.5 0 1.5-1.5 3-1.5s1.5 1.5 3 1.5 1.5-1.5 3-1.5 1.5 1.5 3 1.5 1.5-1.5 3-1.5 1.5 1.5 3 1.5M3 19.5c1.5 0 1.5-1.5 3-1.5s1.5 1.5 3 1.5 1.5-1.5 3-1.5 1.5 1.5 3 1.5 1.5-1.5 3-1.5 1.5 1.5 3 1.5M8 11V6.5M8 6.5a2 2 0 1 1 4 0M16 11V6',
+  // Pootafdruk
+  dierenzorg: 'M8.5 9.5a1.6 2 0 1 0 0-4 1.6 2 0 0 0 0 4ZM15.5 9.5a1.6 2 0 1 0 0-4 1.6 2 0 0 0 0 4ZM5 14.5a1.5 1.8 0 1 0 0-3.6 1.5 1.8 0 0 0 0 3.6ZM19 14.5a1.5 1.8 0 1 0 0-3.6 1.5 1.8 0 0 0 0 3.6ZM12 12c2.4 0 4.5 2.2 4.5 4.4 0 1.7-1.3 2.6-2.8 2.6-1 0-1.2-.4-1.7-.4s-.7.4-1.7.4c-1.5 0-2.8-.9-2.8-2.6C7.5 14.2 9.6 12 12 12Z',
+  // Vijzel met stamper
+  farmacie: 'M5 10.5h14v1.5a7 7 0 0 1-14 0v-1.5ZM12 19v2M8 21h8M15 4.5l3 3-6 4-1-1 4-6Z',
+  // Weegschaal
+  'justitiele-keten': 'M12 5v15M8 20h8M12 7.5 5 9.5M12 7.5 19 9.5M5 9.5 2.5 15a2.8 2.8 0 0 0 5 0L5 9.5ZM19 9.5 16.5 15a2.8 2.8 0 0 0 5 0L19 9.5Z',
+  // Wereldbol
+  asielopvang: 'M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM4 12h16M12 4c2 2.2 3 5 3 8s-1 5.8-3 8c-2-2.2-3-5-3-8s1-5.8 3-8Z',
+  // Kaars
+  uitvaart: 'M12 4.5c1.4 1.3 2 2.3 2 3.3a2 2 0 0 1-4 0c0-1 .6-2 2-3.3ZM8.5 11h7v9h-7zM6 20h12',
+  // Bliksemschicht
+  energie: 'M13 3 5.5 13.5H11L10 21l8-10.5h-5.5L13 3Z',
+};
+
+const pad = paden[sector];
+---
+
+{pad && (
+  <svg
+    viewBox="0 0 24 24"
+    class={klasse}
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d={pad} />
+  </svg>
+)}

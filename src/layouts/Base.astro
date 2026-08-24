@@ -53,6 +53,17 @@ const organisatieSchema = JSON.stringify({
   sameAs: ['https://actinmove.nl', 'https://agressievisie.nl'],
 });
 
+/*
+  Welk menu-item hoort bij de pagina waar je nu bent? Een trainingspagina valt
+  onder Trainingen, een beroepsgroeppagina onder Sectoren. Daarom vergelijken we
+  op het beginstuk van het pad en niet op een exacte gelijkenis.
+
+  De homepage is de uitzondering: die begint met "/" en zou anders bij élk item
+  passen.
+*/
+const huidigPad = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '') || '/';
+const isActief = (pad: string) => (pad === '/' ? huidigPad === '/' : huidigPad.startsWith(pad));
+
 const hoofdmenu = [
   { naam: 'Agressietraining', pad: '/agressietraining/' },
   { naam: 'Trainingen', pad: '/trainingen/' },
@@ -111,7 +122,11 @@ const hoofdmenu = [
 
         <nav aria-label="Hoofdmenu" class="hidden items-center gap-6 md:flex">
           {hoofdmenu.map((item) => (
-            <a href={link(item.pad)} class="py-1.5 text-sm font-semibold text-inkt hover:text-blauw">
+            <a
+              href={link(item.pad)}
+              aria-current={isActief(item.pad) ? 'page' : undefined}
+              class="menulink py-1.5 text-sm font-semibold text-inkt hover:text-blauw"
+            >
               {item.naam}
             </a>
           ))}
@@ -140,7 +155,11 @@ const hoofdmenu = [
             <ul class="space-y-1">
               {hoofdmenu.map((item) => (
                 <li>
-                  <a href={link(item.pad)} class="block rounded-md px-3 py-3 font-semibold hover:bg-vlak">
+                  <a
+                    href={link(item.pad)}
+                    aria-current={isActief(item.pad) ? 'page' : undefined}
+                    class="block rounded-md px-3 py-3 font-semibold hover:bg-vlak aria-[current=page]:bg-vlak aria-[current=page]:text-marine"
+                  >
                     {item.naam}
                   </a>
                 </li>

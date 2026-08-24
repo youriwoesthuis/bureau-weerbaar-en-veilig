@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import NiveauBadge from '../components/NiveauBadge.astro';
 import Terugbelverzoek from '../components/Terugbelverzoek.astro';
+import SectorIcoon from '../components/SectorIcoon.astro';
 import {
   SECTOR_NAMEN,
   NIVEAU_BESCHRIJVING,
@@ -144,8 +145,11 @@ const cijfers = [
     */}
     <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {sectoren.map((s) => (
-        <li class="kaart rol-in flex items-center justify-between gap-4 p-5">
-          <div>
+        <li class="kaart rol-in flex items-center gap-4 p-5">
+          <span class="sectoricoon" aria-hidden="true">
+            <SectorIcoon sector={s.data.slug} />
+          </span>
+          <div class="min-w-0">
             <h3 class="text-lg font-bold text-marine">
               <a href={link(`/sectoren/${s.data.slug}/`)} class="after:absolute after:inset-0">
                 {s.data.naam}
@@ -156,7 +160,7 @@ const cijfers = [
               {' '}{telwoord(aantalGroepen(s.data.slug), 'beroepsgroep', 'beroepsgroepen')}
             </p>
           </div>
-          <span class="pijl text-xl text-marine" aria-hidden="true">→</span>
+          <span class="pijl ml-auto text-xl text-marine" aria-hidden="true">→</span>
         </li>
       ))}
     </ul>

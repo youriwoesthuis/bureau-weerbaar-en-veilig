@@ -8,6 +8,18 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 const team = (await getCollection('team')).sort((a, b) => a.data.volgorde - b.data.volgorde);
 
 /*
+  Twee groepen op basis van de rol die in de content staat, niet op een lijst
+  namen: wie "trainingsacteur" in zijn rol heeft staan, hoort bij de acteurs.
+  Zo klopt de indeling vanzelf als er iemand bij komt of een rol verandert.
+
+  Wie zowel traint als speelt — dat komt voor — staat bij de acteurs, want dat
+  is de rol waarmee dit team zich onderscheidt.
+*/
+const isActeur = (rol: string) => /acteur/i.test(rol);
+const acteurs = team.filter((lid) => isActeur(lid.data.rol));
+const trainers = team.filter((lid) => !isActeur(lid.data.rol));
+
+/*
   Portretfoto's staan in src/images/team/ zodat Astro ze tijdens het bouwen
   omzet naar moderne, lichte beeldformaten met vaste afmetingen. De koppeling
   loopt via de bestandsnaam, die gelijk is aan de bestandsnaam van het teamlid.
@@ -62,38 +74,74 @@ function fotoVan(id: string) {
       </p>
     </section>
 
-    <section class="mt-12" aria-labelledby="team-titel" id="team">
-      <h2 id="team-titel" class="text-2xl font-bold text-marine">Het team</h2>
+    <section class="mt-14" aria-labelledby="team-titel" id="team">
+      <p class="kicker">Wie er voor de groep staat</p>
+      <h2 id="team-titel" class="kop-onderstreept mt-4 text-3xl font-bold text-marine">
+        Trainers en trainingsacteurs
+      </h2>
+
+      <div class="leestekst mt-6">
+        <p>
+          Iedereen hier geeft alle trainingen, want Bureau Weerbaar en Veilig
+          doet maar één ding: agressietraining. Er is dus geen trainer die dit
+          er even bij doet naast een cursus timemanagement.
+        </p>
+        <p>
+          Wat het team bijzonder maakt, is de verhouding: naast de trainers werken
+          er <strong>{acteurs.length} trainingsacteurs</strong>. Dat is de reden
+          dat er geoefend kan worden met situaties die kloppen. Het bekendste
+          bezwaar tegen agressietraining is de acteur die harder schreeuwt dan
+          welke cliënt ook, waarna iedereen zich opgelaten voelt en niemand iets
+          meeneemt. Een acteur die het vak beheerst doet het omgekeerde: die
+          speelt precies de patiënt, huurder of klant die jíj beschreef, en kan
+          halverwege bijsturen als het te makkelijk of te heftig wordt.
+        </p>
+      </div>
+
       {team.length === 0 ? (
         <p class="mt-3 text-grijs">De teampagina wordt op dit moment gevuld.</p>
       ) : (
-        <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {team.map((lid) => {
-            const foto = fotoVan(lid.id);
-            return (
-            <li class="overflow-hidden rounded-xl border border-lijn text-center">
-              {foto && (
-                <Image
-                  src={foto}
-                  alt={lid.data.foto?.alt ?? `Portretfoto van ${lid.data.naam}`}
-                  width={400}
-                  height={500}
-                  widths={[300, 400, 600]}
-                  sizes="(min-width: 1024px) 260px, (min-width: 640px) 45vw, 90vw"
-                  format="webp"
-                  quality={78}
-                  loading="lazy"
-                  class="aspect-[4/5] w-full object-cover object-top"
-                />
-              )}
-              <div class="p-5">
-                <h3 class="font-bold text-marine">{lid.data.naam}</h3>
-                <p class="mt-1 text-sm leading-snug text-grijs">{lid.data.rol}</p>
+        <div class="mt-10 space-y-10">
+          {[
+            { titel: 'Trainers en coaches', leden: trainers },
+            { titel: 'Trainingsacteurs', leden: acteurs },
+          ]
+            .filter((groep) => groep.leden.length > 0)
+            .map((groep) => (
+              <div>
+                <h3 class="text-sm font-bold uppercase tracking-wide text-grijs">
+                  {groep.titel}
+                </h3>
+                <ul class="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                  {groep.leden.map((lid) => {
+                    const foto = fotoVan(lid.id);
+                    return (
+                      <li class="group overflow-hidden rounded-xl border border-lijn bg-white shadow-[var(--shadow-kaart)] transition-shadow hover:shadow-[var(--shadow-kaart-hover)]">
+                        {foto && (
+                          <Image
+                            src={foto}
+                            alt={lid.data.foto?.alt ?? `Portretfoto van ${lid.data.naam}`}
+                            width={400}
+                            height={500}
+                            widths={[300, 400, 600]}
+                            sizes="(min-width: 1024px) 260px, (min-width: 640px) 45vw, 90vw"
+                            format="webp"
+                            quality={78}
+                            loading="lazy"
+                            class="aspect-[4/5] w-full object-cover object-top"
+                          />
+                        )}
+                        <div class="p-5">
+                          <h4 class="font-bold text-marine">{lid.data.naam}</h4>
+                          <p class="mt-1 text-sm leading-snug text-grijs">{lid.data.rol}</p>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
-            </li>
-            );
-          })}
-        </ul>
+            ))}
+        </div>
       )}
     </section>
 
