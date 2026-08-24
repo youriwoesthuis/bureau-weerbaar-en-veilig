@@ -4,15 +4,30 @@ interface Props {
 }
 const { niveau } = Astro.props;
 
+/*
+  De drie niveaus dragen de drie merkkleuren, in de volgorde van het
+  logoverloop: oranje (basis) → paars (gevorderd) → indigo (expert).
+  Alle drie de combinaties halen ruim de AA-eis van 4,5:1 op hun eigen
+  achtergrondtint.
+*/
 const stijl = {
-  basis: 'bg-oranje/10 text-oranje-donker',
-  gevorderd: 'bg-blauw/10 text-blauw',
-  expert: 'bg-marine/10 text-marine',
+  basis: 'bg-oranje-licht text-oranje-tekst',
+  gevorderd: 'bg-paars-licht text-paars',
+  expert: 'bg-blauw-licht text-indigo',
+}[niveau];
+
+const stip = {
+  basis: 'bg-oranje',
+  gevorderd: 'bg-paars',
+  expert: 'bg-indigo',
 }[niveau];
 
 const label = { basis: 'Basis', gevorderd: 'Gevorderd', expert: 'Expert' }[niveau];
 ---
 
-<span class={`inline-block rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${stijl}`}>
+<span
+  class={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${stijl}`}
+>
+  <span class={`h-1.5 w-1.5 rounded-full ${stip}`} aria-hidden="true"></span>
   Niveau: {label}
 </span>

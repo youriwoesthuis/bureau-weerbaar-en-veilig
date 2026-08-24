@@ -4,24 +4,53 @@
 vervangt dan de gemeten waarden hieronder (dat is één wijziging in
 `src/styles/global.css`: alle componenten volgen automatisch).
 
-## Kleuren (gemeten op de bestaande site + logo)
+## Kleuren (uit `public/images/logo/logo.svg`)
 
-| Token | Waarde | Gebruik |
-|---|---|---|
-| `oranje` | `#F18919` | primaire actiekleur: knoppen, accenten, badges |
-| `oranje-donker` | `#D4720A` | hover/actief; voldoet aan contrast-eisen op wit |
-| `marine` | `#212E56` | koppen, footer, donkere vlakken |
-| `marine-licht` | `#35447A` | secundair donkerblauw |
-| `blauw` | `#203E91` | links, focus-ring, verloop-eindkleur |
-| `inkt` | `#33373D` | bodytekst |
-| `grijs` | `#5B6068` | secundaire tekst |
-| `vlak` | `#F4F4F4` | lichte achtergrondvlakken |
-| `lijn` | `#E2E4E8` | randen en scheidingslijnen |
-| merkverloop | `163deg, #F18919 → #203E91` | het logo-verloop; spaarzaam inzetten (hero, logo) |
+Het logoverloop heeft **vier** stops, niet twee: `#F18919` → `#E8801F` →
+`#B06A55` → `#35409B`. Juist het middenstuk daarvan levert het paars op dat het
+beeldmerk zijn karakter geeft. Een eerdere versie van dit document versimpelde
+het verloop tot oranje → blauw en liet het paars weg; die versimpeling is
+teruggedraaid. Oranje en paars zijn nu de twee dragende accentkleuren.
 
-Contrastregels (WCAG 2.1 AA): oranje alleen als **achtergrond met witte, vette
-tekst** of als accent, nooit als kleine tekst op wit (te licht). Voor tekstlinks
-wordt `blauw` gebruikt.
+| Token | Waarde | Contrast | Gebruik |
+|---|---|---|---|
+| `oranje` | `#F18919` | 6,36:1 op marine-diep | het merk-oranje: accentbalken, en tekst op donkere vlakken |
+| `oranje-tekst` | `#A35405` | 5,49:1 op wit | oranje als tekst op een lichte achtergrond |
+| `oranje-knop` | `#AD5A06` | 4,95:1 met wit erop | oranje vlak met witte tekst |
+| `oranje-knop-hover` | `#8F4A03` | 6,67:1 met wit erop | hover van de primaire knop |
+| `oranje-licht` | `#FDF1E2` | — | zachte oranje achtergrondtint |
+| `paars` | `#735578` | 6,36:1 beide kanten op | het middenstuk van het logoverloop; niveau gevorderd |
+| `paars-diep` | `#4A3455` | 10,97:1 op wit | donkere paarse variant |
+| `paars-helder` | `#C9A9D0` | — | paars op donkere vlakken |
+| `paars-licht` | `#F4EFF6` | — | zachte paarse achtergrondtint |
+| `indigo` | `#35409B` | 8,91:1 op wit | de echte eindkleur van het logo; niveau expert |
+| `marine` | `#212E56` | 13,21:1 op wit | koppen, footer |
+| `marine-diep` | `#17203D` | — | onderkant van de donkere vlakken |
+| `blauw` | `#203E91` | 9,73:1 op wit | tekstlinks en focus-ring |
+| `inkt` | `#33373D` | — | bodytekst |
+| `grijs` | `#5B6068` | 6,4:1 op wit | secundaire tekst |
+| `vlak` / `vlak-warm` | `#F4F4F4` / `#FAF7F3` | — | lichte achtergrondvlakken |
+| `lijn` | `#E2E4E8` | — | randen en scheidingslijnen |
+
+### Contrastregels (WCAG 2.1 AA)
+
+Het volle merk-oranje `#F18919` haalt op wit maar **2,52:1**. Het mag daarom
+nooit als tekstkleur op wit staan, en ook niet als knopvlak met witte tekst —
+dat zakt door dezelfde 2,52:1. Dat was in de eerste versie van de site wél zo
+gebouwd; de primaire knop en de Contact-knop in de header staan nu op
+`oranje-knop`.
+
+Omgekeerd geldt: op een donker vlak schittert datzelfde volle oranje juist, met
+6,36:1. Vandaar dat hero, kruimelpadbalk en het terugbelblok donker zijn — daar
+mag de echte merkkleur aan.
+
+Elk niveau levert drie varianten van zijn kleur, zodat één component altijd de
+juiste kan pakken: `--accent` (vlakken en lijnen), `--accent-sterk` (donker
+genoeg voor witte tekst erop) en `--accent-tekst` (donker genoeg om zelf tekst
+te zijn). Voor paars en indigo vallen die samen; alleen oranje moet dempen.
+
+Gemeten met een script over de opgebouwde pagina's: nul zakkers op de homepage,
+een sectorpagina en een trainingspagina.
 
 ## Typografie
 

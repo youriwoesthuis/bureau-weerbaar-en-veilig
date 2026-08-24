@@ -97,10 +97,11 @@ const praktisch: [string, string | undefined][] = [
 ---
 
 <Base titel={seoTitel} beschrijving={seoBeschrijving} schema={[courseSchema, faqSchema]}>
-  <article>
+  <article class={`niveau-${d.niveau}`}>
     <!-- Kop -->
-    <div class="border-b border-lijn bg-vlak">
-      <div class="mx-auto max-w-6xl px-4 py-8">
+    <div class="vlak-donker op-donker relative overflow-hidden text-white">
+      <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
+      <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
         <Breadcrumb
           pad={[
             { naam: 'Home', pad: '/' },
@@ -109,16 +110,22 @@ const praktisch: [string, string | undefined][] = [
             { naam: d.titel },
           ]}
         />
-        <div class="mt-6 max-w-3xl">
-          <NiveauBadge niveau={d.niveau} />
-          <h1 class="mt-3 text-3xl font-bold leading-tight text-marine md:text-4xl">
+        <div class="mt-7 max-w-3xl">
+          <span
+            class="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-wide"
+          >
+            <span class="h-1.5 w-1.5 rounded-full" style="background: var(--accent)" aria-hidden="true"></span>
+            Niveau: {d.niveau}
+          </span>
+          <h1 class="mt-4 text-3xl font-bold leading-[1.15] md:text-5xl">
             {d.titel}
           </h1>
           <!-- GEO-openingsantwoord: direct citeerbaar, vóór alle marketingtaal -->
-          <p class="mt-4 text-lg leading-relaxed text-inkt">{d.samenvatting}</p>
+          <p class="mt-5 text-lg leading-relaxed text-white/85">{d.samenvatting}</p>
         </div>
       </div>
     </div>
+    <div class="lijn-merk" aria-hidden="true"></div>
 
     <div class="mx-auto grid max-w-6xl gap-12 px-4 py-12 lg:grid-cols-[1fr_20rem]">
       <div class="min-w-0 space-y-12">
@@ -131,11 +138,26 @@ const praktisch: [string, string | undefined][] = [
 
         <!-- Resultaat -->
         <section aria-labelledby="resultaat-titel">
-          <h2 id="resultaat-titel" class="text-2xl font-bold text-marine">Wat je leert</h2>
-          <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+          <h2 id="resultaat-titel" class="kop-onderstreept text-2xl font-bold text-marine">
+            Wat je leert
+          </h2>
+          <ul class="mt-6 grid gap-3 sm:grid-cols-2">
             {d.resultaat.map((r) => (
-              <li class="flex items-start gap-3 rounded-lg border border-lijn p-4">
-                <span aria-hidden="true" class="mt-0.5 font-bold text-oranje">✓</span>
+              <li
+                class="flex items-start gap-3 rounded-lg border border-lijn p-4 transition-colors"
+                style="background: var(--accent-vlak)"
+              >
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 20 20"
+                  class="mt-0.5 h-5 w-5 flex-none"
+                  style="color: var(--accent)"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M10 1.7a8.3 8.3 0 1 0 0 16.6 8.3 8.3 0 0 0 0-16.6Zm4.1 6.2-5 5a.9.9 0 0 1-1.3 0L5.9 11a.9.9 0 1 1 1.3-1.3l1.3 1.4 4.3-4.4a.9.9 0 1 1 1.3 1.3Z"
+                  />
+                </svg>
                 <span>{r}</span>
               </li>
             ))}
@@ -144,19 +166,16 @@ const praktisch: [string, string | undefined][] = [
 
         <!-- Programma -->
         <section aria-labelledby="programma-titel">
-          <h2 id="programma-titel" class="text-2xl font-bold text-marine">Programma</h2>
-          <ol class="mt-4 space-y-4">
+          <h2 id="programma-titel" class="kop-onderstreept text-2xl font-bold text-marine">
+            Programma
+          </h2>
+          <ol class="tijdlijn mt-6">
             {d.programma.map((blok, i) => (
-              <li class="flex gap-4">
-                <span
-                  aria-hidden="true"
-                  class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-oranje text-sm font-bold text-white"
-                >
-                  {i + 1}
-                </span>
-                <div>
-                  <h3 class="font-bold text-inkt">{blok.titel}</h3>
-                  <p class="mt-1 text-grijs">{blok.inhoud}</p>
+              <li class="tijdlijn-stap">
+                <span aria-hidden="true" class="tijdlijn-bol">{i + 1}</span>
+                <div class="pb-7">
+                  <h3 class="font-bold text-marine">{blok.titel}</h3>
+                  <p class="mt-1.5 leading-relaxed text-grijs">{blok.inhoud}</p>
                 </div>
               </li>
             ))}
@@ -165,23 +184,44 @@ const praktisch: [string, string | undefined][] = [
 
         <!-- Werkvormen -->
         <section aria-labelledby="werkvormen-titel">
-          <h2 id="werkvormen-titel" class="text-2xl font-bold text-marine">Werkvormen</h2>
-          <ul class="mt-4 flex flex-wrap gap-2">
+          <h2 id="werkvormen-titel" class="kop-onderstreept text-2xl font-bold text-marine">
+            Werkvormen
+          </h2>
+          <ul class="mt-6 flex flex-wrap gap-2">
             {d.werkvormen.map((w) => (
-              <li class="rounded-full bg-vlak px-4 py-2 text-sm font-medium">{w}</li>
+              <li
+                class="rounded-full border px-4 py-2 text-sm font-semibold"
+                style="background: var(--accent-vlak); border-color: color-mix(in srgb, var(--accent) 28%, transparent); color: var(--accent-tekst)"
+              >
+                {w}
+              </li>
             ))}
           </ul>
         </section>
 
         <!-- FAQ -->
         <section aria-labelledby="faq-titel">
-          <h2 id="faq-titel" class="text-2xl font-bold text-marine">Veelgestelde vragen</h2>
-          <div class="mt-4 divide-y divide-lijn border-y border-lijn">
+          <h2 id="faq-titel" class="kop-onderstreept text-2xl font-bold text-marine">
+            Veelgestelde vragen
+          </h2>
+          <div class="mt-6 space-y-3">
             {d.veelgestelde_vragen.map((f) => (
-              <details class="group py-4">
-                <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold">
+              <details class="uitklap rounded-lg border border-lijn bg-white px-5 py-4 transition-shadow open:shadow-md">
+                <summary class="font-semibold text-marine">
                   {f.vraag}
-                  <span aria-hidden="true" class="text-oranje transition-transform group-open:rotate-45">+</span>
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 20 20"
+                    class="chevron mt-1 h-5 w-5"
+                    style="color: var(--accent)"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="m5 7.5 5 5 5-5" />
+                  </svg>
                 </summary>
                 <p class="mt-3 leading-relaxed text-grijs">{f.antwoord}</p>
               </details>
@@ -193,34 +233,42 @@ const praktisch: [string, string | undefined][] = [
       </div>
 
       <!-- Zijkolom -->
-      <aside class="space-y-6 lg:sticky lg:top-6 lg:self-start">
-        <div class="rounded-xl border border-lijn p-6">
-          <h2 class="text-lg font-bold text-marine">Praktische informatie</h2>
-          <dl class="mt-4 space-y-3 text-sm">
-            {praktisch
-              .filter(([, waarde]) => waarde)
-              .map(([label, waarde]) => (
-                <div>
-                  <dt class="font-semibold text-grijs">{label}</dt>
-                  <dd class="mt-0.5">{waarde}</dd>
-                </div>
-              ))}
-          </dl>
-          <a
-            href={link('/contact/')}
-            class="mt-6 block rounded-md bg-oranje px-5 py-3 text-center text-sm font-bold text-white hover:bg-oranje-donker"
-          >
-            Plan deze training
-          </a>
+      <aside class="space-y-5 lg:sticky lg:top-6 lg:self-start">
+        <div class="relative overflow-hidden rounded-xl border border-lijn bg-white shadow-[var(--shadow-kaart)]">
+          <span class="lijn-merk block" aria-hidden="true"></span>
+          <div class="p-6">
+            <h2 class="text-lg font-bold text-marine">Praktische informatie</h2>
+            <dl class="mt-4 divide-y divide-lijn text-sm">
+              {praktisch
+                .filter(([, waarde]) => waarde)
+                .map(([label, waarde]) => (
+                  <div class="py-2.5 first:pt-0 last:pb-0">
+                    <dt class="text-xs font-bold uppercase tracking-wide text-grijs">{label}</dt>
+                    <dd class="mt-1 font-medium text-inkt">{waarde}</dd>
+                  </div>
+                ))}
+            </dl>
+            <a href={link('/contact/')} class="knop knop-primair mt-6 w-full text-sm">
+              Plan deze training
+              <span class="pijl" aria-hidden="true">→</span>
+            </a>
+          </div>
         </div>
 
         {andereNiveaus.length > 0 && (
-          <div class="rounded-xl border border-lijn p-6">
+          <div class="rounded-xl border border-lijn bg-vlak-warm p-6">
             <h2 class="text-lg font-bold text-marine">Andere niveaus</h2>
-            <ul class="mt-3 space-y-2 text-sm">
+            <ul class="mt-4 space-y-2.5 text-sm">
               {andereNiveaus.map((t) => (
-                <li>
-                  <a href={link(`/trainingen/${t.data.slug}/`)} class="font-medium text-blauw hover:underline">
+                <li class={`niveau-${t.data.niveau} flex items-start gap-2.5`}>
+                  <span
+                    class="mt-1.5 h-2 w-2 flex-none rounded-full"
+                    style="background: var(--accent)"
+                    aria-hidden="true"></span>
+                  <a
+                    href={link(`/trainingen/${t.data.slug}/`)}
+                    class="font-semibold text-blauw hover:underline"
+                  >
                     {t.data.titel}: {t.data.niveau}
                   </a>
                 </li>
@@ -232,11 +280,17 @@ const praktisch: [string, string | undefined][] = [
         {gerelateerd.length > 0 && (
           <div class="rounded-xl border border-lijn p-6">
             <h2 class="text-lg font-bold text-marine">Gerelateerde trainingen</h2>
-            <ul class="mt-3 space-y-2 text-sm">
+            <ul class="mt-4 space-y-2.5 text-sm">
               {gerelateerd.map((t) => (
                 <li>
-                  <a href={link(`/trainingen/${t.data.slug}/`)} class="font-medium text-blauw hover:underline">
+                  <a
+                    href={link(`/trainingen/${t.data.slug}/`)}
+                    class="group inline-flex items-start gap-1.5 font-semibold text-blauw hover:underline"
+                  >
                     {t.data.titel}
+                    <span
+                      class="pijl mt-0.5 transition-transform group-hover:translate-x-1"
+                      aria-hidden="true">→</span>
                   </a>
                 </li>
               ))}

@@ -6,28 +6,74 @@
   Kleuren gemeten op de bestaande site (dev) en het logo.
   Wordt later 1-op-1 vervangen door de definitieve brandkit.
 */
+/*
+  De kleuren komen uit public/images/logo/logo.svg. Dat verloop heeft vier
+  stops — #f18919 → #e8801f → #b06a55 → #35409b — en juist het middenstuk
+  daarvan levert het paars op dat het beeldmerk zijn karakter geeft. Een
+  eerdere versie van DESIGN.md versimpelde dit tot twee stops en liet het paars
+  weg; die versimpeling is hier ongedaan gemaakt.
+
+  Achter elke kleur staat de contrastverhouding (WCAG 2.1 AA vraagt 4,5:1 voor
+  gewone tekst en 3:1 voor grote tekst en voor de rand van bedieningselementen).
+*/
 @theme {
-  /* Merk */
-  --color-oranje: #f18919;
-  --color-oranje-donker: #d4720a; /* hover/actief: voldoende contrast op wit */
-  --color-marine: #212e56;        /* primaire donkere merkkleur */
+  /* Oranje: vol op donkere vlakken, gedempt zodra het op wit moet staan */
+  --color-oranje: #f18919;        /* het merk-oranje. 6,36:1 op marine-diep */
+  --color-oranje-tekst: #a35405;  /* oranje als tekst op wit: 5,49:1 */
+  --color-oranje-knop: #ad5a06;   /* oranje vlak met witte tekst: 4,95:1 */
+  --color-oranje-knop-hover: #8f4a03; /* 6,67:1 */
+  --color-oranje-donker: #d4720a; /* hover van het merk-oranje op donker */
+  --color-oranje-licht: #fdf1e2;  /* zachte oranje achtergrondtint */
+
+  /* Paars: het middenstuk van het logoverloop */
+  --color-paars: #735578;         /* 6,36:1 op wit én met wit erop */
+  --color-paars-diep: #4a3455;    /* 10,97:1 op wit */
+  --color-paars-helder: #c9a9d0;  /* paars op donkere vlakken */
+  --color-paars-licht: #f4eff6;   /* zachte paarse achtergrondtint */
+
+  /* Blauw en marine */
+  --color-marine: #212e56;        /* primaire donkere merkkleur. 13,21:1 */
+  --color-marine-diep: #17203d;   /* onderkant van het donkere verloop */
   --color-marine-licht: #35447a;
-  --color-blauw: #203e91;         /* verloop-eindkleur uit het logo */
+  --color-indigo: #35409b;        /* de echte eindkleur van het logo. 8,91:1 */
+  --color-blauw: #203e91;         /* links en focusring. 9,73:1 */
+  --color-blauw-licht: #eaeffb;   /* zachte blauwe achtergrondtint */
 
   /* Neutralen */
   --color-inkt: #33373d;          /* bodytekst */
   --color-grijs: #5b6068;         /* secundaire tekst */
   --color-vlak: #f4f4f4;          /* lichte vlakken */
+  --color-vlak-warm: #faf7f3;     /* iets warmer vlak, voor afwisseling */
   --color-lijn: #e2e4e8;          /* randen */
 
   /* Typografie */
   --font-sans: 'Montserrat Variable', 'Montserrat', system-ui, sans-serif;
 
-  /* Merkverloop (uit het logo: oranje → koningsblauw) */
-  --gradient-merk: linear-gradient(163deg, #f18919 0%, #203e91 100%);
+  /* Het merkverloop, nu met alle vier de stops uit het logobestand */
+  --gradient-merk: linear-gradient(
+    163deg,
+    #f18919 0%,
+    #e8801f 50%,
+    #b06a55 72%,
+    #35409b 100%
+  );
+  /* Kortere variant voor smalle accenten, waar 163° niets toevoegt */
+  --gradient-merk-lijn: linear-gradient(
+    90deg,
+    #f18919 0%,
+    #b06a55 55%,
+    #35409b 100%
+  );
+
+  /* Schaduwen: zacht en gelaagd, nooit hard */
+  --shadow-kaart: 0 1px 2px rgb(33 46 86 / 0.04), 0 4px 12px rgb(33 46 86 / 0.06);
+  --shadow-kaart-hover: 0 2px 4px rgb(33 46 86 / 0.06), 0 12px 28px rgb(33 46 86 / 0.13);
+  --shadow-diep: 0 24px 60px rgb(23 32 61 / 0.28);
 }
 
-/* Basis */
+/* ---------------------------------------------------------------
+   Basis
+   --------------------------------------------------------------- */
 html {
   scroll-behavior: smooth;
 }
@@ -40,6 +86,24 @@ body {
   outline: 3px solid var(--color-blauw);
   outline-offset: 2px;
   border-radius: 2px;
+}
+/* Op donkere vlakken moet de ring juist licht zijn, anders valt hij weg */
+.op-donker :focus-visible {
+  outline-color: #ffffff;
+}
+
+/*
+  Het kruimelpad staat standaard in grijs op wit. Komt het op een donker vlak
+  te staan, dan zou dat grijs wegvallen (2,9:1); daar wordt het licht.
+*/
+.op-donker .kruimelpad {
+  color: rgb(255 255 255 / 0.72);
+}
+.op-donker .kruimelpad a:hover {
+  color: #ffffff;
+}
+.op-donker .kruimelpad [aria-current='page'] {
+  color: #ffffff;
 }
 
 /* Mobiel menu: verberg de standaard driehoek van <summary> */
@@ -56,4 +120,374 @@ body {
 }
 .skip-link:focus {
   @apply top-4;
+}
+
+/* ---------------------------------------------------------------
+   Donkere vlakken met merkverloop
+   --------------------------------------------------------------- */
+
+/*
+  Het donkere vlak achter hero en call-to-action. Marine als basis, met twee
+  zachte kleurgloeden erboven: oranje linksboven, blauw rechtsonder. Samen
+  echoën ze het verloop uit het logo zonder dat de tekst eroverheen onleesbaar
+  wordt — de gloeden blijven ruim onder de 25% dekking.
+*/
+.vlak-donker {
+  background-color: var(--color-marine-diep);
+  background-image:
+    radial-gradient(58rem 40rem at 6% -12%, rgb(241 137 25 / 0.30), transparent 60%),
+    radial-gradient(44rem 34rem at 52% 116%, rgb(115 85 120 / 0.62), transparent 64%),
+    radial-gradient(52rem 38rem at 104% 8%, rgb(53 64 155 / 0.55), transparent 62%);
+}
+
+/* Lichte variant: dezelfde drie kleuren, maar als zweem op een wit vlak */
+.vlak-zweem {
+  background-color: #ffffff;
+  background-image:
+    radial-gradient(44rem 30rem at 100% 0%, rgb(241 137 25 / 0.10), transparent 60%),
+    radial-gradient(40rem 28rem at 0% 100%, rgb(115 85 120 / 0.10), transparent 62%);
+}
+
+/*
+  Het dubbele chevron-motief uit het beeldmerk, als rustige achtergrondtextuur.
+  Puur decoratief: aria-hidden in de markup, en zo licht dat het nooit met
+  tekst concurreert.
+*/
+.motief-chevron {
+  background-image:
+    linear-gradient(135deg, rgb(255 255 255 / 0.028) 25%, transparent 25%),
+    linear-gradient(225deg, rgb(255 255 255 / 0.028) 25%, transparent 25%);
+  background-size: 22px 22px;
+  background-position: 0 0;
+}
+
+/* Dunne accentlijn in de merkkleuren, als scheiding tussen secties */
+.lijn-merk {
+  height: 3px;
+  background: var(--gradient-merk-lijn);
+}
+
+/*
+  Kicker boven een kop: klein, vet, in kapitalen, met een streepje in de
+  merkkleuren ervoor. Op wit staat de tekst in het gedempte oranje (5,49:1),
+  op donker mag het volle merk-oranje (6,36:1).
+*/
+.kicker {
+  @apply inline-flex items-center gap-3 text-sm font-bold uppercase tracking-widest;
+  color: var(--color-oranje-tekst);
+}
+.kicker::before {
+  content: '';
+  width: 2rem;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--gradient-merk-lijn);
+}
+.op-donker .kicker {
+  color: var(--color-oranje);
+}
+
+/* Kop met een verloopstreep eronder */
+.kop-onderstreept {
+  @apply relative pb-4;
+}
+.kop-onderstreept::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 4.5rem;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--gradient-merk-lijn);
+}
+
+/* ---------------------------------------------------------------
+   Kaarten
+   --------------------------------------------------------------- */
+
+/*
+  Basiskaart. De accentbalk bovenin krijgt zijn kleur via --accent, zodat
+  dezelfde component per sector of niveau een andere merkkleur kan dragen.
+*/
+.kaart {
+  @apply relative overflow-hidden rounded-xl border border-lijn bg-white;
+  box-shadow: var(--shadow-kaart);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+/*
+  De accentbalk staat er meteen, niet pas bij hover. Zonder die kleur in rust
+  bleef een raster van negentien kaarten wit-op-wit — precies de vlakheid die
+  we juist weg wilden hebben. Bij hover wordt de balk dikker.
+*/
+.kaart::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 3px;
+  background: var(--accent, var(--color-oranje));
+  transition: height 200ms ease;
+}
+/* De hele kaart is klikbaar via een uitgerekte link; focus telt daarom mee */
+.kaart:hover,
+.kaart:focus-within {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-kaart-hover);
+  border-color: transparent;
+}
+.kaart:hover::before,
+.kaart:focus-within::before {
+  height: 6px;
+}
+/* Zachte kleurzweem in de kaart zelf, zodat het accent niet alleen bovenin zit */
+.kaart::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(24rem 12rem at 100% 0%, var(--accent), transparent 70%);
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+.kaart:hover::after,
+.kaart:focus-within::after {
+  opacity: 0.07;
+}
+/* De zweem ligt achter de inhoud, niet eroverheen */
+.kaart > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Het pijltje achter een kaarttitel schuift mee op hover */
+.kaart .pijl {
+  display: inline-block;
+  transition: transform 180ms ease;
+}
+.kaart:hover .pijl,
+.kaart:focus-within .pijl {
+  transform: translateX(4px);
+}
+
+/* ---------------------------------------------------------------
+   Knoppen
+   --------------------------------------------------------------- */
+.knop {
+  @apply inline-flex items-center justify-center gap-2 rounded-md px-6 py-3 text-center font-bold;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+.knop:hover {
+  transform: translateY(-1px);
+}
+/*
+  De primaire knop stond eerder op het volle merk-oranje met witte tekst. Dat
+  haalt maar 2,52:1 en zakte daarmee door de AA-eis. Hij staat nu op het
+  gedempte oranje (4,95:1), wat in kleur nauwelijks verschilt maar wel leesbaar
+  is. De gloed eronder gebruikt wél het volle merk-oranje.
+*/
+.knop-primair {
+  background-color: var(--color-oranje-knop);
+  @apply text-white;
+  box-shadow: 0 4px 14px rgb(241 137 25 / 0.35);
+}
+.knop-primair:hover {
+  background-color: var(--color-oranje-knop-hover);
+  box-shadow: 0 8px 22px rgb(241 137 25 / 0.45);
+}
+.knop-secundair {
+  @apply border border-marine text-marine bg-white;
+}
+.knop-secundair:hover {
+  @apply bg-marine text-white;
+}
+/* Paarse variant, voor de tweede actie naast een oranje knop */
+.knop-paars {
+  background-color: var(--color-paars);
+  @apply text-white;
+  box-shadow: 0 4px 14px rgb(115 85 120 / 0.32);
+}
+.knop-paars:hover {
+  background-color: var(--color-paars-diep);
+  box-shadow: 0 8px 22px rgb(115 85 120 / 0.42);
+}
+/* Variant voor op een donkere achtergrond */
+.knop-omlijnd-licht {
+  @apply border border-white/45 text-white;
+}
+.knop-omlijnd-licht:hover {
+  @apply bg-white text-marine;
+}
+
+/* ---------------------------------------------------------------
+   Niveaukleuren
+   ---------------------------------------------------------------
+   De drie niveaus krijgen elk een eigen merkkleur, en die volgorde loopt
+   gelijk met het logoverloop: van oranje via paars naar indigo. Zo staat de
+   opbouw basis → gevorderd → expert ook in kleur.
+*/
+/*
+  Elk niveau levert drie varianten van zijn kleur:
+  --accent        het volle merkaccent, voor balken en lijnen (geen tekst erop)
+  --accent-sterk  dezelfde kleur, donker genoeg voor witte tekst erop (≥4,5:1)
+  --accent-tekst  donker genoeg om zelf als tekst op wit te staan (≥4,5:1)
+  --accent-vlak   de zachte tint als achtergrond
+
+  Voor paars en indigo vallen die drie samen; alleen oranje moet dempen,
+  omdat wit op #f18919 maar 2,52:1 haalt.
+*/
+.niveau-basis {
+  --accent: var(--color-oranje);
+  --accent-sterk: var(--color-oranje-knop);
+  --accent-tekst: var(--color-oranje-tekst);
+  --accent-vlak: var(--color-oranje-licht);
+}
+.niveau-gevorderd {
+  --accent: var(--color-paars);
+  --accent-sterk: var(--color-paars);
+  --accent-tekst: var(--color-paars);
+  --accent-vlak: var(--color-paars-licht);
+}
+.niveau-expert {
+  --accent: var(--color-indigo);
+  --accent-sterk: var(--color-indigo);
+  --accent-tekst: var(--color-indigo);
+  --accent-vlak: var(--color-blauw-licht);
+}
+
+/*
+  Sectorkaarten wisselen de drie merkkleuren af, zodat een raster van negentien
+  kaarten leeft zonder een regenboog te worden. De cyclus is oranje, paars,
+  indigo — opnieuw de volgorde van het logoverloop.
+*/
+.kaartraster > *:nth-child(3n + 1) {
+  --accent: var(--color-oranje);
+}
+.kaartraster > *:nth-child(3n + 2) {
+  --accent: var(--color-paars);
+}
+.kaartraster > *:nth-child(3n + 3) {
+  --accent: var(--color-indigo);
+}
+
+/* ---------------------------------------------------------------
+   Cijferblok
+   ---------------------------------------------------------------
+   Concrete, verifieerbare getallen (aantal trainingen, sectoren, niveaus).
+   De projectbrief vraagt daar expliciet om voor AI-antwoordsystemen: harde
+   feiten in plaats van superlatieven.
+*/
+.cijfer {
+  @apply text-3xl font-bold leading-none md:text-4xl;
+  background: var(--gradient-merk-lijn);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* Op donkere vlakken is een verloop in tekst te onrustig: daar gewoon oranje */
+.op-donker .cijfer {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: var(--color-oranje);
+}
+
+/* ---------------------------------------------------------------
+   Tijdlijn (het programma van een training)
+   ---------------------------------------------------------------
+   De genummerde bollen staan op een verticale lijn, zodat zichtbaar is dat de
+   blokken op elkaar voortbouwen. De lijn loopt niet door onder de laatste bol.
+*/
+.tijdlijn-stap {
+  @apply relative flex gap-5 pl-0;
+}
+.tijdlijn-stap::before {
+  content: '';
+  position: absolute;
+  left: 1.125rem;
+  top: 2.25rem;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--accent) 45%, transparent),
+    color-mix(in srgb, var(--accent) 8%, transparent)
+  );
+}
+.tijdlijn-stap:last-child::before {
+  display: none;
+}
+.tijdlijn-bol {
+  @apply relative z-10 flex h-9 w-9 flex-none items-center justify-center rounded-full text-sm font-bold text-white;
+  background: var(--accent-sterk, var(--color-oranje-knop));
+  box-shadow: 0 0 0 4px #ffffff;
+}
+
+/* ---------------------------------------------------------------
+   Uitklapblokken (veelgestelde vragen)
+   --------------------------------------------------------------- */
+.uitklap summary::-webkit-details-marker {
+  display: none;
+}
+.uitklap summary::marker {
+  content: '';
+}
+.uitklap summary {
+  @apply flex cursor-pointer items-start justify-between gap-4;
+}
+.uitklap .chevron {
+  transition: transform 200ms ease;
+  flex: none;
+}
+.uitklap[open] .chevron {
+  transform: rotate(180deg);
+}
+
+/* ---------------------------------------------------------------
+   Binnenrollen bij het scrollen
+   ---------------------------------------------------------------
+   Alleen ingeschakeld waar de browser scroll-gedreven animaties ondersteunt.
+   Kan de browser het niet, dan staat de inhoud er gewoon meteen — er wordt
+   dus nooit iets verborgen dat afhankelijk is van JavaScript of van een
+   animatie die niet loopt. Dat is ook wat AI-crawlers te zien krijgen.
+*/
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .rol-in {
+      animation: rol-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+  }
+}
+@keyframes rol-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Wie minder beweging wil, krijgt minder beweging */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

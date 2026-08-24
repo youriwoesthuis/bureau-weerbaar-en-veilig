@@ -32,8 +32,9 @@ const trainingenVan = (beroepsgroep: string) =>
   titel={`Agressietraining ${sector.data.naam.toLowerCase()}`}
   beschrijving={sector.data.samenvatting}
 >
-  <div class="border-b border-lijn bg-vlak">
-    <div class="mx-auto max-w-6xl px-4 py-8">
+  <div class="vlak-donker op-donker relative overflow-hidden text-white">
+    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
       <Breadcrumb
         pad={[
           { naam: 'Home', pad: '/' },
@@ -41,42 +42,56 @@ const trainingenVan = (beroepsgroep: string) =>
           { naam: sector.data.naam },
         ]}
       />
-      <h1 class="mt-6 text-3xl font-bold text-marine md:text-4xl">
+      <p class="kicker mt-7">Sector</p>
+      <h1 class="mt-4 max-w-3xl text-3xl font-bold leading-[1.15] md:text-5xl">
         Agressietraining in de sector {sector.data.naam.toLowerCase()}
       </h1>
-      <p class="mt-4 max-w-3xl text-lg leading-relaxed">{sector.data.samenvatting}</p>
+      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
+        {sector.data.samenvatting}
+      </p>
     </div>
   </div>
+  <div class="lijn-merk" aria-hidden="true"></div>
 
   <div class="mx-auto max-w-6xl px-4 py-12">
     <section class="max-w-3xl space-y-4 leading-relaxed [&_p]:mb-4">
       <Content />
     </section>
 
-    <section class="mt-12" aria-labelledby="beroepsgroepen-titel">
-      <h2 id="beroepsgroepen-titel" class="text-2xl font-bold text-marine">
+    <section class="mt-14" aria-labelledby="beroepsgroepen-titel">
+      <p class="kicker">Binnen deze sector</p>
+      <h2 id="beroepsgroepen-titel" class="kop-onderstreept mt-4 text-3xl font-bold text-marine">
         Kies je beroepsgroep
       </h2>
-      <div class="mt-6 space-y-8">
+      <div class="mt-8 space-y-6">
         {beroepsgroepen.map((b) => (
-          <div class="rounded-xl border border-lijn p-6">
+          <div class="relative overflow-hidden rounded-xl border border-lijn bg-white p-6 shadow-[var(--shadow-kaart)] md:p-7">
+            <span class="lijn-merk absolute inset-x-0 top-0" aria-hidden="true"></span>
             <h3 class="text-xl font-bold text-marine">
-              <a href={link(`/sectoren/${sector.data.slug}/${b.data.slug}/`)} class="hover:underline">
+              <a
+                href={link(`/sectoren/${sector.data.slug}/${b.data.slug}/`)}
+                class="group inline-flex items-center gap-2 hover:underline"
+              >
                 {b.data.naam}
+                <span class="transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
               </a>
             </h3>
             <p class="mt-2 max-w-3xl text-sm leading-relaxed text-grijs">{b.data.samenvatting}</p>
-            <ul class="mt-4 grid gap-3 md:grid-cols-3">
+            <ul class="mt-5 grid gap-3 md:grid-cols-3">
               {trainingenVan(b.data.slug).map((t) => (
-                <li class="rounded-lg bg-vlak p-4">
+                <li
+                  class={`niveau-${t.data.niveau} kaart p-4`}
+                  style="border-radius: .5rem"
+                >
                   <NiveauBadge niveau={t.data.niveau} />
                   <a
                     href={link(`/trainingen/${t.data.slug}/`)}
-                    class="mt-2 block text-sm font-semibold text-blauw hover:underline"
+                    class="mt-3 block text-sm font-bold text-marine after:absolute after:inset-0"
                   >
-                    {t.data.titel} →
+                    {t.data.titel}
+                    <span class="pijl" aria-hidden="true">→</span>
                   </a>
-                  <p class="mt-1 text-xs text-grijs">{t.data.duur}</p>
+                  <p class="mt-1.5 text-xs font-medium text-grijs">{t.data.duur}</p>
                 </li>
               ))}
             </ul>

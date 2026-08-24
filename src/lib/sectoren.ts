@@ -27,6 +27,17 @@ export const NIVEAU_LABELS = {
   expert: 'Expert',
 } as const;
 
+/*
+  De linktekst naar een niveau-overzicht. Uitgeschreven per niveau, omdat het
+  label niet aan "trainingen" te plakken is: dat leverde "gevorderdtrainingen"
+  op.
+*/
+export const NIVEAU_LINKTEKST = {
+  basis: 'Alle basistrainingen',
+  gevorderd: 'Alle gevorderde trainingen',
+  expert: 'Alle experttrainingen',
+} as const;
+
 export const NIVEAU_BESCHRIJVING = {
   basis:
     'Herkennen en de-escaleren. Voor iedereen die met agressie te maken kan krijgen: signalen lezen, de eigen reactie reguleren en het gesprek terugbrengen.',

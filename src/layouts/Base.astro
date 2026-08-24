@@ -64,10 +64,10 @@ const hoofdmenu = [
   <body>
     <a href="#inhoud" class="skip-link">Direct naar inhoud</a>
 
-    <header class="border-b border-lijn bg-white">
+    <header class="sticky top-0 z-40 border-b border-lijn bg-white/95 backdrop-blur">
       <div class="relative mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-4">
         <a href={link('/')} aria-label="Bureau Weerbaar en Veilig, naar de homepage">
-          <Logo class="h-20 w-auto md:h-24" />
+          <Logo class="h-14 w-auto md:h-16" />
         </a>
 
         <nav aria-label="Hoofdmenu" class="hidden items-center gap-6 md:flex">
@@ -76,10 +76,7 @@ const hoofdmenu = [
               {item.naam}
             </a>
           ))}
-          <a
-            href={link('/contact/')}
-            class="rounded-md bg-oranje px-4 py-2 text-sm font-bold text-white hover:bg-oranje-donker"
-          >
+          <a href={link('/contact/')} class="knop knop-primair px-5 py-2.5 text-sm">
             Contact
           </a>
         </nav>
@@ -110,10 +107,7 @@ const hoofdmenu = [
                 </li>
               ))}
               <li class="pt-2">
-                <a
-                  href={link('/contact/')}
-                  class="block rounded-md bg-oranje px-3 py-3 text-center font-bold text-white"
-                >
+                <a href={link('/contact/')} class="knop knop-primair w-full">
                   Contact
                 </a>
               </li>
@@ -127,7 +121,8 @@ const hoofdmenu = [
       <slot />
     </main>
 
-    <footer class="mt-20 bg-marine text-white">
+    <footer class="op-donker mt-20 bg-marine text-white">
+      <div class="lijn-merk" aria-hidden="true"></div>
       <div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 md:grid-cols-3">
         <div>
           <Logo variant="wit" class="h-20 w-auto" />
