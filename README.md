@@ -36,6 +36,8 @@ public/                      afbeeldingen, robots.txt
 ## Documenten bij dit project
 
 - **[CLAUDE.md](CLAUDE.md)**: de projectbrief en werkafspraken
+- **[MERKGROEP.md](MERKGROEP.md)**: hoe deze site zich verhoudt tot actinmove.nl
+  en agressievisie.nl — leidend bij alles wat de drie merken samen raakt
 - **[WERKWIJZE.md](WERKWIJZE.md)**: handleiding voor dagelijks gebruik
 - **[DESIGN.md](DESIGN.md)**: kleuren, typografie en componenten
 - **[contentmodel.md](contentmodel.md)**: welke velden een training heeft

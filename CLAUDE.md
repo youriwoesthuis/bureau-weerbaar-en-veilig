@@ -101,26 +101,35 @@ geen aparte rechtspersonen. Dat is relevant voor de schema.org-opzet, zie 3.4.
   Dat helpt Google en AI-systemen de merken herkennen als één organisatie
   met drie gerichte handelsnamen, in plaats van drie losse, mogelijk
   concurrerende bronnen.
-- **Canonicaliteit**: als actinmove.nl al eigen pagina's over agressietraining
-  heeft die inhoudelijk overlappen met een pagina hier — bevestigd dat dit het
-  geval is, zie 3.5 — moet nog worden bepaald hoe dat wordt opgelost
-  (samenvoegen, doorverwijzen, of canonical laten wijzen naar
-  bureauweerbaarenveilig.nl). Zie open vraag in 3.6.
+- **Canonicaliteit**: geen cross-domain canonicals tussen de merken. Actinmove.nl
+  heeft wel agressiecontent, maar geordend op verschijningsvorm in plaats van op
+  beroepsgroep en niveau, waardoor de zoekopdrachten niet samenvallen. Zie 3.5,
+  3.6 en [MERKGROEP.md](MERKGROEP.md).
 
 ### 3.5 Bevestigd
 - Agressievisie.nl verwijst niet door naar bureauweerbaarenveilig.nl, alleen
-  naar actinmove.nl. Blijft voorlopig zo (zie 3.3).
+  naar actinmove.nl. Dit wordt gewijzigd, zie MERKGROEP.md hoofdstuk 3 en 7.
 - Alle drie de merken vallen onder dezelfde KvK-inschrijving, met elk een
   eigen handelsnaam — geen aparte rechtspersonen (zie 3.1 en 3.4).
-- Actinmove.nl heeft al content over agressietraining die qua zoekwoorden
-  overlapt met deze site.
+- **Herzien op 2026-08-24.** Hier stond dat actinmove.nl content heeft die qua
+  zoekwoorden overlapt met deze site. Een volledige uitlezing van alle 91 URL's
+  van actinmove.nl weerlegt dat: het woord "agressietraining" komt daar twee keer
+  voor op de hele site (beide op /kennisbank/), op geen enkele trainingspagina,
+  en er is geen sectorspecifieke agressiepagina. Act in Move ordent zijn
+  agressieaanbod op verschijningsvorm (telefonisch, fysiek, digitaal), deze site
+  op beroepsgroep en niveau. De overlap zit in het onderwerp, niet in de
+  zoekopdrachten.
 
-### 3.6 Nog open
-- Wat gebeurt er met de overlappende agressietraining-content op
-  actinmove.nl: blijft die gewoon staan naast deze nieuwe site,
-  wordt hij samengevoegd/verwijderd, of krijgt bureauweerbaarenveilig.nl
-  via canonical de leidende rol op dat onderwerp? Dit bepaalt of Fase 6 een
-  redirect- of canonical-afspraak met actinmove.nl moet regelen.
+### 3.6 Beantwoord op 2026-08-24
+- De vraag was wat er met de overlappende agressietraining-content op
+  actinmove.nl moest gebeuren. Antwoord: **niets weghalen, geen redirects, geen
+  cross-domain canonicals.** Act in Move blijft agressietraining verkopen — het is
+  een van de best verkochte trainingen van het moederbedrijf. De scheiding loopt
+  via de zoekintentie, niet via het verwijderen van content.
+- De volledige onderbouwing, de gemeten cijfers en de drie regels die de
+  scheiding bewaken staan in **[MERKGROEP.md](MERKGROEP.md)**. Dat bestand is
+  leidend voor alles wat de verhouding tussen de drie merken raakt, en staat
+  gelijkluidend in elke repo van de groep.
 
 ## 4. Bronmateriaal
 - **Sitemap:** aangeleverd, zie `sitemap-export.tsv` in de repo — 204 URL's,
