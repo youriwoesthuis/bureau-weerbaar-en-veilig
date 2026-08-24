@@ -17,11 +17,10 @@ samenvatting: >-
   dag, telt maximaal 10 deelnemers en behandelt ook groepsdruk en gefilmd
   optreden.
 resultaat:
-  - Verschillende vormen van agressie herkennen
-  - De eigen reactie reguleren onder druk
-  - Verbaal agressief gedrag professioneel begrenzen
-  - "Situaties de-escaleren voordat ze fysiek worden"
-  - "Handelen binnen de juridische kaders van de boa-bevoegdheid"
+  - Signalen lezen bij burgers die een boete of aanwijzing weigeren
+  - Rustig blijven wanneer een groep om je heen komt staan of omstanders de situatie aanwakkeren
+  - "Verbaal begrenzen en de-escaleren zonder de grenzen van de boa-bevoegdheid te overschrijden"
+  - Professioneel blijven wanneer je optreden wordt gefilmd voor sociale media
   - Incidenten correct melden en registreren
 programma:
   - titel: Agressie in de openbare ruimte

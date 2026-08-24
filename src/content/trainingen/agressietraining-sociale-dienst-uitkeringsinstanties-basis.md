@@ -17,12 +17,12 @@ samenvatting: >-
   aandacht voor de morele spanning van het werk. De training duurt 1 dag
   en telt maximaal 10 deelnemers.
 resultaat:
-  - Verschillende vormen van agressie herkennen
-  - De eigen reactie reguleren onder druk
-  - Verbaal agressief gedrag professioneel begrenzen
-  - "Situaties de-escaleren"
-  - Het agressieprotocol correct toepassen
-  - Incidenten correct melden
+  - Herkennen wat er speelt bij cliënten in acute financiële nood
+  - De eigen reactie beheersen bij persoonlijke intimidatie en verwijten
+  - Professioneel begrenzen tijdens spreekuur, huisbezoek en aan de telefoon
+  - Handelen bij onvoorspelbare reacties van cliënten met psychiatrische problematiek
+  - Het agressieprotocol toepassen en incidenten melden
+  - De spanning tussen de regels en de nood van de cliënt bespreekbaar maken
 programma:
   - titel: Agressie bij bestaansonzekerheid
     inhoud: Herkennen wat er speelt bij cliënten in acute financiële nood.

@@ -16,10 +16,10 @@ samenvatting: >-
   zij alleen in een rijdend voertuig verantwoordelijk zijn voor tientallen
   reizigers. De training duurt 1 dag en telt maximaal 10 deelnemers.
 resultaat:
-  - Verschillende vormen van agressie herkennen
-  - De eigen reactie reguleren onder druk
-  - Verbaal agressief gedrag professioneel begrenzen
-  - "Situaties de-escaleren"
+  - De-escaleren zonder collega en zonder de bus te kunnen verlaten
+  - Rustig blijven bij reizigers die weigeren in te checken of verstorend gedrag vertonen
+  - Verbaal begrenzen zonder de rit en de andere reizigers uit het oog te verliezen
+  - Handelen bij passagiers onder invloed en bij conflicten tussen reizigers
   - Het agressieprotocol van het bedrijf toepassen
   - Incidenten correct melden
 programma:

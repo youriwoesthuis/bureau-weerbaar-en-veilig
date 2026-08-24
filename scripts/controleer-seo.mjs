@@ -44,6 +44,12 @@ const alles = paginas.map((pad) => {
   return {
     url: url === '//' ? '/' : url,
     doorverwijzing: html.includes('http-equiv="refresh"'),
+    /*
+      Een pagina op noindex hoort géén canonical te hebben: die twee spreken
+      elkaar tegen. Zonder deze uitzondering meldt de controle die bewuste
+      keuze als een ontbrekende canonical.
+    */
+    nietIndexeren: /name="robots" content="noindex/.test(html),
     titel: pak(html, /<title>([^<]*)<\/title>/) ?? '',
     omschrijving: pak(html, /<meta name="description" content="([^"]*)"/) ?? '',
     canonical: pak(html, /<link rel="canonical" href="([^"]*)"/),
@@ -56,10 +62,14 @@ const alles = paginas.map((pad) => {
   };
 });
 
-const echt = alles.filter((p) => !p.doorverwijzing);
+const echt = alles.filter((p) => !p.doorverwijzing && !p.nietIndexeren);
 const regel = (t) => console.log('\n' + t + '\n' + '─'.repeat(t.length));
 
-console.log(`Pagina's: ${alles.length} totaal, ${echt.length} met inhoud, ${alles.length - echt.length} doorverwijzingen`);
+console.log(
+  `Pagina's: ${alles.length} totaal, ${echt.length} met inhoud, ` +
+    `${alles.filter((p) => p.doorverwijzing).length} doorverwijzingen, ` +
+    `${alles.filter((p) => p.nietIndexeren).length} op noindex`
+);
 
 regel('TITELS');
 const titelTeLang = echt.filter((p) => p.titel.length > 60);

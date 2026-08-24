@@ -17,12 +17,12 @@ samenvatting: >-
   dag, telt maximaal 10 deelnemers en besteedt expliciet aandacht aan de
   morele kant van het werk.
 resultaat:
-  - Vormen van agressie herkennen
-  - De eigen reactie reguleren onder druk
-  - Verbaal agressief gedrag professioneel begrenzen
-  - "Situaties de-escaleren"
-  - Het agressieprotocol correct toepassen
-  - Incidenten correct melden
+  - Onderscheiden of je woede of wanhoop tegenover je hebt bij een debiteur
+  - Rustig blijven bij een schreeuwende debiteur en bij persoonlijke aanvallen
+  - Professioneel begrenzen bij wanhopig-dreigend gedrag rond een schuldenregeling
+  - Handelen bij intimidatie tijdens een huisbezoek
+  - Het agressieprotocol toepassen en incidenten melden
+  - De morele kant van het werk bespreekbaar maken binnen het team
 programma:
   - titel: Woede en wanhoop
     inhoud: Herkennen wat je tegenover je hebt bij debiteuren in schuldenproblematiek.

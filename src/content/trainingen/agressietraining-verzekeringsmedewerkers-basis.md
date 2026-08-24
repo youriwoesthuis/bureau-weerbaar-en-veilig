@@ -16,12 +16,12 @@ samenvatting: >-
   emotionele schade en financiële teleurstelling combineren. De training
   duurt 1 dag en telt maximaal 10 deelnemers.
 resultaat:
-  - Verschillende vormen van agressie herkennen
-  - De eigen reactie reguleren onder druk
-  - Verbaal agressief gedrag professioneel begrenzen
-  - "Situaties de-escaleren voordat ze onbeheersbaar worden"
-  - Handelen volgens het agressieprotocol
-  - Incidenten correct melden
+  - Herkennen waarom emotionele schade en financiële teleurstelling samen agressie uitlokken
+  - De eigen reactie beheersen wanneer een klant de afwijzing persoonlijk maakt
+  - Professioneel begrenzen in een gesprek over een afgewezen claim
+  - Handelen bij klanten die in acute crisis zitten na ingrijpende schade
+  - Het verschil aanvoelen tussen een boze klant en een klant in nood
+  - Incidenten melden en nabespreken volgens het agressieprotocol
 programma:
   - titel: Schade en teleurstelling
     inhoud: Waarom de combinatie van emotionele schade en financiële teleurstelling agressie uitlokt.

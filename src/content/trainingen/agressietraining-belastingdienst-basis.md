@@ -16,12 +16,12 @@ samenvatting: >-
   de-escaleren, met expliciete aandacht voor telefonische agressie. De
   training duurt 1 dag en telt maximaal 10 deelnemers.
 resultaat:
-  - Verschillende vormen van agressie herkennen
-  - De eigen reactie reguleren onder druk
-  - Verbaal agressief gedrag professioneel begrenzen
-  - "Situaties de-escaleren voordat ze onbeheersbaar worden"
-  - Handelen volgens het agressieprotocol
-  - Incidenten correct melden en bespreken
+  - Herkennen waarom een financieel belang en een gezagspositie samen zoveel spanning geven
+  - "Rustig en professioneel blijven aan de telefoon, ook bij schreeuwen en dreigen"
+  - Verbaal agressief gedrag begrenzen bij aanslagen, controles en toeslagproblematiek
+  - Veilig handelen bij verbale agressie tijdens een bedrijfsbezoek
+  - Escalerende e-mailcorrespondentie afbouwen in plaats van beantwoorden
+  - Incidenten correct melden volgens het agressieprotocol
 programma:
   - titel: Agressie rond geld en gezag
     inhoud: Waarom financiële belangen en een gezagspositie samen zoveel spanning geven.

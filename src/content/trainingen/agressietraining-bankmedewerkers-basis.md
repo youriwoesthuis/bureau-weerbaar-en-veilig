@@ -17,11 +17,11 @@ samenvatting: >-
   voor telefonische agressie. De training duurt 1 dag en telt maximaal 10
   deelnemers.
 resultaat:
-  - Vormen van agressie herkennen
-  - De eigen reactie reguleren onder druk
-  - Verbaal agressief gedrag professioneel begrenzen
-  - "Situaties de-escaleren"
-  - De protocollen van de organisatie toepassen
+  - Herkennen wat er speelt bij klanten die vastlopen op geld
+  - Rustig en professioneel blijven aan de telefoon bij dreiging en intimidatie
+  - Professioneel begrenzen bij een geweigerde lening of een geblokkeerde rekening
+  - Handelen bij escalerende gesprekken over betalingsachterstanden
+  - De protocollen van de organisatie toepassen na een incident aan de balie
   - Incidenten correct melden
 programma:
   - titel: Financiële stress aan de balie

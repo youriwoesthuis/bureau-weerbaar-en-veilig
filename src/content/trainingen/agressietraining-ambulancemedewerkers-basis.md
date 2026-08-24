@@ -18,12 +18,12 @@ samenvatting: >-
   hulpverlening: geïntoxiceerde patiënten, tegenwerkende familie en bemoeiende
   omstanders.
 resultaat:
-  - Verschillende vormen van agressie herkennen
-  - De eigen reactie reguleren onder druk
-  - Verbaal agressief gedrag professioneel begrenzen
-  - Situaties de-escaleren voordat zij fysiek worden
-  - Handelen volgens het agressieprotocol
-  - Incidenten correct melden en bespreken
+  - Agressiesignalen lezen bij aankomst op een meldlocatie die je niet vooraf kunt inschatten
+  - Rustig en professioneel blijven tijdens medische handelingen onder dreiging
+  - Gedrag begrenzen bij geïntoxiceerde patiënten en tegenwerkende familieleden
+  - Bemoeiende omstanders terugbrengen zonder de zorg te onderbreken
+  - "Handelen bij een patiënt in psychiatrische crisis, met behoud van de eigen veiligheid"
+  - Incidenten melden en nabespreken volgens het agressieprotocol
 programma:
   - titel: Agressie ter plaatse herkennen
     inhoud: Signalen lezen bij aankomst op de meldlocatie, in een onvoorspelbare omgeving zonder directe bescherming.

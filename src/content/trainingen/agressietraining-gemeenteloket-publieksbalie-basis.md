@@ -19,10 +19,10 @@ samenvatting: >-
   gebonden is aan regels die hij niet kan veranderen.
 resultaat:
   - "Verschillende vormen van agressie herkennen: frustratie, instrumenteel gedrag en agressie uit kwetsbaarheid"
-  - "De eigen reactie reguleren onder druk, zonder te escaleren"
-  - Verbaal agressief gedrag professioneel begrenzen
-  - "Situaties de-escaleren voordat ze onbeheersbaar worden"
-  - Incidenten correct melden en bespreken
+  - De eigen reactie reguleren wanneer je een besluit moet verdedigen dat je zelf niet hebt genomen
+  - Begrenzen bij persoonlijke aantijgingen en dreiging met klachten of juridische stappen
+  - Professioneel handelen bij onvoorspelbare reacties van kwetsbare burgers
+  - "Omgaan met telefonische en digitale agressie, en incidenten correct melden"
 programma:
   - titel: Drie soorten agressie aan het loket
     inhoud: "Frustratie, instrumenteel gedrag en agressie uit kwetsbaarheid onderscheiden, en waarom dat je reactie bepaalt."

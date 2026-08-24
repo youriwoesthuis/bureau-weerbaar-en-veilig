@@ -16,11 +16,11 @@ samenvatting: >-
   hulpverleningsrelatie op te geven, inclusief veilig handelen bij
   huisbezoeken. De training duurt 1 dag en telt maximaal 10 deelnemers.
 resultaat:
-  - Vormen van agressie herkennen
-  - De eigen reactie reguleren onder druk
-  - Verbaal agressief gedrag begrenzen
-  - "Situaties de-escaleren"
-  - Veilig handelen bij huisbezoeken
+  - Herkennen waarom agressie voor sommige cliënten de enige beschikbare taal is
+  - De eigen reactie beheersen bij crisis en dreigend gedrag
+  - "Grenzen stellen bij een afgewezen hulpvraag, zonder de relatie te verbreken"
+  - Veilig handelen bij huisbezoeken en bij agressie vanuit de omgeving van de cliënt
+  - Omgaan met ongewenst contact buiten werktijd
   - Incidenten correct melden
 programma:
   - titel: Agressie als communicatie

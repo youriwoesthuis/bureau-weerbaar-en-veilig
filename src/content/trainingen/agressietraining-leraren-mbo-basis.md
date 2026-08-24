@@ -18,11 +18,11 @@ samenvatting: >-
   situaties uit de eigen instelling.
 resultaat:
   - Verschillende vormen van grensoverschrijdend gedrag herkennen
-  - "De eigen reactie reguleren onder druk, zonder te escaleren"
-  - "Gedrag professioneel begrenzen met heldere, rustige communicatie"
-  - "Situaties de-escaleren voordat ze onbeheersbaar worden"
-  - De protocollen van de instelling toepassen
-  - Incidenten correct melden en bespreken
+  - De eigen reactie beheersen wanneer een student je uitscheldt of belachelijk maakt
+  - "Gedrag begrenzen met rustige communicatie, ook bij weigering aanwijzingen op te volgen"
+  - Handelen bij groepen die de les verstoren en bewust grenzen testen
+  - Handelen bij studenten onder invloed van alcohol of drugs
+  - De protocollen van de instelling toepassen en incidenten correct melden
 programma:
   - titel: Grensoverschrijdend gedrag in het mbo
     inhoud: Vormen van gedrag herkennen bij jongvolwassenen met vaak complexe achtergronden.

@@ -17,12 +17,11 @@ samenvatting: >-
   telt maximaal 10 deelnemers en werkt met situaties die huisartsassistenten
   dagelijks aan balie en telefoon meemaken.
 resultaat:
-  - Verschillende vormen van agressie herkennen
-  - De eigen reactie reguleren onder druk
-  - Verbaal agressief gedrag professioneel begrenzen
-  - Situaties de-escaleren voordat zij fysiek worden
+  - Agressiesignalen herkennen in de praktijk van triage, balie en telefoon
+  - Rustig blijven wanneer een beller uitvalt na een triage-beslissing
+  - Verbaal agressief gedrag begrenzen voordat een situatie in de wachtkamer fysiek wordt
   - Handelen volgens het praktijkprotocol
-  - Incidenten correct melden en bespreken
+  - Incidenten correct melden en nabespreken met de praktijk
 programma:
   - titel: Agressie aan balie en telefoon herkennen
     inhoud: Vormen van agressie en de signalen die eraan voorafgaan, in de praktijk van triage, balie en telefoon.

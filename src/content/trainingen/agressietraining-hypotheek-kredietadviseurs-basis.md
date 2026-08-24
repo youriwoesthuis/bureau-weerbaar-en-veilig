@@ -16,11 +16,11 @@ samenvatting: >-
   en agressie de-escaleren wanneer een aanvraag wordt afgewezen. De
   training duurt 1 dag en telt maximaal 10 deelnemers.
 resultaat:
-  - Verschillende vormen van agressie herkennen
-  - De eigen reactie reguleren onder druk
-  - Slecht nieuws professioneel brengen
-  - "Situaties de-escaleren"
-  - Handelen volgens het agressieprotocol
+  - Herkennen waarom je persoonlijk wordt aangesproken op een besluit van de organisatie
+  - Een afwijzing of intrekking van krediet brengen met zo min mogelijk escalatie
+  - Rustig blijven bij een furieuze reactie en de situatie terugbrengen
+  - Omgaan met dreiging met een klacht bij de AFM of met een advocaat
+  - Handelen bij een klant onder grote persoonlijke druk
   - Incidenten correct melden
 programma:
   - titel: Persoonlijk aangesproken worden

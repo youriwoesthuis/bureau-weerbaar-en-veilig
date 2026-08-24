@@ -18,11 +18,11 @@ samenvatting: >-
   deelnemers.
 resultaat:
   - "Verschillende agressievormen herkennen: frustratie, instrumenteel gedrag en gedrag onder invloed"
-  - De eigen reactie reguleren onder druk
-  - Verbaal agressief gedrag professioneel begrenzen
-  - "Situaties de-escaleren"
-  - Het agressieprotocol correct toepassen
-  - Incidenten correct melden
+  - De-escaleren in een rijdend voertuig zonder vluchtmogelijkheid
+  - Rustig blijven wanneer een reiziger weigert uit te stappen of een groep de coupé verstoort
+  - Verbaal begrenzen bij controle op vervoerbewijzen en bij conflicten tussen reizigers
+  - Handelen bij passagiers onder invloed met onvoorspelbaar gedrag
+  - "Professioneel blijven wanneer je optreden wordt gefilmd, en incidenten correct melden"
 programma:
   - titel: Agressie in een afgesloten ruimte
     inhoud: "Wat het betekent om te de-escaleren in een rijdend voertuig zonder vluchtmogelijkheid."
