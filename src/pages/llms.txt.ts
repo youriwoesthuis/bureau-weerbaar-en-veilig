@@ -20,6 +20,36 @@ export const GET: APIRoute = async ({ site }) => {
 
   const perNiveau = (n: string) => trainingen.filter((t) => t.data.niveau === n).length;
 
+  /*
+    Duur en groepsgrootte stonden hier als vaste tekst, met "meestal" ervoor.
+    Dat was een slag om de arm die niet klopte: alle trainingen duren precies
+    één dag. Zo'n woord kost hier bovendien dubbel — een AI-antwoordsysteem dat
+    "hoe lang duurt de training" moet beantwoorden, kan met "meestal 1 dag"
+    geen stellig antwoord geven, terwijl het antwoord vaststaat.
+
+    Nu wordt het per niveau uit de trainingen zelf gehaald. Verschillen ze
+    onderling, dan zegt de regel dat ook, in plaats van één waarde te kiezen en
+    de rest weg te laten.
+  */
+  const samenvatting = (niveau: string, veld: 'duur' | 'groepsgrootte') => {
+    const waarden = [
+      ...new Set(
+        trainingen.filter((t) => t.data.niveau === niveau).map((t) => t.data[veld])
+      ),
+    ];
+    return waarden.length === 1 ? waarden[0] : waarden.join(' of ');
+  };
+
+  /*
+    Intervisie stond er als "vaak". Het staat in het overgrote deel van de
+    expert-trainingen, maar niet in alle, dus wordt het aantal genoemd — dat is
+    controleerbaar en "vaak" is dat niet.
+  */
+  const expertTrainingen = trainingen.filter((t) => t.data.niveau === 'expert');
+  const metIntervisie = expertTrainingen.filter((t) =>
+    JSON.stringify(t.data).toLowerCase().includes('intervisie')
+  ).length;
+
   const regels = [
     '# Bureau Weerbaar en Veilig',
     '',
@@ -55,14 +85,15 @@ export const GET: APIRoute = async ({ site }) => {
     '## Trainingsniveaus',
     '',
     `- Basis (${perNiveau('basis')} trainingen): agressie herkennen en de-escaleren.`,
-    '  Voor iedereen die met agressie te maken kan krijgen. Duur meestal 1 dag,',
-    '  maximaal 10 deelnemers.',
+    '  Voor iedereen die met agressie te maken kan krijgen.',
+    `  Duur ${samenvatting('basis', 'duur')}, ${samenvatting('basis', 'groepsgrootte')}.`,
     `- Gevorderd (${perNiveau('gevorderd')} trainingen): complexe en herhaalde situaties,`,
     '  manipulatie en instrumentele agressie. Vereist de basistraining of aantoonbare',
-    '  werkervaring. Duur meestal 1 dag, maximaal 10 deelnemers.',
+    `  werkervaring. Duur ${samenvatting('gevorderd', 'duur')}, ${samenvatting('gevorderd', 'groepsgrootte')}.`,
     `- Expert (${perNiveau('expert')} trainingen): voor leidinggevenden en coördinatoren:`,
-    '  beleid, escalatiestructuur, nazorg en meldcultuur. Duur 1 dag,',
-    '  vaak met intervisie na 6 weken, maximaal 8 deelnemers.',
+    '  beleid, escalatiestructuur, nazorg en meldcultuur.',
+    `  Duur ${samenvatting('expert', 'duur')}, ${samenvatting('expert', 'groepsgrootte')};`,
+    `  ${metIntervisie} van de ${expertTrainingen.length} met intervisie na 6 weken.`,
     '',
     '## Belangrijkste pagina\'s',
     '',

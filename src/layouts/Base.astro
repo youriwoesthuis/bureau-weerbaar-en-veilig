@@ -238,9 +238,9 @@ const hoofdmenu = [
           <p class="font-semibold">Contact</p>
           <ul class="mt-2 space-y-1 text-sm text-white/80">
             <li>Russchemorsweg 5-04, 7161 RT Neede</li>
-            <li><a href="tel:+31857600435" class="hover:text-white">085 760 0435</a></li>
+            <li><a href="tel:+31857600435" class="inline-block py-1 hover:text-white">085 760 0435</a></li>
             <li>
-              <a href="mailto:info@bureauweerbaarenveilig.nl" class="hover:text-white">
+              <a href="mailto:info@bureauweerbaarenveilig.nl" class="inline-block py-1 hover:text-white">
                 info@bureauweerbaarenveilig.nl
               </a>
             </li>
@@ -253,7 +253,7 @@ const hoofdmenu = [
             {hoofdmenu.map((item) => (
               <li><a href={link(item.pad)} class="inline-block py-1 hover:text-white">{item.naam}</a></li>
             ))}
-            <li><a href={link('/contact/')} class="hover:text-white">Contact</a></li>
+            <li><a href={link('/contact/')} class="inline-block py-1 hover:text-white">Contact</a></li>
           </ul>
         </div>
         {/*

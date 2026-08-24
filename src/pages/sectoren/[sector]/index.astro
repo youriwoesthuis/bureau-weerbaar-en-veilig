@@ -26,11 +26,34 @@ const trainingenVan = (beroepsgroep: string) =>
   trainingen
     .filter((t) => t.data.beroepsgroep === beroepsgroep)
     .sort((a, b) => NIVEAU_VOLGORDE[a.data.niveau] - NIVEAU_VOLGORDE[b.data.niveau]);
+
+/*
+  Deze pagina wijst de beroepsgroepen binnen de sector aan, en dat is ook wat
+  er in de gestructureerde data staat: een ItemList met verwijzingen. Geen
+  Course hier — een sector is geen cursus, en de cursusgegevens staan een
+  niveau dieper al volledig opgevoerd. Dubbel opvoeren maakt het niet
+  geloofwaardiger, alleen dubbel.
+*/
+const lijstSchema = beroepsgroepen.length
+  ? JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: `Agressietraining in de sector ${sector.data.naam.toLowerCase()}`,
+      numberOfItems: beroepsgroepen.length,
+      itemListElement: beroepsgroepen.map((b, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: b.data.naam,
+        url: new URL(link(`/sectoren/${sector.data.slug}/${b.data.slug}/`), Astro.site).href,
+      })),
+    })
+  : null;
 ---
 
 <Base
   titel={`Agressietraining ${sector.data.naam.toLowerCase()}`}
   beschrijving={sector.data.samenvatting}
+  schema={lijstSchema ? [lijstSchema] : []}
 >
   <div class="vlak-donker op-donker relative overflow-hidden text-white">
     <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
