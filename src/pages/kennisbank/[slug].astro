@@ -11,7 +11,15 @@ export async function getStaticPaths() {
 
 const { artikel } = Astro.props;
 const d = artikel.data;
-const { Content, remarkPluginFrontmatter } = await render(artikel);
+const { Content, headings, remarkPluginFrontmatter } = await render(artikel);
+
+/*
+  Inhoudsopgave uit de H2's van het artikel. Alleen tonen vanaf drie koppen:
+  bij één of twee is het geen wegwijzer maar ruis. Astro geeft elke kop tijdens
+  het bouwen een id, dus de ankers werken zonder dat er iets extra's hoeft.
+*/
+const inhoudsopgave = headings.filter((h) => h.depth === 2);
+const toonInhoudsopgave = inhoudsopgave.length >= 3;
 
 /* Berekend tijdens het bouwen door de remark-plugin in astro.config.mjs */
 const leestijd: number = remarkPluginFrontmatter.leestijd ?? 1;
@@ -86,7 +94,7 @@ const artikelSchema = JSON.stringify({
     <div class="mx-auto max-w-6xl px-4 py-12">
       <div class="grid gap-12 lg:grid-cols-[1fr_20rem]">
         <section
-          class="min-w-0 max-w-3xl space-y-4 leading-relaxed [&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-marine [&_h3]:mt-6 [&_h3]:text-lg [&_h3]:font-bold [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1 [&_p]:mb-4"
+          class="leestekst min-w-0"
         >
           <Content />
           {d.verdieping_extern && (
@@ -99,7 +107,34 @@ const artikelSchema = JSON.stringify({
           )}
         </section>
 
-        <aside class="lg:sticky lg:top-6 lg:self-start">
+        <aside class="space-y-5 lg:sticky lg:top-24 lg:self-start">
+          {toonInhoudsopgave && (
+            <nav
+              class="relative overflow-hidden rounded-xl border border-lijn bg-vlak-warm p-6"
+              aria-labelledby="inhoud-titel"
+            >
+              <span class="lijn-merk absolute inset-x-0 top-0" aria-hidden="true"></span>
+              <h2 id="inhoud-titel" class="text-sm font-bold uppercase tracking-wide text-grijs">
+                In dit artikel
+              </h2>
+              <ol class="mt-4 space-y-2.5 text-sm">
+                {inhoudsopgave.map((h, i) => (
+                  <li class="flex gap-3">
+                    <span class="font-bold tabular-nums text-oranje-tekst" aria-hidden="true">
+                      {i + 1}
+                    </span>
+                    <a
+                      href={`#${h.slug}`}
+                      class="font-semibold text-marine hover:text-blauw hover:underline"
+                    >
+                      {h.text}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )}
+
           {gerelateerd.length > 0 && (
             <div class="rounded-xl border border-lijn p-6">
               <h2 class="text-lg font-bold text-marine">Bijpassende trainingen</h2>

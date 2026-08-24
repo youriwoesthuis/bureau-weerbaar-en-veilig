@@ -12,3 +12,7 @@ npm-debug.log*
 # OS
 .DS_Store
 Thumbs.db
+
+# Concurrentieanalyse: blijft lokaal. De repo is openbaar, en dit document
+# noemt concurrenten bij naam met hun technische mankementen erbij.
+CONCURRENTIE.md

@@ -420,6 +420,113 @@ body {
 }
 
 /* ---------------------------------------------------------------
+   Leestekst
+   ---------------------------------------------------------------
+   Eén typografisch systeem voor alle lopende tekst: kennisbankartikelen, de
+   bodytekst van een training, de intro van een sector of beroepsgroep. Stond
+   eerder als losse [&_h2]:… hulpklassen in elk sjabloon, en dus overal net
+   anders.
+
+   De regellengte is hier het belangrijkst: bij meer dan ongeveer 75 tekens per
+   regel verliest het oog bij de terugsprong makkelijk de juiste regel. De tekst
+   zat op circa 80; 41rem brengt hem op 68, midden in het comfortabele bereik.
+
+   Bewust rem en geen ch. De ch-eenheid meet de breedte van het cijfer nul, en
+   dat cijfer is in Montserrat ongewoon breed (0,66em). 65ch leverde hier 732px
+   op, oftewel ruim 70 tekens — de eenheid belooft iets anders dan ze geeft.
+   Het getal hieronder is gemeten aan echte alinea's op deze site.
+
+   Tekengrootte omhoog naar 17px en de regelafstand naar 1,75: dat is
+   leesformaat in plaats van interfaceformaat.
+*/
+.leestekst {
+  max-width: 41rem;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+.leestekst > * + * {
+  margin-top: 1.35em;
+}
+
+/* Koppen krijgen ruim lucht bóven zich en weinig eronder, zodat ze bij hun
+   eigen alinea horen in plaats van er los boven te zweven. */
+.leestekst h2 {
+  @apply text-2xl font-bold text-marine;
+  margin-top: 2.75em;
+  margin-bottom: 0;
+  line-height: 1.25;
+  scroll-margin-top: 6rem;
+}
+.leestekst h2 + * {
+  margin-top: 0.6em;
+}
+.leestekst h3 {
+  @apply text-lg font-bold text-marine;
+  margin-top: 2em;
+  margin-bottom: 0;
+  line-height: 1.35;
+}
+.leestekst h3 + * {
+  margin-top: 0.5em;
+}
+.leestekst > :first-child {
+  margin-top: 0;
+}
+
+.leestekst strong {
+  @apply font-bold text-marine;
+}
+.leestekst a {
+  @apply font-semibold text-blauw underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+.leestekst a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Lijsten met een merkbolletje in plaats van de standaard schijf */
+.leestekst ul,
+.leestekst ol {
+  padding-left: 1.5rem;
+}
+.leestekst li + li {
+  margin-top: 0.5em;
+}
+.leestekst ul {
+  list-style: none;
+  padding-left: 0;
+}
+.leestekst ul > li {
+  position: relative;
+  padding-left: 1.6rem;
+}
+.leestekst ul > li::before {
+  content: '';
+  position: absolute;
+  left: 0.15rem;
+  top: 0.72em;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 9999px;
+  background: var(--accent, var(--color-oranje));
+}
+.leestekst ol > li::marker {
+  @apply font-bold;
+  color: var(--accent-tekst, var(--color-oranje-tekst));
+}
+
+/* Een citaat of kernzin: verlooprand links, geen aanhalingstekens */
+.leestekst blockquote {
+  border-left: 3px solid transparent;
+  border-image: var(--gradient-merk-lijn) 1;
+  padding-left: 1.25rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  @apply font-semibold text-marine;
+}
+
+/* ---------------------------------------------------------------
    Tijdlijn (het programma van een training)
    ---------------------------------------------------------------
    De genummerde bollen staan op een verticale lijn, zodat zichtbaar is dat de
