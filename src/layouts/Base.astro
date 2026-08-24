@@ -9,11 +9,23 @@ interface Props {
   beschrijving: string;
   /** Extra JSON-LD schema's, al gestringificeerd */
   schema?: string[];
+  /** Eigen deelafbeelding; laat leeg voor de standaard van de site */
+  deelafbeelding?: string;
 }
 
-const { titel, beschrijving, schema = [] } = Astro.props;
+const { titel, beschrijving, schema = [], deelafbeelding } = Astro.props;
 const paginaTitel = maakTitel(titel);
 const paginaBeschrijving = metaBeschrijving(beschrijving);
+
+/*
+  Deelgegevens. Zonder deze regels toont LinkedIn, WhatsApp of Slack niets meer
+  dan een kale link: geen titel, geen omschrijving, geen beeld. Voor een dienst
+  die per mail en via LinkedIn wordt doorgestuurd is dat direct verlies.
+
+  De URL's moeten absoluut zijn — een relatief pad werkt niet bij die platforms.
+*/
+const paginaUrl = new URL(Astro.url.pathname, Astro.site);
+const deelUrl = new URL(link(deelafbeelding ?? '/og-afbeelding.png'), Astro.site);
 
 const organisatieSchema = JSON.stringify({
   '@context': 'https://schema.org',
@@ -43,6 +55,7 @@ const organisatieSchema = JSON.stringify({
 
 const hoofdmenu = [
   { naam: 'Agressietraining', pad: '/agressietraining/' },
+  { naam: 'Trainingen', pad: '/trainingen/' },
   { naam: 'Sectoren', pad: '/sectoren/' },
   { naam: 'Niveaus', pad: '/niveaus/' },
   { naam: 'Kennisbank', pad: '/kennisbank/' },
@@ -57,7 +70,28 @@ const hoofdmenu = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{paginaTitel}</title>
     <meta name="description" content={paginaBeschrijving} />
-    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <link rel="canonical" href={paginaUrl} />
+
+    <!-- Pictogram in het tabblad; SVG blijft op elk scherm scherp -->
+    <link rel="icon" href={link('/favicon.svg')} type="image/svg+xml" />
+    <meta name="theme-color" content="#17203d" />
+
+    <!-- Hoe de link eruitziet in LinkedIn, WhatsApp, Slack en mail -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Bureau Weerbaar en Veilig" />
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:title" content={paginaTitel} />
+    <meta property="og:description" content={paginaBeschrijving} />
+    <meta property="og:url" content={paginaUrl} />
+    <meta property="og:image" content={deelUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Bureau Weerbaar en Veilig, specialist in agressietraining"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+
     <script type="application/ld+json" set:html={organisatieSchema} />
     {schema.map((s) => <script type="application/ld+json" set:html={s} />)}
   </head>

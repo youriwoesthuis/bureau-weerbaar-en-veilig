@@ -1,0 +1,222 @@
+---
+import { link } from '../../lib/link';
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import NiveauBadge from '../../components/NiveauBadge.astro';
+import { SECTOR_NAMEN, NIVEAU_LABELS } from '../../lib/sectoren';
+
+/*
+  Het overzicht van alle trainingen, met een filter op sector en niveau.
+
+  Het filter werkt volledig met CSS: radioknoppen plus :has(). Er komt geen
+  JavaScript aan te pas. Dat is bewust — de projectbrief eist dat de volledige
+  inhoud zonder JavaScript zichtbaar is, omdat AI-crawlers vaak geen scripts
+  uitvoeren. Alle 132 trainingen staan dus altijd in de HTML; het filter zet er
+  alleen tijdelijk een deel van op display:none. In de begintoestand staat alles
+  aan, dus een crawler ziet nooit een halve lijst.
+*/
+const trainingen = (await getCollection('trainingen')).sort((a, b) =>
+  a.data.titel.localeCompare(b.data.titel)
+);
+const beroepsgroepen = await getCollection('beroepsgroepen');
+const groepNaam = new Map(beroepsgroepen.map((b) => [b.data.slug, b.data.naam]));
+
+const niveaus = ['basis', 'gevorderd', 'expert'] as const;
+
+/* Alleen sectoren waar daadwerkelijk een training in zit, alfabetisch */
+const sectorSlugs = [...new Set(trainingen.map((t) => t.data.sector))].sort((a, b) =>
+  (SECTOR_NAMEN[a] ?? a).localeCompare(SECTOR_NAMEN[b] ?? b)
+);
+
+const aantalPerNiveau = (n: string) => trainingen.filter((t) => t.data.niveau === n).length;
+const aantalPerSector = (s: string) => trainingen.filter((t) => t.data.sector === s).length;
+
+/*
+  De filterregels worden hier opgebouwd in plaats van met de hand geschreven:
+  drie niveaus plus negentien sectoren zijn tweeëntwintig regels, en die moeten
+  meegroeien zodra er een sector bij komt.
+*/
+const filterCss = [
+  ...niveaus.map(
+    (n) =>
+      `.filterblok:has(#niveau-${n}:checked) .trainingenlijst > li:not([data-niveau="${n}"]) { display: none; }`
+  ),
+  ...sectorSlugs.map(
+    (s) =>
+      `.filterblok:has(#sector-${s}:checked) .trainingenlijst > li:not([data-sector="${s}"]) { display: none; }`
+  ),
+].join('\n');
+
+/*
+  Niet elke beroepsgroep heeft alle drie de niveaus, dus sommige combinaties van
+  sector en niveau leveren niets op. Met CSS valt niet te zien of er nog een
+  zichtbare kaart over is, maar we weten hier bij het bouwen precies welke
+  combinaties leeg zijn. Voor die combinaties zetten we de melding aan.
+*/
+const legeCombinaties = sectorSlugs.flatMap((s) =>
+  niveaus
+    .filter((n) => !trainingen.some((t) => t.data.sector === s && t.data.niveau === n))
+    .map(
+      (n) =>
+        `.filterblok:has(#sector-${s}:checked):has(#niveau-${n}:checked) .geen-treffers { display: block; }`
+    )
+);
+---
+
+<Base
+  titel="Alle agressietrainingen"
+  beschrijving="Alle agressietrainingen van Bureau Weerbaar en Veilig op één pagina: 132 trainingen over 19 sectoren en 44 beroepsgroepen, te filteren op sector en niveau."
+>
+  <div class="vlak-donker op-donker relative overflow-hidden text-white">
+    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
+      <Breadcrumb pad={[{ naam: 'Home', pad: '/' }, { naam: 'Trainingen' }]} />
+      <p class="kicker mt-7">Het volledige aanbod</p>
+      <h1 class="mt-4 text-3xl font-bold leading-[1.15] md:text-5xl">
+        Alle agressietrainingen
+      </h1>
+      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
+        Alle {trainingen.length} agressietrainingen van Bureau Weerbaar en Veilig op één
+        pagina, verdeeld over {sectorSlugs.length} sectoren en {beroepsgroepen.length} beroepsgroepen.
+        Filter op sector en niveau om de training te vinden die bij jouw team past.
+      </p>
+    </div>
+  </div>
+  <div class="lijn-merk" aria-hidden="true"></div>
+
+  <div class="filterblok mx-auto max-w-6xl px-4 py-12">
+    <!--
+      Een fieldset per filter, met radioknoppen. De knoppen zelf staan visueel
+      verborgen maar blijven bereikbaar met het toetsenbord; het label eromheen
+      is de zichtbare pil, en die krijgt via :has() de actieve opmaak.
+    -->
+    <form class="space-y-6" aria-label="Trainingen filteren">
+      <fieldset>
+        <legend class="text-sm font-bold uppercase tracking-wide text-grijs">Niveau</legend>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <label class="pil">
+            <input type="radio" name="niveau" id="niveau-alle" checked />
+            <span>Alle niveaus <span class="pil-aantal">{trainingen.length}</span></span>
+          </label>
+          {niveaus.map((n) => (
+            <label class={`pil niveau-${n}`}>
+              <input type="radio" name="niveau" id={`niveau-${n}`} />
+              <span>{NIVEAU_LABELS[n]} <span class="pil-aantal">{aantalPerNiveau(n)}</span></span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="text-sm font-bold uppercase tracking-wide text-grijs">Sector</legend>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <label class="pil">
+            <input type="radio" name="sector" id="sector-alle" checked />
+            <span>Alle sectoren</span>
+          </label>
+          {sectorSlugs.map((s) => (
+            <label class="pil">
+              <input type="radio" name="sector" id={`sector-${s}`} />
+              <span>{SECTOR_NAMEN[s] ?? s} <span class="pil-aantal">{aantalPerSector(s)}</span></span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+    </form>
+
+    {/*
+      Bewust géén kaartraster hier. Dat wisselt de accentkleur af op positie, en
+      dan krijgt een basistraining soms een paarse balk boven een oranje badge.
+      Op deze pagina moet de kleur het niveau volgen, en dat doet de klasse
+      niveau-* op elke kaart al.
+    */}
+    <ul class="trainingenlijst mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {trainingen.map((t) => (
+        <li
+          class={`niveau-${t.data.niveau} kaart flex flex-col p-6`}
+          data-niveau={t.data.niveau}
+          data-sector={t.data.sector}
+        >
+          <NiveauBadge niveau={t.data.niveau} />
+          <h2 class="mt-4 text-base font-bold leading-snug text-marine">
+            <a href={link(`/trainingen/${t.data.slug}/`)} class="after:absolute after:inset-0">
+              {t.data.titel}
+              <span class="pijl" aria-hidden="true">→</span>
+            </a>
+          </h2>
+          <p class="mt-2 flex-1 text-sm leading-relaxed text-grijs">
+            {groepNaam.get(t.data.beroepsgroep) ?? t.data.beroepsgroep}
+          </p>
+          <p class="mt-4 border-t border-lijn pt-3 text-xs font-semibold text-grijs">
+            {SECTOR_NAMEN[t.data.sector] ?? t.data.sector} · {t.data.duur}
+          </p>
+        </li>
+      ))}
+    </ul>
+
+    {/*
+      Op dit moment heeft elke sector alle drie de niveaus, dus er bestaat geen
+      combinatie die niets oplevert. De melding wordt daarom niet gerenderd: een
+      blok dat toch nooit zichtbaar wordt, hoeft niet in de HTML te staan. Komt er
+      een sector bij zonder alle niveaus, dan verschijnt hij vanzelf weer.
+    */}
+    {legeCombinaties.length > 0 && (
+      <p class="geen-treffers mt-8 rounded-lg bg-vlak-warm p-5 text-sm leading-relaxed text-grijs">
+        Geen training gevonden voor deze combinatie van sector en niveau. Niet elke
+        beroepsgroep heeft alle drie de niveaus. Kies een ander niveau, of bel
+        <a href="tel:+31857600435" class="font-semibold text-blauw hover:underline">085 760 0435</a>:
+        Bureau Weerbaar en Veilig denkt graag mee.
+      </p>
+    )}
+  </div>
+</Base>
+
+<style is:inline set:html={`
+  /* De radioknop blijft bedienbaar met het toetsenbord, maar is niet zichtbaar */
+  .pil input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .pil > span {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem 1rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-lijn);
+    background: #fff;
+    font-size: .875rem;
+    font-weight: 600;
+    color: var(--color-inkt);
+    cursor: pointer;
+    transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+  }
+  .pil:hover > span {
+    border-color: var(--color-marine);
+  }
+  /* De gekozen pil krijgt de merkkleur; bij een niveau die van het niveau zelf */
+  .pil:has(input:checked) > span {
+    background: var(--accent-sterk, var(--color-marine));
+    border-color: transparent;
+    color: #fff;
+  }
+  .pil input:focus-visible + span {
+    outline: 3px solid var(--color-blauw);
+    outline-offset: 2px;
+  }
+  .pil-aantal {
+    font-variant-numeric: tabular-nums;
+    opacity: .65;
+    font-weight: 700;
+  }
+
+  ${filterCss}
+
+  /* Alleen zichtbaar bij een combinatie die niets oplevert */
+  .geen-treffers { display: none; }
+  ${legeCombinaties.join('\n  ')}
+`} />
