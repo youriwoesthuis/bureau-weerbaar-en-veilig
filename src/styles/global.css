@@ -703,7 +703,11 @@ header.site {
   position: relative;
   z-index: 3;
 }
-@media (max-width: 760px) {
+/* Twee kolommen vanaf een tablet, niet pas op een telefoon. Bij 768 pixels
+   waren vier kaarten nog 168 breed, en dan brak "basis · gevorderd · expert"
+   over drie regels — de kaart werd twintig pixels hoger dan de rest en de rij
+   liep uit de pas. */
+@media (max-width: 900px) {
   .stat-strip {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -2780,4 +2784,124 @@ h3,
   .casus:nth-child(1),
   .casus:nth-child(3) { margin-left: 0; margin-right: 0; }
   .hero-actions { gap: 16px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DE CIJFERSTRIP, OPNIEUW
+   Vier witte blokjes met een getal en een zelfstandig naamwoord eronder. Ze
+   waren klikbaar zonder er klikbaar uit te zien, twee ervan gingen naar
+   dezelfde pagina, en ze stonden op de plek waar de bezoeker net geprikkeld is
+   door de kop — de duurste vierkante centimeters na de hero zelf.
+
+   Ze steken nu dieper in het donker, dragen een onderregel die zegt waarom het
+   getal ertoe doet, en tonen bij aanwijzen waar ze heen gaan.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.stat-strip {
+  /* Dieper de nacht in dan eerst: op de nieuwe donkere hero mag de breuk
+     scherper, dat maakt van de strip een plank in plaats van een aanhangsel. */
+  margin-top: -58px;
+}
+.stat-strip-card {
+  position: relative;
+  overflow: hidden;
+  padding: 24px 22px 22px;
+  /* Niet egaal wit: een nauwelijks zichtbaar verloop haalt de vlakheid eruit
+     zonder dat je kunt aanwijzen wat er anders is. */
+  background:
+    linear-gradient(180deg, #fff 0%, var(--color-papier-zacht) 100%);
+  box-shadow: 0 6px 24px -10px rgb(19 28 51 / 0.4);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+/* Een gekleurde gloed die vanuit de bovenrand naar binnen valt, in de kleur van
+   het niveau dat deze kaart draagt. */
+.stat-strip-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 76px;
+  background: linear-gradient(180deg, var(--accent-zacht) 0%, transparent 100%);
+  opacity: 0.55;
+  transition: opacity 0.18s ease;
+}
+.stat-strip-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent);
+  box-shadow: 0 18px 40px -12px rgb(19 28 51 / 0.5);
+}
+.stat-strip-card:hover::before {
+  opacity: 1;
+}
+.stat-strip-card > * {
+  position: relative;
+}
+
+.stat-strip-card b {
+  font-size: 40px;
+  /* De donkerdere accenttint: op het zachte accentvlak haalt de gewone
+     accent-diep 4,45:1, en veertig pixels vet is weliswaar grote tekst, maar de
+     onderregel eronder is dat niet. Eén kleur voor beide leest rustiger. */
+  color: var(--accent-op-zacht);
+}
+.stat-wat {
+  display: block;
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--color-marine);
+}
+.stat-bij {
+  display: block;
+  margin-top: 3px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--color-tekst-grijs);
+}
+
+/* De pijl staat er altijd, maar pas bij aanwijzen vol in beeld. Zonder dit zag
+   een kaart er niet uit als iets waar je op klikt. */
+.stat-pijl {
+  position: absolute;
+  right: 20px;
+  top: 26px;
+  font-size: 18px;
+  color: var(--accent-op-zacht);
+  opacity: 0.3;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.stat-strip-card:hover .stat-pijl {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stat-strip-card:hover {
+    transform: none;
+  }
+  .stat-strip-card:hover .stat-pijl {
+    transform: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .stat-pijl { display: none; }
+}
+@media (max-width: 620px) {
+  .stat-strip {
+    margin-top: -40px;
+    gap: 12px;
+  }
+  .stat-strip-card {
+    padding: 18px 16px 16px;
+  }
+  .stat-strip-card b {
+    font-size: 32px;
+  }
+  /* Op twee kolommen naast elkaar botst de pijl met het getal. */
+  .stat-pijl {
+    display: none;
+  }
 }

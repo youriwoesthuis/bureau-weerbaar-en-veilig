@@ -53,10 +53,39 @@ const acteurs = team.filter((l) => /acteur/i.test(l.data.rol)).length;
   en dat is precies waarom ze hier mogen staan: ze zijn na te rekenen.
 */
 const cijfers = [
-  { getal: trainingen.length, wat: 'trainingen', pad: '/trainingen/', niveau: 'basis' },
-  { getal: beroepsgroepen.length, wat: 'beroepsgroepen', pad: '/sectoren/', niveau: 'gevorderd' },
-  { getal: sectoren.length, wat: 'sectoren', pad: '/sectoren/', niveau: 'expert' },
-  { getal: situaties.length, wat: 'praktijksituaties', pad: '/trainingen/', niveau: 'basis' },
+  {
+    getal: trainingen.length,
+    wat: 'trainingen',
+    bij: 'elk van één dag',
+    pad: '/trainingen/',
+    niveau: 'basis',
+  },
+  {
+    getal: beroepsgroepen.length,
+    wat: 'beroepsgroepen',
+    bij: `in ${sectoren.length} sectoren`,
+    pad: '/sectoren/',
+    niveau: 'gevorderd',
+  },
+  {
+    getal: 3,
+    wat: 'niveaus',
+    bij: 'basis · gevorderd · expert',
+    pad: '/niveaus/',
+    niveau: 'expert',
+  },
+  {
+    /*
+      Het menselijke tegenwicht. Er is geen fotografie op deze site, dus dit
+      getal en de twaalf portretten zijn samen het enige wat laat zien dat er
+      mensen achter staan.
+    */
+    getal: team.length,
+    wat: 'trainers',
+    bij: `waarvan ${acteurs} acteurs`,
+    pad: '/over-ons/',
+    niveau: 'basis',
+  },
 ];
 
 const aantalTrainingen = (s: string) => trainingen.filter((t) => t.data.sector === s).length;
@@ -261,7 +290,18 @@ const finderSectoren = sectoren.map((s) => ({
     </div>
   </section>
 
-  {/* ═══ De cijfers, geteld uit de content ═══ */}
+  {/*
+    ═══ De cijfers, geteld uit de content ═══
+
+    Vier kaarten, vier verschillende bestemmingen. Daarvoor gingen er twee naar
+    dezelfde pagina — beroepsgroepen en sectoren wezen allebei naar /sectoren/ —
+    en stond het getal 461 hier een tweede keer, terwijl het nu in de kop staat.
+    Een strip die vier keer hetzelfde belooft is geen wegwijzer maar een
+    herhaling.
+
+    Elke kaart draagt nu ook een onderregel die zegt waaróm het getal ertoe doet
+    in plaats van alleen wát het telt.
+  */}
   <div class="wrap">
     <div class="stat-strip">
       {cijfers.map((c) => (
@@ -276,7 +316,9 @@ const finderSectoren = sectoren.map((s) => ({
           */}
           <b class="telgetal" style={`--eind: ${c.getal}`} aria-hidden="true"></b>
           <b class="sr-only">{c.getal}</b>
-          <span>{c.wat}</span>
+          <span class="stat-wat">{c.wat}</span>
+          <span class="stat-bij">{c.bij}</span>
+          <span class="stat-pijl" aria-hidden="true">→</span>
         </a>
       ))}
     </div>
