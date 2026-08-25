@@ -90,6 +90,9 @@ const cijfers = [
 
 const aantalTrainingen = (s: string) => trainingen.filter((t) => t.data.sector === s).length;
 const aantalGroepen = (s: string) => beroepsgroepen.filter((b) => b.data.sector === s).length;
+/* IJkpunt voor de vulbalk op de sectorkaarten: de sector met de meeste
+   trainingen is vol, de rest naar verhouding. */
+const grootsteSector = Math.max(...sectoren.map((s) => aantalTrainingen(s.data.slug)));
 
 /* De drie niveaus rouleren over de merkkleuren, zodat het raster kleur krijgt. */
 const NIVEAUS = ['basis', 'gevorderd', 'expert'] as const;
@@ -350,22 +353,48 @@ const finderSectoren = sectoren.map((s) => ({
         spreekkamer van een huisarts niet, en dat verschil bepaalt de training.
       </p>
 
+      {/*
+        Negentien sectoren, en dat blijven het er ook: elke sectorpagina hoort
+        een link te krijgen vanaf de zwaarste pagina van de site.
+
+        Wat wél veranderd is, is de kleur. Die roteerde met NIVEAUS[i % 3] over
+        oranje, paars en blauw — op alfabetische positie. Overal elders op de
+        site dragen die drie kleuren betekenis: oranje is basis, paars
+        gevorderd, blauw expert. Hier was het willekeur die zich voordeed als
+        systeem, en dat ondermijnt het signaal op de pagina's waar het wél
+        klopt. Sectoren zijn geen niveaus, dus dragen ze nu allemaal de
+        merkkleur.
+
+        In plaats van kleur draagt de balk het verschil: hoe meer trainingen een
+        sector telt, hoe voller. Dat is een echt gegeven, en het maakt van
+        negentien gelijke kaarten een raster waarin je de grote sectoren in één
+        blik vindt.
+      */}
       <div class="grid grid-4 sectorraster">
-        {sectoren.map((s, i) => (
-          <article class={`card niveau-${NIVEAUS[i % 3]} komt-op`}>
-            <span class="card-icon" aria-hidden="true">
-              <SectorIcoon sector={s.data.slug} />
-            </span>
-            <h3>
-              <a href={link(`/sectoren/${s.data.slug}/`)} class="vlakdek">{s.data.naam}</a>
-            </h3>
-            <p>
-              {telwoord(aantalTrainingen(s.data.slug), 'training', 'trainingen')}
-              {' · '}
-              {telwoord(aantalGroepen(s.data.slug), 'beroepsgroep', 'beroepsgroepen')}
-            </p>
-          </article>
-        ))}
+        {sectoren.map((s) => {
+          const n = aantalTrainingen(s.data.slug);
+          return (
+            <article class="card sectortegel komt-op">
+              <span class="card-icon" aria-hidden="true">
+                <SectorIcoon sector={s.data.slug} />
+              </span>
+              <h3>
+                <a href={link(`/sectoren/${s.data.slug}/`)} class="vlakdek">{s.data.naam}</a>
+              </h3>
+              <p>
+                {telwoord(n, 'training', 'trainingen')}
+                {' · '}
+                {telwoord(aantalGroepen(s.data.slug), 'beroepsgroep', 'beroepsgroepen')}
+              </p>
+              <span
+                class="sectorbalk"
+                style={`--vulling: ${Math.round((n / grootsteSector) * 100)}%`}
+                aria-hidden="true"
+              ></span>
+              <span class="sectorpijl" aria-hidden="true">→</span>
+            </article>
+          );
+        })}
       </div>
     </div>
   </section>

@@ -2905,3 +2905,78 @@ h3,
     display: none;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HET SECTORRASTER, OPNIEUW
+   Negentien identieke kaarten in vier kolommen, waarvan de kleur roteerde op
+   alfabetische positie. Dat laatste was de echte fout: het leende de drie
+   niveaukleuren voor iets wat geen niveau is, en verzwakte daarmee het signaal
+   op elke pagina waar diezelfde kleur wél betekenis draagt.
+
+   Nu draagt elke sector de merkkleur, en zegt een vulbalk hoe groot de sector
+   is. Dat is een gegeven dat klopt, en het maakt van een muur een raster waarin
+   je de grote sectoren in één blik vindt.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.sectortegel {
+  padding-bottom: 30px;
+  overflow: hidden;
+}
+
+/*
+  Bij aanwijzen werd de rand doorzichtig gezet — de kaart werd dus váger op het
+  moment dat hij juist scherper moet worden. Nu kleurt hij op.
+*/
+.card:hover {
+  border-color: var(--accent, var(--color-oranje));
+}
+
+.sectortegel h3 {
+  font-size: 17px;
+  line-height: 1.25;
+}
+.sectortegel p {
+  font-size: 13.5px;
+}
+
+/* ─── De vulbalk ───
+   Loopt over de volle breedte langs de onderrand. De vulling is het aantal
+   trainingen van deze sector, afgezet tegen de grootste sector. */
+.sectorbalk {
+  position: absolute;
+  inset: auto 0 0;
+  height: 4px;
+  background: var(--color-lijn);
+}
+.sectorbalk::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--vulling);
+  background: var(--grad-fel);
+  transition: filter 0.18s ease;
+}
+.sectortegel:hover .sectorbalk::after {
+  filter: saturate(1.15) brightness(1.06);
+}
+
+.sectorpijl {
+  position: absolute;
+  right: 22px;
+  top: 26px;
+  font-size: 17px;
+  color: var(--color-oranje-donker);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.sectortegel:hover .sectorpijl {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sectortegel:hover .sectorpijl {
+    transform: none;
+  }
+}
