@@ -159,53 +159,103 @@ const finderSectoren = sectoren.map((s) => ({
 >
   {/* ═══ Kop ═══ */}
   <section class="hero op-donker">
+    {/*
+      De achtergrond is opgebouwd uit lagen in plaats van één egale kleur: een
+      diepe nachtbasis, een warme gloed rechtsboven waar het oog binnenkomt, en
+      een fijn chevronraster uit het beeldmerk. Alle drie in CSS, geen enkele
+      extra download.
+    */}
+    <div class="hero-licht" aria-hidden="true"></div>
+    <div class="hero-raster" aria-hidden="true"></div>
+
     <div class="wrap">
       <div class="hero-grid">
-        <div>
-          <p class="eyebrow">Specialist in agressietraining</p>
+        <div class="hero-tekst">
+          {/*
+            Echte urgentie, geen verzonnen schaarste. "Nog drie plekken" zou hier
+            makkelijk staan en het is onwaar; dit zijn twee feiten die wél
+            kloppen en die een inkoper direct kan gebruiken.
+          */}
+          <p class="hero-status">
+            <span class="hero-stip" aria-hidden="true"></span>
+            Reactie binnen één werkdag
+          </p>
+
           {/*
             De entiteitsdefinitie staat in de eerste vijftig woorden: wie we
             zijn, wat we doen, voor wie. Dat is wat een AI-antwoordsysteem
             overneemt bij de vraag wat Bureau Weerbaar en Veilig is.
           */}
-          <h1>Agressietraining voor jouw beroepsgroep.</h1>
+          <h1>
+            Agressietraining voor
+            <span class="hero-nadruk"> jouw beroepsgroep</span>.
+          </h1>
+
           <p class="lede">
             Bureau Weerbaar en Veilig traint teams in het omgaan met agressie,
             intimidatie en grensoverschrijdend gedrag op de werkvloer. Eén
             onderwerp, tot in de diepte, per beroepsgroep uitgewerkt — in drie
-            niveaus. Incompany of in Neede, in groepen van maximaal tien.
+            niveaus.
           </p>
+
+          {/*
+            Eén dominante actie, en daarnaast een link in plaats van een tweede
+            knop. Twee even zware knoppen naast elkaar is geen keuze aanbieden
+            maar de keuze uitstellen.
+          */}
           <div class="hero-actions">
-            <a href={link('/sectoren/')} class="btn btn-primary">Vind jouw beroepsgroep →</a>
-            <a href="#niveaus" class="btn btn-outline">Welk niveau heb ik nodig?</a>
+            <a href={link('/sectoren/')} class="btn btn-fel">
+              Vind jouw beroepsgroep
+              <span class="btn-pijl" aria-hidden="true">→</span>
+            </a>
+            <a href="#niveaus" class="hero-tweede">Welk niveau heb ik nodig?</a>
           </div>
+
+          {/* De vier harde feiten waar een inkoper als eerste op scant. */}
+          <ul class="hero-feiten">
+            {[
+              ['1 dag', 'per training'],
+              ['max. 10', 'deelnemers'],
+              ['Incompany', 'of in Neede'],
+              ['Certificaat', 'na afloop'],
+            ].map(([waarde, label]) => (
+              <li>
+                <b>{waarde}</b>
+                <span>{label}</span>
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/*
-          De drie niveaus als oplopende staven, in de kleuren die ze op de hele
-          site dragen. Geen sfeerbeeld: de tekening zegt wat de opbouw is — van
-          herkennen, via zwaardere situaties, naar beleid.
+          Hier stond een staafgrafiek die uitbeeldde dat er drie niveaus zijn —
+          informatie die de tekst ernaast al geeft. Dat is decoratie, en die
+          plek is te duur voor decoratie.
+
+          Nu staat er bewijs: drie echte praktijksituaties uit drie
+          verschillende beroepsgroepen, letterlijk zoals ze in de trainingen
+          staan. Dat is het enige wat een concurrent niet kan overschrijven, en
+          het is het moment waarop een bezoeker denkt: dit gaat over ons.
         */}
-        <div class="hero-graphic" aria-hidden="true">
-          <svg viewBox="0 0 420 330" role="presentation">
-            <defs>
-              <linearGradient id="staafExpert" x1="0" y1="1" x2="1" y2="0">
-                <stop offset="0%" stop-color="#203e91" />
-                <stop offset="100%" stop-color="#f18919" />
-              </linearGradient>
-            </defs>
-            <line x1="16" y1="300" x2="404" y2="300" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2" />
-            <rect x="48" y="204" width="76" height="96" rx="12" fill="#f18919" />
-            <text x="86" y="188" text-anchor="middle" fill="#f18919" font-size="15" font-weight="800">Basis</text>
-            <rect x="172" y="140" width="76" height="160" rx="12" fill="#a97fb5" />
-            <text x="210" y="124" text-anchor="middle" fill="#c9a9d0" font-size="15" font-weight="800">Gevorderd</text>
-            <rect x="296" y="58" width="76" height="242" rx="12" fill="url(#staafExpert)" />
-            <text x="334" y="42" text-anchor="middle" fill="#8fa4e8" font-size="15" font-weight="800">Expert</text>
-            <path d="M318 82 l16 14 l16 -14" fill="none" stroke="#ffffff" stroke-opacity="0.7"
-                  stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M318 102 l16 14 l16 -14" fill="none" stroke="#ffffff" stroke-opacity="0.4"
-                  stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
+        <div class="hero-bewijs">
+          <p class="hero-bewijs-kop">
+            <span class="hero-bewijs-getal">{situaties.length}</span>
+            praktijksituaties uit de trainingen
+          </p>
+
+          <ul class="casusstapel">
+            {uitgelicht.slice(0, 3).map((s, i) => (
+              <li class={`casus niveau-${NIVEAUS[i % 3]}`}>
+                <p class="casus-tekst">{s.tekst}</p>
+                <p class="casus-bron">{s.beroepsgroep}</p>
+              </li>
+            ))}
+          </ul>
+
+          <a href={link('/trainingen/')} class="hero-bewijs-link">
+            Bekijk het volledige aanbod
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
     </div>

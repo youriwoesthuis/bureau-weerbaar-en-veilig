@@ -58,6 +58,12 @@
   /* Marine — uit het woordmerk */
   --color-marine: #203058;         /* 13,4:1 op wit */
   --color-marine-zacht: #2a3c69;
+  /* Nacht: dieper dan marine, zodat het volle oranje erop 6,71:1 haalt in
+     plaats van 5,13. Meer diepte én meer contrast, met dezelfde kleur. */
+  --color-nacht: #131c33;
+  /* Amber: het lichtaccent op donker. 9,84:1 op nacht, dus ook bruikbaar
+     voor kleine tekst en niet alleen voor sier. */
+  --color-amber: #ffb84d;
 
   /* Paars — de tussenstap van het logoverloop */
   --color-paars: #785880;
@@ -2480,4 +2486,298 @@ h3,
 }
 .antwoordblok-meer a:hover {
   text-decoration: underline;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DE HERO, OPNIEUW
+   Diagnose: de hero was één egale marinevlek met een abstracte staafgrafiek
+   ernaast, en de belangrijkste knop droeg het dofste oranje uit het palet —
+   #ad5a06, verdonkerd omdat er wit op moest. Het gevolg was dat het element
+   dat het hardst moest roepen, het minst opviel.
+
+   De ingreep zit niet in een nieuwe kleur maar in een omgekeerde logica: vol
+   merk-oranje mét donkere tekst haalt 5,13:1 op marine en 6,71:1 op de nieuwe
+   nachtachtergrond. Dezelfde merkkleur, twee keer zo fel, en ruim binnen de
+   norm.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.hero {
+  background: var(--color-nacht);
+  isolation: isolate;
+}
+.hero .wrap {
+  padding-top: 76px;
+  padding-bottom: 76px;
+}
+
+/* ─── Laag 1: de warme gloed ───
+   Rechtsboven, waar het oog binnenkomt. Geeft de vlakke achtergrond richting
+   en diepte zonder dat er een afbeelding aan te pas komt. */
+.hero-licht {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(60% 70% at 78% 8%, rgb(241 137 25 / 0.28) 0%, transparent 62%),
+    radial-gradient(50% 60% at 12% 96%, rgb(32 62 145 / 0.42) 0%, transparent 66%);
+}
+
+/* ─── Laag 2: het chevronraster ───
+   De dubbele chevron uit het beeldmerk, als fijn weefsel over het hele vlak.
+   Twee lijnverlopen, geen bestand. */
+.hero-raster {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.5;
+  background-image:
+    repeating-linear-gradient(60deg, rgb(255 255 255 / 0.045) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(-60deg, rgb(255 255 255 / 0.045) 0 1px, transparent 1px 22px);
+  /* Naar de onderrand toe uitfaden, zodat het raster niet tegen de volgende
+     sectie aan botst. */
+  mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+}
+
+.hero-grid {
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 56px;
+  align-items: center;
+}
+.hero-tekst {
+  position: relative;
+  z-index: 2;
+}
+
+/* ─── De statusregel ───
+   Echte urgentie in plaats van verzonnen schaarste. "Nog drie plekken" zou hier
+   makkelijk staan en het is onwaar; dit is een toezegging die het bureau
+   daadwerkelijk doet. */
+.hero-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 15px 7px 12px;
+  border: 1px solid rgb(255 184 77 / 0.32);
+  border-radius: 999px;
+  background: rgb(255 184 77 / 0.09);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  /* 9,84:1 op de nachtachtergrond */
+  color: var(--color-amber);
+  margin-bottom: 22px;
+}
+.hero-stip {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-amber);
+  box-shadow: 0 0 0 0 rgb(255 184 77 / 0.75);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-stip {
+    animation: hartslag 2.4s ease-out infinite;
+  }
+  @keyframes hartslag {
+    0%   { box-shadow: 0 0 0 0 rgb(255 184 77 / 0.7); }
+    70%  { box-shadow: 0 0 0 9px rgb(255 184 77 / 0); }
+    100% { box-shadow: 0 0 0 0 rgb(255 184 77 / 0); }
+  }
+}
+
+.hero h1 {
+  font-size: clamp(38px, 5.4vw, 62px);
+  line-height: 1.03;
+  letter-spacing: -0.025em;
+}
+/* De beroepsgroep is waar de hele site om draait; die krijgt de kleur. */
+.hero-nadruk {
+  color: var(--color-amber);
+}
+.hero p.lede {
+  max-width: 52ch;
+  margin-top: 20px;
+  margin-bottom: 32px;
+  font-size: 17.5px;
+}
+
+/* ─── De hoofdknop ───
+   Vol merk-oranje met marineblauwe tekst: 5,13:1 op marine, 6,71:1 hier. De
+   vorige knop droeg wit op #ad5a06 en haalde 4,95 — nét genoeg, maar de kleur
+   was daarvoor zo ver verdonkerd dat er van het merk-oranje niets meer over
+   was. Dit is dezelfde kleur als in het logo, op volle sterkte. */
+.btn-fel {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 28px;
+  border: 2px solid var(--color-oranje);
+  border-radius: 999px;
+  background: var(--color-oranje);
+  color: var(--color-marine);
+  font-size: 16px;
+  font-weight: 800;
+  box-shadow:
+    0 10px 30px -8px rgb(241 137 25 / 0.55),
+    inset 0 1px 0 rgb(255 255 255 / 0.35);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+}
+.btn-fel:hover {
+  background: #ffa03a;
+  border-color: #ffa03a;
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 38px -8px rgb(241 137 25 / 0.68),
+    inset 0 1px 0 rgb(255 255 255 / 0.45);
+}
+.btn-fel:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+.btn-pijl {
+  transition: transform 0.16s ease;
+}
+.btn-fel:hover .btn-pijl {
+  transform: translateX(4px);
+}
+
+/* Naast de hoofdknop een link, geen tweede knop: twee even zware knoppen is
+   geen keuze aanbieden maar de keuze uitstellen. */
+.hero-tweede {
+  align-self: center;
+  padding: 8px 4px;
+  font-size: 15px;
+  font-weight: 700;
+  color: rgb(255 255 255 / 0.82);
+  border-bottom: 1px solid rgb(255 255 255 / 0.3);
+}
+.hero-tweede:hover {
+  color: #fff;
+  border-bottom-color: var(--color-amber);
+}
+.hero-actions {
+  align-items: center;
+  gap: 22px;
+}
+
+/* ─── De vier feiten ─── */
+.hero-feiten {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 30px;
+  margin-top: 38px;
+  padding-top: 26px;
+  border-top: 1px solid rgb(255 255 255 / 0.13);
+  list-style: none;
+}
+.hero-feiten b {
+  display: block;
+  font-size: 17px;
+  font-weight: 800;
+  color: #fff;
+}
+.hero-feiten span {
+  display: block;
+  margin-top: 1px;
+  font-size: 12.5px;
+  color: rgb(255 255 255 / 0.62);
+}
+
+/* ─── De casusstapel ───
+   Bewijs in plaats van decoratie. Drie zinnen die letterlijk in de trainingen
+   staan, uit drie verschillende beroepsgroepen. Dit is het enige op de hele
+   site wat een concurrent niet kan overschrijven. */
+.hero-bewijs {
+  position: relative;
+  z-index: 2;
+}
+.hero-bewijs-kop {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 18px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: rgb(255 255 255 / 0.62);
+}
+.hero-bewijs-getal {
+  font-size: 30px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--color-amber);
+}
+.casusstapel {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+}
+.casus {
+  position: relative;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  /* Glas: een lichte laag over de gloed heen, zodat de kaarten van de
+     achtergrond loskomen zonder hem af te dekken. */
+  background: rgb(255 255 255 / 0.055);
+  backdrop-filter: blur(6px);
+  padding: 16px 18px;
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+/* Licht uitwaaieren, zodat het als een stapel leest en niet als een lijst. */
+.casus:nth-child(1) { margin-right: 26px; }
+.casus:nth-child(3) { margin-left: 26px; }
+.casus:hover {
+  background: rgb(255 255 255 / 0.09);
+  border-color: rgb(255 255 255 / 0.22);
+  transform: translateX(4px);
+}
+.casus-tekst {
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: rgb(255 255 255 / 0.94);
+}
+.casus-bron {
+  margin-top: 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-amber);
+}
+.hero-bewijs-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgb(255 255 255 / 0.8);
+}
+.hero-bewijs-link:hover {
+  color: var(--color-amber);
+}
+
+@media (max-width: 900px) {
+  /*
+    Deze regel moet hier staan en niet alleen bovenin het bestand.
+
+    De instorting naar één kolom stond al in de oorspronkelijke hero-sectie,
+    maar de nieuwe .hero-grid hierboven heeft dezelfde specificiteit en staat
+    later in het bestand — dus won hij, ook binnen de mediaquery. Op een telefoon
+    bleef de hero daardoor tweekoloms: 298 plus 212 pixels naast elkaar in een
+    scherm van 360, waarvan de rechterkolom werd weggeknipt door de overflow van
+    .hero. Geen horizontale schuifbalk, en dus niet zichtbaar in de meting —
+    alleen een kolom die er niet meer was.
+  */
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .hero .wrap { padding-top: 52px; padding-bottom: 56px; }
+  .hero-bewijs { order: 2; }
+  .casus:nth-child(1),
+  .casus:nth-child(3) { margin-left: 0; margin-right: 0; }
+  .hero-actions { gap: 16px; }
 }
