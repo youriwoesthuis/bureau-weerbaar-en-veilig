@@ -748,6 +748,8 @@ header.site {
   bottom: 0;
   height: 3px;
   background: var(--grad-fel);
+  /* Ruimer dan het vlak, anders valt er niets te schuiven. */
+  background-size: 240% 100%;
 }
 .paginakop h1 {
   font-size: clamp(30px, 5vw, 52px);
@@ -1172,4 +1174,1310 @@ footer.site {
 }
 .teamknop {
   margin-top: 28px;
+}
+
+/* ─── Niveaukaart op de beroepsgroeppagina ─── */
+.niveau-kop {
+  margin-top: 14px;
+}
+.niveau-gegevens {
+  margin-top: 18px;
+}
+/* De doelgroep is een hele zin en hoort links uitgelijnd onder het label, niet
+   rechts als een losse waarde. */
+.niveau-gegevens > div {
+  flex-direction: column;
+  gap: 4px;
+  justify-content: flex-start;
+}
+.gegeven-lang {
+  text-align: left;
+  font-weight: 400;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--color-inkt);
+}
+.niveau-tussenkop {
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-tekst-grijs);
+}
+/* mt-auto duwt de link naar de onderrand, zodat drie kaarten met verschillend
+   lange teksten hun link toch op één lijn hebben. */
+.niveau-link {
+  margin-top: auto;
+  padding-top: 18px;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Trainingspagina: wat je meeneemt ───
+   Op het volle merk-oranje. De tekst is donker (marine op oranje = 6,02:1),
+   want wit op dit oranje haalt de norm niet en zou het vlak dwingen tot een
+   dofbruine tint. Zie de kleurnotitie boven in dit bestand. */
+.leerlijst {
+  margin-top: 36px;
+  list-style: none;
+}
+.leerpunt {
+  position: relative;
+  padding: 20px 22px 20px 58px;
+  border-radius: var(--radius);
+  background: rgb(255 255 255 / 0.9);
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--color-marine);
+}
+/* Vinkje van twee randen: geen icoonbestand, geen extra verzoek. */
+.leerpunt::before {
+  content: '';
+  position: absolute;
+  left: 24px;
+  top: 25px;
+  width: 8px;
+  height: 15px;
+  border-right: 3px solid var(--color-oranje-donker);
+  border-bottom: 3px solid var(--color-oranje-donker);
+  transform: rotate(42deg);
+}
+
+/* ─── Trainingspagina: programma ───
+   Dit is geen accordeon maar een vaste lijst: het dagverloop is precies wat
+   iemand wil zien voordat die boekt, en dat achter een klik verstoppen kost
+   meer dan het oplevert. Ook voor een AI-crawler telt: wat dichtgeklapt is,
+   staat er wel, maar wat open staat, leest beter. */
+.programma-blok {
+  list-style: none;
+}
+.programma-kop {
+  cursor: default;
+  align-items: flex-start;
+}
+.programma-kop:hover {
+  background: none;
+}
+.programma-blok .ladder-nr {
+  margin-top: 1px;
+}
+
+/* ─── Trainingspagina: werkvormen ─── */
+.werkvormen-kop {
+  margin-top: 46px;
+}
+.werkvormen {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+  list-style: none;
+}
+
+/* ─── Trainingspagina: praktische gegevens ───
+   Staat onder het programma en niet in de kop: de kop toont de vier feiten
+   waarop iemand scant, dit blok de volledige set inclusief voorwaarde en
+   doelgroep — zinnen die te lang zijn voor een statistiekbalk. */
+.praktisch {
+  margin-top: 46px;
+  border-top: 1px solid var(--color-lijn);
+  padding-top: 30px;
+}
+
+/* ─── Gidsnavigatie: vorige en volgende ───
+   De vijf gidsvragen vormen één route. Zonder deze balk is elke pagina een
+   doodlopend eind, en dat is precies waar iemand die aan het oriënteren is
+   afhaakt. */
+.gidsnav {
+  margin-top: 56px;
+  border-top: 1px solid var(--color-lijn);
+  padding-top: 26px;
+}
+.gidsnav-paar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+@media (min-width: 620px) {
+  .gidsnav-paar {
+    flex-direction: row;
+    align-items: stretch;
+  }
+}
+.gidsnav-stap {
+  flex: 1;
+  border: 1px solid var(--color-lijn);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  transition: border-color 0.16s ease, background 0.16s ease;
+}
+.gidsnav-stap:hover {
+  border-color: var(--color-oranje-donker);
+  background: var(--color-oranje-zacht);
+}
+.gidsnav-stap--rechts {
+  text-align: right;
+}
+.gidsnav-leeg {
+  flex: 1;
+}
+.gidsnav-label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-oranje-donker);
+}
+.gidsnav-titel {
+  display: block;
+  margin-top: 4px;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--color-marine);
+}
+.gidsnav-alle {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 14.5px;
+}
+.gidsnav-alle a {
+  font-weight: 700;
+  color: var(--color-blauw);
+}
+.gidsnav-alle a:hover {
+  text-decoration: underline;
+}
+
+/* ─── Sectorpagina: de beroepsgroepen ───
+   Geen raster maar een verticale lijst: het aantal beroepsgroepen loopt van
+   één tot acht, en een raster met één kaart erin ziet eruit als een fout.
+   Bovendien draagt elke groep zelf al drie niveaukaarten. */
+.groepenlijst {
+  display: grid;
+  gap: 22px;
+  margin-top: 38px;
+}
+.groep {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--color-lijn);
+  border-radius: var(--radius);
+  background: #fff;
+  padding: 26px 26px 28px;
+  box-shadow: var(--schaduw-sm);
+}
+/* Het merkverloop als streep bovenop — het felle, want er komt geen tekst op. */
+.groep::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: var(--grad-fel);
+}
+.groep-titel {
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--color-marine);
+}
+.groep-titel a:hover {
+  color: var(--color-oranje-donker);
+  text-decoration: underline;
+}
+.groep-tekst {
+  max-width: 68ch;
+  margin-top: 8px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--color-tekst-grijs);
+}
+.groep-niveaus {
+  margin-top: 22px;
+  list-style: none;
+}
+.niveaukaart {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  border: 1px solid var(--color-lijn);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--color-papier-zacht);
+  padding: 16px 18px;
+  transition: border-color 0.16s ease, background 0.16s ease;
+}
+.niveaukaart:hover {
+  background: var(--accent-zacht);
+  border-color: var(--accent);
+  border-left-color: var(--accent-diep);
+}
+.niveaukaart-link {
+  font-size: 14.5px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--color-marine);
+}
+.niveaukaart-duur {
+  margin-top: auto;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-tekst-grijs);
+}
+
+/* ─── Sectoroverzicht ───
+   Icoon, naam, twee getallen. Geen samenvatting: negentien samenvattingen
+   naast elkaar openen met dezelfde vijf woorden en maken het raster
+   onleesbaar in plaats van informatiever. */
+.sectorlijst {
+  margin-top: 40px;
+  list-style: none;
+}
+.sectorkaart {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid var(--color-lijn);
+  border-radius: var(--radius);
+  background: #fff;
+  padding: 18px 20px;
+  box-shadow: var(--schaduw-sm);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+}
+.sectorkaart:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-oranje);
+  box-shadow: var(--schaduw-md);
+}
+.sectorkaart-tekst {
+  min-width: 0;
+}
+.sectorkaart-tekst h2 {
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--color-marine);
+}
+.sectorkaart-tekst p {
+  margin-top: 3px;
+  font-size: 13px;
+  color: var(--color-tekst-grijs);
+}
+.sectorkaart-pijl {
+  margin-left: auto;
+  flex: none;
+  font-size: 19px;
+  color: var(--color-oranje-donker);
+  transition: transform 0.16s ease;
+}
+.sectorkaart:hover .sectorkaart-pijl {
+  transform: translateX(4px);
+}
+/* Een sector zonder eigen tekst: wel benoemen, niet suggereren dat er iets
+   achter zit. Gestippelde rand en geen link. */
+.sectorkaart--leeg {
+  border-style: dashed;
+  background: var(--color-papier-zacht);
+  box-shadow: none;
+}
+.sectorkaart--leeg:hover {
+  transform: none;
+  border-color: var(--color-lijn);
+  box-shadow: none;
+}
+.sectorkaart--leeg h2 {
+  color: var(--color-tekst-grijs);
+}
+.sectorlijst-noot {
+  max-width: 62ch;
+  margin-top: 30px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--color-tekst-grijs);
+}
+.sectorlijst-noot a {
+  font-weight: 700;
+  color: var(--color-blauw);
+}
+.sectorlijst-noot a:hover {
+  text-decoration: underline;
+}
+
+/* ─── Bedankpagina: het vinkje ─── */
+.bevestig-vink {
+  display: block;
+  width: 22px;
+  height: 40px;
+  margin-bottom: 22px;
+  border-right: 5px solid var(--color-oranje);
+  border-bottom: 5px solid var(--color-oranje);
+  transform: rotate(42deg);
+}
+.bedankt-knoppen {
+  margin-top: 34px;
+}
+
+/* ─── Niveauoverzicht ─── */
+.niveaukop-rij {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.niveaupijlen {
+  display: flex;
+  gap: 1px;
+  color: var(--accent, var(--color-oranje));
+}
+.niveaupijlen svg {
+  width: 15px;
+  height: 20px;
+}
+
+/* ─── Teamraster op de over-onspagina ───
+   De twaalf portretten zijn het enige echte beeld op deze site: er is geen
+   fotografie bij de trainingen. Daarom krijgen ze hier ruimte in plaats van
+   een rijtje kleine rondjes zoals in het trainersblok. */
+.teamraster {
+  margin-top: 40px;
+  list-style: none;
+}
+.teamkaart {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--color-lijn);
+  border-radius: var(--radius);
+  background: #fff;
+  box-shadow: var(--schaduw-sm);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+.teamkaart:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--schaduw-md);
+}
+.teamfoto {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: top;
+}
+.teamfoto--leeg {
+  display: grid;
+  place-items: center;
+  background: var(--color-papier-zacht);
+}
+.teamfoto--leeg span {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--color-lijn);
+}
+.teamkaart-tekst {
+  padding: 18px 18px 20px;
+}
+.teamkaart-tekst h3 {
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--color-marine);
+}
+.teamkaart-rol {
+  margin-top: 4px;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--color-tekst-grijs);
+}
+.teamkaart-link {
+  margin-top: 12px;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--color-oranje-donker);
+}
+.teamkaart:hover .teamkaart-link {
+  text-decoration: underline;
+}
+
+/* ─── Teamlidpagina ───
+   Portret links, verhaal rechts. Het portret blijft meelopen tijdens het
+   scrollen: het verhaal is een paar alinea's lang, en zonder gezicht ernaast
+   is het weer een anonieme tekst. */
+.persoon {
+  display: grid;
+  gap: 34px;
+}
+@media (min-width: 940px) {
+  .persoon {
+    grid-template-columns: 20rem 1fr;
+    gap: 52px;
+  }
+  .persoon-zij {
+    position: sticky;
+    top: calc(var(--kophoogte) + 28px);
+    align-self: start;
+  }
+}
+.persoon-foto {
+  display: block;
+  width: 100%;
+  border-radius: var(--radius);
+  object-fit: cover;
+  object-position: top;
+  box-shadow: var(--schaduw-md);
+}
+.persoon-noot {
+  margin-top: 18px;
+  border-left: 4px solid var(--color-oranje);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--color-oranje-zacht);
+  padding: 15px 17px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--color-inkt);
+}
+.persoon-tekst {
+  min-width: 0;
+}
+.persoon-cta {
+  margin-top: 40px;
+}
+
+/* ─── De collega's onderaan ─── */
+.collegas {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 34px;
+  list-style: none;
+}
+@media (min-width: 620px) {
+  .collegas { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 940px) {
+  .collegas { grid-template-columns: repeat(6, 1fr); }
+}
+.collega {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--color-lijn);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+.collega:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--schaduw-md);
+}
+.collega-tekst {
+  padding: 11px 12px 13px;
+}
+.collega-tekst h3 {
+  font-size: 13.5px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--color-marine);
+}
+.collega-tekst p {
+  margin-top: 2px;
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: var(--color-tekst-grijs);
+}
+
+/* ─── Contactpagina ─── */
+.contact-grid {
+  display: grid;
+  gap: 44px;
+}
+@media (min-width: 900px) {
+  .contact-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+  }
+}
+.contactkaarten {
+  display: grid;
+  gap: 14px;
+  margin-top: 30px;
+}
+.contactkaart {
+  border: 1px solid var(--color-lijn);
+  border-left: 4px solid var(--color-oranje);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: #fff;
+  padding: 16px 20px;
+}
+.contactkaart dt {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--color-tekst-grijs);
+}
+.contactkaart dd {
+  margin-top: 3px;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-blauw);
+}
+.contactkaart dd a:hover {
+  text-decoration: underline;
+}
+/* Het e-mailadres is te lang voor een smalle kolom; laat het breken. */
+.contact-mail {
+  font-size: 17px;
+  word-break: break-all;
+}
+.contact-plat {
+  font-size: 16px !important;
+  color: var(--color-inkt) !important;
+}
+.contact-uitleg {
+  margin-top: 34px;
+}
+
+/* ─── Het formulier ───
+   Zolang de sleutel ontbreekt staan de velden uit. Een knop die stilletjes
+   niets doet is erger dan geen knop: dan denkt iemand dat er een verzoek ligt
+   waar niemand op reageert. */
+.formulierblok {
+  border: 1px solid var(--color-lijn);
+  border-radius: var(--radius);
+  background: var(--color-papier-zacht);
+  padding: 28px 26px 30px;
+}
+.formulier-melding {
+  margin-top: 18px;
+  border-left: 4px solid var(--color-oranje);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--color-oranje-zacht);
+  padding: 14px 16px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.formulier {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+.veld label {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-marine);
+}
+.veld-bij {
+  font-weight: 400;
+  color: var(--color-tekst-grijs);
+}
+.veld input,
+.veld textarea {
+  width: 100%;
+  margin-top: 6px;
+  border: 1px solid var(--color-lijn);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  padding: 11px 13px;
+  font: inherit;
+  font-size: 15px;
+  color: var(--color-inkt);
+}
+.veld input:focus-visible,
+.veld textarea:focus-visible {
+  outline: 3px solid var(--color-blauw);
+  outline-offset: 1px;
+  border-color: var(--color-blauw);
+}
+.veld input:disabled,
+.veld textarea:disabled {
+  background: #f0eeeb;
+  color: var(--color-tekst-grijs);
+  cursor: not-allowed;
+}
+.honeypot {
+  display: none;
+}
+.formulier-knop {
+  width: 100%;
+  justify-content: center;
+}
+.formulier-knop:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.formulier-noot {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--color-tekst-grijs);
+}
+
+/* ─── Trainingsgids: de vijf vragen ─── */
+.gidsraster {
+  margin-top: 40px;
+  list-style: none;
+}
+.gidskaart {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  border: 1px solid var(--color-lijn);
+  border-radius: var(--radius);
+  background: #fff;
+  padding: 22px 24px;
+  box-shadow: var(--schaduw-sm);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+}
+.gidskaart:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-oranje);
+  box-shadow: var(--schaduw-md);
+}
+.gidskaart-nr {
+  flex: none;
+  font-size: 26px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--color-oranje-kop);
+}
+.gidskaart h2 {
+  font-size: 17.5px;
+  font-weight: 800;
+  line-height: 1.28;
+  color: var(--color-marine);
+}
+.gidskaart p {
+  margin-top: 6px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--color-tekst-grijs);
+}
+.gidskaart-pijl {
+  margin-left: auto;
+  flex: none;
+  font-size: 19px;
+  color: var(--color-oranje-donker);
+  transition: transform 0.16s ease;
+}
+.gidskaart:hover .gidskaart-pijl {
+  transform: translateX(4px);
+}
+
+/* ─── Leestekst op een donker vlak ───
+   De normale .leestekst gaat uit van zwarte letters op wit. Op het blauwe vlak
+   hoort de tekst licht te zijn en de link wit onderstreept, anders staat er
+   marineblauw op blauw. */
+.leestekst--donker,
+.leestekst--donker p {
+  color: var(--color-op-donker);
+}
+.leestekst--donker a {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-color: rgb(255 255 255 / 0.45);
+  text-underline-offset: 2px;
+}
+.leestekst--donker a:hover {
+  text-decoration-color: #fff;
+}
+.leestekst--donker strong {
+  color: #fff;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DE BELEVINGSLAAG
+   Zie BELEVING.md. Alles hieronder werkt zonder JavaScript en valt weg bij
+   prefers-reduced-motion.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Tellende cijfers ───
+   Een geregistreerde eigenschap is het enige getal dat CSS kan animeren; via
+   counter() wordt daar zichtbare tekst van. Zonder ondersteuning blijft het
+   element leeg en leest de bezoeker het echte getal uit de sr-only ernaast. */
+@property --tel {
+  syntax: '<integer>';
+  inherits: false;
+  initial-value: 0;
+}
+@keyframes tellen {
+  from { --tel: 0; }
+  to   { --tel: var(--eind); }
+}
+.telgetal::after {
+  content: '';
+}
+@supports (animation-timeline: view()) {
+  .telgetal {
+    counter-reset: teller var(--tel);
+    animation: tellen 1.1s ease-out both;
+    animation-timeline: view();
+    animation-range: entry 10% cover 32%;
+  }
+  .telgetal::after {
+    content: counter(teller);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Geen beweging: meteen het eindgetal, zonder te tellen. */
+  .telgetal {
+    animation: none;
+    counter-reset: teller var(--eind);
+  }
+  .telgetal::after {
+    content: counter(teller);
+  }
+}
+
+/* ─── De sectorkiezer ───
+   Twee kolommen: links kiezen, rechts het gevolg. De keuze zit in radioknoppen
+   en het tonen in :has(), dus alle vierenveertig beroepsgroepen staan in de
+   HTML en een crawler ziet ze allemaal. */
+.finder {
+  margin-top: 34px;
+  border: 1px solid var(--color-lijn);
+  border-radius: var(--radius);
+  background: #fff;
+  box-shadow: var(--schaduw-sm);
+  overflow: hidden;
+}
+.finder-raster {
+  display: grid;
+}
+@media (min-width: 860px) {
+  .finder-raster {
+    grid-template-columns: 22rem 1fr;
+  }
+  .finder-kolom + .finder-kolom {
+    border-left: 1px solid var(--color-lijn);
+  }
+}
+.finder-kolom {
+  padding: 22px 24px 26px;
+}
+.finder-kolom + .finder-kolom {
+  border-top: 1px solid var(--color-lijn);
+}
+@media (min-width: 860px) {
+  .finder-kolom + .finder-kolom {
+    border-top: 0;
+  }
+}
+.finder-uitkomst {
+  background: var(--color-papier-zacht);
+}
+.finder-koplabel {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-oranje-donker);
+}
+.finder-keuzes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 16px;
+}
+.finder-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  /* 30px hoog: ruim boven de 24px die WCAG 2.5.8 vraagt voor bedieningselementen */
+  min-height: 30px;
+  padding: 6px 12px;
+  border: 1px solid var(--color-lijn);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-tekst-grijs);
+  cursor: pointer;
+  transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease,
+    transform 0.14s ease;
+}
+.finder-chip:hover {
+  border-color: var(--color-oranje);
+  color: var(--color-marine);
+  transform: translateY(-1px);
+}
+.finder-chip-getal {
+  font-variant-numeric: tabular-nums;
+  font-size: 11.5px;
+  opacity: 0.7;
+}
+.finder-keuzes input:checked + .finder-chip {
+  background: var(--color-oranje-donker);
+  border-color: var(--color-oranje-donker);
+  color: #fff;
+}
+.finder-keuzes input:checked + .finder-chip .finder-chip-getal {
+  opacity: 0.85;
+}
+.finder-keuzes input:focus-visible + .finder-chip {
+  outline: 3px solid var(--color-blauw);
+  outline-offset: 2px;
+}
+.finder-uitnodiging {
+  margin-top: 16px;
+  max-width: 46ch;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--color-tekst-grijs);
+}
+.finder-lijst {
+  display: grid;
+  gap: 7px;
+  margin-top: 16px;
+  list-style: none;
+}
+@media (min-width: 620px) {
+  .finder-lijst {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.finder-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  border: 1px solid var(--color-lijn);
+  border-left: 3px solid var(--color-oranje);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: #fff;
+  padding: 9px 13px;
+  transition: border-color 0.14s ease, transform 0.14s ease, box-shadow 0.14s ease;
+}
+.finder-link:hover {
+  border-color: var(--color-oranje);
+  border-left-color: var(--color-oranje-donker);
+  transform: translateX(3px);
+  box-shadow: var(--schaduw-sm);
+}
+.finder-link-naam {
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--color-marine);
+}
+.finder-link-meta {
+  margin-left: auto;
+  flex: none;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--color-tekst-grijs);
+}
+.finder-link-pijl {
+  flex: none;
+  color: var(--color-oranje-donker);
+  transition: transform 0.14s ease;
+}
+.finder-link:hover .finder-link-pijl {
+  transform: translateX(3px);
+}
+
+/* ─── De situatieroulette ─── */
+.roulette {
+  margin-top: 34px;
+}
+.roulette-knoppen {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+.roulette-knop {
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 34px;
+  border: 1px solid rgb(32 48 88 / 0.28);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.7);
+  font-size: 12.5px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  /* Op het oranje vlak: marine op wit-70% haalt ruim de norm voor kleine tekst. */
+  color: var(--color-marine);
+  cursor: pointer;
+  transition: background 0.14s ease, color 0.14s ease, transform 0.14s ease;
+}
+.roulette-knop:hover {
+  transform: translateY(-2px);
+  background: #fff;
+}
+.roulette-knoppen input:focus-visible + .roulette-knop {
+  outline: 3px solid var(--color-marine);
+  outline-offset: 2px;
+}
+/* De twee kaarten die verschijnen, vouwen open in plaats van te verspringen. */
+@media (prefers-reduced-motion: no-preference) {
+  .roulette-kaart {
+    animation: kaart-in 0.32s ease-out both;
+  }
+  @keyframes kaart-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+.situatie-link {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--color-oranje-diep);
+}
+.situatie-link:hover {
+  text-decoration: underline;
+}
+
+/* ─── De bewegingslaag, breed uitgerold ───────────────────────────────────────
+   Alles hieronder hangt onder één @supports en één prefers-reduced-motion, dus
+   een browser zonder scroll-tijdlijnen krijgt gewoon de statische pagina en wie
+   minder beweging wil, ziet niets bewegen. Geen script, geen waarnemer, geen
+   layoutverschuiving: de animatie loopt op de compositielaag.
+   ───────────────────────────────────────────────────────────────────────────── */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /*
+      Kaarten, situaties, ladderitems en teamkaarten vouwen open zodra ze in
+      beeld komen. Eerder gold dit alleen voor wat handmatig .komt-op kreeg,
+      dus op de meeste pagina's stond alles muurvast.
+    */
+    .card,
+    .situatie,
+    .sectorkaart,
+    .gidskaart,
+    .teamkaart,
+    .groep,
+    .contactkaart,
+    .aanbodrij,
+    .leerpunt,
+    .ladderblok > .ladder-item {
+      animation: komt-op linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+
+    /*
+      Oplopende vertraging binnen een raster: een rij vouwt zich uit van links
+      naar rechts in plaats van in één klap te verschijnen. Meer dan vier zou
+      merkbaar traag worden, dus daarna begint het opnieuw.
+    */
+    .grid > *:nth-child(4n + 2) { animation-range: entry 0% entry 46%; }
+    .grid > *:nth-child(4n + 3) { animation-range: entry 0% entry 52%; }
+    .grid > *:nth-child(4n + 4) { animation-range: entry 0% entry 58%; }
+
+    /*
+      De voortgangsbalk onder de vaste kop. Op een trainingspagina van drie
+      schermen geeft dat gevoel voor lengte — je ziet hoeveel er nog komt in
+      plaats van het te moeten raden aan de scrollbalk.
+    */
+    .voortgang {
+      transform-origin: 0 50%;
+      animation: voortgang linear both;
+      animation-timeline: scroll(root block);
+    }
+
+    /*
+      Het merkverloop achter de sectiekoppen schuift heel traag heen en weer.
+      Twintig seconden per slag: langzaam genoeg om niet af te leiden, net snel
+      genoeg om te merken dat de pagina leeft.
+    */
+    .paginakop::after,
+    .hero::after {
+      animation: verloop-schuift 22s ease-in-out infinite alternate;
+    }
+  }
+}
+
+@keyframes voortgang {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@keyframes verloop-schuift {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
+}
+
+/* De balk zelf. Zonder scroll-tijdlijn blijft hij op nul staan en is hij dus
+   onzichtbaar — geen halve streep die nergens op slaat. */
+.voortgang {
+  position: absolute;
+  inset: auto 0 -3px;
+  height: 3px;
+  background: var(--grad-fel);
+  transform: scaleX(0);
+}
+
+/* De vaste kop draagt de voortgangsbalk, dus die moet kunnen positioneren. */
+header.site {
+  position: sticky;
+  overflow: visible;
+}
+header.site .nav {
+  position: relative;
+}
+/* De hero krijgt dezelfde onderrand als de paginakop, zodat elke pagina op
+   dezelfde manier overgaat naar wit. */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 3px;
+  background: var(--grad-fel);
+  background-size: 240% 100%;
+  z-index: 3;
+}
+
+/* ─── De niveauschakelaar ───
+   Op een telefoon staan drie dichte niveaukaarten onder elkaar bijna twee
+   schermen te scrollen voordat je ze kunt vergelijken — en dan vergelijk je
+   dus niet meer. Deze schakelaar toont er één tegelijk. Op een breed scherm
+   blijven alle drie staan en licht de gekozen kaart op. */
+.niveaukeuze {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 30px;
+}
+.niveaukeuze-knop {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 20px;
+  border: 1px solid var(--color-lijn);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-tekst-grijs);
+  cursor: pointer;
+  transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease,
+    transform 0.14s ease;
+}
+.niveaukeuze-knop:hover {
+  border-color: var(--color-oranje);
+  color: var(--color-marine);
+  transform: translateY(-2px);
+}
+.niveaukeuze input:focus-visible + .niveaukeuze-knop {
+  outline: 3px solid var(--color-blauw);
+  outline-offset: 2px;
+}
+.niveaukaart-vol {
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .niveaukeuze-knop:hover,
+  .niveaukaart-vol {
+    transform: none !important;
+  }
+}
+
+/* De letterknoppen zijn smal; een vaste minimumbreedte houdt de rij netjes
+   uitgelijnd in plaats van een rafelige zigzag van A tot Z. */
+.pil-letter > span {
+  min-width: 46px;
+  justify-content: center;
+}
+
+/* ═══ Contrastcorrecties na de meting van 25 augustus 2026 ═══════════════════ */
+
+/*
+  1. Een ladder zonder niveauklasse.
+
+  De nummerbolletjes lezen --accent-diep, en dat bestond alleen binnen een
+  .niveau-*-context. Op de agressietrainingpagina staat de dagtijdlijn zonder
+  zo'n klasse, en dan viel de achtergrond weg: witte cijfers op wit, contrast
+  1,0. Onzichtbaar, en niemand die het meldt want er stáát niets.
+
+  De drie variabelen krijgen nu een basiswaarde op :root. Elke .niveau-*-klasse
+  overschrijft ze nog steeds, dus er verandert niets waar wél een niveau geldt.
+*/
+:root {
+  --accent: var(--color-oranje);
+  --accent-diep: var(--color-oranje-donker);
+  --accent-zacht: var(--color-oranje-zacht);
+  /* Tekstkleur op het lichte accentvlak. Het gewone accent-diep haalt op de
+     zachte oranje tint 4,45:1 — net te weinig voor twaalfpunts tekst. */
+  --accent-op-zacht: var(--color-oranje-diep);
+}
+.niveau-basis {
+  --accent-op-zacht: var(--color-oranje-diep); /* 5,99:1 op #fdf1e2 */
+}
+.niveau-gevorderd {
+  --accent-op-zacht: var(--color-paars-diep);
+}
+.niveau-expert {
+  --accent-op-zacht: var(--color-blauw-diep);
+}
+
+/*
+  2. De badge stond op 4,45:1 — tweehonderdste onder de norm, en dus fout.
+  Twaalfpunts tekst is gewone tekst en heeft 4,5 nodig.
+*/
+.badge {
+  color: var(--accent-op-zacht);
+}
+
+/*
+  3. De afsluitende band. De tekst stond op wit met 92% dekking, wat over het
+  diepe oranje 4,46:1 oplevert. Vol wit haalt 4,95. Het verschil is met het oog
+  niet te zien; het verschil tussen wel en niet voldoen wel.
+*/
+.cta-band p,
+.cta-band .eyebrow {
+  color: #fff;
+}
+
+/*
+  De afsluitende band op een telefoon.
+
+  Gemeten op 375px: de band liep 33 pixels buiten het scherm, en de hele pagina
+  schoof mee. Twee oorzaken tegelijk. Ten eerste 46 pixels binnenmarge aan beide
+  kanten, wat op een scherm van 360 bruikbare pixels ruim een kwart opsnoept.
+  Ten tweede de standaardregel voor flexonderdelen: die krimpen niet onder hun
+  eigen min-content-breedte, en dan duwt de langste kop de band gewoon breder
+  dan zijn ouder.
+
+  min-width: 0 heft die tweede regel op. Zonder die ene declaratie helpt minder
+  binnenmarge niet: dan schuift de overloop alleen op.
+*/
+.cta-band > * {
+  min-width: 0;
+}
+@media (max-width: 620px) {
+  .cta-band {
+    padding: 30px 22px;
+    border-radius: var(--radius);
+  }
+  .cta-band .hero-actions {
+    width: 100%;
+  }
+  .cta-band .hero-actions .btn {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+}
+
+/*
+  De voettekst op een smal scherm.
+
+  info@bureauweerbaarenveilig.nl is dertig tekens zonder spatie, en dus één
+  onbreekbaar woord van tweehonderdvijftien pixels. Een rasterkolom krimpt niet
+  onder de breedte van zijn langste woord, dus de hele voettekst — en daarmee de
+  hele pagina — werd negen pixels breder dan het scherm.
+
+  Onder de 480 pixels gaat de voettekst naar één kolom, en het adres mag
+  overal afbreken. Alleen dat laatste zou ook werken, maar een e-mailadres dat
+  midden in "weerbaar" afbreekt terwijl er ruimte genoeg is, leest slecht.
+*/
+.footer-grid a,
+.footer-grid li {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 480px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+
+/*
+  Lange samenstellingen in koppen.
+
+  "Agressietraining voor ambulancemedewerkers" op een telefoon: dat ene woord
+  van twintig letters is bij dertig pixels breder dan het scherm. De kop werd
+  afgekapt door de overflow van de paginakop, maar de pagina schoof er wél van
+  mee te scrollen — negen pixels naar rechts, op elke trainingspagina met een
+  lange beroepsgroepnaam.
+
+  Nederlands is er vol mee: woningcorporatiemedewerkers, sportaccommodaties,
+  vergunningverleners. Afbreken met een koppelteken is hier dus geen randgeval
+  maar de regel. Het document staat op lang="nl", dus de browser weet waar de
+  breekpunten liggen; break-word is het vangnet voor het geval dat niet lukt.
+*/
+h1,
+h2,
+h3,
+.ladder-titel,
+.situatie-tekst,
+.niveaukaart-link,
+.finder-link-naam {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* ─── Het direct citeerbare antwoordblok ───
+   Staat bovenaan de beroepsgroeppagina, vóór alle verkooptaal: dit is het stuk
+   dat een AI-antwoordsysteem losknipt. Visueel een kader dat zich onderscheidt
+   van de lopende tekst, zodat ook een mens ziet dat hier de korte antwoorden
+   staan. */
+.antwoordblok {
+  border: 1px solid var(--color-lijn);
+  border-left: 4px solid var(--color-oranje);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--color-papier-zacht);
+  padding: 26px 28px 28px;
+}
+.antwoordblok-kop {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-oranje-donker);
+}
+.antwoordblok-lijst {
+  display: grid;
+  gap: 18px;
+  margin-top: 18px;
+}
+.antwoordblok-item {
+  padding-top: 18px;
+  border-top: 1px solid var(--color-lijn);
+}
+.antwoordblok-item:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+.antwoordblok-vraag {
+  font-size: 15.5px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--color-marine);
+}
+.antwoordblok-antwoord {
+  margin-top: 6px;
+  max-width: 72ch;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-inkt);
+}
+.antwoordblok-meer {
+  margin-top: 22px;
+}
+.antwoordblok-meer a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 24px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-blauw);
+}
+.antwoordblok-meer a:hover {
+  text-decoration: underline;
 }

@@ -1,60 +1,137 @@
 ---
 import { link } from '../../lib/link';
+import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import NiveauBadge from '../../components/NiveauBadge.astro';
 import { NIVEAU_BESCHRIJVING, NIVEAU_LABELS, NIVEAU_LINKTEKST } from '../../lib/sectoren';
 
 const niveaus = ['basis', 'gevorderd', 'expert'] as const;
+
+const alleTrainingen = await getCollection('trainingen');
+const aantalVan = (n: string) => alleTrainingen.filter((t) => t.data.niveau === n).length;
+
+/*
+  Voor wie het is, in één regel per niveau. Dit staat niet in NIVEAU_BESCHRIJVING
+  omdat dat de inhoud beschrijft en dit de doelgroep — twee vragen die een
+  bezoeker allebei stelt en die door elkaar heen gehaald een vage alinea worden.
+*/
+const VOOR_WIE = {
+  basis: 'Iedereen die met agressie te maken kan krijgen',
+  gevorderd: 'Wie de basis beheerst en met zwaardere situaties werkt',
+  expert: 'Leidinggevenden, coördinatoren en preventiemedewerkers',
+} as const;
 ---
 
 <Base
   titel="Trainingsniveaus: basis, gevorderd en expert"
   beschrijving="Bureau Weerbaar en Veilig biedt elke agressietraining in drie niveaus: basis (herkennen en de-escaleren), gevorderd (complexe situaties) en expert (beleid en borging voor leidinggevenden)."
 >
-  <div class="vlak-donker op-donker relative overflow-hidden text-white">
-    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
-    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
+  {/* ═══ Paginakop ═══ */}
+  <section class="paginakop op-donker">
+    <div class="wrap">
       <Breadcrumb pad={[{ naam: 'Home', pad: '/' }, { naam: 'Niveaus' }]} />
-      <p class="kicker mt-7">Van herkennen tot borgen</p>
-      <h1 class="mt-4 text-3xl font-bold leading-[1.15] md:text-5xl">
-        Drie niveaus agressietraining
-      </h1>
-      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
+      <p class="eyebrow">Van herkennen tot borgen</p>
+      <h1>Drie niveaus agressietraining</h1>
+      <p class="lede">
         Bureau Weerbaar en Veilig bouwt elke agressietraining op in drie niveaus,
         zodat elke medewerker traint op het niveau dat past bij zijn of haar rol
-        en ervaring.
+        en ervaring. Elk niveau duurt één dag.
       </p>
-    </div>
-  </div>
-  <div class="lijn-merk" aria-hidden="true"></div>
 
-  <div class="mx-auto max-w-6xl px-4 py-16">
-    <ol class="grid gap-6 md:grid-cols-3">
-      {niveaus.map((n, i) => (
-        <li class={`niveau-${n} kaart flex flex-col p-7`}>
-          <div class="flex items-center justify-between">
-            <NiveauBadge niveau={n} />
-            <span class="flex gap-0.5" aria-hidden="true">
-              {Array.from({ length: i + 1 }).map(() => (
-                <svg viewBox="0 0 12 16" class="h-5 w-4" style="color: var(--accent)" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M2 3l6 5-6 5" />
-                </svg>
-              ))}
-            </span>
+      <div class="kop-stats">
+        {niveaus.map((n) => (
+          <div class="kop-stat">
+            <b>{aantalVan(n)}</b>
+            <span>{NIVEAU_LABELS[n]}</span>
           </div>
-          <h2 class="mt-5 text-xl font-bold text-marine">{NIVEAU_LABELS[n]}</h2>
-          <p class="mt-3 flex-1 leading-relaxed text-grijs">{NIVEAU_BESCHRIJVING[n]}</p>
-          <a
-            href={link(`/niveaus/${n}/`)}
-            class="mt-6 inline-flex items-center gap-2 text-sm font-bold after:absolute after:inset-0"
-            style="color: var(--accent-tekst)"
-          >
-            {NIVEAU_LINKTEKST[n]}
-            <span class="pijl" aria-hidden="true">→</span>
-          </a>
-        </li>
-      ))}
-    </ol>
-  </div>
+        ))}
+        <div class="kop-stat">
+          <b>1 dag</b>
+          <span>Per niveau</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ═══ De drie niveaus ═══ */}
+  <section class="section">
+    <div class="wrap">
+      <ol class="grid grid-3 sectorraster">
+        {niveaus.map((n, i) => (
+          <li class={`card niveau-${n} komt-op`}>
+            <div class="niveaukop-rij">
+              <span class="badge">{NIVEAU_LABELS[n]}</span>
+              {/* Eén, twee of drie chevrons: de opbouw is af te lezen zonder te lezen. */}
+              <span class="niveaupijlen" aria-hidden="true">
+                {Array.from({ length: i + 1 }).map(() => (
+                  <svg viewBox="0 0 12 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 3l6 5-6 5" />
+                  </svg>
+                ))}
+              </span>
+            </div>
+
+            <h2 class="niveau-kop">{NIVEAU_LABELS[n]}</h2>
+            <p>{NIVEAU_BESCHRIJVING[n]}</p>
+
+            <span class="niveau-tussenkop">Voor wie</span>
+            <p class="gegeven-lang">{VOOR_WIE[n]}</p>
+
+            <a href={link(`/niveaus/${n}/`)} class="niveau-link vlakdek">
+              {NIVEAU_LINKTEKST[n]} <span aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {/* ═══ Hoe de niveaus zich verhouden ═══ */}
+  <section class="section section--soft">
+    <div class="wrap">
+      <div class="leestekst">
+        <p class="eyebrow">Het verschil in één alinea</p>
+        <h2>Welk niveau heeft mijn team nodig?</h2>
+        <p>
+          Bijna elk team begint bij <strong>basis</strong>: signalen leren lezen,
+          de eigen reactie reguleren en een gesprek terugbrengen voordat het
+          escaleert. Wie dat beheerst en structureel met zwaardere situaties
+          werkt — een gesloten afdeling, een balie waar mensen slecht nieuws
+          krijgen, een dienst in de nacht — gaat door naar <strong>gevorderd</strong>:
+          complexe casuïstiek, grenzen stellen onder druk, melden en nazorg.
+        </p>
+        <p>
+          <strong>Expert</strong> is een ander soort dag. Die gaat niet over jouw
+          gesprek met een klant, maar over de norm in het team: wat spreken jullie
+          af, wat meld je wel en niet, wie vangt iemand op na een incident en hoe
+          houd je dat vast als de waan van de dag terugkomt. Daarom zitten daar
+          leidinggevenden, coördinatoren en preventiemedewerkers.
+        </p>
+        <p>
+          Twijfel je? De <a href={link('/trainingsgids/welk-niveau/')}>trainingsgids</a>
+          {' '}loopt de keuze met je door aan de hand van vijf vragen.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ═══ Afsluiting ═══ */}
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="cta-band">
+        <div>
+          <p class="eyebrow">Liever even overleggen?</p>
+          <h2>Wij denken mee over het juiste niveau</h2>
+          <p>
+            Vertel wat er op de werkvloer gebeurt, dan zeggen we welk niveau
+            past — ook als dat er maar één is. Reactie binnen één werkdag.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <a href="tel:+31857600435" class="btn btn-outline">Bel 085 760 0435</a>
+          <a href={link('/contact/')} class="btn btn-outline">Vraag een terugbelverzoek</a>
+        </div>
+      </div>
+    </div>
+  </section>
 </Base>

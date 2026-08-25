@@ -74,14 +74,15 @@ const persoonSchema = JSON.stringify({
 });
 ---
 
+
 <Base
   titel={`${d.naam}, ${d.rol.toLowerCase()}`}
   beschrijving={`${d.naam} is ${d.rol.toLowerCase()} bij Bureau Weerbaar en Veilig, specialist in agressietraining per beroepsgroep en niveau.`}
   schema={[persoonSchema]}
 >
-  <div class="vlak-donker op-donker relative overflow-hidden text-white">
-    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
-    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
+  {/* ═══ Paginakop ═══ */}
+  <section class="paginakop op-donker">
+    <div class="wrap">
       <Breadcrumb
         pad={[
           { naam: 'Home', pad: '/' },
@@ -89,68 +90,64 @@ const persoonSchema = JSON.stringify({
           { naam: d.naam },
         ]}
       />
-      <p class="kicker mt-7">{d.rol}</p>
-      <h1 class="mt-4 text-3xl font-bold leading-[1.15] md:text-5xl">{d.naam}</h1>
+      <p class="eyebrow">{d.rol}</p>
+      <h1>{d.naam}</h1>
     </div>
-  </div>
-  <div class="lijn-merk" aria-hidden="true"></div>
+  </section>
 
-  <div class="mx-auto max-w-6xl px-4 py-14">
-    <div class="grid gap-10 lg:grid-cols-[20rem_1fr] lg:gap-14">
-      <div class="lg:sticky lg:top-28 lg:self-start">
-        {foto && (
-          <Image
-            src={foto}
-            alt={d.foto?.alt ?? `Portretfoto van ${d.naam}`}
-            width={480}
-            height={600}
-            widths={[320, 480, 640]}
-            sizes="(min-width: 1024px) 20rem, 90vw"
-            format="webp"
-            quality={88}
-            {/*
-              Dit portret is op deze pagina het grootste element boven de vouw,
-              en daarmee het element waarop de laadtijd wordt gemeten. Het stond
-              op lazy met een automatische prioriteit: de browser stelde het dus
-              uit en gaf het geen voorrang, precies bij de afbeelding die de
-              score bepaalt. Alle andere afbeeldingen op deze pagina blijven
-              lazy — die staan onder de vouw.
-            */}
-            loading="eager"
-            fetchpriority="high"
-            class="w-full rounded-2xl object-cover object-top shadow-[var(--shadow-kaart)]"
-          />
-        )}
+  {/* ═══ Portret en verhaal ═══ */}
+  <section class="section">
+    <div class="wrap">
+      <div class="persoon">
+        <div class="persoon-zij">
+          {foto && (
+            <Image
+              src={foto}
+              alt={d.foto?.alt ?? `Portretfoto van ${d.naam}`}
+              width={480}
+              height={600}
+              widths={[320, 480, 640]}
+              sizes="(min-width: 1024px) 20rem, 90vw"
+              format="webp"
+              quality={88}
+              loading="eager"
+              fetchpriority="high"
+              class="persoon-foto"
+            />
+          )}
 
-        {isActeur && (
-          <p class="mt-5 rounded-xl bg-vlak-warm p-4 text-sm leading-relaxed text-grijs">
-            Als trainingsacteur speelt {d.naam.split(' ')[0]} de situatie die
-            deelnemers zelf inbrengen. Daardoor wordt er geoefend met wat er
-            écht gebeurde, in plaats van met een bedacht rollenspel.
-          </p>
-        )}
-      </div>
-
-      <div class="min-w-0">
-        <div class="leestekst">
-          <Content />
+          {isActeur && (
+            <p class="persoon-noot">
+              Als trainingsacteur speelt {d.naam.split(' ')[0]} de situatie die
+              deelnemers zelf inbrengen. Daardoor wordt er geoefend met wat er
+              écht gebeurde, in plaats van met een bedacht rollenspel.
+            </p>
+          )}
         </div>
 
-        <div class="mt-10">
-          <Terugbelverzoek onderwerp="een training voor jouw team" />
+        <div class="persoon-tekst">
+          <div class="leestekst">
+            <Content />
+          </div>
+
+          <div class="persoon-cta">
+            <Terugbelverzoek onderwerp="een training voor jouw team" />
+          </div>
         </div>
       </div>
     </div>
+  </section>
 
-    <section class="mt-16 border-t border-lijn pt-10" aria-labelledby="collegas">
-      <h2 id="collegas" class="text-sm font-bold uppercase tracking-wide text-grijs">
-        De rest van het team
-      </h2>
-      <ul class="mt-5 grid gap-4 sm:grid-cols-3 lg:grid-cols-6">
+  {/* ═══ De collega's ═══ */}
+  <section class="section section--soft" aria-labelledby="collegas">
+    <div class="wrap">
+      <p class="eyebrow">Samen op de trainingsdag</p>
+      <h2 id="collegas">De rest van het team</h2>
+      <ul class="collegas">
         {anderen.map((c) => {
           const f = fotoVan(c.id);
           return (
-            <li class="kaart overflow-hidden">
+            <li class="collega">
               {f && (
                 <Image
                   src={f}
@@ -160,21 +157,19 @@ const persoonSchema = JSON.stringify({
                   format="webp"
                   quality={82}
                   loading="lazy"
-                  class="aspect-[4/5] w-full object-cover object-top"
+                  class="teamfoto"
                 />
               )}
-              <div class="p-3">
-                <h3 class="text-sm font-bold leading-snug text-marine">
-                  <a href={link(`/team/${c.id}/`)} class="after:absolute after:inset-0">
-                    {c.data.naam}
-                  </a>
+              <div class="collega-tekst">
+                <h3>
+                  <a href={link(`/team/${c.id}/`)} class="vlakdek">{c.data.naam}</a>
                 </h3>
-                <p class="mt-0.5 text-xs leading-snug text-grijs">{c.data.rol}</p>
+                <p>{c.data.rol}</p>
               </div>
             </li>
           );
         })}
       </ul>
-    </section>
-  </div>
+    </div>
+  </section>
 </Base>

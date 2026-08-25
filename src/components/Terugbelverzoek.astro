@@ -11,39 +11,19 @@ interface Props {
 const { onderwerp = 'deze training' } = Astro.props;
 ---
 
-<aside
-  class="vlak-donker op-donker relative h-fit overflow-hidden rounded-2xl p-7 text-white"
-  aria-labelledby="terugbel-titel"
->
-  <div class="motief-chevron absolute inset-0 opacity-50" aria-hidden="true"></div>
-
-  <div class="relative">
-    <p class="kicker">Even overleggen?</p>
-    <h2 id="terugbel-titel" class="mt-4 text-xl font-bold leading-snug">
-      Vragen over {onderwerp}?
-    </h2>
-    <p class="mt-3 text-sm leading-relaxed text-white/85">
+<aside class="cta-band" aria-labelledby="terugbel-titel">
+  <div>
+    <p class="eyebrow">Even overleggen?</p>
+    <h2 id="terugbel-titel">Vragen over {onderwerp}?</h2>
+    <p>
       Bureau Weerbaar en Veilig denkt graag mee over de juiste training voor jouw
-      team. Bel, mail of vraag een terugbelverzoek aan: reactie binnen één
+      team. Bel, mail of vraag een terugbelverzoek aan — reactie binnen één
       werkdag.
     </p>
+  </div>
 
-    <div class="mt-6 flex flex-col gap-3">
-      <a href="tel:+31857600435" class="knop knop-primair w-full text-sm">
-        Bel 085 760 0435
-      </a>
-      <a href={link('/contact/')} class="knop knop-omlijnd-licht w-full text-sm">
-        Vraag een terugbelverzoek aan
-      </a>
-    </div>
-
-    <p class="mt-5 border-t border-white/15 pt-4 text-xs leading-relaxed text-white/65">
-      Of mail naar
-      <a
-        href="mailto:info@bureauweerbaarenveilig.nl"
-        class="font-semibold text-white underline decoration-white/40 underline-offset-2 hover:decoration-white"
-        >info@bureauweerbaarenveilig.nl</a
-      >. Ma t/m vr 08:30–17:00.
-    </p>
+  <div class="hero-actions">
+    <a href="tel:+31857600435" class="btn btn-outline">Bel 085 760 0435</a>
+    <a href={link('/contact/')} class="btn btn-outline">Vraag een terugbelverzoek</a>
   </div>
 </aside>

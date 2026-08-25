@@ -7,22 +7,39 @@ import Base from '../layouts/Base.astro';
   titel="Pagina niet gevonden"
   beschrijving="Deze pagina bestaat niet (meer). Bekijk het overzicht van sectoren of neem contact op met Bureau Weerbaar en Veilig."
 >
-  <div class="mx-auto max-w-3xl px-4 py-20">
-    <p class="kicker">Foutmelding 404</p>
-    <h1 class="mt-3 text-3xl font-bold text-marine md:text-4xl">Deze pagina bestaat niet</h1>
-    <p class="mt-4 text-lg leading-relaxed">
-      Mogelijk is de pagina verhuisd of klopt het adres niet. Hieronder staan de
-      snelste routes naar wat je waarschijnlijk zoekt.
-    </p>
-    <ul class="mt-6 space-y-2">
-      <li><a href={link('/sectoren/')} class="font-semibold text-blauw hover:underline">Alle sectoren →</a></li>
-      <li><a href={link('/niveaus/')} class="font-semibold text-blauw hover:underline">De drie trainingsniveaus →</a></li>
-      <li><a href={link('/trainingsgids/')} class="font-semibold text-blauw hover:underline">Trainingsgids →</a></li>
-      <li><a href={link('/contact/')} class="font-semibold text-blauw hover:underline">Contact →</a></li>
-    </ul>
-    <p class="mt-8 text-grijs">
-      Kom je er niet uit? Bel Bureau Weerbaar en Veilig op
-      <a href="tel:+31857600435" class="font-semibold text-blauw hover:underline">085 760 0435</a>.
-    </p>
-  </div>
+  <section class="paginakop op-donker">
+    <div class="wrap">
+      <p class="eyebrow">Foutmelding 404</p>
+      <h1>Deze pagina bestaat niet</h1>
+      <p class="lede">
+        Mogelijk is de pagina verhuisd of klopt het adres niet. Hieronder staan de
+        snelste routes naar wat je waarschijnlijk zoekt.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="grid grid-2 sectorraster">
+        {[
+          ['Alle sectoren', 'Negentien sectoren, vierenveertig beroepsgroepen.', '/sectoren/'],
+          ['De drie niveaus', 'Basis, gevorderd en expert — wat is het verschil?', '/niveaus/'],
+          ['Trainingsgids', 'Vijf vragen die je langs de keuze leiden.', '/trainingsgids/'],
+          ['Contact', 'Bel, mail of vraag een terugbelverzoek aan.', '/contact/'],
+        ].map(([titel, tekst, pad]) => (
+          <article class="card">
+            <h2>
+              <a href={link(pad)} class="vlakdek">{titel}</a>
+            </h2>
+            <p>{tekst}</p>
+          </article>
+        ))}
+      </div>
+
+      <p class="sectorlijst-noot">
+        Kom je er niet uit? Bel Bureau Weerbaar en Veilig op
+        {' '}<a href="tel:+31857600435">085 760 0435</a>. Op werkdagen tussen 08:30 en 17:00.
+      </p>
+    </div>
+  </section>
 </Base>

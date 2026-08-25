@@ -8,24 +8,40 @@ import Base from '../../layouts/Base.astro';
   beschrijving="Je terugbelverzoek is verstuurd. Bureau Weerbaar en Veilig neemt binnen één werkdag contact met je op."
   nietIndexeren
 >
-  <div class="mx-auto max-w-3xl px-4 py-20">
-    <div class="rounded-xl border border-lijn bg-vlak p-8">
-      <p class="kicker">Verstuurd</p>
-      <h1 class="mt-3 text-3xl font-bold text-marine">Bedankt voor je bericht</h1>
-      <p class="mt-4 text-lg leading-relaxed">
+  <section class="paginakop op-donker">
+    <div class="wrap">
+      {/* Het vinkje is opgebouwd uit twee randen — geen icoonbestand, geen extra
+          verzoek voor een pagina die iemand één keer ziet. */}
+      <span class="bevestig-vink" aria-hidden="true"></span>
+      <p class="eyebrow">Verstuurd</p>
+      <h1>Bedankt voor je bericht</h1>
+      <p class="lede">
         Je terugbelverzoek is bij Bureau Weerbaar en Veilig aangekomen. Je hoort
-        binnen één werkdag van ons: op werkdagen tussen 08:30 en 17:00.
+        binnen één werkdag van ons, op werkdagen tussen 08:30 en 17:00.
       </p>
-      <p class="mt-4 leading-relaxed text-grijs">
-        Is het dringend? Bel dan gerust rechtstreeks naar
-        <a href="tel:+31857600435" class="font-semibold text-blauw hover:underline">085 760 0435</a>.
-      </p>
-      <a
-        href={link('/')}
-        class="knop knop-primair mt-6"
-      >
-        Terug naar de homepage
-      </a>
     </div>
-  </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="leestekst">
+        <h2>Wat er nu gebeurt</h2>
+        <p>
+          Een van de trainers belt je terug om te horen wat er speelt: welke
+          beroepsgroep het betreft, waar het misgaat en met hoeveel mensen je
+          wilt trainen. Daarna volgt een voorstel voor het niveau dat past —
+          basis, gevorderd of expert.
+        </p>
+        <p>
+          Is het dringend? Bel dan gerust rechtstreeks naar
+          {' '}<a href="tel:+31857600435">085 760 0435</a>.
+        </p>
+      </div>
+
+      <div class="hero-actions bedankt-knoppen">
+        <a href={link('/')} class="btn btn-primary">Terug naar de homepage</a>
+        <a href={link('/trainingsgids/')} class="btn btn-outline">Lees de trainingsgids</a>
+      </div>
+    </div>
+  </section>
 </Base>

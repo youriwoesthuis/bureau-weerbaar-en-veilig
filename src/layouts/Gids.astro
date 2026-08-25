@@ -1,0 +1,84 @@
+---
+/**
+ * Het omhulsel van een gidspagina.
+ *
+ * De vijf gidspagina's hadden allemaal dezelfde kop, dezelfde navigatie eronder
+ * en dezelfde afsluiting — vijf keer overgeschreven, dus vijf plekken waar het
+ * uit elkaar kon lopen. Dat is nu één bestand.
+ *
+ * De inhoud komt binnen als slot en niet als tekstveld, zodat een gidspagina
+ * ook een gekleurd vlak over de volle breedte kan zetten. Zou de layout de
+ * inhoud zelf in een .wrap zetten, dan was elke pagina veroordeeld tot één
+ * kolom wit.
+ */
+import Base from './Base.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import GidsNavigatie from '../components/GidsNavigatie.astro';
+import Terugbelverzoek from '../components/Terugbelverzoek.astro';
+import { gidsPagina } from '../lib/trainingsgids';
+
+interface Props {
+  /** Welke van de vijf gidspagina's dit is; bepaalt kruimelpad en navigatie. */
+  slug: string;
+  titel: string;
+  beschrijving: string;
+  eyebrow: string;
+  /** Het GEO-openingsantwoord: losgeknipt van de pagina nog steeds compleet. */
+  lede: string;
+  /** Vier feiten voor de kop, als [waarde, label]. */
+  stats?: [string, string][];
+  /** Waar het terugbelverzoek onderaan over gaat. */
+  onderwerp: string;
+  schema?: string[];
+}
+
+const { slug, titel, beschrijving, eyebrow, lede, stats = [], onderwerp, schema = [] } =
+  Astro.props;
+
+const pagina = gidsPagina(slug)!;
+---
+
+<Base titel={titel} beschrijving={beschrijving} schema={schema}>
+  {/* ═══ Paginakop ═══ */}
+  <section class="paginakop op-donker">
+    <div class="wrap">
+      <Breadcrumb
+        pad={[
+          { naam: 'Home', pad: '/' },
+          { naam: 'Trainingsgids', pad: '/trainingsgids/' },
+          { naam: pagina.kortelabel },
+        ]}
+      />
+      <p class="eyebrow">{eyebrow}</p>
+      <h1>{pagina.titel}</h1>
+      <p class="lede">{lede}</p>
+
+      {stats.length > 0 && (
+        <div class="kop-stats">
+          {stats.map(([waarde, label]) => (
+            <div class="kop-stat">
+              <b>{waarde}</b>
+              <span>{label}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <slot />
+
+  {/* ═══ Vorige en volgende ═══ */}
+  <section class="section section--tight">
+    <div class="wrap">
+      <GidsNavigatie huidig={slug} />
+    </div>
+  </section>
+
+  {/* ═══ Afsluiting ═══ */}
+  <section class="section section--tight">
+    <div class="wrap">
+      <Terugbelverzoek onderwerp={onderwerp} />
+    </div>
+  </section>
+</Base>

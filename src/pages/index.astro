@@ -25,6 +25,7 @@ import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import Base from '../layouts/Base.astro';
 import SectorIcoon from '../components/SectorIcoon.astro';
+import TrainingFinder from '../components/ui/TrainingFinder.astro';
 import { link } from '../lib/link';
 import { inZin } from '../lib/naam';
 import { telwoord } from '../lib/sectoren';
@@ -108,8 +109,48 @@ for (const s of situaties) {
 const kandidaten = [...perGroep.values()]
   .map((l) => l.slice().sort((a, b) => b.tekst.length - a.tekst.length)[0])
   .sort((a, b) => a.beroepsgroep.localeCompare(b.beroepsgroep));
-const stap = Math.max(1, Math.floor(kandidaten.length / 4));
-const uitgelicht = [0, 1, 2, 3].map((i) => kandidaten[(i * stap) % kandidaten.length]);
+/*
+  Acht in plaats van vier, gespreid over het alfabet zodat er niet acht keer
+  een zorgberoep achter elkaar staat. De bezoeker bladert er zelf doorheen —
+  automatisch roteren steelt aandacht en is slecht voor wie moeilijk leest.
+*/
+const AANTAL_CASUS = 8;
+const stap = Math.max(1, Math.floor(kandidaten.length / AANTAL_CASUS));
+const uitgelicht = Array.from(
+  { length: AANTAL_CASUS },
+  (_, i) => kandidaten[(i * stap) % kandidaten.length]
+);
+
+/*
+  Welke twee casussen in beeld staan. Deze regels worden gegenereerd uit
+  AANTAL_CASUS, zodat het aantal knoppen en het aantal regels niet uit elkaar
+  kunnen lopen als dat getal verandert.
+*/
+const paren = Math.ceil(AANTAL_CASUS / 2);
+const rouletteCss = Array.from({ length: paren }, (_, i) =>
+  [
+    `.roulette:has(#casus-${i}:checked) .roulette-kaart:not([data-paar="${i}"]) { display: none; }`,
+    `.roulette:has(#casus-${i}:checked) label[for="casus-${i}"] { background: var(--color-marine); color: #fff; }`,
+  ].join('\n  ')
+).join('\n  ');
+
+/*
+  De sectorkiezer staat direct onder de kop: het eerste wat een bezoeker doet
+  in plaats van leest. Alle vierenveertig beroepsgroepen staan in de HTML — het
+  filter bepaalt alleen wat een mens ziet, dus een crawler ziet ze allemaal.
+*/
+const finderSectoren = sectoren.map((s) => ({
+  slug: s.data.slug,
+  naam: s.data.naam,
+  groepen: beroepsgroepen
+    .filter((b) => b.data.sector === s.data.slug)
+    .sort((a, b) => a.data.naam.localeCompare(b.data.naam))
+    .map((b) => ({
+      slug: b.data.slug,
+      naam: b.data.naam,
+      aantalTrainingen: trainingen.filter((t) => t.data.beroepsgroep === b.data.slug).length,
+    })),
+}));
 ---
 
 <Base
@@ -175,12 +216,37 @@ const uitgelicht = [0, 1, 2, 3].map((i) => kandidaten[(i * stap) % kandidaten.le
     <div class="stat-strip">
       {cijfers.map((c) => (
         <a href={link(c.pad)} class={`stat-strip-card niveau-${c.niveau}`}>
-          <b>{c.getal}</b>
+          {/*
+            Het getal telt op zodra de balk in beeld scrollt. Dat gebeurt met
+            een geregistreerde CSS-eigenschap en counter(), dus zonder script.
+            De echte waarde staat als tekst in de sr-only ernaast: een teller
+            die uit staat — geen ondersteuning, of prefers-reduced-motion —
+            toont het eindgetal, en een schermlezer leest nooit het meelopende
+            cijfer voor.
+          */}
+          <b class="telgetal" style={`--eind: ${c.getal}`} aria-hidden="true"></b>
+          <b class="sr-only">{c.getal}</b>
           <span>{c.wat}</span>
         </a>
       ))}
     </div>
   </div>
+
+  {/*
+    ═══ De sectorkiezer ═══
+
+    Het eerste waar de bezoeker iets dóét in plaats van leest. Links de
+    sectoren, rechts de beroepsgroepen die daaronder vallen. Draait volledig op
+    :has(), dus het werkt met JavaScript uit — en het geeft alle vierenveertig
+    beroepsgroeppagina's een link vanaf de zwaarste pagina van de site.
+  */}
+  <section class="section section--tight" aria-labelledby="finder-titel">
+    <div class="wrap">
+      <p class="eyebrow">In twee stappen bij je training</p>
+      <h2 id="finder-titel">Zoek je beroepsgroep</h2>
+      <TrainingFinder sectoren={finderSectoren} />
+    </div>
+  </section>
 
   {/* ═══ Sectoren ═══ */}
   <section class="section">
@@ -222,16 +288,50 @@ const uitgelicht = [0, 1, 2, 3].map((i) => kandidaten[(i * stap) % kandidaten.le
         trainingen, per beroepsgroep uitgewerkt.
       </p>
 
-      <div class="grid grid-2 situatieraster">
-        {uitgelicht.map((s, i) => (
-          <article class={`situatie niveau-${NIVEAUS[i % 3]} komt-op`}>
-            <p class="situatie-bron">
-              <span>Casus {String(i + 1).padStart(2, '0')}</span>
-              <span>{s.beroepsgroep}</span>
-            </p>
-            <p class="situatie-tekst">{s.tekst}</p>
-          </article>
-        ))}
+      {/*
+        Acht casussen, twee tegelijk in beeld, met knoppen eronder om te
+        bladeren. Geen automatische rotatie: dat steelt aandacht en is lastig
+        voor wie langzaam leest. Alle acht staan in de HTML, dus een crawler
+        ziet ze alle acht — de radioknoppen bepalen alleen wat een mens ziet.
+      */}
+      <div class="roulette">
+        <div class="roulette-knoppen" role="group" aria-label="Blader door de praktijksituaties">
+          {uitgelicht.map((_, i) =>
+            i % 2 === 0 ? (
+              <>
+                <input
+                  class="sr-only"
+                  type="radio"
+                  name="casus"
+                  id={`casus-${i / 2}`}
+                  checked={i === 0}
+                />
+                <label class="roulette-knop" for={`casus-${i / 2}`}>
+                  <span class="sr-only">Toon casus {i + 1} en {i + 2} van {uitgelicht.length}</span>
+                  <span aria-hidden="true">{String(i / 2 + 1).padStart(2, '0')}</span>
+                </label>
+              </>
+            ) : null
+          )}
+        </div>
+
+        <div class="grid grid-2 situatieraster">
+          {uitgelicht.map((s, i) => (
+            <article
+              class={`situatie niveau-${NIVEAUS[i % 3]} roulette-kaart`}
+              data-paar={Math.floor(i / 2)}
+            >
+              <p class="situatie-bron">
+                <span>Casus {String(i + 1).padStart(2, '0')}</span>
+                <span>{s.beroepsgroep}</span>
+              </p>
+              <p class="situatie-tekst">{s.tekst}</p>
+              <a href={link(`/trainingen/${s.slug}/`)} class="situatie-link">
+                De training hierachter <span aria-hidden="true">→</span>
+              </a>
+            </article>
+          ))}
+        </div>
       </div>
 
       <p class="situatie-slot">
@@ -339,3 +439,5 @@ const uitgelicht = [0, 1, 2, 3].map((i) => kandidaten[(i * stap) % kandidaten.le
     </div>
   </section>
 </Base>
+
+<style is:inline set:html={rouletteCss} />

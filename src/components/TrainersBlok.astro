@@ -1,17 +1,24 @@
 ---
-import { link } from '../lib/link';
-import { voorDeGroep as teamVoorDeGroep } from '../lib/team';
-import { Image } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
-
 /**
- * "Wie deze training geeft" — de gezichten van het team op een trainingspagina.
+ * "Wie deze training geeft" — de gezichten van het team op een detailpagina.
+ *
+ * Er is geen fotografie op deze site: honderdvijfennegentig pagina's verwijzen
+ * naar een afbeelding die niet bestaat. Deze twaalf portretten zijn dus het
+ * enige echte beeld dat er is, en daarmee het tegenwicht tegen een pagina vol
+ * incidenten, cijfers en strakke typografie. Agressietraining draait om
+ * vertrouwen, en vertrouwen heeft een gezicht nodig.
  *
  * Wie hier staat wordt bepaald in src/lib/team.ts, zodat dit blok en de
  * gestructureerde data op dezelfde pagina niet uit elkaar kunnen lopen.
  */
-const voorDeGroep = await teamVoorDeGroep();
-const acteurs = voorDeGroep.filter((lid) => /acteur/i.test(lid.data.rol));
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { link } from '../lib/link';
+import { inZin } from '../lib/naam';
+import { voorDeGroep } from '../lib/team';
+
+const team = await voorDeGroep();
+const acteurs = team.filter((lid) => /acteur/i.test(lid.data.rol)).length;
 
 const fotos = import.meta.glob<{ default: ImageMetadata }>('../images/team/*.jpg', { eager: true });
 const fotoVan = (id: string) => {
@@ -20,51 +27,44 @@ const fotoVan = (id: string) => {
 };
 ---
 
-<section
-  class="vlak-donker op-donker relative overflow-hidden rounded-2xl p-7 text-white md:p-9"
-  aria-labelledby="trainers-titel"
->
-  <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
+<section class="section section--blauw op-donker" aria-labelledby="trainers-titel">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">Wie deze training geeft</p>
+        <h2 id="trainers-titel">Ons vaste team, met {acteurs} trainingsacteurs</h2>
+        <p class="lede">
+          Iedereen hier geeft alle trainingen: Bureau Weerbaar en Veilig doet maar
+          één onderwerp. Dankzij de acteurs oefen je met de situatie die jij
+          inbrengt, in plaats van met een bedacht rollenspel.
+        </p>
+        <div class="hero-actions teamknop">
+          <a href={link('/over-ons/')} class="btn btn-outline">Maak kennis met het team</a>
+        </div>
+      </div>
 
-  <div class="relative">
-    <p class="kicker">Wie deze training geeft</p>
-    <h2 id="trainers-titel" class="mt-4 text-2xl font-bold leading-snug">
-      Ons vaste team, met {acteurs.length} trainingsacteurs
-    </h2>
-    <p class="mt-3 max-w-2xl leading-relaxed text-white/85">
-      Iedereen hier geeft alle trainingen: Bureau Weerbaar en Veilig doet maar
-      één onderwerp. Dankzij de acteurs kan er geoefend worden met de situatie
-      die jij inbrengt, in plaats van met een bedacht rollenspel.
-    </p>
-
-    <ul class="gezichten mt-7" aria-label={`De ${voorDeGroep.length} trainers en trainingsacteurs`}>
-      {voorDeGroep.map((lid) => {
-        const foto = fotoVan(lid.id);
-        return (
-          <li class="gezicht">
-            {foto && (
-              <Image
-                src={foto}
-                alt={lid.data.foto?.alt ?? `Portretfoto van ${lid.data.naam}`}
-                width={140}
-                height={140}
-                format="webp"
-                quality={88}
-                loading="lazy"
-              />
-            )}
-            <span class="gezicht-naam">
-              {lid.data.naam}
-              <span class="gezicht-rol">{lid.data.rol}</span>
-            </span>
-          </li>
-        );
-      })}
-    </ul>
-
-    <a href={link('/over-ons/')} class="knop knop-omlijnd-licht mt-6 text-sm">
-      Maak kennis met het team
-      <span class="pijl" aria-hidden="true">→</span>
-    </a>
+      <ul class="gezichten">
+        {team.map((lid) => {
+          const foto = fotoVan(lid.id);
+          return foto ? (
+            <li>
+              <a href={link(`/team/${lid.id}/`)}>
+                <Image
+                  src={foto}
+                  alt={`${lid.data.naam}, ${inZin(lid.data.rol)}`}
+                  width={144}
+                  height={144}
+                  format="webp"
+                  quality={86}
+                  loading="lazy"
+                  decoding="async"
+                  class="gezicht"
+                />
+              </a>
+            </li>
+          ) : null;
+        })}
+      </ul>
+    </div>
   </div>
 </section>

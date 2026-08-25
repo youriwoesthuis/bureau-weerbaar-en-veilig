@@ -3,7 +3,8 @@ import { link } from '../../lib/link';
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import NiveauBadge from '../../components/NiveauBadge.astro';
+import Terugbelverzoek from '../../components/Terugbelverzoek.astro';
+import { situatieSelectie } from '../../lib/situaties';
 import { SECTOR_NAMEN, NIVEAU_BESCHRIJVING, NIVEAU_LABELS } from '../../lib/sectoren';
 
 export function getStaticPaths() {
@@ -41,60 +42,160 @@ const uniek = (veld: 'duur' | 'groepsgrootte') => {
   return waarden.length === 1 ? waarden[0] : waarden.join(' of ');
 };
 const sectorenTelling = perSector.size;
+
+/*
+  Vier praktijksituaties uit de trainingen van dít niveau. Een overzichtspagina
+  van honderd links leest als een register; deze zinnen laten zien waar de dag
+  daadwerkelijk over gaat, en ze verschillen per niveau omdat ze uit die
+  trainingen komen.
+*/
+const situaties = await situatieSelectie(4);
+
+/* Wat dit niveau ván de andere twee onderscheidt, in drie kenmerken. */
+const KENMERKEN = {
+  basis: [
+    ['Herkennen', 'Signalen lezen voordat het escaleert: houding, stem, tempo.'],
+    ['Reguleren', 'Je eigen reactie onder controle houden als het spannend wordt.'],
+    ['De-escaleren', 'Het gesprek terugbrengen naar de inhoud, zonder de ander te verliezen.'],
+  ],
+  gevorderd: [
+    ['Complexe casuïstiek', 'Situaties die niet met een standaardaanpak op te lossen zijn.'],
+    ['Grenzen onder druk', 'Nee zeggen en vasthouden terwijl er aan je getrokken wordt.'],
+    ['Melden en nazorg', 'Wat je vastlegt, aan wie je het meldt, en hoe je een collega opvangt.'],
+  ],
+  expert: [
+    ['Teamnorm', 'Afspreken wat jullie wel en niet accepteren, en dat volhouden.'],
+    ['Beleid en borging', 'Van incidentmelding naar een structuur die blijft staan.'],
+    ['De eigen organisatie', 'Het gesprek voeren met directie, HR en collega-leidinggevenden.'],
+  ],
+} as const;
+
+const lijstSchema = trainingen.length
+  ? JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: `Agressietraining niveau ${label.toLowerCase()}`,
+      numberOfItems: trainingen.length,
+      itemListElement: trainingen.map((t, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: t.data.titel,
+        url: new URL(link(`/trainingen/${t.data.slug}/`), Astro.site).href,
+      })),
+    })
+  : null;
 ---
 
 <Base
   titel={`Agressietraining niveau ${label.toLowerCase()}`}
   beschrijving={`Overzicht van alle agressietrainingen op niveau ${label.toLowerCase()} van Bureau Weerbaar en Veilig, per sector en beroepsgroep. ${NIVEAU_BESCHRIJVING[niveau]}`}
+  schema={lijstSchema ? [lijstSchema] : []}
 >
-  <div class="vlak-donker op-donker relative overflow-hidden text-white">
-    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
-    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
-      <Breadcrumb
-        pad={[{ naam: 'Home', pad: '/' }, { naam: 'Niveaus', pad: '/niveaus/' }, { naam: label }]}
-      />
-      <div class="mt-6">
-        <NiveauBadge niveau={niveau} />
-        <h1 class="mt-4 text-3xl font-bold leading-[1.15] md:text-5xl">
-          Agressietraining: niveau {label.toLowerCase()}
-        </h1>
-        <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
+  <div class={`niveau-${niveau}`}>
+    {/* ═══ Paginakop ═══ */}
+    <section class="paginakop op-donker">
+      <div class="wrap">
+        <Breadcrumb
+          pad={[{ naam: 'Home', pad: '/' }, { naam: 'Niveaus', pad: '/niveaus/' }, { naam: label }]}
+        />
+        <p class="eyebrow">Niveau {label.toLowerCase()}</p>
+        <h1>Agressietraining: niveau {label.toLowerCase()}</h1>
+        <p class="lede">
           Bureau Weerbaar en Veilig geeft {trainingen.length} agressietrainingen op
           niveau {label.toLowerCase()}, verdeeld over {sectorenTelling} sectoren.
           {' '}{NIVEAU_BESCHRIJVING[niveau]} Elke training duurt {uniek('duur')} en
           telt {uniek('groepsgrootte')}.
         </p>
-      </div>
-    </div>
-  </div>
-  <div class="lijn-merk" aria-hidden="true"></div>
 
-  <div class="mx-auto max-w-6xl px-4 py-12">
-    {perSector.size === 0 ? (
-      <p class="text-grijs">De trainingen op dit niveau worden op dit moment toegevoegd.</p>
-    ) : (
-      [...perSector.entries()].map(([sector, lijst]) => (
-        <section class="mb-10" aria-label={SECTOR_NAMEN[sector] ?? sector}>
-          <h2 class="text-xl font-bold text-marine">
-            <a href={link(`/sectoren/${sector}/`)} class="hover:underline">
-              {SECTOR_NAMEN[sector] ?? sector}
-            </a>
-          </h2>
-          <ul class="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {lijst.map((t) => (
-              <li class="rounded-xl border border-lijn p-5">
-                <a
-                  href={link(`/trainingen/${t.data.slug}/`)}
-                  class="font-semibold leading-snug text-blauw hover:underline"
-                >
-                  {t.data.titel} →
-                </a>
-                <p class="mt-2 text-xs text-grijs">{t.data.duur} · {t.data.groepsgrootte}</p>
-              </li>
+        <div class="kop-stats">
+          <div class="kop-stat"><b>{trainingen.length}</b><span>Trainingen</span></div>
+          <div class="kop-stat"><b>{sectorenTelling}</b><span>Sectoren</span></div>
+          <div class="kop-stat"><b>{uniek('duur')}</b><span>Per training</span></div>
+          <div class="kop-stat"><b>Neede</b><span>Of incompany</span></div>
+        </div>
+      </div>
+    </section>
+
+    {/* ═══ Waar dit niveau over gaat ═══ */}
+    <section class="section">
+      <div class="wrap">
+        <p class="eyebrow">Wat dit niveau onderscheidt</p>
+        <h2>Waar de dag over gaat</h2>
+        <ol class="ladder ladderblok">
+          {KENMERKEN[niveau].map(([titel, tekst], i) => (
+            <li class="ladder-item programma-blok">
+              <div class="ladder-kop programma-kop">
+                <span class="ladder-nr">{String(i + 1).padStart(2, '0')}</span>
+                <span>
+                  <span class="ladder-titel">{titel}</span>
+                  <span class="ladder-bij">{tekst}</span>
+                </span>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    {/* ═══ Praktijksituaties ═══ */}
+    {situaties.length > 0 && (
+      <section class="section section--oranje" aria-labelledby="situaties-titel">
+        <div class="wrap">
+          <p class="eyebrow">Waar het over gaat</p>
+          <h2 id="situaties-titel">Situaties zoals ze in deze trainingen staan</h2>
+          <div class="grid grid-2 situatieraster">
+            {situaties.map((s) => (
+              <div class="situatie komt-op">
+                <p class="situatie-tekst">{s.tekst}</p>
+                <p class="situatie-bron">
+                  <a href={link(`/trainingen/${s.slug}/`)}>{s.beroepsgroep}</a>
+                </p>
+              </div>
             ))}
-          </ul>
-        </section>
-      ))
+          </div>
+        </div>
+      </section>
     )}
+
+    {/* ═══ Het aanbod per sector ═══ */}
+    <section class="section section--soft">
+      <div class="wrap">
+        <p class="eyebrow">Het aanbod</p>
+        <h2>Niveau {label.toLowerCase()} per sector</h2>
+
+        {perSector.size === 0 ? (
+          <p class="sectorlijst-noot">
+            De trainingen op dit niveau worden op dit moment toegevoegd.
+          </p>
+        ) : (
+          <div class="groepenlijst">
+            {[...perSector.entries()].map(([sector, lijst]) => (
+              <article class="groep">
+                <h3 class="groep-titel">
+                  <a href={link(`/sectoren/${sector}/`)}>{SECTOR_NAMEN[sector] ?? sector}</a>
+                </h3>
+                <ul class="grid grid-3 groep-niveaus">
+                  {lijst.map((t) => (
+                    <li class="niveaukaart">
+                      <a href={link(`/trainingen/${t.data.slug}/`)} class="niveaukaart-link vlakdek">
+                        {t.data.titel}
+                      </a>
+                      <span class="niveaukaart-duur">{t.data.duur} · {t.data.groepsgrootte}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+
+    {/* ═══ Afsluiting ═══ */}
+    <section class="section section--tight">
+      <div class="wrap">
+        <Terugbelverzoek onderwerp={`de trainingen op niveau ${label.toLowerCase()}`} />
+      </div>
+    </section>
   </div>
 </Base>

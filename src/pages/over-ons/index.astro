@@ -7,6 +7,9 @@ import Base from '../../layouts/Base.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 
 const team = (await getCollection('team')).sort((a, b) => a.data.volgorde - b.data.volgorde);
+const trainingen = await getCollection('trainingen');
+const beroepsgroepen = await getCollection('beroepsgroepen');
+const sectoren = await getCollection('sectoren');
 
 /*
   Eén team, één raster. Er stonden hier eerst kopjes boven — trainers, acteurs,
@@ -48,49 +51,61 @@ function fotoVan(id: string) {
   titel="Over Bureau Weerbaar en Veilig"
   beschrijving="Bureau Weerbaar en Veilig is dé specialist in agressietraining, gevestigd in Neede (Gelderland) en onderdeel van de Actinmove-groep. Eén onderwerp, tot in de diepte, per beroepsgroep."
 >
-  <div class="vlak-donker op-donker relative overflow-hidden text-white">
-    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
-    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
+  {/* ═══ Paginakop ═══ */}
+  <section class="paginakop op-donker">
+    <div class="wrap">
       <Breadcrumb pad={[{ naam: 'Home', pad: '/' }, { naam: 'Over ons' }]} />
-      <h1 class="mt-7 text-3xl font-bold leading-[1.15] md:text-5xl">Over Bureau Weerbaar en Veilig</h1>
-      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
+      <p class="eyebrow">Eén onderwerp, tot in de diepte</p>
+      <h1>Over Bureau Weerbaar en Veilig</h1>
+      <p class="lede">
         Bureau Weerbaar en Veilig is dé specialist in agressietraining: omgaan
         met agressie, intimidatie en grensoverschrijdend gedrag op de werkvloer.
         Eén onderwerp, tot in de diepte, vertaald naar de praktijk van elke
         beroepsgroep.
       </p>
+
+      <div class="kop-stats">
+        <div class="kop-stat"><b>{trainingen.length}</b><span>Trainingen</span></div>
+        <div class="kop-stat"><b>{beroepsgroepen.length}</b><span>Beroepsgroepen</span></div>
+        <div class="kop-stat"><b>{sectoren.length}</b><span>Sectoren</span></div>
+        <div class="kop-stat"><b>{acteurs.length}</b><span>Trainingsacteurs</span></div>
+      </div>
     </div>
-  </div>
-  <div class="lijn-merk" aria-hidden="true"></div>
+  </section>
 
-  <div class="mx-auto max-w-6xl px-4 py-12">
-    <section class="max-w-3xl space-y-4 leading-relaxed" aria-labelledby="verhaal">
-      <h2 id="verhaal" class="text-2xl font-bold text-marine">Waarom één onderwerp</h2>
-      <p>
-        Veel trainingsbureaus bieden agressietraining aan als één van vele
-        onderwerpen. Bureau Weerbaar en Veilig is bewust opgericht om precies
-        het omgekeerde te doen: alléén agressietraining, en dat onderwerp tot in
-        de diepte. Elke sector kent zijn eigen situaties: de balie van een
-        gemeente is de spreekkamer van een huisarts niet, en dat verschil
-        bepaalt de training.
-      </p>
-      <p>
-        Bureau Weerbaar en Veilig is onderdeel van de
-        <a href="https://actinmove.nl" class="font-semibold text-blauw hover:underline">Actinmove</a>-groep.
-        Wie een breder communicatie- of trainingsvraagstuk heeft, kan daar
-        terecht; voor kennis en achtergrond over agressie op de werkvloer is er
-        <a href="https://agressievisie.nl" class="font-semibold text-blauw hover:underline">agressievisie.nl</a>.
-        Voor agressietraining per beroepsgroep ben je hier op de juiste plek.
-      </p>
-    </section>
+  {/* ═══ Waarom één onderwerp ═══ */}
+  <section class="section" aria-labelledby="verhaal">
+    <div class="wrap">
+      <div class="leestekst">
+        <p class="eyebrow">Waar dit merk vandaan komt</p>
+        <h2 id="verhaal">Waarom één onderwerp</h2>
+        <p>
+          Veel trainingsbureaus bieden agressietraining aan als één van vele
+          onderwerpen. Bureau Weerbaar en Veilig is bewust opgericht om precies
+          het omgekeerde te doen: alléén agressietraining, en dat onderwerp tot in
+          de diepte. Elke sector kent zijn eigen situaties — de balie van een
+          gemeente is de spreekkamer van een huisarts niet, en dat verschil
+          bepaalt de training.
+        </p>
+        <p>
+          Bureau Weerbaar en Veilig is onderdeel van de
+          {' '}<a href="https://actinmove.nl">Actinmove</a>-groep. Wie een breder
+          communicatie- of trainingsvraagstuk heeft, kan daar terecht; voor kennis
+          en achtergrond over agressie op de werkvloer is er
+          {' '}<a href="https://agressievisie.nl">agressievisie.nl</a>. Voor
+          agressietraining per beroepsgroep ben je hier op de juiste plek.
+        </p>
+      </div>
+    </div>
+  </section>
 
-    <section class="mt-14" aria-labelledby="team-titel" id="team">
-      <p class="kicker">Wie er voor de groep staat</p>
-      <h2 id="team-titel" class="kop-onderstreept mt-4 text-3xl font-bold text-marine">
-        Trainers en trainingsacteurs
-      </h2>
+  {/* ═══ Het team ═══ */}
+  <section class="section section--soft" aria-labelledby="team-titel" id="team">
+    <div class="wrap">
+      <p class="eyebrow">Wie er voor de groep staat</p>
+      <h2 id="team-titel">Trainers en trainingsacteurs</h2>
 
-      <div class="leestekst mt-6">
+      <div class="leestekst">
         <p>
           Iedereen hier geeft alle trainingen, want Bureau Weerbaar en Veilig
           doet maar één ding: agressietraining. Er is dus geen trainer die dit
@@ -109,9 +124,9 @@ function fotoVan(id: string) {
       </div>
 
       {team.length === 0 ? (
-        <p class="mt-3 text-grijs">De teampagina wordt op dit moment gevuld.</p>
+        <p class="sectorlijst-noot">De teampagina wordt op dit moment gevuld.</p>
       ) : (
-        <ul class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <ul class="grid grid-4 teamraster">
           {team.map((lid, i) => {
             const foto = fotoVan(lid.id);
             /*
@@ -122,7 +137,7 @@ function fotoVan(id: string) {
             */
             const bovenDeVouw = i < 4;
             return (
-              <li class="kaart overflow-hidden">
+              <li class="teamkaart">
                 {foto ? (
                   <Image
                     src={foto}
@@ -135,7 +150,7 @@ function fotoVan(id: string) {
                     quality={88}
                     loading={bovenDeVouw ? 'eager' : 'lazy'}
                     fetchpriority={bovenDeVouw ? 'high' : 'auto'}
-                    class="aspect-[4/5] w-full object-cover object-top"
+                    class="teamfoto"
                   />
                 ) : (
                   /*
@@ -144,24 +159,17 @@ function fotoVan(id: string) {
                     kaart eruitzag als een foto die niet geladen was. Nu een
                     rustig vlak met initialen, dat zichtbaar iets anders is.
                   */
-                  <div
-                    class="flex aspect-[4/5] w-full items-center justify-center bg-vlak-warm"
-                    aria-hidden="true"
-                  >
-                    <span class="text-3xl font-bold text-lijn">{initialen(lid.data.naam)}</span>
+                  <div class="teamfoto teamfoto--leeg" aria-hidden="true">
+                    <span>{initialen(lid.data.naam)}</span>
                   </div>
                 )}
-                <div class="p-5">
-                  <h3 class="font-bold text-marine">
-                    {/* De pseudo-laag maakt de hele kaart klikbaar */}
-                    <a href={link(`/team/${lid.id}/`)} class="after:absolute after:inset-0">
-                      {lid.data.naam}
-                    </a>
+                <div class="teamkaart-tekst">
+                  <h3>
+                    <a href={link(`/team/${lid.id}/`)} class="vlakdek">{lid.data.naam}</a>
                   </h3>
-                  <p class="mt-1 text-sm leading-snug text-grijs">{lid.data.rol}</p>
-                  <p class="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-blauw">
-                    Lees het verhaal
-                    <span class="pijl" aria-hidden="true">→</span>
+                  <p class="teamkaart-rol">{lid.data.rol}</p>
+                  <p class="teamkaart-link">
+                    Lees het verhaal <span aria-hidden="true">→</span>
                   </p>
                 </div>
               </li>
@@ -169,16 +177,45 @@ function fotoVan(id: string) {
           })}
         </ul>
       )}
-    </section>
+    </div>
+  </section>
 
-    <section class="mt-12 max-w-3xl" aria-labelledby="bezoek">
-      <h2 id="bezoek" class="text-2xl font-bold text-marine">Contact en bezoek</h2>
-      <dl class="mt-4 space-y-2 text-sm leading-relaxed">
-        <div><dt class="inline font-semibold">Adres:</dt> <dd class="inline">Russchemorsweg 5-04, 7161 RT Neede (Gelderland)</dd></div>
-        <div><dt class="inline font-semibold">Telefoon:</dt> <dd class="inline"><a href="tel:+31857600435" class="text-blauw hover:underline">085 760 0435</a></dd></div>
-        <div><dt class="inline font-semibold">E-mail:</dt> <dd class="inline"><a href="mailto:info@bureauweerbaarenveilig.nl" class="text-blauw hover:underline">info@bureauweerbaarenveilig.nl</a></dd></div>
-        <div><dt class="inline font-semibold">Openingstijden:</dt> <dd class="inline">maandag t/m vrijdag 08:30–17:00</dd></div>
-      </dl>
-    </section>
-  </div>
+  {/* ═══ Contact en bezoek ═══ */}
+  <section class="section section--blauw op-donker" aria-labelledby="bezoek">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Waar we zitten</p>
+          <h2 id="bezoek">Contact en bezoek</h2>
+          <p class="lede">
+            Bureau Weerbaar en Veilig traint incompany door heel Nederland, en
+            ontvangt groepen op de eigen locatie in Neede.
+          </p>
+          <div class="hero-actions teamknop">
+            <a href="tel:+31857600435" class="btn btn-outline">Bel 085 760 0435</a>
+            <a href={link('/contact/')} class="btn btn-outline">Naar contact</a>
+          </div>
+        </div>
+
+        <dl class="gegevens">
+          <div>
+            <dt>Adres</dt>
+            <dd>Russchemorsweg 5-04, 7161 RT Neede</dd>
+          </div>
+          <div>
+            <dt>Telefoon</dt>
+            <dd><a href="tel:+31857600435">085 760 0435</a></dd>
+          </div>
+          <div>
+            <dt>E-mail</dt>
+            <dd><a href="mailto:info@bureauweerbaarenveilig.nl">info@bureauweerbaarenveilig.nl</a></dd>
+          </div>
+          <div>
+            <dt>Openingstijden</dt>
+            <dd>Ma t/m vr 08:30–17:00</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
 </Base>

@@ -107,16 +107,72 @@ export function metaBeschrijving(tekst: string): string {
  * deed: die van het expertniveau begint met "Expert agressietraining voor
  * leidinggevenden". Alleen de titel liep achter.
  */
-export function trainingTitel(
+/*
+  Beroepsgroepnamen zijn geschreven om op de pagina volledig te zijn, niet om in
+  een zoekresultaat te passen: "medewerkers sportaccommodaties & zwembaden" is
+  tweeënveertig tekens voordat het woord agressietraining er ook maar bij staat.
+  Tweeëntwintig titels liepen daardoor over de zestig.
+
+  Een eerdere versie kortte elke naam los van de andere in, en liep daardoor
+  precies tegen de val aan waar de opmerking hierboven voor waarschuwt: "sociale
+  dienst & uitkeringsinstanties" en "sociale dienst & Participatiewet" werden
+  allebei "sociale dienst". Twee verschillende beroepsgroepen, woordelijk
+  dezelfde titel.
+
+  Daarom kijkt deze functie naar alle vierenveertig namen tegelijk. Per naam
+  worden de kandidaat-vormen van kort naar lang geprobeerd, en een korte vorm
+  wordt alleen gebruikt als geen enkele andere beroepsgroep op diezelfde vorm
+  uitkomt. Botst het, dan wint de volledige naam — een titel die in het
+  zoekresultaat wordt afgekapt is cosmetisch, twee pagina's die niet uit elkaar
+  te houden zijn kost posities.
+
+  De uitkomst wordt één keer per build berekend en daarna hergebruikt.
+*/
+function kandidaten(naam: string): string[] {
+  const zonderMedewerkers = naam.replace(/^medewerkers\s+/i, '');
+  const hoofdterm = zonderMedewerkers.split(/\s*[&,]\s*|\s+en\s+/)[0].trim();
+  return [hoofdterm, zonderMedewerkers, naam]
+    .filter((v, i, a) => v.length >= 6 && a.indexOf(v) === i)
+    .sort((a, b) => a.length - b.length);
+}
+
+let korteNamen: Map<string, string> | null = null;
+
+async function groepsnamen(): Promise<Map<string, string>> {
+  if (korteNamen) return korteNamen;
+
+  const { getCollection } = await import('astro:content');
+  const alle = (await getCollection('beroepsgroepen')).map((b) => inZin(b.data.naam));
+
+  korteNamen = new Map(
+    alle.map((naam) => {
+      const eigen = kandidaten(naam);
+      const kort = eigen.find(
+        (vorm) =>
+          /* Uniek zodra geen ándere beroepsgroep deze vorm ook kan aannemen. */
+          !alle.some((ander) => ander !== naam && kandidaten(ander).includes(vorm))
+      );
+      return [naam, kort ?? naam];
+    })
+  );
+  return korteNamen;
+}
+
+export async function trainingTitel(
   beroepsgroepNaam: string,
   niveau: 'basis' | 'gevorderd' | 'expert'
-): string {
-  const groep = inZin(beroepsgroepNaam);
-  return {
-    basis: `Basistraining agressie voor ${groep}`,
-    gevorderd: `Gevorderde agressietraining voor ${groep}`,
-    expert: `Agressietraining leidinggevenden ${groep}`,
+): Promise<string> {
+  const sjabloon = {
+    basis: (g: string) => `Basistraining agressie voor ${g}`,
+    gevorderd: (g: string) => `Gevorderde agressietraining voor ${g}`,
+    expert: (g: string) => `Agressietraining leidinggevenden ${g}`,
   }[niveau];
+
+  const vol = inZin(beroepsgroepNaam);
+  if (sjabloon(vol).length <= 60) return sjabloon(vol);
+
+  const kort = (await groepsnamen()).get(vol) ?? vol;
+  return sjabloon(kort);
 }
 
 /**

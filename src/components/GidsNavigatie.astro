@@ -17,40 +17,26 @@ const vorige = i > 0 ? TRAININGSGIDS[i - 1] : undefined;
 const volgende = i >= 0 && i < TRAININGSGIDS.length - 1 ? TRAININGSGIDS[i + 1] : undefined;
 ---
 
-<nav class="mt-14 border-t border-lijn pt-6" aria-label="Trainingsgids">
-  <div class="flex flex-col gap-3 sm:flex-row sm:items-stretch sm:justify-between">
+<nav class="gidsnav" aria-label="Trainingsgids">
+  <div class="gidsnav-paar">
     {vorige ? (
-      <a
-        href={link(`/trainingsgids/${vorige.slug}/`)}
-        class="group flex-1 rounded-lg border border-lijn p-4 transition-colors hover:border-marine"
-      >
-        <span class="text-xs font-bold uppercase tracking-wide text-grijs">Vorige</span>
-        <span class="mt-1 block font-bold text-marine">
-          <span class="inline-block transition-transform group-hover:-translate-x-1" aria-hidden="true">←</span>
-          {' '}{vorige.titel}
-        </span>
+      <a href={link(`/trainingsgids/${vorige.slug}/`)} class="gidsnav-stap">
+        <span class="gidsnav-label">Vorige</span>
+        <span class="gidsnav-titel"><span aria-hidden="true">←</span> {vorige.titel}</span>
       </a>
     ) : (
-      <span class="flex-1"></span>
+      <span class="gidsnav-leeg"></span>
     )}
 
     {volgende && (
-      <a
-        href={link(`/trainingsgids/${volgende.slug}/`)}
-        class="group flex-1 rounded-lg border border-lijn p-4 text-right transition-colors hover:border-marine"
-      >
-        <span class="text-xs font-bold uppercase tracking-wide text-grijs">Volgende</span>
-        <span class="mt-1 block font-bold text-marine">
-          {volgende.titel}{' '}
-          <span class="inline-block transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
-        </span>
+      <a href={link(`/trainingsgids/${volgende.slug}/`)} class="gidsnav-stap gidsnav-stap--rechts">
+        <span class="gidsnav-label">Volgende</span>
+        <span class="gidsnav-titel">{volgende.titel} <span aria-hidden="true">→</span></span>
       </a>
     )}
   </div>
 
-  <p class="mt-4 text-center text-sm text-grijs">
-    <a href={link('/trainingsgids/')} class="font-semibold text-blauw hover:underline">
-      Alle vijf de vragen in de trainingsgids
-    </a>
+  <p class="gidsnav-alle">
+    <a href={link('/trainingsgids/')}>Alle vijf de vragen in de trainingsgids</a>
   </p>
 </nav>

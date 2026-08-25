@@ -1,111 +1,255 @@
 ---
 import { link } from '../../lib/link';
+import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import NiveauBadge from '../../components/NiveauBadge.astro';
 import Terugbelverzoek from '../../components/Terugbelverzoek.astro';
+import TrainersBlok from '../../components/TrainersBlok.astro';
+import { situatieSelectie } from '../../lib/situaties';
+import { TRAININGSDAG } from '../../lib/trainingsdag';
 import { NIVEAU_BESCHRIJVING, NIVEAU_LABELS } from '../../lib/sectoren';
 
 const niveaus = ['basis', 'gevorderd', 'expert'] as const;
+
+const trainingen = await getCollection('trainingen');
+const beroepsgroepen = await getCollection('beroepsgroepen');
+const sectoren = await getCollection('sectoren');
+const situaties = await situatieSelectie(4);
+
+const AANPAK = [
+  [
+    'Realistische praktijksituaties',
+    'Geoefend wordt met situaties uit het eigen werk, ingebracht door de deelnemers zelf — niet met een bedacht rollenspel.',
+  ],
+  [
+    'Kleine groepen',
+    'Maximaal 10 deelnemers, op expertniveau maximaal 8, zodat iedereen daadwerkelijk aan de beurt komt.',
+  ],
+  [
+    'Incompany of in Neede',
+    'Op de eigen locatie door heel Nederland, of bij Bureau Weerbaar en Veilig in Neede (Gelderland).',
+  ],
+  [
+    'Deelnamecertificaat',
+    'Elke deelnemer ontvangt na afloop een certificaat van deelname.',
+  ],
+] as const;
+
+/*
+  De vraag "wat is agressietraining" wordt letterlijk zo gesteld, ook aan
+  AI-antwoordsystemen. Deze vragen staan daarom als FAQPage in de
+  gestructureerde data, met antwoorden die losgeknipt nog steeds kloppen: ze
+  noemen de organisatie voluit en bevatten geen "hier" of "zoals hierboven".
+*/
+const VRAGEN = [
+  {
+    vraag: 'Wat is agressietraining?',
+    antwoord:
+      'Agressietraining leert medewerkers agressie, intimidatie en grensoverschrijdend gedrag herkennen, de-escaleren en begrenzen. Bij Bureau Weerbaar en Veilig duurt een training één dag en wordt er geoefend met situaties uit de eigen werkpraktijk, samen met een trainingsacteur.',
+  },
+  {
+    vraag: 'Hoe lang duurt een agressietraining?',
+    antwoord:
+      'Elke agressietraining van Bureau Weerbaar en Veilig duurt één dag. Dat geldt voor alle drie de niveaus: basis, gevorderd en expert.',
+  },
+  {
+    vraag: 'Hoeveel deelnemers kunnen er meedoen?',
+    antwoord:
+      'Een training van Bureau Weerbaar en Veilig telt maximaal 10 deelnemers; op expertniveau maximaal 8. In een grotere groep komt niet iedereen aan het oefenen toe, en oefenen is waar het effect vandaan komt.',
+  },
+  {
+    vraag: 'Waar vindt de training plaats?',
+    antwoord:
+      'Bureau Weerbaar en Veilig traint incompany op de eigen locatie van de opdrachtgever, door heel Nederland. Groepen kunnen ook terecht op de locatie in Neede, provincie Gelderland.',
+  },
+  {
+    vraag: 'Welk niveau heeft mijn team nodig?',
+    antwoord:
+      'Bijna elk team begint bij basis: herkennen en de-escaleren. Wie de basis beheerst en structureel met zwaardere situaties werkt, gaat door naar gevorderd. Expert is bedoeld voor leidinggevenden en coördinatoren en gaat over teamnorm, beleid en borging.',
+  },
+] as const;
+
+const faqSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: VRAGEN.map((v) => ({
+    '@type': 'Question',
+    name: v.vraag,
+    acceptedAnswer: { '@type': 'Answer', text: v.antwoord },
+  })),
+});
 ---
 
 <Base
   titel="Agressietraining: aanpak en opbouw"
   beschrijving="Agressietraining leert medewerkers agressie herkennen, de-escaleren en begrenzen. Bureau Weerbaar en Veilig traint per beroepsgroep, in drie niveaus, met realistische praktijksituaties."
+  schema={[faqSchema]}
 >
-  <div class="vlak-donker op-donker relative overflow-hidden text-white">
-    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
-    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
+  {/* ═══ Paginakop ═══ */}
+  <section class="paginakop op-donker">
+    <div class="wrap">
       <Breadcrumb pad={[{ naam: 'Home', pad: '/' }, { naam: 'Agressietraining' }]} />
-      <h1 class="mt-7 text-3xl font-bold leading-[1.15] md:text-5xl">
-        Agressietraining: wat het is en hoe het werkt
-      </h1>
-      <!-- GEO-openingsantwoord -->
-      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
+      <p class="eyebrow">Wat het is en hoe het werkt</p>
+      <h1>Agressietraining</h1>
+      {/* GEO-openingsantwoord: losgeknipt van de pagina nog steeds een compleet antwoord */}
+      <p class="lede">
         Agressietraining leert medewerkers agressie, intimidatie en
         grensoverschrijdend gedrag herkennen, de-escaleren en begrenzen. Bureau
-        Weerbaar en Veilig traint uitsluitend op dit onderwerp: per
-        beroepsgroep uitgewerkt, in drie niveaus, met realistische situaties
-        uit de eigen werkpraktijk.
+        Weerbaar en Veilig traint uitsluitend op dit onderwerp: per beroepsgroep
+        uitgewerkt, in drie niveaus, met realistische situaties uit de eigen
+        werkpraktijk. Elke training duurt één dag.
       </p>
-    </div>
-  </div>
-  <div class="lijn-merk" aria-hidden="true"></div>
 
-  <div class="mx-auto max-w-6xl px-4 py-12">
-    <div class="grid gap-12 lg:grid-cols-[1fr_20rem]">
-      <div class="min-w-0 space-y-12">
-        <section aria-labelledby="voor-wie">
-          <h2 id="voor-wie" class="text-2xl font-bold text-marine">Voor wie is agressietraining?</h2>
-          <p class="mt-3 max-w-3xl leading-relaxed">
-            Voor iedereen die in het werk met agressie te maken kan krijgen: aan
-            de balie of kassa, in de klas, op straat, bij mensen thuis of aan de
-            telefoon. Bureau Weerbaar en Veilig vertaalt de training naar de
-            eigen beroepsgroep: een buschauffeur oefent andere situaties dan
-            een huisartsassistent. Kies via de sectorpagina's de training die
-            past bij jouw team.
-          </p>
-          <a
-            href={link('/sectoren/')}
-            class="knop knop-primair mt-4 px-5 py-2.5 text-sm"
-          >
-            Bekijk alle sectoren
-          </a>
-        </section>
-
-        <section aria-labelledby="aanpak">
-          <h2 id="aanpak" class="text-2xl font-bold text-marine">De aanpak</h2>
-          <ul class="mt-4 grid gap-4 sm:grid-cols-2">
-            <li class="rounded-xl border border-lijn p-5">
-              <h3 class="font-bold">Realistische praktijksituaties</h3>
-              <p class="mt-1 text-sm leading-relaxed text-grijs">
-                Geoefend wordt met situaties uit het eigen werk: praktijkgericht,
-                zonder naïeve rollenspellen.
-              </p>
-            </li>
-            <li class="rounded-xl border border-lijn p-5">
-              <h3 class="font-bold">Kleine groepen</h3>
-              <p class="mt-1 text-sm leading-relaxed text-grijs">
-                Maximaal 10 deelnemers (expertniveau: maximaal 8), zodat iedereen
-                actief oefent.
-              </p>
-            </li>
-            <li class="rounded-xl border border-lijn p-5">
-              <h3 class="font-bold">Incompany of in Neede</h3>
-              <p class="mt-1 text-sm leading-relaxed text-grijs">
-                Op de eigen locatie, of bij Bureau Weerbaar en Veilig in Neede
-                (Gelderland).
-              </p>
-            </li>
-            <li class="rounded-xl border border-lijn p-5">
-              <h3 class="font-bold">Certificaat</h3>
-              <p class="mt-1 text-sm leading-relaxed text-grijs">
-                Elke deelnemer ontvangt na afloop een deelnamecertificaat.
-              </p>
-            </li>
-          </ul>
-        </section>
-
-        <section aria-labelledby="niveaus">
-          <h2 id="niveaus" class="text-2xl font-bold text-marine">Drie niveaus</h2>
-          <div class="mt-4 space-y-4">
-            {niveaus.map((n) => (
-              <div class="rounded-xl border border-lijn p-5">
-                <NiveauBadge niveau={n} />
-                <h3 class="mt-2 font-bold">{NIVEAU_LABELS[n]}</h3>
-                <p class="mt-1 text-sm leading-relaxed text-grijs">{NIVEAU_BESCHRIJVING[n]}</p>
-                <a href={link(`/niveaus/${n}/`)} class="mt-2 inline-block text-sm font-semibold text-blauw hover:underline">
-                  Alle trainingen op dit niveau →
-                </a>
-              </div>
-            ))}
-          </div>
-        </section>
+      <div class="kop-stats">
+        <div class="kop-stat"><b>{trainingen.length}</b><span>Trainingen</span></div>
+        <div class="kop-stat"><b>{beroepsgroepen.length}</b><span>Beroepsgroepen</span></div>
+        <div class="kop-stat"><b>{sectoren.length}</b><span>Sectoren</span></div>
+        <div class="kop-stat"><b>1 dag</b><span>Per training</span></div>
       </div>
-
-      <aside class="lg:sticky lg:top-6 lg:self-start">
-        <Terugbelverzoek onderwerp="agressietraining" />
-      </aside>
     </div>
-  </div>
+  </section>
+
+  {/* ═══ Voor wie ═══ */}
+  <section class="section" aria-labelledby="voor-wie">
+    <div class="wrap">
+      <div class="leestekst">
+        <p class="eyebrow">Voor wie</p>
+        <h2 id="voor-wie">Voor wie is agressietraining?</h2>
+        <p>
+          Voor iedereen die in het werk met agressie te maken kan krijgen: aan
+          de balie of kassa, in de klas, op straat, bij mensen thuis of aan de
+          telefoon. Bureau Weerbaar en Veilig vertaalt de training naar de eigen
+          beroepsgroep — een buschauffeur oefent andere situaties dan een
+          huisartsassistent, en dat verschil zit in het programma, niet alleen
+          in de titel.
+        </p>
+      </div>
+      <div class="hero-actions teamknop">
+        <a href={link('/sectoren/')} class="btn btn-primary">Bekijk alle sectoren</a>
+        <a href={link('/trainingsgids/')} class="btn btn-ghost">Lees de trainingsgids</a>
+      </div>
+    </div>
+  </section>
+
+  {/* ═══ Praktijksituaties ═══ */}
+  {situaties.length > 0 && (
+    <section class="section section--oranje" aria-labelledby="situaties-titel">
+      <div class="wrap">
+        <p class="eyebrow">Waar het over gaat</p>
+        <h2 id="situaties-titel">Situaties zoals ze in de trainingen staan</h2>
+        <div class="grid grid-2 situatieraster">
+          {situaties.map((s) => (
+            <div class="situatie komt-op">
+              <p class="situatie-tekst">{s.tekst}</p>
+              <p class="situatie-bron">
+                <a href={link(`/trainingen/${s.slug}/`)}>{s.beroepsgroep}</a>
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {/* ═══ De aanpak ═══ */}
+  <section class="section" aria-labelledby="aanpak">
+    <div class="wrap">
+      <p class="eyebrow">Hoe we werken</p>
+      <h2 id="aanpak">De aanpak</h2>
+      <div class="grid grid-2 sectorraster">
+        {AANPAK.map(([titel, tekst]) => (
+          <article class="card komt-op">
+            <h3>{titel}</h3>
+            <p>{tekst}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ═══ De trainingsdag ═══ */}
+  <section class="section section--soft" aria-labelledby="dag">
+    <div class="wrap">
+      <p class="eyebrow">Van ochtend tot borrel</p>
+      <h2 id="dag">Hoe een trainingsdag verloopt</h2>
+      {/*
+        Uitklapbaar: de korte regel staat er altijd, de volledige toelichting
+        pas als je hem opent. Wie snel wil weten hoe een dag loopt, leest vijf
+        regels; wie het echt wil weten, klapt open. Dat is iets anders dan het
+        programma van een training verstoppen — dáár beslis je op, hier
+        oriënteer je je.
+      */}
+      <div class="ladder ladderblok">
+        {TRAININGSDAG.map((stap, i) => (
+          <details class="ladder-item">
+            <summary class="ladder-kop">
+              <span class="ladder-nr">{String(i + 1).padStart(2, '0')}</span>
+              <span>
+                <span class="ladder-titel">{stap.titel}</span>
+                <span class="ladder-bij">{stap.kort}</span>
+              </span>
+              <span class="ladder-teken" aria-hidden="true"></span>
+            </summary>
+            <div class="ladder-inhoud">
+              <p>{stap.inhoud}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+      <a href={link('/trainingsgids/de-trainingsdag/')} class="ladder-link btn btn-ghost">
+        De volledige dagbeschrijving
+      </a>
+    </div>
+  </section>
+
+  {/* ═══ De drie niveaus ═══ */}
+  <section class="section" aria-labelledby="niveaus">
+    <div class="wrap">
+      <p class="eyebrow">Van herkennen tot borgen</p>
+      <h2 id="niveaus">Drie niveaus</h2>
+      <div class="grid grid-3 sectorraster">
+        {niveaus.map((n) => (
+          <article class={`card niveau-${n}`}>
+            <span class="badge">{NIVEAU_LABELS[n]}</span>
+            <h3 class="niveau-kop">{NIVEAU_LABELS[n]}</h3>
+            <p>{NIVEAU_BESCHRIJVING[n]}</p>
+            <a href={link(`/niveaus/${n}/`)} class="niveau-link vlakdek">
+              Alle trainingen op dit niveau <span aria-hidden="true">→</span>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ═══ Het team ═══ */}
+  <TrainersBlok />
+
+  {/* ═══ Veelgestelde vragen ═══ */}
+  <section class="section section--soft" aria-labelledby="vragen">
+    <div class="wrap">
+      <p class="eyebrow">Voordat je belt</p>
+      <h2 id="vragen">Veelgestelde vragen over agressietraining</h2>
+      <div class="ladder ladderblok">
+        {VRAGEN.map((v) => (
+          <details class="ladder-item">
+            <summary class="ladder-kop">
+              <span><span class="ladder-titel">{v.vraag}</span></span>
+              <span class="ladder-teken" aria-hidden="true"></span>
+            </summary>
+            <div class="ladder-inhoud">
+              <p>{v.antwoord}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ═══ Afsluiting ═══ */}
+  <section class="section section--tight">
+    <div class="wrap">
+      <Terugbelverzoek onderwerp="agressietraining" />
+    </div>
+  </section>
 </Base>

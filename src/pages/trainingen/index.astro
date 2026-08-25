@@ -47,13 +47,34 @@ const sectorSlugs = [...new Set(groepen.map((g) => g.sector))].sort((a, b) =>
 const perNiveau = (n: string) => alleTrainingen.filter((t) => t.data.niveau === n).length;
 const groepenPerSector = (s: string) => groepen.filter((g) => g.sector === s).length;
 
+/*
+  Het alfabetfilter. Vrije tekst doorzoeken kan niet zonder script, maar
+  vierenveertig beroepsgroepen terugbrengen tot drie op beginletter kan wel — en
+  dat scheelt bij het zoeken naar "verpleegkundigen" het hele scherm afscrollen.
+
+  Alleen de letters die daadwerkelijk voorkomen krijgen een knop: een rij van
+  zesentwintig waarvan er negen niets doen, is een rij met negen teleurstellingen.
+*/
+const letterVan = (naam: string) => naam.trim().charAt(0).toUpperCase();
+const letters = [...new Set(groepen.map((g) => letterVan(g.naam)))].sort((a, b) =>
+  a.localeCompare(b, 'nl')
+);
+const groepenPerLetter = (l: string) => groepen.filter((g) => letterVan(g.naam) === l).length;
+
+const letterCss = letters
+  .map(
+    (l) =>
+      `.filterblok:has(#letter-${l}:checked) .aanbodrij:not([data-letter="${l}"]) { display: none; }`
+  )
+  .join('\n  ');
+
 const filterCss = [
   ...niveaus.map(
     (n) =>
       `.filterblok:has(#niveau-${n}:checked) .tegel:not([data-niveau="${n}"]) { display: none; }`
   ),
   ...sectorSlugs.map(
-    (s) => `.filterblok:has(#sector-${s}:checked) .groep:not([data-sector="${s}"]) { display: none; }`
+    (s) => `.filterblok:has(#sector-${s}:checked) .aanbodrij:not([data-sector="${s}"]) { display: none; }`
   ),
 ].join('\n  ');
 
@@ -77,29 +98,42 @@ const sectorkeuzeCss = [
   titel="Alle agressietrainingen"
   beschrijving="Alle agressietrainingen van Bureau Weerbaar en Veilig: 132 trainingen voor 44 beroepsgroepen in 19 sectoren, elk in drie niveaus. Filter op sector en niveau."
 >
-  <div class="vlak-donker op-donker relative overflow-hidden text-white">
-    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
-    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
+  {/* ═══ Paginakop ═══ */}
+  <section class="paginakop op-donker">
+    <div class="wrap">
       <Breadcrumb pad={[{ naam: 'Home', pad: '/' }, { naam: 'Trainingen' }]} />
-      <p class="kicker mt-7">Het volledige aanbod</p>
-      <h1 class="mt-4 text-3xl font-bold leading-[1.15] md:text-5xl">Alle agressietrainingen</h1>
-      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
+      <p class="eyebrow">Het volledige aanbod</p>
+      <h1>Alle agressietrainingen</h1>
+      <p class="lede">
         Bureau Weerbaar en Veilig geeft {alleTrainingen.length} agressietrainingen
         voor {groepen.length} beroepsgroepen in {sectorSlugs.length} sectoren, elk
         in drie niveaus. Per beroepsgroep zie je de drie niveaus naast elkaar,
         zodat je in één oogopslag kunt vergelijken wat ze van elkaar onderscheidt.
       </p>
+
+      <div class="kop-stats">
+        {[
+          [String(alleTrainingen.length), 'Trainingen'],
+          [String(groepen.length), 'Beroepsgroepen'],
+          [String(sectorSlugs.length), 'Sectoren'],
+          ['1 dag', 'Elke training'],
+        ].map(([waarde, label]) => (
+          <div class="kop-stat">
+            <b>{waarde}</b>
+            <span>{label}</span>
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
-  <div class="lijn-merk" aria-hidden="true"></div>
+  </section>
 
   <div class="filterblok">
-    <!--
+    {/*
       De filterbalk blijft in beeld tijdens het scrollen: met 44 rijen ben je
       anders je keuzemogelijkheid kwijt zodra je begint te lezen.
-    -->
+    */}
     <div class="filterbalk">
-      <div class="mx-auto max-w-6xl px-4 py-4">
+      <div class="wrap filterbalk-binnen">
         <form aria-label="Trainingen filteren">
           <p class="sr-only">
             Kies een niveau of sector om de lijst te beperken. De volledige lijst
@@ -112,7 +146,7 @@ const sectorkeuzeCss = [
             als één zin: "Niveau: alle, basis, gevorderd, expert".
           */}
           <div class="filterrij" role="group" aria-labelledby="label-niveau">
-              <span class="filterlabel" id="label-niveau">Niveau</span>
+            <span class="filterlabel" id="label-niveau">Niveau</span>
             <div class="pillen">
               <label class="pil">
                 <input type="radio" name="niveau" id="niveau-alle" checked />
@@ -162,24 +196,40 @@ const sectorkeuzeCss = [
               ))}
             </div>
           </details>
+
+          {/*
+            Beginletter. Werkt samen met de andere twee filters: elke regel
+            verbergt onafhankelijk, dus wat overblijft voldoet aan alles wat je
+            hebt aangeklikt.
+          */}
+          <div class="filterrij" role="group" aria-labelledby="label-letter">
+            <span class="filterlabel" id="label-letter">Letter</span>
+            <div class="pillen">
+              <label class="pil">
+                <input type="radio" name="letter" id="letter-alle" checked />
+                <span>Alle <span class="pil-aantal">{groepen.length}</span></span>
+              </label>
+              {letters.map((l) => (
+                <label class="pil pil-letter">
+                  <input type="radio" name="letter" id={`letter-${l}`} />
+                  <span>{l} <span class="pil-aantal">{groepenPerLetter(l)}</span></span>
+                </label>
+              ))}
+            </div>
+          </div>
         </form>
       </div>
     </div>
 
-    <div class="mx-auto max-w-6xl px-4 py-10">
-      <ul class="space-y-4">
+    <div class="wrap aanbod">
+      <ul class="aanbodlijst">
         {groepen.map((g) => (
-          <li class="groep" data-sector={g.sector}>
-            <div class="groep-kop">
-              <h2 class="text-lg font-bold leading-snug text-marine">
-                <a
-                  href={link(`/sectoren/${g.sector}/${g.slug}/`)}
-                  class="hover:text-blauw hover:underline"
-                >
-                  {g.naam}
-                </a>
+          <li class="aanbodrij" data-sector={g.sector} data-letter={letterVan(g.naam)}>
+            <div class="aanbodrij-kop">
+              <h2>
+                <a href={link(`/sectoren/${g.sector}/${g.slug}/`)}>{g.naam}</a>
               </h2>
-              <p class="mt-1 text-sm text-grijs">
+              <p>
                 {SECTOR_NAMEN[g.sector] ?? g.sector} ·
                 {' '}{telwoord(g.trainingen.length, 'niveau', 'niveaus')}
               </p>
@@ -201,7 +251,7 @@ const sectorkeuzeCss = [
                   <a href={link(`/trainingen/${t.data.slug}/`)} class="tegel-link">
                     Bekijk training
                     <span class="sr-only">: {t.data.titel}</span>
-                    <span class="pijl" aria-hidden="true">→</span>
+                    <span aria-hidden="true">→</span>
                   </a>
                 </li>
               ))}
@@ -223,78 +273,78 @@ const sectorkeuzeCss = [
   */
   .filterbalk {
     position: sticky;
-    top: var(--kophoogte, 5rem);
+    top: var(--kophoogte);
     z-index: 30;
     background: #fff;
     border-bottom: 1px solid var(--color-lijn);
-    box-shadow: 0 1px 0 rgb(33 46 86 / .04), 0 6px 16px -12px rgb(33 46 86 / .25);
+    box-shadow: 0 1px 0 rgb(32 48 88 / .04), 0 6px 16px -12px rgb(32 48 88 / .25);
   }
+  .filterbalk-binnen { padding-top: 14px; padding-bottom: 14px; }
+
   /* Label en knoppen op één regel, met het label op een vaste breedte zodat
      "Niveau" en "Sector" onder elkaar uitlijnen. */
   .filterrij {
     display: flex;
     align-items: baseline;
-    gap: .85rem;
-    padding: .3rem 0;
+    gap: 14px;
+    padding: 5px 0;
   }
-  .filterrij + .filterrij { border-top: 1px solid var(--color-lijn); margin-top: .3rem; padding-top: .6rem; }
+  .filterrij + .filterrij {
+    border-top: 1px solid var(--color-lijn);
+    margin-top: 5px;
+    padding-top: 10px;
+  }
 
   /* ---------- De ingeklapte sectorkeuze ---------- */
   .sectorfilter { display: block; }
   .sectorfilter summary {
     display: flex;
     align-items: center;
-    gap: .85rem;
+    gap: 14px;
     list-style: none;
     cursor: pointer;
-    padding: .3rem 0;
-    border-radius: .375rem;
+    padding: 5px 0;
+    border-radius: 6px;
   }
   .sectorfilter summary::-webkit-details-marker { display: none; }
-  .sectorfilter summary:hover .sectorkeuze { background: var(--color-vlak); color: var(--color-marine); }
-  .sectorfilter summary:focus-visible {
-    outline: 3px solid var(--color-blauw);
-    outline-offset: 2px;
-  }
+  .sectorfilter summary:hover .sectorkeuze { background: var(--color-blauw-diep); }
+  .sectorfilter summary:focus-visible { outline: 3px solid var(--color-blauw); outline-offset: 2px; }
   .sectorkeuze {
     display: inline-flex;
     align-items: center;
-    min-height: 1.75rem;
-    padding: .3rem .7rem;
-    border-radius: 9999px;
+    min-height: 28px;
+    padding: 5px 12px;
+    border-radius: 999px;
     background: var(--color-marine);
     color: #fff;
-    font-size: .8125rem;
-    font-weight: 600;
-    transition: background-color 140ms ease, color 140ms ease;
+    font-size: 13px;
+    font-weight: 700;
+    transition: background-color .14s ease;
   }
   .sectorfilter .chevron {
-    width: 1.05rem;
-    height: 1.05rem;
-    color: var(--color-grijs);
-    transition: transform 180ms ease;
+    width: 17px;
+    height: 17px;
+    color: var(--color-tekst-grijs);
+    transition: transform .18s ease;
   }
   .sectorfilter[open] .chevron { transform: rotate(180deg); }
-  .sectorfilter .pillen { padding: .5rem 0 .2rem; }
-  @media (min-width: 601px) {
-    .sectorfilter .pillen { padding-left: 4.85rem; }
-  }
+  .sectorfilter .pillen { padding: 8px 0 3px; }
+  @media (min-width: 601px) { .sectorfilter .pillen { padding-left: 78px; } }
+
   .filterlabel {
     flex: none;
-    width: 4rem;
-    font-size: .75rem;
-    font-weight: 700;
-    color: var(--color-grijs);
+    width: 64px;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--color-tekst-grijs);
   }
   @media (max-width: 600px) {
-    .filterrij { flex-direction: column; align-items: stretch; gap: .4rem; }
+    .filterrij { flex-direction: column; align-items: stretch; gap: 6px; }
     .filterlabel { width: auto; }
   }
-  .pillen {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .15rem .35rem;
-  }
+  .pillen { display: flex; flex-wrap: wrap; gap: 2px 6px; }
 
   /*
     Rustige knoppen: in rust alleen tekst, geen vlak. Met drieëntwintig
@@ -306,61 +356,71 @@ const sectorkeuzeCss = [
   .pil > span {
     display: inline-flex;
     align-items: baseline;
-    gap: .35rem;
+    gap: 6px;
     /* Minimaal 24px hoog, conform WCAG 2.5.8 voor bedieningselementen */
-    min-height: 1.75rem;
-    padding: .3rem .6rem;
-    border-radius: 9999px;
-    font-size: .8125rem;
-    font-weight: 600;
-    color: var(--color-grijs);
+    min-height: 28px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-tekst-grijs);
     cursor: pointer;
     white-space: nowrap;
-    transition: background-color 140ms ease, color 140ms ease;
+    transition: background-color .14s ease, color .14s ease;
   }
-  .pil:hover > span { background: var(--color-vlak); color: var(--color-marine); }
+  .pil:hover > span { background: var(--color-papier-zacht); color: var(--color-marine); }
   .pil:has(input:checked) > span {
-    background: var(--accent-sterk, var(--color-marine));
+    background: var(--accent-diep, var(--color-marine));
     color: #fff;
   }
-  .pil input:focus-visible + span {
-    outline: 3px solid var(--color-blauw);
-    outline-offset: 2px;
-  }
-  .pil-aantal { font-variant-numeric: tabular-nums; opacity: .65; font-weight: 700; }
-  .pil:has(input:checked) .pil-aantal { opacity: .8; }
+  .pil input:focus-visible + span { outline: 3px solid var(--color-blauw); outline-offset: 2px; }
+  .pil-aantal { font-variant-numeric: tabular-nums; opacity: .7; font-weight: 800; }
+  .pil:has(input:checked) .pil-aantal { opacity: .85; }
 
   /* ---------- Eén rij per beroepsgroep ---------- */
-  .groep {
+  .aanbod { padding-top: 40px; padding-bottom: 64px; }
+  .aanbodlijst { display: grid; gap: 16px; list-style: none; }
+  .aanbodrij {
     display: grid;
-    gap: 1rem;
+    gap: 16px;
     align-items: start;
-    padding: 1.25rem;
+    padding: 20px;
     border: 1px solid var(--color-lijn);
-    border-radius: .875rem;
+    border-radius: var(--radius);
     background: #fff;
-    box-shadow: var(--shadow-kaart);
+    box-shadow: var(--schaduw-sm);
   }
   @media (min-width: 900px) {
-    .groep { grid-template-columns: 15rem 1fr; gap: 1.5rem; align-items: center; }
-    .groep-kop { padding-right: 1.5rem; border-right: 1px solid var(--color-lijn); }
+    .aanbodrij { grid-template-columns: 15rem 1fr; gap: 24px; align-items: center; }
+    .aanbodrij-kop { padding-right: 24px; border-right: 1px solid var(--color-lijn); }
   }
+  .aanbodrij-kop h2 {
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1.3;
+    color: var(--color-marine);
+  }
+  /*
+    Op een telefoon was dit klikdoel drieëntwintig pixels hoog, met de tegels er
+    vlak onder. WCAG 2.5.8 vraagt vierentwintig. Twee pixels lucht erbij en het
+    haalt het; het kost geen ruimte omdat de regel eronder toch al marge heeft.
+  */
+  .aanbodrij-kop h2 a { display: inline-block; padding-block: 2px; }
+  .aanbodrij-kop h2 a:hover { color: var(--color-oranje-donker); text-decoration: underline; }
+  .aanbodrij-kop p { margin-top: 4px; font-size: 13px; color: var(--color-tekst-grijs); }
 
-  .tegels {
-    display: grid;
-    gap: .75rem;
-  }
+  .tegels { display: grid; gap: 12px; list-style: none; }
   @media (min-width: 640px) { .tegels { grid-template-columns: repeat(3, 1fr); } }
 
   .tegel {
     display: flex;
     flex-direction: column;
-    padding: .9rem 1rem;
-    border-radius: .625rem;
-    background: var(--accent-vlak);
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    background: var(--accent-zacht);
     border: 1px solid transparent;
     border-top: 3px solid var(--accent);
-    transition: border-color 160ms ease, transform 160ms ease;
+    transition: border-color .16s ease, transform .16s ease;
   }
   .tegel:hover, .tegel:focus-within {
     border-color: color-mix(in srgb, var(--accent) 45%, transparent);
@@ -368,16 +428,16 @@ const sectorkeuzeCss = [
     transform: translateY(-2px);
   }
   .tegel-niveau {
-    font-size: .6875rem;
-    font-weight: 700;
+    font-size: 11px;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: .06em;
-    color: var(--accent-tekst);
+    color: var(--accent-op-zacht);
   }
   .tegel-belofte {
-    margin-top: .35rem;
+    margin-top: 6px;
     flex: 1;
-    font-size: .875rem;
+    font-size: 14px;
     line-height: 1.45;
     color: var(--color-inkt);
   }
@@ -388,15 +448,15 @@ const sectorkeuzeCss = [
     doel dat groot genoeg is — dat scheelt ook misklikken op een telefoon.
   */
   .tegel-link {
-    margin-top: .6rem;
+    margin-top: 10px;
     display: inline-flex;
     align-items: center;
-    gap: .35rem;
-    min-height: 1.5rem;
-    padding-block: .25rem;
-    font-size: .8125rem;
-    font-weight: 700;
-    color: var(--accent-tekst);
+    gap: 6px;
+    min-height: 24px;
+    padding-block: 4px;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--accent-op-zacht);
   }
   .tegel-link:hover { text-decoration: underline; }
 
@@ -406,6 +466,8 @@ const sectorkeuzeCss = [
   }
 
   ${filterCss}
+
+  ${letterCss}
 
   ${sectorkeuzeCss}
 `} />

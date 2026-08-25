@@ -17,113 +17,120 @@ const actief = KEY.length > 0;
   titel="Contact en terugbelverzoek"
   beschrijving="Neem contact op met Bureau Weerbaar en Veilig: bel 085 760 0435, mail info@bureauweerbaarenveilig.nl of vraag een terugbelverzoek aan. Reactie binnen één werkdag."
 >
-  <div class="vlak-donker op-donker relative overflow-hidden text-white">
-    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
-    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
+  {/* ═══ Paginakop ═══ */}
+  <section class="paginakop op-donker">
+    <div class="wrap">
       <Breadcrumb pad={[{ naam: 'Home', pad: '/' }, { naam: 'Contact' }]} />
-      <h1 class="mt-7 text-3xl font-bold leading-[1.15] md:text-5xl">Contact</h1>
-      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
+      <p class="eyebrow">Reactie binnen één werkdag</p>
+      <h1>Contact</h1>
+      <p class="lede">
         Bureau Weerbaar en Veilig reageert binnen één werkdag. Bel, mail of laat je
-        gegevens achter voor een terugbelverzoek.
+        gegevens achter voor een terugbelverzoek — dan bellen wij.
       </p>
+
+      <div class="kop-stats">
+        <div class="kop-stat"><b>085 760 0435</b><span>Ma t/m vr 08:30–17:00</span></div>
+        <div class="kop-stat"><b>1 werkdag</b><span>Reactietijd</span></div>
+        <div class="kop-stat"><b>Neede</b><span>Gelderland</span></div>
+      </div>
     </div>
-  </div>
-  <div class="lijn-merk" aria-hidden="true"></div>
+  </section>
 
-  <div class="mx-auto grid max-w-6xl gap-12 px-4 py-12 lg:grid-cols-2">
-    <section aria-labelledby="direct-titel">
-      <h2 id="direct-titel" class="text-2xl font-bold text-marine">Direct contact</h2>
-      <dl class="mt-4 space-y-4">
-        <div class="rounded-xl border border-lijn p-5">
-          <dt class="text-sm font-semibold text-grijs">Telefoon (ma t/m vr 08:30–17:00)</dt>
-          <dd class="mt-1 text-xl font-bold">
-            <a href="tel:+31857600435" class="text-blauw hover:underline">085 760 0435</a>
-          </dd>
-        </div>
-        <div class="rounded-xl border border-lijn p-5">
-          <dt class="text-sm font-semibold text-grijs">E-mail</dt>
-          <dd class="mt-1 text-xl font-bold">
-            <a href="mailto:info@bureauweerbaarenveilig.nl" class="break-all text-blauw hover:underline">
-              info@bureauweerbaarenveilig.nl
-            </a>
-          </dd>
-        </div>
-        <div class="rounded-xl border border-lijn p-5">
-          <dt class="text-sm font-semibold text-grijs">Bezoekadres</dt>
-          <dd class="mt-1 font-semibold">Russchemorsweg 5-04, 7161 RT Neede</dd>
-        </div>
-      </dl>
-    </section>
+  <section class="section">
+    <div class="wrap">
+      <div class="contact-grid">
+        {/* ─── Direct contact ─── */}
+        <section aria-labelledby="direct-titel">
+          <p class="eyebrow">Het snelst</p>
+          <h2 id="direct-titel">Direct contact</h2>
 
-    <section aria-labelledby="terugbel-titel">
-      <h2 id="terugbel-titel" class="text-2xl font-bold text-marine">Terugbelverzoek</h2>
+          <dl class="contactkaarten">
+            <div class="contactkaart">
+              <dt>Telefoon (ma t/m vr 08:30–17:00)</dt>
+              <dd><a href="tel:+31857600435">085 760 0435</a></dd>
+            </div>
+            <div class="contactkaart">
+              <dt>E-mail</dt>
+              <dd>
+                <a href="mailto:info@bureauweerbaarenveilig.nl" class="contact-mail">
+                  info@bureauweerbaarenveilig.nl
+                </a>
+              </dd>
+            </div>
+            <div class="contactkaart">
+              <dt>Bezoekadres</dt>
+              <dd class="contact-plat">Russchemorsweg 5-04, 7161 RT Neede</dd>
+            </div>
+          </dl>
 
-      {!actief && (
-        <p class="mt-4 rounded-lg border border-oranje/40 bg-oranje/5 p-4 text-sm leading-relaxed">
-          Het formulier wordt op dit moment gekoppeld. Bel of mail zolang gerust
-          rechtstreeks: je krijgt binnen één werkdag antwoord.
-        </p>
-      )}
+          <div class="leestekst contact-uitleg">
+            <h3>Wat we als eerste vragen</h3>
+            <p>
+              Om welke beroepsgroep het gaat, wat er op de werkvloer misgaat en
+              met hoeveel mensen je wilt trainen. Daarna volgt een voorstel voor
+              het niveau dat past: basis, gevorderd of expert. Elke training
+              duurt één dag.
+            </p>
+          </div>
+        </section>
 
-      <form
-        method="POST"
-        action={actief ? 'https://api.web3forms.com/submit' : undefined}
-        class="mt-4 space-y-4"
-      >
-        {actief && <input type="hidden" name="access_key" value={KEY} />}
-        <input type="hidden" name="subject" value="Terugbelverzoek via bureauweerbaarenveilig.nl" />
-        <input type="hidden" name="from_name" value="Website Bureau Weerbaar en Veilig" />
+        {/* ─── Terugbelverzoek ─── */}
+        <section aria-labelledby="terugbel-titel" class="formulierblok">
+          <p class="eyebrow">Liever teruggebeld?</p>
+          <h2 id="terugbel-titel">Terugbelverzoek</h2>
 
-        <div>
-          <label for="naam" class="block text-sm font-semibold">Naam</label>
-          <input
-            id="naam" name="naam" type="text" required autocomplete="name" disabled={!actief}
-            class="mt-1 w-full rounded-md border border-lijn px-3 py-2.5 disabled:bg-vlak"
-          />
-        </div>
-        <div>
-          <label for="telefoon" class="block text-sm font-semibold">Telefoonnummer</label>
-          <input
-            id="telefoon" name="telefoon" type="tel" required autocomplete="tel" disabled={!actief}
-            class="mt-1 w-full rounded-md border border-lijn px-3 py-2.5 disabled:bg-vlak"
-          />
-        </div>
-        <div>
-          <label for="organisatie" class="block text-sm font-semibold">
-            Organisatie <span class="font-normal text-grijs">(optioneel)</span>
-          </label>
-          <input
-            id="organisatie" name="organisatie" type="text" autocomplete="organization" disabled={!actief}
-            class="mt-1 w-full rounded-md border border-lijn px-3 py-2.5 disabled:bg-vlak"
-          />
-        </div>
-        <div>
-          <label for="bericht" class="block text-sm font-semibold">
-            Waar gaat het over? <span class="font-normal text-grijs">(optioneel)</span>
-          </label>
-          <textarea
-            id="bericht" name="bericht" rows="4" disabled={!actief}
-            class="mt-1 w-full rounded-md border border-lijn px-3 py-2.5 disabled:bg-vlak"
-          ></textarea>
-        </div>
+          {!actief && (
+            <p class="formulier-melding">
+              Het formulier wordt op dit moment gekoppeld. Bel of mail zolang gerust
+              rechtstreeks: je krijgt binnen één werkdag antwoord.
+            </p>
+          )}
 
-        <!-- Honeypot tegen spam: onzichtbaar voor mensen, ingevuld door bots -->
-        <input type="checkbox" name="botcheck" tabindex="-1" class="hidden" aria-hidden="true" />
-        <!-- Waar de bezoeker na verzending naartoe gaat -->
-        <input type="hidden" name="redirect" value="https://bureauweerbaarenveilig.nl/contact/bedankt/" />
+          <form
+            method="POST"
+            action={actief ? 'https://api.web3forms.com/submit' : undefined}
+            class="formulier"
+          >
+            {actief && <input type="hidden" name="access_key" value={KEY} />}
+            <input type="hidden" name="subject" value="Terugbelverzoek via bureauweerbaarenveilig.nl" />
+            <input type="hidden" name="from_name" value="Website Bureau Weerbaar en Veilig" />
 
-        <button
-          type="submit"
-          disabled={!actief}
-          class="knop knop-primair w-full disabled:cursor-not-allowed disabled:bg-grijs/50"
-        >
-          Verstuur terugbelverzoek
-        </button>
-        <p class="text-xs leading-relaxed text-grijs">
-          Je gegevens worden alleen gebruikt om contact met je op te nemen en nergens
-          anders voor. Geen nieuwsbrieven, geen tracking, geen cookies.
-        </p>
-      </form>
-    </section>
-  </div>
+            <div class="veld">
+              <label for="naam">Naam</label>
+              <input id="naam" name="naam" type="text" required autocomplete="name" disabled={!actief} />
+            </div>
+            <div class="veld">
+              <label for="telefoon">Telefoonnummer</label>
+              <input id="telefoon" name="telefoon" type="tel" required autocomplete="tel" disabled={!actief} />
+            </div>
+            <div class="veld">
+              <label for="organisatie">
+                Organisatie <span class="veld-bij">(optioneel)</span>
+              </label>
+              <input id="organisatie" name="organisatie" type="text" autocomplete="organization" disabled={!actief} />
+            </div>
+            <div class="veld">
+              <label for="bericht">
+                Waar gaat het over? <span class="veld-bij">(optioneel)</span>
+              </label>
+              <textarea id="bericht" name="bericht" rows="4" disabled={!actief}></textarea>
+            </div>
+
+            <!-- Honeypot tegen spam: onzichtbaar voor mensen, ingevuld door bots -->
+            <input type="checkbox" name="botcheck" tabindex="-1" class="honeypot" aria-hidden="true" />
+            <!-- Waar de bezoeker na verzending naartoe gaat -->
+            <input type="hidden" name="redirect" value="https://bureauweerbaarenveilig.nl/contact/bedankt/" />
+
+            <button type="submit" disabled={!actief} class="btn btn-primary formulier-knop">
+              Verstuur terugbelverzoek
+            </button>
+            <p class="formulier-noot">
+              Je gegevens worden alleen gebruikt om contact met je op te nemen en nergens
+              anders voor. Geen nieuwsbrieven, geen tracking, geen cookies.
+            </p>
+          </form>
+        </section>
+      </div>
+    </div>
+  </section>
 </Base>

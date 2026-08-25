@@ -5,7 +5,6 @@ import Base from '../../../layouts/Base.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 import { inZin } from '../../../lib/naam';
 import { situatieSelectie } from '../../../lib/situaties';
-import NiveauBadge from '../../../components/NiveauBadge.astro';
 import Terugbelverzoek from '../../../components/Terugbelverzoek.astro';
 
 export async function getStaticPaths() {
@@ -23,7 +22,7 @@ const trainingen = (await getCollection('trainingen')).filter(
   (t) => t.data.sector === sector.data.slug
 );
 
-const situaties = await situatieSelectie(4, sector.data.slug);
+const situaties = await situatieSelectie(6, sector.data.slug);
 
 const NIVEAU_VOLGORDE = { basis: 0, gevorderd: 1, expert: 2 };
 const trainingenVan = (beroepsgroep: string) =>
@@ -59,9 +58,9 @@ const lijstSchema = beroepsgroepen.length
   beschrijving={sector.data.samenvatting}
   schema={lijstSchema ? [lijstSchema] : []}
 >
-  <div class="vlak-donker op-donker relative overflow-hidden text-white">
-    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
-    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
+  {/* ═══ Paginakop ═══ */}
+  <section class="paginakop op-donker">
+    <div class="wrap">
       <Breadcrumb
         pad={[
           { naam: 'Home', pad: '/' },
@@ -69,48 +68,42 @@ const lijstSchema = beroepsgroepen.length
           { naam: sector.data.naam },
         ]}
       />
-      <p class="kicker mt-7">Sector</p>
-      <h1 class="mt-4 max-w-3xl text-3xl font-bold leading-[1.15] md:text-5xl">
-        Agressietraining in de sector {inZin(sector.data.naam)}
-      </h1>
-      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
-        {sector.data.samenvatting}
-      </p>
+      <p class="eyebrow">Sector</p>
+      <h1>Agressietraining in de sector {inZin(sector.data.naam)}</h1>
+      <p class="lede">{sector.data.samenvatting}</p>
 
       {/*
         Wat deze sector omvat, in cijfers. Ze staan verderop in de kaarten ook
         wel, maar dan moet je tellen; hier is in één blik te zien of dit een
         sector met één beroepsgroep is of met acht.
       */}
-      <ul class="mt-9 flex flex-wrap gap-x-8 gap-y-4 border-t border-white/15 pt-7">
+      <div class="kop-stats">
         {[
-          ['Beroepsgroepen', String(beroepsgroepen.length)],
-          ['Trainingen', String(trainingen.length)],
-          ['Duur', 'Elke training 1 dag'],
-          ['Locatie', 'Incompany of in Neede'],
-        ].map(([label, waarde]) => (
-          <li>
-            <span class="block text-xs font-bold uppercase tracking-wide text-white/55">
-              {label}
-            </span>
-            <span class="mt-1 block font-semibold">{waarde}</span>
-          </li>
+          [String(beroepsgroepen.length), beroepsgroepen.length === 1 ? 'Beroepsgroep' : 'Beroepsgroepen'],
+          [String(trainingen.length), 'Trainingen'],
+          ['1 dag', 'Elke training'],
+          ['Neede', 'Of incompany'],
+        ].map(([waarde, label]) => (
+          <div class="kop-stat">
+            <b>{waarde}</b>
+            <span>{label}</span>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
-  </div>
-  <div class="lijn-merk" aria-hidden="true"></div>
+  </section>
 
-  <div class="textuur-stip">
-    <div class="mx-auto max-w-6xl px-4 py-14">
-      <section class="leestekst">
+  {/* ═══ De sectortekst ═══ */}
+  <section class="section">
+    <div class="wrap">
+      <div class="leestekst">
         <Content />
-      </section>
+      </div>
     </div>
-  </div>
+  </section>
 
   {/*
-    De situaties uit déze sector, letterlijk uit de trainingen eronder.
+    ═══ De situaties uit déze sector, letterlijk uit de trainingen eronder ═══
 
     Een sectorpagina die alleen uitlegt dat er trainingen zijn, leest als een
     inhoudsopgave. Deze zinnen laten in één blik zien dat we het vak kennen —
@@ -119,9 +112,9 @@ const lijstSchema = beroepsgroepen.length
     jullie mijn werk eigenlijk wel?
   */}
   {situaties.length > 0 && (
-    <section class="merkvlak op-donker text-white" aria-labelledby="situaties-titel">
-      <div class="relative mx-auto max-w-6xl px-4 py-16 md:py-20">
-        <p class="kicker">Waar het over gaat</p>
+    <section class="section section--oranje" aria-labelledby="situaties-titel">
+      <div class="wrap">
+        <p class="eyebrow">Waar het over gaat</p>
         {/*
           "de sector {naam}" en niet "de {naam}": sectornamen hebben niet
           allemaal hetzelfde lidwoord — het is de zorg maar het openbaar
@@ -129,74 +122,61 @@ const lijstSchema = beroepsgroepen.length
           zetten klopt de zin voor alle negentien zonder dat er per sector een
           lidwoord in de data hoeft.
         */}
-        <h2 id="situaties-titel" class="mt-5 max-w-3xl text-3xl font-bold leading-tight md:text-4xl">
-          Situaties uit de sector {inZin(sector.data.naam)}, zoals ze in de
-          trainingen staan
+        <h2 id="situaties-titel">
+          Situaties uit de sector {inZin(sector.data.naam)}, zoals ze in de trainingen staan
         </h2>
 
-        <ul class="mt-12 grid gap-x-12 gap-y-10 md:grid-cols-2">
+        <div class="grid grid-2 situatieraster">
           {situaties.map((s) => (
-            <li class="rol-in border-l-2 border-white/25 pl-6">
-              <p class="situatie">{s.tekst}</p>
-              <p class="situatie-bron accent-warm">
-                <a href={link(`/trainingen/${s.slug}/`)} class="hover:underline">
-                  {s.beroepsgroep}
-                </a>
+            <div class="situatie komt-op">
+              <p class="situatie-tekst">{s.tekst}</p>
+              <p class="situatie-bron">
+                <a href={link(`/trainingen/${s.slug}/`)}>{s.beroepsgroep}</a>
               </p>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     </section>
   )}
 
-  <section class="gloed-warm rand-schuin-boven border-t border-lijn" aria-labelledby="beroepsgroepen-titel">
-    <div class="mx-auto max-w-6xl px-4 py-16">
-      <p class="kicker">Binnen deze sector</p>
-      <h2 id="beroepsgroepen-titel" class="kop-onderstreept mt-4 text-3xl font-bold text-marine md:text-4xl">
-        Kies je beroepsgroep
-      </h2>
-      <div class="mt-10 space-y-6">
+  {/* ═══ De beroepsgroepen ═══ */}
+  <section class="section section--soft" aria-labelledby="beroepsgroepen-titel">
+    <div class="wrap">
+      <p class="eyebrow">Binnen deze sector</p>
+      <h2 id="beroepsgroepen-titel">Kies je beroepsgroep</h2>
+
+      <div class="groepenlijst">
         {beroepsgroepen.map((b) => (
-          <div class="relative overflow-hidden rounded-xl border border-lijn bg-white p-6 shadow-[var(--shadow-kaart)] md:p-7">
-            <span class="lijn-merk absolute inset-x-0 top-0" aria-hidden="true"></span>
-            <h3 class="text-xl font-bold text-marine">
-              <a
-                href={link(`/sectoren/${sector.data.slug}/${b.data.slug}/`)}
-                class="group inline-flex items-center gap-2 hover:underline"
-              >
-                {b.data.naam}
-                <span class="transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
-              </a>
+          <article class="groep">
+            <h3 class="groep-titel">
+              <a href={link(`/sectoren/${sector.data.slug}/${b.data.slug}/`)}>{b.data.naam}</a>
             </h3>
-            <p class="mt-2 max-w-3xl text-sm leading-relaxed text-grijs">{b.data.samenvatting}</p>
-            <ul class="mt-5 grid gap-3 md:grid-cols-3">
+            <p class="groep-tekst">{b.data.samenvatting}</p>
+
+            <ul class="grid grid-3 groep-niveaus">
               {trainingenVan(b.data.slug).map((t) => (
-                <li
-                  class={`niveau-${t.data.niveau} kaart p-4`}
-                  style="border-radius: .5rem"
-                >
-                  <NiveauBadge niveau={t.data.niveau} />
-                  <a
-                    href={link(`/trainingen/${t.data.slug}/`)}
-                    class="mt-3 block text-sm font-bold text-marine after:absolute after:inset-0"
-                  >
+                <li class={`niveaukaart niveau-${t.data.niveau}`}>
+                  <span class="badge">
+                    {{ basis: 'Basis', gevorderd: 'Gevorderd', expert: 'Expert' }[t.data.niveau]}
+                  </span>
+                  <a href={link(`/trainingen/${t.data.slug}/`)} class="niveaukaart-link vlakdek">
                     {t.data.titel}
-                    <span class="pijl" aria-hidden="true">→</span>
                   </a>
-                  <p class="mt-1.5 text-xs font-medium text-grijs">{t.data.duur}</p>
+                  <span class="niveaukaart-duur">{t.data.duur}</span>
                 </li>
               ))}
             </ul>
-          </div>
+          </article>
         ))}
       </div>
     </div>
   </section>
 
-  <div class="mx-auto max-w-6xl px-4 py-14">
-    <div class="max-w-3xl">
+  {/* ═══ Afsluiting ═══ */}
+  <section class="section section--tight">
+    <div class="wrap">
       <Terugbelverzoek onderwerp={`agressietraining in de ${inZin(sector.data.naam)}`} />
     </div>
-  </div>
+  </section>
 </Base>

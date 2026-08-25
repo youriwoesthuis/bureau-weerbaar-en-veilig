@@ -190,6 +190,14 @@ const hoofdmenu = [
           </button>
         </div>
       </div>
+
+      {/*
+        Voortgangsbalk: hoe ver je op deze pagina bent. Loopt op
+        animation-timeline: scroll(), dus zonder script en zonder waarnemer.
+        Browsers zonder scroll-tijdlijnen laten hem op nul staan, en dan is hij
+        onzichtbaar in plaats van een halve streep die nergens op slaat.
+      */}
+      <div class="voortgang" aria-hidden="true"></div>
     </header>
 
     <main id="inhoud">

@@ -22,24 +22,22 @@ const schema = JSON.stringify({
 });
 ---
 
-<nav aria-label="Kruimelpad" class="kruimelpad text-sm text-grijs">
-  <ol class="flex flex-wrap items-center gap-1">
+<nav aria-label="Kruimelpad" class="breadcrumbs">
+  <ol>
     {pad.map((k, i) => (
-      <li class="flex items-center gap-1">
+      <li>
         {i > 0 && <span aria-hidden="true">›</span>}
         {k.pad ? (
           /*
-            py-1.5 brengt het klikdoel van twintig naar vierentwintig pixels
-            hoog. Dat is geen eis onder WCAG 2.1 AA — daar is doelgrootte
-            niveau AAA — maar op een telefoon is een kruimelpad van twintig
-            pixels gewoon lastig te raken, en de regel kost geen ruimte omdat
-            er toch al lucht boven en onder staat.
+            De verticale opvulling brengt het klikdoel van twintig naar
+            vierentwintig pixels hoog. Dat is geen eis onder WCAG 2.1 AA —
+            doelgrootte is daar niveau AAA — maar op een telefoon is een
+            kruimelpad van twintig pixels gewoon lastig te raken, en de regel
+            kost geen ruimte omdat er toch al lucht boven en onder staat.
           */
-          <a href={link(k.pad)} class="inline-block py-1.5 hover:text-blauw hover:underline">
-            {k.naam}
-          </a>
+          <a href={link(k.pad)}>{k.naam}</a>
         ) : (
-          <span aria-current="page" class="font-medium text-inkt">{k.naam}</span>
+          <span aria-current="page">{k.naam}</span>
         )}
       </li>
     ))}

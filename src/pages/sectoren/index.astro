@@ -23,67 +23,98 @@ const nogTeVullen = Object.entries(SECTOR_NAMEN).filter(([slug]) => !gevuldeSlug
   titel="Agressietraining per sector"
   beschrijving="Bureau Weerbaar en Veilig biedt agressietraining in 19 sectoren, van zorg en onderwijs tot retail en openbaar vervoer: per beroepsgroep en in drie niveaus."
 >
-  <div class="vlak-donker op-donker relative overflow-hidden text-white">
-    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
-    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
+  {/* ═══ Paginakop ═══ */}
+  <section class="paginakop op-donker">
+    <div class="wrap">
       <Breadcrumb pad={[{ naam: 'Home', pad: '/' }, { naam: 'Sectoren' }]} />
-      <p class="kicker mt-7">Kies je vertrekpunt</p>
-      <h1 class="mt-4 text-3xl font-bold leading-[1.15] md:text-5xl">
-        Agressietraining per sector
-      </h1>
-      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
+      <p class="eyebrow">Kies je vertrekpunt</p>
+      <h1>Agressietraining per sector</h1>
+      <p class="lede">
         Bureau Weerbaar en Veilig traint teams in 19 sectoren. Elke sector kent zijn
         eigen agressieproblematiek: daarom is elke training per beroepsgroep
-        uitgewerkt, in drie niveaus: basis, gevorderd en expert.
+        uitgewerkt, in drie niveaus — basis, gevorderd en expert.
       </p>
+
+      <div class="kop-stats">
+        {[
+          [String(gevuld.length), 'Sectoren'],
+          [String(beroepsgroepen.length), 'Beroepsgroepen'],
+          [String(trainingen.length), 'Trainingen'],
+          ['3', 'Niveaus'],
+        ].map(([waarde, label]) => (
+          <div class="kop-stat">
+            <b>{waarde}</b>
+            <span>{label}</span>
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
-  <div class="lijn-merk" aria-hidden="true"></div>
+  </section>
 
-  <div class="mx-auto max-w-6xl px-4 py-16">
-    {/*
-      Zelfde keuze als op de homepage: geen samenvatting in het keuzeraster.
-      Elke samenvatting opent met dezelfde vijf woorden, dus negentien kaarten
-      naast elkaar leverden negentien identieke openingszinnen op. De naam en
-      twee harde getallen verschillen wél per sector en zijn te vergelijken.
-    */}
-    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {gevuld.map((s) => (
-        <li class="kaart flex items-center gap-4 p-5">
-          <span class="sectoricoon" aria-hidden="true">
-            <SectorIcoon sector={s.data.slug} />
-          </span>
-          <div class="min-w-0">
-            <h2 class="text-lg font-bold text-marine">
-              {/* De pseudo-laag maakt de hele kaart klikbaar, dus ook de regel eronder */}
-              <a href={link(`/sectoren/${s.data.slug}/`)} class="after:absolute after:inset-0">
-                {s.data.naam}
-              </a>
-            </h2>
-            <p class="mt-1 text-sm text-grijs">
-              {telwoord(perSector(s.data.slug), 'training', 'trainingen')} ·
-              {' '}{telwoord(perGroepen(s.data.slug), 'beroepsgroep', 'beroepsgroepen')}
-            </p>
-          </div>
-          <span class="pijl ml-auto text-xl text-marine" aria-hidden="true">→</span>
-        </li>
-      ))}
-      {nogTeVullen.map(([, naam]) => (
-        <li class="flex items-center justify-between gap-4 rounded-xl border border-dashed border-lijn bg-vlak-warm p-5">
-          <div>
-            <h2 class="text-lg font-bold text-grijs">{naam}</h2>
-            <p class="mt-1 text-sm text-grijs">Volgt binnenkort</p>
-          </div>
-        </li>
-      ))}
-    </ul>
+  {/* ═══ Het keuzeraster ═══ */}
+  <section class="section">
+    <div class="wrap">
+      {/*
+        Zelfde keuze als op de homepage: geen samenvatting in het keuzeraster.
+        Elke samenvatting opent met dezelfde vijf woorden, dus negentien kaarten
+        naast elkaar leverden negentien identieke openingszinnen op. De naam en
+        twee harde getallen verschillen wél per sector en zijn te vergelijken.
+      */}
+      <ul class="grid grid-3 sectorlijst">
+        {gevuld.map((s) => (
+          <li class="sectorkaart komt-op">
+            <span class="card-icon" aria-hidden="true">
+              <SectorIcoon sector={s.data.slug} />
+            </span>
+            <div class="sectorkaart-tekst">
+              <h2>
+                <a href={link(`/sectoren/${s.data.slug}/`)} class="vlakdek">{s.data.naam}</a>
+              </h2>
+              <p>
+                {telwoord(perSector(s.data.slug), 'training', 'trainingen')} ·
+                {' '}{telwoord(perGroepen(s.data.slug), 'beroepsgroep', 'beroepsgroepen')}
+              </p>
+            </div>
+            <span class="sectorkaart-pijl" aria-hidden="true">→</span>
+          </li>
+        ))}
+        {nogTeVullen.map(([, naam]) => (
+          <li class="sectorkaart sectorkaart--leeg">
+            <div class="sectorkaart-tekst">
+              <h2>{naam}</h2>
+              <p>Volgt binnenkort</p>
+            </div>
+          </li>
+        ))}
+      </ul>
 
-    {nogTeVullen.length > 0 && (
-      <p class="mt-8 text-sm leading-relaxed text-grijs">
-        Staat jouw sector er nog niet bij? Bel
-        <a href="tel:+31857600435" class="font-semibold text-blauw hover:underline">085 760 0435</a>:
-        Bureau Weerbaar en Veilig traint ook buiten deze lijst.
-      </p>
-    )}
-  </div>
+      {nogTeVullen.length > 0 && (
+        <p class="sectorlijst-noot">
+          Staat jouw sector er nog niet bij? Bel
+          {' '}<a href="tel:+31857600435">085 760 0435</a> — Bureau Weerbaar en Veilig
+          traint ook buiten deze lijst.
+        </p>
+      )}
+    </div>
+  </section>
+
+  {/* ═══ Afsluiting ═══ */}
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="cta-band">
+        <div>
+          <p class="eyebrow">Weet je de sector, maar niet het niveau?</p>
+          <h2>Begin bij de trainingsgids</h2>
+          <p>
+            Vijf vragen die je langs de keuze leiden: welk niveau, wie erbij moet
+            zitten, wat je intern regelt en hoe je het na afloop vasthoudt.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <a href={link('/trainingsgids/')} class="btn btn-outline">Naar de trainingsgids</a>
+          <a href={link('/contact/')} class="btn btn-outline">Overleg even</a>
+        </div>
+      </div>
+    </div>
+  </section>
 </Base>

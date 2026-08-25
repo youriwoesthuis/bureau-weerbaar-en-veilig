@@ -4,6 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { REDIRECTS } from './src/lib/redirects.ts';
 import { remarkLeestijd } from './src/lib/remark-leestijd.mjs';
+import { remarkSituatiesEruit } from './src/lib/remark-situaties-eruit.mjs';
 
 /*
   Waar draait de site?
@@ -86,7 +87,10 @@ export default defineConfig({
   ],
   markdown: {
     // Berekent tijdens het bouwen de leestijd per artikel
-    remarkPlugins: [remarkLeestijd],
+    // en haalt de praktijksituaties uit de lopende tekst, omdat ze op de
+    // trainingspagina al als uitklapblok staan -- zie
+    // src/lib/remark-situaties-eruit.mjs
+    remarkPlugins: [remarkLeestijd, remarkSituatiesEruit],
   },
   vite: {
     plugins: [tailwindcss()],

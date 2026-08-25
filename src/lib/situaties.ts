@@ -105,3 +105,17 @@ export async function situatieSelectie(aantal: number, sector?: string): Promise
   }
   return gekozen;
 }
+
+/**
+ * De praktijksituaties van één specifieke training.
+ *
+ * De trainingspagina toonde ze alleen als lopende tekst in de markdown-body.
+ * Dat is precies het materiaal waarop een bezoeker beslist — "begrijpen jullie
+ * mijn werk eigenlijk wel" — en het verdient een eigen blok in plaats van een
+ * alinea halverwege.
+ */
+export async function situatiesVan(slug: string): Promise<string[]> {
+  const trainingen = await getCollection('trainingen');
+  const training = trainingen.find((t) => t.data.slug === slug);
+  return training ? leesSituaties(training.body ?? '') : [];
+}

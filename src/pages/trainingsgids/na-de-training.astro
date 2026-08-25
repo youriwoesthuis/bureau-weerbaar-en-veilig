@@ -1,12 +1,6 @@
 ---
 import { link } from '../../lib/link';
-import Base from '../../layouts/Base.astro';
-import Breadcrumb from '../../components/Breadcrumb.astro';
-import Terugbelverzoek from '../../components/Terugbelverzoek.astro';
-import GidsNavigatie from '../../components/GidsNavigatie.astro';
-import { gidsPagina } from '../../lib/trainingsgids';
-
-const pagina = gidsPagina('na-de-training')!;
+import Gids from '../../layouts/Gids.astro';
 
 const momenten = [
   {
@@ -28,93 +22,85 @@ const momenten = [
 ];
 ---
 
-<Base
+<Gids
+  slug="na-de-training"
   titel="Wat gebeurt er na een agressietraining?"
   beschrijving="Hoe je voorkomt dat een agressietraining een losse dag blijft: afspraken delen, organisatiepunten oppakken, intervisie na zes weken en incidenten blijven bespreken."
+  eyebrow="Borging"
+  lede="Een training verandert pas iets als er daarna iets verandert. Deel de afspraken met het hele team, pak de punten op die bij de organisatie liggen, en plan een terugkommoment na ongeveer zes weken. Bij de experttrainingen van Bureau Weerbaar en Veilig zit dat moment er standaard in."
+  stats={[
+    ['4', 'Momenten'],
+    ['6 weken', 'Terugkommoment'],
+    ['Expert', 'Intervisie standaard'],
+    ['30 min', 'Genoeg voor een teamoverleg'],
+  ]}
+  onderwerp="het vervolg na een training"
 >
-  <div class="vlak-donker op-donker relative overflow-hidden text-white">
-    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
-    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
-      <Breadcrumb
-        pad={[
-          { naam: 'Home', pad: '/' },
-          { naam: 'Trainingsgids', pad: '/trainingsgids/' },
-          { naam: pagina.kortelabel },
-        ]}
-      />
-      <p class="kicker mt-7">Borging</p>
-      <h1 class="mt-4 max-w-3xl text-3xl font-bold leading-[1.15] md:text-5xl">{pagina.titel}</h1>
-      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
-        Een training verandert pas iets als er daarna iets verandert. Deel de
-        afspraken met het hele team, pak de punten op die bij de organisatie
-        liggen, en plan een terugkommoment na ongeveer zes weken. Bij de
-        experttrainingen van Bureau Weerbaar en Veilig zit dat moment er standaard in.
-      </p>
-    </div>
-  </div>
-  <div class="lijn-merk" aria-hidden="true"></div>
-
-  <div class="mx-auto max-w-6xl px-4 py-16">
-    <div class="grid gap-12 lg:grid-cols-[1fr_22rem]">
-      <div class="min-w-0">
-        <div class="leestekst">
-          <h2>Waarom trainingen wegzakken</h2>
-          <p>
-            Niet omdat de training slecht was, en niet omdat het team niet wil.
-            Een vaardigheid die je zelden gebruikt zakt weg — dat is normaal. En
-            juist agressie is iets wat je hoopt niet dagelijks tegen te komen, dus
-            de gelegenheid om te oefenen ontbreekt precies daar waar je hem nodig
-            hebt.
-          </p>
-          <p>
-            De tweede reden is bekender maar ongemakkelijker: op een trainingsdag
-            komen bijna altijd punten boven tafel waar het team zelf niet over
-            gaat. Een balie waar je niet weg kunt. Een alarmknop die niemand ooit
-            geprobeerd heeft. Een rooster waardoor iemand alleen op huisbezoek
-            gaat. Als daar niets mee gebeurt, leert het team vooral dat melden
-            geen zin heeft.
-          </p>
-        </div>
-
-        <section class="mt-12" aria-labelledby="momenten-titel">
-          <p class="kicker">De weken erna</p>
-          <h2 id="momenten-titel" class="kop-onderstreept mt-4 text-2xl font-bold text-marine">
-            Vier momenten die het verschil maken
-          </h2>
-          <ol class="tijdlijn niveau-gevorderd mt-8">
-            {momenten.map((m, i) => (
-              <li class="tijdlijn-stap">
-                <span aria-hidden="true" class="tijdlijn-bol">{i + 1}</span>
-                <div class="pb-7">
-                  <h3 class="font-bold text-marine">{m.wanneer}</h3>
-                  <p class="mt-1.5 leading-relaxed text-grijs">{m.wat}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        <div class="leestekst mt-14">
-          <h2>Wanneer is een vervolgtraining zinvol?</h2>
-          <p>
-            Niet als "herhaling", maar als een niveau hoger. Een team dat de basis
-            beheerst en er structureel mee te maken heeft, zit na een jaar
-            meestal toe aan gevorderd: complexere casuïstiek, grenzen stellen
-            onder druk, en het onderscheid tussen agressie uit emotie en agressie
-            als middel. Voor leidinggevenden is er het expertniveau, dat over
-            beleid, teamnorm en nazorgstructuur gaat.
-          </p>
-          <p>
-            Twijfel je waar je team nu staat? De
-            <a href={link('/trainingsgids/welk-niveau/')}>keuzehulp</a> loopt het
-            in drie vragen na.
-          </p>
-        </div>
-
-        <GidsNavigatie huidig="na-de-training" />
+  {/* ═══ Waarom het wegzakt ═══ */}
+  <section class="section">
+    <div class="wrap">
+      <div class="leestekst">
+        <p class="eyebrow">Het eerlijke antwoord</p>
+        <h2>Waarom trainingen wegzakken</h2>
+        <p>
+          Niet omdat de training slecht was, en niet omdat het team niet wil. Een
+          vaardigheid die je zelden gebruikt zakt weg — dat is normaal. En juist
+          agressie is iets wat je hoopt niet dagelijks tegen te komen, dus de
+          gelegenheid om te oefenen ontbreekt precies daar waar je hem nodig hebt.
+        </p>
+        <p>
+          De tweede reden is bekender maar ongemakkelijker: op een trainingsdag
+          komen bijna altijd punten boven tafel waar het team zelf niet over gaat.
+          Een balie waar je niet weg kunt. Een alarmknop die niemand ooit
+          geprobeerd heeft. Een rooster waardoor iemand alleen op huisbezoek gaat.
+          Als daar niets mee gebeurt, leert het team vooral dat melden geen zin
+          heeft.
+        </p>
       </div>
-
-      <Terugbelverzoek onderwerp="het vervolg na een training" />
     </div>
-  </div>
-</Base>
+  </section>
+
+  {/* ═══ De vier momenten ═══ */}
+  <section class="section section--soft" aria-labelledby="momenten-titel">
+    <div class="wrap">
+      <p class="eyebrow">De weken erna</p>
+      <h2 id="momenten-titel">Vier momenten die het verschil maken</h2>
+      <ol class="ladder ladderblok niveau-gevorderd">
+        {momenten.map((m, i) => (
+          <li class="ladder-item programma-blok">
+            <div class="ladder-kop programma-kop">
+              <span class="ladder-nr">{String(i + 1).padStart(2, '0')}</span>
+              <span>
+                <span class="ladder-titel">{m.wanneer}</span>
+                <span class="ladder-bij">{m.wat}</span>
+              </span>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {/* ═══ Vervolgtraining ═══ */}
+  <section class="section">
+    <div class="wrap">
+      <div class="leestekst">
+        <p class="eyebrow">Een niveau hoger, geen herhaling</p>
+        <h2>Wanneer is een vervolgtraining zinvol?</h2>
+        <p>
+          Niet als "herhaling", maar als een niveau hoger. Een team dat de basis
+          beheerst en er structureel mee te maken heeft, zit na een jaar meestal
+          toe aan gevorderd: complexere casuïstiek, grenzen stellen onder druk, en
+          het onderscheid tussen agressie uit emotie en agressie als middel. Voor
+          leidinggevenden is er het expertniveau, dat over beleid, teamnorm en
+          nazorgstructuur gaat.
+        </p>
+        <p>
+          Twijfel je waar je team nu staat? De
+          {' '}<a href={link('/trainingsgids/welk-niveau/')}>keuzehulp</a> loopt het
+          in drie vragen na.
+        </p>
+      </div>
+    </div>
+  </section>
+</Gids>

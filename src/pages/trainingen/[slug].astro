@@ -3,12 +3,12 @@ import { link } from '../../lib/link';
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import NiveauBadge from '../../components/NiveauBadge.astro';
 import Terugbelverzoek from '../../components/Terugbelverzoek.astro';
 import TrainersBlok from '../../components/TrainersBlok.astro';
 import { SECTOR_NAMEN } from '../../lib/sectoren';
 import { trainingTitel } from '../../lib/seo';
 import { inZin } from '../../lib/naam';
+import { situatiesVan } from '../../lib/situaties';
 import { voorDeGroep as teamVoorDeGroep } from '../../lib/team';
 import { ORGANISATIE, persoonId } from '../../lib/organisatie';
 
@@ -33,7 +33,7 @@ const niveauLabel = { basis: 'Basis', gevorderd: 'Gevorderd', expert: 'Expert' }
 
 /* Korte, zoekwoordgerichte title: de volledige H1 past zelden binnen 60 tekens. */
 const beroepsgroep = (await getCollection('beroepsgroepen')).find((b) => b.data.slug === d.beroepsgroep);
-const seoTitel = d.seo_titel ?? trainingTitel(beroepsgroep?.data.naam ?? d.beroepsgroep, d.niveau);
+const seoTitel = d.seo_titel ?? (await trainingTitel(beroepsgroep?.data.naam ?? d.beroepsgroep, d.niveau));
 const seoBeschrijving = d.seo_beschrijving ?? d.samenvatting;
 
 /*
@@ -133,288 +133,223 @@ const praktisch: [string, string | undefined][] = [
   ['Voorwaarde', d.voorwaarde],
   ['Doelgroep', d.doelgroep],
 ];
+
+/*
+  De praktijksituaties van deze training, uit de eigen markdown-body. Dit is
+  het materiaal waarop een bezoeker beslist — "begrijpen jullie mijn werk
+  eigenlijk wel" — en het stond alleen als opsomming halverwege de lopende
+  tekst. Hier krijgt het een eigen blok, direct onder het openingsantwoord.
+*/
+const eigenSituaties = await situatiesVan(d.slug);
+
+/* De vier feiten voor de kop: kort, en dat waarop iemand als eerste scant. */
+const kopFeiten = ([
+  ['Duur', d.duur],
+  ['Groep', d.groepsgrootte.replace(/^maximaal /, 'max. ')],
+  ['Locatie', d.locatie === 'incompany' ? 'Incompany of in Neede' : d.locatie],
+  ['Afsluiting', d.certificaat ? 'Deelnamecertificaat' : undefined],
+] as [string, string | undefined][]).filter((r): r is [string, string] => Boolean(r[1]));
 ---
 
 <Base titel={seoTitel} beschrijving={seoBeschrijving} schema={[courseSchema, faqSchema]}>
   <article class={`niveau-${d.niveau}`}>
-    <!-- Kop -->
-    <div class="vlak-donker op-donker relative overflow-hidden text-white">
-      <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
-      <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
-        {/*
-          De beroepsgroep hoort in dit pad. Hij ontbrak, en daarmee sprong het
-          kruimelpad van de sector rechtstreeks naar de training — een niveau
-          dat in de sitestructuur wél bestaat.
-
-          Dat had twee gevolgen. De BreadcrumbList in de gestructureerde data
-          beschreef een andere hiërarchie dan de site heeft. En de
-          beroepsgroeppagina's, juist de pagina's die op "agressietraining
-          {beroepsgroep}" moeten landen, kregen geen enkele link vanaf de
-          honderdtweeëndertig trainingen die eronder vallen: alleen vanaf de
-          sectorpagina en het trainingsoverzicht, twee stuks.
-
-          Het niveau sluit het pad af in plaats van de volledige titel. Die
-          titel herhaalt de beroepsgroep die er nu vlak voor staat, en liep
-          over meerdere regels.
-        */}
+    {/* ═══ Paginakop ═══ */}
+    <section class="paginakop op-donker">
+      <div class="wrap">
         <Breadcrumb
           pad={[
             { naam: 'Home', pad: '/' },
             { naam: 'Sectoren', pad: '/sectoren/' },
             { naam: SECTOR_NAMEN[d.sector] ?? d.sector, pad: `/sectoren/${d.sector}/` },
             ...(beroepsgroep
-              ? [
-                  {
-                    naam: beroepsgroep.data.naam,
-                    pad: `/sectoren/${d.sector}/${d.beroepsgroep}/`,
-                  },
-                ]
+              ? [{ naam: beroepsgroep.data.naam, pad: `/sectoren/${d.sector}/${d.beroepsgroep}/` }]
               : []),
             { naam: niveauLabel },
           ]}
         />
-        <div class="mt-7 max-w-3xl">
-          <span
-            class="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-wide"
-          >
-            <span class="h-1.5 w-1.5 rounded-full" style="background: var(--accent)" aria-hidden="true"></span>
-            Niveau: {d.niveau}
-          </span>
-          <h1 class="mt-4 text-3xl font-bold leading-[1.15] md:text-5xl">
-            {d.titel}
-          </h1>
-          <!-- GEO-openingsantwoord: direct citeerbaar, vóór alle marketingtaal -->
-          <p class="mt-5 text-lg leading-relaxed text-white/85">{d.samenvatting}</p>
-        </div>
+        <p class="eyebrow">Niveau {niveauLabel.toLowerCase()}</p>
+        <h1>{d.titel}</h1>
+        {/* GEO-openingsantwoord: direct citeerbaar, vóór alle verkooptaal */}
+        <p class="lede">{d.samenvatting}</p>
 
-        {/*
-          De vier feiten waarop een opdrachtgever meteen scant: hoe lang, met
-          hoeveel mensen, waar, en krijgen ze iets mee.
-
-          Ze stonden alleen in de zijkolom "Praktische informatie". Op een breed
-          scherm valt die rechts naast de tekst, maar op een telefoon zakt hij
-          onder de hele pagina — dus precies daar waar de meeste bezoekers hem
-          nooit zien. Hier staan ze boven de vouw, in dezelfde volgorde als de
-          vragen die mensen stellen.
-        */}
-        <ul class="mt-9 flex flex-wrap gap-x-8 gap-y-4 border-t border-white/15 pt-7">
-          {[
-            ['Duur', d.duur],
-            ['Groep', d.groepsgrootte.replace(/^maximaal /, 'max. ')],
-            ['Locatie', d.locatie === 'incompany' ? 'Incompany of in Neede' : d.locatie],
-            ...(d.certificaat ? [['Afsluiting', 'Deelnamecertificaat']] : []),
-          ].map(([label, waarde]) => (
-            <li>
-              <span class="block text-xs font-bold uppercase tracking-wide text-white/55">
-                {label}
-              </span>
-              <span class="mt-1 block font-semibold">{waarde}</span>
-            </li>
+        <div class="kop-stats">
+          {kopFeiten.map(([label, waarde]) => (
+            <div class="kop-stat">
+              <b>{waarde}</b>
+              <span>{label}</span>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
-    </div>
-    <div class="lijn-merk" aria-hidden="true"></div>
+    </section>
 
-    <div class="mx-auto grid max-w-6xl gap-12 px-4 py-12 lg:grid-cols-[1fr_20rem]">
-      <div class="min-w-0 space-y-12">
-        <!-- Bodytekst uit markdown: waarom + praktijksituaties -->
-        <section
-          class="leestekst"
-        >
-          <Content />
-        </section>
+    {/* ═══ De situaties uit deze training ═══ */}
+    {eigenSituaties.length > 0 && (
+      <section class="section section--oranje" aria-labelledby="situaties-titel">
+        <div class="wrap">
+          <p class="eyebrow">Waar het over gaat</p>
+          <h2 id="situaties-titel">Dit staat er in deze training, letterlijk</h2>
 
-        <!-- Resultaat -->
-        <section aria-labelledby="resultaat-titel">
-          <h2 id="resultaat-titel" class="kop-onderstreept text-2xl font-bold text-marine">
-            Wat je leert
-          </h2>
-          <ul class="mt-6 grid gap-3 sm:grid-cols-2">
-            {d.resultaat.map((r) => (
-              <li
-                class="flex items-start gap-3 rounded-lg border border-lijn p-4 transition-colors"
-                style="background: var(--accent-vlak)"
-              >
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 20 20"
-                  class="mt-0.5 h-5 w-5 flex-none"
-                  style="color: var(--accent)"
-                  fill="currentColor"
-                >
-                  <path
-                    d="M10 1.7a8.3 8.3 0 1 0 0 16.6 8.3 8.3 0 0 0 0-16.6Zm4.1 6.2-5 5a.9.9 0 0 1-1.3 0L5.9 11a.9.9 0 1 1 1.3-1.3l1.3 1.4 4.3-4.4a.9.9 0 1 1 1.3 1.3Z"
-                  />
-                </svg>
-                <span>{r}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <!-- Programma -->
-        <section aria-labelledby="programma-titel">
-          <h2 id="programma-titel" class="kop-onderstreept text-2xl font-bold text-marine">
-            Programma
-          </h2>
-          <ol class="tijdlijn mt-6">
-            {d.programma.map((blok, i) => (
-              <li class="tijdlijn-stap">
-                <span aria-hidden="true" class="tijdlijn-bol">{i + 1}</span>
-                <div class="pb-7">
-                  <h3 class="font-bold text-marine">{blok.titel}</h3>
-                  <p class="mt-1.5 leading-relaxed text-grijs">{blok.inhoud}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        <!-- Werkvormen -->
-        <section aria-labelledby="werkvormen-titel">
-          <h2 id="werkvormen-titel" class="kop-onderstreept text-2xl font-bold text-marine">
-            Werkvormen
-          </h2>
-          <ul class="mt-6 flex flex-wrap gap-2">
-            {d.werkvormen.map((w) => (
-              <li
-                class="rounded-full border px-4 py-2 text-sm font-semibold"
-                style="background: var(--accent-vlak); border-color: color-mix(in srgb, var(--accent) 28%, transparent); color: var(--accent-tekst)"
-              >
-                {w}
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/*
-          De vragen op een eigen vlak. Deze pagina liep hiervoor als één wit
-          blok van ruim vierduizend pixels door: verhaal, leeruitkomsten,
-          programma, werkvormen en vragen zonder één zichtbare overgang. Dan
-          voelt het lang, ook als elk onderdeel op zichzelf kort is.
-
-          Dit is het laatste blok voordat de bezoeker een keuze maakt, en het
-          eigen vlak markeert dat.
-        */}
-        <section
-          class="gloed-warm -mx-4 rounded-2xl px-5 py-8 sm:mx-0 sm:px-8"
-          aria-labelledby="faq-titel"
-        >
-          <h2 id="faq-titel" class="kop-onderstreept text-2xl font-bold text-marine">
-            Veelgestelde vragen
-          </h2>
-          <div class="mt-6 space-y-3">
-            {d.veelgestelde_vragen.map((f) => (
-              <details class="uitklap rounded-lg border border-lijn bg-white px-5 py-4 transition-shadow open:shadow-md">
-                <summary class="font-semibold text-marine">
-                  {f.vraag}
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 20 20"
-                    class="chevron mt-1 h-5 w-5"
-                    style="color: var(--accent)"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="m5 7.5 5 5 5-5" />
-                  </svg>
+          {/*
+            Elke situatie klapt open naar wat je er die dag mee doet. Dat is de
+            brug van herkenning naar aanbod: eerst "dit gebeurt bij ons", dan
+            "en hier oefen je dat".
+          */}
+          <div class="ladder ladderblok">
+            {eigenSituaties.map((tekst, i) => (
+              <details class="ladder-item">
+                <summary class="ladder-kop">
+                  <span class="ladder-nr">{String(i + 1).padStart(2, '0')}</span>
+                  <span><span class="ladder-titel">{tekst}</span></span>
+                  <span class="ladder-teken" aria-hidden="true"></span>
                 </summary>
-                <p class="mt-3 leading-relaxed text-grijs">{f.antwoord}</p>
+                <div class="ladder-inhoud">
+                  <p>
+                    Deze situatie komt op de trainingsdag terug in de werkvormen
+                    {' '}<strong>{d.werkvormen.slice(0, 2).map(inZin).join(' en ')}</strong>.
+                    Je oefent hem met een trainingsacteur, en bespreekt na wat er
+                    werkte en wat niet.
+                  </p>
+                </div>
               </details>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
+    )}
 
-        <TrainersBlok />
-
-        <Terugbelverzoek onderwerp={`de ${inZin(d.titel)}`} />
+    {/* ═══ Waarom deze training ═══ */}
+    <section class="section">
+      <div class="wrap">
+        <div class="leestekst">
+          <Content />
+        </div>
       </div>
+    </section>
 
-      <!-- Zijkolom -->
-      <aside class="space-y-5 lg:sticky lg:top-6 lg:self-start">
-        <div class="relative overflow-hidden rounded-xl border border-lijn bg-white shadow-[var(--shadow-kaart)]">
-          <span class="lijn-merk block" aria-hidden="true"></span>
-          <div class="p-6">
-            <h2 class="text-lg font-bold text-marine">Praktische informatie</h2>
-            <dl class="mt-4 divide-y divide-lijn text-sm">
-              {/*
-                Het niveau stond hier niet bij, terwijl het het eerste is wat
-                een opdrachtgever wil verifiëren. Het verwijst door naar het
-                overzicht van dat niveau over alle sectoren heen: die drie
-                pagina's kregen anders nauwelijks links, en wie twijfelt of dit
-                het juiste niveau is, is daar precies op zijn plek.
-              */}
-              <div class="py-2.5 first:pt-0 last:pb-0">
-                <dt class="text-xs font-bold uppercase tracking-wide text-grijs">Niveau</dt>
-                <dd class="mt-1 font-medium text-inkt">
-                  <a href={link(`/niveaus/${d.niveau}/`)} class="text-blauw hover:underline">
-                    {niveauLabel}
-                  </a>
-                </dd>
+    {/* ═══ Wat je leert — het volle merk-oranje ═══ */}
+    <section class="section section--oranje">
+      <div class="wrap">
+        <p class="eyebrow">Na deze dag</p>
+        <h2>Wat je meeneemt</h2>
+        <ul class="grid grid-2 leerlijst">
+          {d.resultaat.map((r) => (
+            <li class="leerpunt komt-op">{r}</li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    {/* ═══ Programma ═══ */}
+    <section class="section">
+      <div class="wrap">
+        <p class="eyebrow">Het verloop van de dag</p>
+        <h2>Programma</h2>
+        <ol class="ladder ladderblok">
+          {d.programma.map((blok, i) => (
+            <li class="ladder-item programma-blok">
+              <div class="ladder-kop programma-kop">
+                <span class="ladder-nr">{String(i + 1).padStart(2, '0')}</span>
+                <span>
+                  <span class="ladder-titel">{blok.titel}</span>
+                  <span class="ladder-bij">{blok.inhoud}</span>
+                </span>
               </div>
-              {praktisch
-                .filter(([, waarde]) => waarde)
-                .map(([label, waarde]) => (
-                  <div class="py-2.5 first:pt-0 last:pb-0">
-                    <dt class="text-xs font-bold uppercase tracking-wide text-grijs">{label}</dt>
-                    <dd class="mt-1 font-medium text-inkt">{waarde}</dd>
-                  </div>
-                ))}
-            </dl>
-            <a href={link('/contact/')} class="knop knop-primair mt-6 w-full text-sm">
-              Plan deze training
-              <span class="pijl" aria-hidden="true">→</span>
-            </a>
+            </li>
+          ))}
+        </ol>
+
+        <p class="eyebrow werkvormen-kop">Werkvormen</p>
+        <ul class="werkvormen">
+          {d.werkvormen.map((w) => <li class="badge">{w}</li>)}
+        </ul>
+
+        <div class="praktisch">
+          <p class="eyebrow">Praktisch</p>
+          <dl class="gegevens">
+            {praktisch
+              .filter((r): r is [string, string] => Boolean(r[1]))
+              .map(([label, waarde]) => (
+                <div>
+                  <dt>{label}</dt>
+                  <dd>{waarde}</dd>
+                </div>
+              ))}
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    {/* ═══ Het team — het volle blauw ═══ */}
+    <TrainersBlok />
+
+    {/* ═══ Veelgestelde vragen ═══ */}
+    <section class="section section--soft">
+      <div class="wrap">
+        <p class="eyebrow">Voor je boekt</p>
+        <h2>Veelgestelde vragen</h2>
+        <div class="ladder ladderblok">
+          {d.veelgestelde_vragen.map((f) => (
+            <details class="ladder-item">
+              <summary class="ladder-kop">
+                <span><span class="ladder-titel">{f.vraag}</span></span>
+                <span class="ladder-teken" aria-hidden="true"></span>
+              </summary>
+              <div class="ladder-inhoud">
+                <p>{f.antwoord}</p>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ═══ De andere niveaus ═══ */}
+    {andereNiveaus.length > 0 && (
+      <section class="section section--tight">
+        <div class="wrap">
+          <p class="eyebrow">Andere niveaus voor deze beroepsgroep</p>
+          <div class="grid grid-2 sectorraster">
+            {andereNiveaus.map((t) => (
+              <article class={`card niveau-${t.data.niveau}`}>
+                <span class="badge">
+                  {{ basis: 'Basis', gevorderd: 'Gevorderd', expert: 'Expert' }[t.data.niveau]}
+                </span>
+                <h3 class="niveau-kop">
+                  <a href={link(`/trainingen/${t.data.slug}/`)} class="vlakdek">{t.data.titel}</a>
+                </h3>
+                <p>{t.data.doelgroep}</p>
+              </article>
+            ))}
           </div>
         </div>
+      </section>
+    )}
 
-        {andereNiveaus.length > 0 && (
-          <div class="rounded-xl border border-lijn bg-vlak-warm p-6">
-            <h2 class="text-lg font-bold text-marine">Andere niveaus</h2>
-            <ul class="mt-4 space-y-2.5 text-sm">
-              {andereNiveaus.map((t) => (
-                <li class={`niveau-${t.data.niveau} flex items-start gap-2.5`}>
-                  <span
-                    class="mt-1.5 h-2 w-2 flex-none rounded-full"
-                    style="background: var(--accent)"
-                    aria-hidden="true"></span>
-                  <a
-                    href={link(`/trainingen/${t.data.slug}/`)}
-                    class="font-semibold text-blauw hover:underline"
-                  >
-                    {t.data.titel}: {t.data.niveau}
-                  </a>
-                </li>
-              ))}
-            </ul>
+    {/* ═══ Gerelateerde beroepsgroepen ═══ */}
+    {gerelateerd.length > 0 && (
+      <section class="section section--tight">
+        <div class="wrap">
+          <p class="eyebrow">Ook getraind door Bureau Weerbaar en Veilig</p>
+          <div class="grid grid-3 sectorraster">
+            {gerelateerd.map((t) => (
+              <article class="card">
+                <h3>
+                  <a href={link(`/trainingen/${t.data.slug}/`)} class="vlakdek">{t.data.titel}</a>
+                </h3>
+                <p>{SECTOR_NAMEN[t.data.sector] ?? t.data.sector}</p>
+              </article>
+            ))}
           </div>
-        )}
+        </div>
+      </section>
+    )}
 
-        {gerelateerd.length > 0 && (
-          <div class="rounded-xl border border-lijn p-6">
-            <h2 class="text-lg font-bold text-marine">Gerelateerde trainingen</h2>
-            <ul class="mt-4 space-y-2.5 text-sm">
-              {gerelateerd.map((t) => (
-                <li>
-                  <a
-                    href={link(`/trainingen/${t.data.slug}/`)}
-                    class="group inline-flex items-start gap-1.5 font-semibold text-blauw hover:underline"
-                  >
-                    {t.data.titel}
-                    <span
-                      class="pijl mt-0.5 transition-transform group-hover:translate-x-1"
-                      aria-hidden="true">→</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </aside>
-    </div>
+    {/* ═══ Afsluiting ═══ */}
+    <section class="section section--tight">
+      <div class="wrap">
+        <Terugbelverzoek onderwerp={`de ${inZin(d.titel)}`} />
+      </div>
+    </section>
   </article>
 </Base>

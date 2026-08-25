@@ -1,13 +1,7 @@
 ---
 import { link } from '../../lib/link';
-import Base from '../../layouts/Base.astro';
-import Breadcrumb from '../../components/Breadcrumb.astro';
-import Terugbelverzoek from '../../components/Terugbelverzoek.astro';
-import GidsNavigatie from '../../components/GidsNavigatie.astro';
-import { gidsPagina } from '../../lib/trainingsgids';
+import Gids from '../../layouts/Gids.astro';
 import { TRAININGSDAG } from '../../lib/trainingsdag';
-
-const pagina = gidsPagina('de-trainingsdag')!;
 
 /*
   De feiten hieronder komen uit de trainingsdata zelf, niet uit een aanname:
@@ -20,112 +14,110 @@ const pagina = gidsPagina('de-trainingsdag')!;
 const dagdelen = TRAININGSDAG;
 ---
 
-<Base
+<Gids
+  slug="de-trainingsdag"
   titel="Hoe ziet een agressietraining eruit?"
   beschrijving="Het verloop van een trainingsdag bij Bureau Weerbaar en Veilig: opbouw, werkvormen, groepsgrootte en wat er van deelnemers gevraagd wordt."
+  eyebrow="Wat je kunt verwachten"
+  lede="Elke training van Bureau Weerbaar en Veilig duurt één dag. De groep telt maximaal tien deelnemers, op expertniveau maximaal acht. De dag draait om situaties die deelnemers zelf inbrengen, en iedereen ontvangt na afloop een deelnamecertificaat."
+  stats={[
+    ['1 dag', 'Duur'],
+    ['Max. 10', 'Deelnemers'],
+    ['Certificaat', 'Na afloop'],
+    ['Incompany', 'Of in Neede'],
+  ]}
+  onderwerp="het verloop van een trainingsdag"
 >
-  <div class="vlak-donker op-donker relative overflow-hidden text-white">
-    <div class="motief-chevron absolute inset-0" aria-hidden="true"></div>
-    <div class="relative mx-auto max-w-6xl px-4 py-10 md:py-14">
-      <Breadcrumb
-        pad={[
-          { naam: 'Home', pad: '/' },
-          { naam: 'Trainingsgids', pad: '/trainingsgids/' },
-          { naam: pagina.kortelabel },
-        ]}
-      />
-      <p class="kicker mt-7">Wat je kunt verwachten</p>
-      <h1 class="mt-4 max-w-3xl text-3xl font-bold leading-[1.15] md:text-5xl">{pagina.titel}</h1>
-      <p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
-        Elke training van Bureau Weerbaar en Veilig duurt één dag. De groep telt
-        maximaal tien deelnemers, op expertniveau maximaal acht. De dag draait om
-        situaties die deelnemers zelf inbrengen, en iedereen ontvangt na afloop
-        een deelnamecertificaat.
+  {/* ═══ Het verloop ═══ */}
+  <section class="section" aria-labelledby="verloop-titel">
+    <div class="wrap">
+      <p class="eyebrow">Het verloop</p>
+      <h2 id="verloop-titel">Hoe een dag is opgebouwd</h2>
+
+      <ol class="ladder ladderblok niveau-basis">
+        {dagdelen.map((d, i) => (
+          <li class="ladder-item programma-blok">
+            <div class="ladder-kop programma-kop">
+              <span class="ladder-nr">{String(i + 1).padStart(2, '0')}</span>
+              <span>
+                <span class="ladder-titel">{d.titel}</span>
+                <span class="ladder-bij">{d.inhoud}</span>
+              </span>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <p class="sectorlijst-noot">
+        De volgorde ligt niet vast. Elke training wordt afgestemd op de
+        beroepsgroep en op wat er in het team speelt; de exacte opbouw van een
+        specifieke training staat op de trainingspagina zelf.
       </p>
     </div>
-  </div>
-  <div class="lijn-merk" aria-hidden="true"></div>
+  </section>
 
-  <div class="mx-auto max-w-6xl px-4 py-16">
-    <div class="grid gap-12 lg:grid-cols-[1fr_22rem]">
-      <div class="min-w-0">
-        <section aria-labelledby="verloop-titel">
-          <p class="kicker">Het verloop</p>
-          <h2 id="verloop-titel" class="kop-onderstreept mt-4 text-2xl font-bold text-marine">
-            Hoe een dag is opgebouwd
-          </h2>
-          <ol class="tijdlijn niveau-basis mt-8">
-            {dagdelen.map((d, i) => (
-              <li class="tijdlijn-stap">
-                <span aria-hidden="true" class="tijdlijn-bol">{i + 1}</span>
-                <div class="pb-7">
-                  <h3 class="font-bold text-marine">{d.titel}</h3>
-                  <p class="mt-1.5 leading-relaxed text-grijs">{d.inhoud}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-          <p class="mt-2 text-sm leading-relaxed text-grijs">
-            De volgorde ligt niet vast. Elke training wordt afgestemd op de
-            beroepsgroep en op wat er in het team speelt; de exacte opbouw van
-            een specifieke training staat op de trainingspagina zelf.
-          </p>
-        </section>
-
-        <div class="leestekst mt-14">
-          <h2>Wat we níét doen</h2>
-          <p>
-            In de werkvormen staat bij veel trainingen letterlijk
-            <strong>praktijkgericht oefenen zonder naïeve rollenspellen</strong>.
-            Dat is een bewuste keuze. Het bekendste bezwaar tegen agressietraining
-            is dat deelnemers een acteur voor zich krijgen die harder schreeuwt
-            dan welke cliënt ook, waarna iedereen zich opgelaten voelt en niemand
-            iets meeneemt.
-          </p>
-          <p>
-            Er wordt wél geoefend, en het wordt ook oncomfortabel — anders leer je
-            niets. Maar het vertrekpunt is een situatie die een deelnemer zelf
-            heeft meegemaakt, niet een script.
-          </p>
-
-          <h2>Wat er van deelnemers gevraagd wordt</h2>
-          <ul>
-            <li>
-              Een of twee situaties uit het eigen werk meenemen. Liefst eentje die
-              níét goed ging: daar zit het leerpunt.
-            </li>
-            <li>
-              Bereidheid om te oefenen. Meekijken kan, maar levert aantoonbaar
-              minder op dan het zelf doen.
-            </li>
-            <li>
-              De hele dag aanwezig zijn. Halve deelname verstoort de opbouw voor
-              de rest van de groep.
-            </li>
-          </ul>
-
-          <h2>Op locatie of bij ons</h2>
-          <p>
-            De meeste trainingen zijn incompany: op je eigen locatie, in je eigen
-            omgeving. Dat scheelt reistijd en maakt de casuïstiek concreter — je
-            kunt letterlijk naar de balie of de spreekkamer lopen waar het
-            gebeurde. Trainen bij Bureau Weerbaar en Veilig in Neede kan ook,
-            bijvoorbeeld als je juist even weg wilt van de werkplek.
-          </p>
-
-          <h2>En daarna?</h2>
-          <p>
-            Op expertniveau zit er bij veel trainingen een intervisiemoment na zes
-            weken. Dat is geen extraatje: het is het moment waarop blijkt wat er
-            van de afspraken terechtkwam. Meer daarover staat bij
-            <a href={link('/trainingsgids/na-de-training/')}>wat er na de training gebeurt</a>.
+  {/* ═══ Wat we niet doen ═══ */}
+  <section class="section section--oranje">
+    <div class="wrap">
+      <p class="eyebrow">Eerlijk over de werkvorm</p>
+      <h2>Wat we níét doen</h2>
+      <div class="grid grid-2 situatieraster">
+        <div class="situatie">
+          <p class="situatie-tekst">
+            In de werkvormen staat bij veel trainingen letterlijk: praktijkgericht
+            oefenen zonder naïeve rollenspellen. Het bekendste bezwaar tegen
+            agressietraining is de acteur die harder schreeuwt dan welke cliënt
+            ook, waarna iedereen zich opgelaten voelt en niemand iets meeneemt.
           </p>
         </div>
-
-        <GidsNavigatie huidig="de-trainingsdag" />
+        <div class="situatie">
+          <p class="situatie-tekst">
+            Er wordt wél geoefend, en het wordt ook oncomfortabel — anders leer je
+            niets. Maar het vertrekpunt is een situatie die een deelnemer zelf
+            heeft meegemaakt, niet een script dat iemand vooraf bedacht.
+          </p>
+        </div>
       </div>
-
-      <Terugbelverzoek onderwerp="het verloop van een trainingsdag" />
     </div>
-  </div>
-</Base>
+  </section>
+
+  {/* ═══ De rest van het verhaal ═══ */}
+  <section class="section">
+    <div class="wrap">
+      <div class="leestekst">
+        <h2>Wat er van deelnemers gevraagd wordt</h2>
+        <ul>
+          <li>
+            Een of twee situaties uit het eigen werk meenemen. Liefst eentje die
+            níét goed ging: daar zit het leerpunt.
+          </li>
+          <li>
+            Bereidheid om te oefenen. Meekijken kan, maar levert aantoonbaar
+            minder op dan het zelf doen.
+          </li>
+          <li>
+            De hele dag aanwezig zijn. Halve deelname verstoort de opbouw voor
+            de rest van de groep.
+          </li>
+        </ul>
+
+        <h2>Op locatie of bij ons</h2>
+        <p>
+          De meeste trainingen zijn incompany: op je eigen locatie, in je eigen
+          omgeving. Dat scheelt reistijd en maakt de casuïstiek concreter — je
+          kunt letterlijk naar de balie of de spreekkamer lopen waar het
+          gebeurde. Trainen bij Bureau Weerbaar en Veilig in Neede kan ook,
+          bijvoorbeeld als je juist even weg wilt van de werkplek.
+        </p>
+
+        <h2>En daarna?</h2>
+        <p>
+          Op expertniveau zit er bij veel trainingen een intervisiemoment na zes
+          weken. Dat is geen extraatje: het is het moment waarop blijkt wat er
+          van de afspraken terechtkwam. Meer daarover staat bij
+          {' '}<a href={link('/trainingsgids/na-de-training/')}>wat er na de training gebeurt</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</Gids>

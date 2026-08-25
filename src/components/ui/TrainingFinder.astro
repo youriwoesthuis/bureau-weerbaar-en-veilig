@@ -72,7 +72,14 @@ const finderCss = [
           te keren naar "nog niets gekozen", en dan zou de uitnodiging na de
           eerste klik nooit meer verschijnen.
         */}
-        <input class="sr-only" type="radio" name="finder-sector" id="finder-leeg" checked />
+        <input
+          class="sr-only"
+          type="radio"
+          name="finder-sector"
+          id="finder-leeg"
+          aria-label="Geen sector gekozen"
+          checked
+        />
 
         {sectoren.map((s) => (
           <>
