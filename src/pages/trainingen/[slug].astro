@@ -197,7 +197,20 @@ const kopFeiten = ([
           */}
           <div class="ladder ladderblok">
             {eigenSituaties.map((tekst, i) => (
-              <details class="ladder-item">
+              /*
+                De eerste staat open, de rest dicht.
+
+                Voor een LLM-scraper maakt het niet uit: die leest de ruwe
+                DOM-boom, en tekst binnen een details-element staat gewoon in de
+                bron. Voor Google wél: die indexeert ingeklapte tekst prima, maar
+                weegt visueel verborgen inhoud een fractie lichter voor de
+                primaire zoekintentie dan wat direct zichtbaar is.
+
+                Eén open casus is genoeg om dat verschil weg te nemen, en houdt
+                tegelijk de belofte van dit blok overeind: geen ononderbroken
+                muur van incidenten, wel meteen zichtbaar waar het over gaat.
+              */
+              <details class="ladder-item" open={i === 0}>
                 <summary class="ladder-kop">
                   <span class="ladder-nr">{String(i + 1).padStart(2, '0')}</span>
                   <span><span class="ladder-titel">{tekst}</span></span>
